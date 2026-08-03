@@ -1,0 +1,48 @@
+name: Add Emtidad card
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-emtidad-card.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-page:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add Emtidad platform card
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+
+          if 'https://almohammdin.github.io/emtidad/' not in html:
+              marker = '''<a aria-label="فتح توسّع: أداة تقييم قرارات توسع الفروع"'''
+              card = '''<a aria-label="فتح منصة امتداد للشركات العائلية" class="model-link" href="https://almohammdin.github.io/emtidad/" rel="noopener noreferrer" target="_blank">
+          <div class="model-visual logo"><img alt="شعار منصة امتداد للشركات العائلية" decoding="async" loading="lazy" src="https://almohammdin.github.io/mycv/assets/tools/emtidad-logo.png"/></div>
+          <div class="model-body"><div class="model-title"><span>منصة امتداد للشركات العائلية</span><i aria-hidden="true">↗</i></div><p>منصة معرفية وأدوات استرشادية تساعد ملاك الشركات العائلية على تنظيم العلاقة بين العائلة والملكية والإدارة والاستعداد للانتقال بين الأجيال.</p><span class="model-open">فتح المنصة <b aria-hidden="true">↗</b></span></div>
+          </a>
+          '''
+              if marker not in html:
+                  raise SystemExit('Insertion marker not found')
+              html = html.replace(marker, card + marker, 1)
+              path.write_text(html, encoding='utf-8')
+
+          workflow = Path('.github/workflows/add-emtidad-card.yml')
+          if workflow.exists():
+              workflow.unlink()
+
+      - name: Commit and publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/add-emtidad-card.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "إضافة منصة امتداد إلى صفحة الخدمات"
+          git push
