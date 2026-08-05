@@ -5,11 +5,11 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>خدمات الحوكمة وتطوير الأعمال</title>
-<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، وإدارة المخاطر والنمو والاستثمار." name="description"/>
+<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، إدارة المخاطر والنمو والاستثمار، والرحلات المعرفية المهنية." name="description"/>
 <link href="https://almohammdin.github.io/services/" rel="canonical"/>
 <meta content="website" property="og:type"/>
 <meta content="خدمات الحوكمة وتطوير الأعمال" property="og:title"/>
-<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، وإدارة المخاطر والنمو والاستثمار." property="og:description"/>
+<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، إدارة المخاطر والنمو والاستثمار، والرحلات المعرفية المهنية." property="og:description"/>
 <meta content="https://almohammdin.github.io/services/" property="og:url"/>
 <meta content="https://almohammdin.github.io/services/services-og.png" property="og:image"/>
 <meta content="https://almohammdin.github.io/services/services-og.png" property="og:image:secure_url"/>
@@ -19,7 +19,7 @@
 <meta content="ar_SA" property="og:locale"/>
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="خدمات الحوكمة وتطوير الأعمال" name="twitter:title"/>
-<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، وإدارة المخاطر والنمو والاستثمار." name="twitter:description"/>
+<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، إدارة المخاطر والنمو والاستثمار، والرحلات المعرفية المهنية." name="twitter:description"/>
 <meta content="https://almohammdin.github.io/services/services-og.png" name="twitter:image"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -228,15 +228,20 @@ button.btn{font-family:inherit;cursor:pointer}
 .service-models-head{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:17px}
 .service-models h3{margin:0 0 4px;color:var(--navy);font-size:20px;line-height:1.5;font-weight:900}
 .service-models-head p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.75}
-.model-links-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
-.model-link{position:relative;display:flex;flex-direction:column;min-width:0;min-height:354px;border-radius:18px;background:#fff;border:1px solid #d7e3f4;color:#1f3b57;overflow:hidden;box-shadow:0 7px 20px rgba(10,14,26,.045);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.model-links-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:13px}
+.model-link{position:relative;display:flex;flex-direction:column;grid-column:span 2;min-width:0;min-height:354px;border-radius:18px;background:#fff;border:1px solid #d7e3f4;color:#1f3b57;overflow:hidden;box-shadow:0 7px 20px rgba(10,14,26,.045);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
 .model-link:hover,.model-link:focus-visible{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 16px 32px rgba(10,14,26,.11);outline:none}
+.model-link.featured{grid-column:span 3;border:2px solid rgba(201,168,76,.72);box-shadow:0 13px 30px rgba(10,14,26,.1)}
+.model-link.featured:before{content:"";position:absolute;z-index:3;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--gold2),#efd87f,var(--gold2))}
+.model-link.featured .model-visual{height:180px}
+.model-link.featured .model-title{font-size:16px}
 .model-visual{position:relative;width:100%;height:156px;background:#eef2f7;border-bottom:1px solid #e6ebf2;overflow:hidden}
 .model-visual:after{content:"";position:absolute;inset:auto 0 0;height:36%;background:linear-gradient(to top,rgba(10,14,26,.12),transparent);pointer-events:none}
 .model-visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 .model-visual.logo{background:linear-gradient(145deg,#f7f9fc,#fff)}
 .model-visual.logo:after{display:none}
 .model-visual.logo img{object-fit:contain;padding:18px}
+.model-visual.mukhaalafat-logo img{padding:4px;transform:scale(1.34);object-position:center 62%}
 .model-body{display:flex;flex:1;flex-direction:column;padding:15px 16px 16px}
 .model-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;color:var(--navy);font-size:14.5px;font-weight:900;line-height:1.55}
 .model-title i{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;flex:0 0 27px;border-radius:9px;background:#fdf6e3;border:1px solid #efe0b5;color:var(--gold2);font-style:normal;font-size:14px;transition:transform .2s ease,background .2s ease}
@@ -244,7 +249,20 @@ button.btn{font-family:inherit;cursor:pointer}
 .model-body p{margin:8px 0 14px;color:var(--muted);font-size:12.7px;line-height:1.75}
 .model-open{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;min-height:38px;margin-top:auto;border-radius:11px;background:linear-gradient(140deg,var(--navy),var(--navy2));color:#fff;font-size:12px;font-weight:900;transition:background .2s ease}
 .model-link:hover .model-open,.model-link:focus-visible .model-open{background:linear-gradient(140deg,var(--blue),var(--navy2))}
-@media(max-width:900px){.model-links-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.knowledge-product{margin-top:18px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(280px,.92fr);background:linear-gradient(135deg,#0a0e1a,#122046 64%,#1b3a6b);border:1px solid rgba(201,168,76,.34);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);color:#fff}
+.knowledge-product-content{padding:25px 24px;display:flex;flex-direction:column;justify-content:center}
+.knowledge-product-label{display:inline-flex;width:max-content;margin-bottom:10px;padding:4px 11px;border:1px solid rgba(201,168,76,.55);border-radius:999px;background:rgba(201,168,76,.12);color:#f0d782;font-size:11.5px;font-weight:900}
+.knowledge-product h3{margin:0 0 8px;color:#fff;font-size:24px;line-height:1.45;font-weight:900}
+.knowledge-product p{margin:0;color:rgba(255,255,255,.82);font-size:14px;line-height:1.85}
+.knowledge-example{margin-top:16px;padding:13px 14px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(255,255,255,.075)}
+.knowledge-example b{display:block;margin-bottom:4px;color:#f0d782;font-size:12px}
+.knowledge-example span{display:block;color:rgba(255,255,255,.78);font-size:12.5px;line-height:1.75}
+.knowledge-product-media{position:relative;display:flex;min-height:260px;overflow:hidden;background:#eef2f7}
+.knowledge-product-media img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .25s ease}
+.knowledge-product-media:hover img,.knowledge-product-media:focus-visible img{transform:scale(1.025)}
+.knowledge-product-media span{position:absolute;right:14px;bottom:14px;padding:8px 12px;border-radius:11px;background:rgba(10,14,26,.9);border:1px solid rgba(201,168,76,.42);color:#fff;font-size:12px;font-weight:900}
+@media(max-width:900px){.model-links-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.model-link,.model-link.featured{grid-column:auto}}
+@media(max-width:760px){.knowledge-product{grid-template-columns:1fr}.knowledge-product-media{min-height:210px}.knowledge-product-content{padding:21px 18px}.knowledge-product h3{font-size:21px}}
 @media(max-width:560px){.service-models{padding:16px}.model-links-grid{grid-template-columns:1fr}.model-link{min-height:0}.model-visual{height:170px}}
 @media(prefers-reduced-motion:reduce){.model-link,.model-title i,.model-open{transition:none}}
 
@@ -299,7 +317,7 @@ button.btn{font-family:inherit;cursor:pointer}
 <div class="kicker">خدمات الحوكمة وتطوير الأعمال</div>
 <h1>قرار أقوى، صلاحيات أوضح، ونمو مستدام</h1>
 <p class="subtitle">نقدم خدمات حوكمة وتطوير أعمال للمنشآت في مراحل التأسيس والنمو والتحول، ونساند الملاك والقيادات عبر المشاريع الاستشارية، والجلسات بالساعة، والمستشار غير المتفرغ، والإرشاد التنفيذي، وعضوية مجالس الإدارة المستقلة. نوضح القرار، ونرتب الصلاحيات، ونراجع المخاطر، ونجهز المنشأة للنمو أو الشراكة أو الاستثمار أو التصفية.</p>
-<div class="badge-row"><span class="badge">حوكمة الشركات والمجالس</span><span class="badge">تنظيم الصلاحيات والقرارات</span><span class="badge">جلسات استشارية</span><span class="badge">مستشار غير متفرغ</span><span class="badge">إرشاد تنفيذي</span><span class="badge">عضوية مجالس مستقلة</span><span class="badge">الاستثمار والاستحواذ</span><span class="badge">إعادة الهيكلة والتصفية</span></div>
+<div class="badge-row"><span class="badge">حوكمة الشركات والمجالس</span><span class="badge">تنظيم الصلاحيات والقرارات</span><span class="badge">جلسات استشارية</span><span class="badge">مستشار غير متفرغ</span><span class="badge">إرشاد تنفيذي</span><span class="badge">عضوية مجالس مستقلة</span><span class="badge">الاستثمار والاستحواذ</span><span class="badge">إعادة الهيكلة والتصفية</span><span class="badge">الرحلات المعرفية المهنية</span></div>
 </div>
 
 </div>
@@ -418,6 +436,18 @@ button.btn{font-family:inherit;cursor:pointer}
 <div class="example"><b>مثال:</b> شركة طبقت مصفوفة صلاحيات جديدة؛ نتابع معها حتى يستمر الفريق على مسار القرار المعتمد.</div>
 </article>
 </div>
+<article class="knowledge-product" aria-labelledby="knowledge-journeys-title">
+<div class="knowledge-product-content">
+<span class="knowledge-product-label">منتج مستقل</span>
+<h3 id="knowledge-journeys-title">الرحلات المعرفية المهنية</h3>
+<p>نصمم وننظم للشركات والجمعيات رحلات مهنية تجمع المعارض الدولية والزيارات القطاعية واللقاءات مع الشركات والخبراء، وتحول الرحلة إلى معرفة تطبيقية وعلاقات وفرص تعاون.</p>
+<div class="knowledge-example"><b>نموذج توضيحي</b><span>تعرض صفحة رحلة سيئول المصاحبة لمعرض Cafe Show Seoul 2026 نموذج لشكل البرنامج فقط، ويجري إعداد رحلات أخرى ضمن المنتج المستقل «الرحلات المعرفية».</span></div>
+</div>
+<a class="knowledge-product-media" href="https://almohammdin.github.io/Cafe-Show-Seoul2026/" target="_blank" rel="noopener noreferrer" aria-label="استعراض نموذج رحلة سيئول المعرفية">
+<img src="https://almohammdin.github.io/Cafe-Show-Seoul2026/seoul-trip-preview-v2.png" alt="نموذج رحلة سيئول المعرفية" loading="lazy" decoding="async"/>
+<span>استعراض النموذج ↗</span>
+</a>
+</article>
 <div aria-label="أدوات ونماذج استرشادية" class="service-models">
 <div class="service-models-head">
 <div>
@@ -426,13 +456,13 @@ button.btn{font-family:inherit;cursor:pointer}
 </div>
 </div>
 <div class="model-links-grid">
-<a aria-label="فتح منظومة أعمال المجالس: أداة مجالس" class="model-link" href="https://almohammdin.github.io/majalis/" rel="noopener noreferrer" target="_blank">
+<a aria-label="فتح منظومة أعمال المجالس: أداة مجالس" class="model-link featured" href="https://almohammdin.github.io/majalis/" rel="noopener noreferrer" target="_blank">
 <div class="model-visual logo"><img alt="شعار منظومة أعمال المجالس: أداة مجالس" decoding="async" loading="lazy" src="./assets/tools/majalis-logo.svg"/></div>
 <div class="model-body"><div class="model-title"><span>منظومة أعمال المجالس: أداة مجالس</span><i aria-hidden="true">↗</i></div><p>إدارة اجتماعات مجالس الإدارة والجمعيات واللجان، من الدعوة وجدول الأعمال حتى المحضر والقرارات.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
 </a>
-<a aria-label="فتح مقيّم مجالس" class="model-link" href="https://almohammdin.github.io/majalis-evaluator/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual"><img alt="صورة مقيّم مجالس" decoding="async" loading="lazy" src="./assets/tools/majalis-evaluator.webp"/></div>
-<div class="model-body"><div class="model-title"><span>مقيّم مجالس</span><i aria-hidden="true">↗</i></div><p>تقييم منظم لأداء المجلس وممارساته، يكشف نقاط القوة وفرص التحسين ويحولها إلى أولويات واضحة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
+<a aria-label="فتح منصة امتداد للشركات العائلية" class="model-link featured" href="https://almohammdin.github.io/emtidad/" rel="noopener noreferrer" target="_blank">
+<div class="model-visual logo"><img alt="شعار منصة امتداد للشركات العائلية" decoding="async" loading="lazy" src="https://almohammdin.github.io/mycv/assets/tools/emtidad-logo.png"/></div>
+<div class="model-body"><div class="model-title"><span>منصة امتداد للشركات العائلية</span><i aria-hidden="true">↗</i></div><p>منصة معرفية وأدوات استرشادية تساعد ملاك الشركات العائلية على تنظيم العلاقة بين العائلة والملكية والإدارة والاستعداد للانتقال بين الأجيال.</p><span class="model-open">فتح المنصة <b aria-hidden="true">↗</b></span></div>
 </a>
 <a aria-label="فتح مرصد المخاطر المؤسسية" class="model-link" href="https://almohammdin.github.io/risk-register/" rel="noopener noreferrer" target="_blank">
 <div class="model-visual logo"><img alt="شعار مرصد المخاطر المؤسسية" decoding="async" loading="lazy" src="./assets/tools/risk-register-logo.svg"/></div>
@@ -441,6 +471,22 @@ button.btn{font-family:inherit;cursor:pointer}
 <a aria-label="فتح محرك الفحص المسبق للاستحواذ والاندماج" class="model-link" href="https://almohammdin.github.io/deal-check/" rel="noopener noreferrer" target="_blank">
 <div class="model-visual logo"><img alt="شعار محرك الفحص المسبق للاستحواذ والاندماج" decoding="async" loading="lazy" src="./assets/tools/deal-check-logo.webp"/></div>
 <div class="model-body"><div class="model-title"><span>محرك الفحص المسبق للاستحواذ والاندماج</span><i aria-hidden="true">↗</i></div><p>فحص أولي لجاهزية الصفقة، يبرز الفجوات والإشارات الحمراء قبل التفاوض والفحص المهني المتخصص.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
+</a>
+<a aria-label="فتح فاحص الامتثال الإعلاني" class="model-link" href="https://almohammdin.github.io/ADsChek/" rel="noopener noreferrer" target="_blank">
+<div class="model-visual logo"><img alt="شعار فاحص الامتثال الإعلاني" decoding="async" loading="lazy" src="https://almohammdin.github.io/ADsChek/assets/images/adschek-logo-preview.jpg"/></div>
+<div class="model-body"><div class="model-title"><span>فاحص الامتثال الإعلاني</span><i aria-hidden="true">↗</i></div><p>مراجعة الإعلان قبل نشره وفق نوع الحملة ومحتواها والقنوات المستخدمة، مع تحديد النقاط التي تحتاج تعديلًا.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
+</a>
+<a aria-label="فتح توسّع: أداة تقييم قرارات توسع الفروع" class="model-link" href="https://almohammdin.github.io/tawassu_branch/" rel="noopener noreferrer" target="_blank">
+<div class="model-visual logo"><img alt="صورة توسّع: أداة تقييم قرارات توسع الفروع" decoding="async" loading="lazy" src="./assets/tools/tawassu-preview.webp?v=4"/></div>
+<div class="model-body"><div class="model-title"><span>توسّع | تقييم قرارات توسع الفروع</span><i aria-hidden="true">↗</i></div><p>تقييم مخاطر واشتراطات الفرع الجديد وفق طبيعة النشاط ونمط المبيعات ونوع الموقع، مع مؤشر خطر وأهم نقاط الحسم قبل التوقيع.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
+</a>
+<a aria-label="فتح مخالفات: مساعد إعداد الاعتراض" class="model-link" href="https://almohammdin.github.io/Mukhaalafat/" rel="noopener noreferrer" target="_blank">
+<div class="model-visual logo mukhaalafat-logo"><img alt="شعار أداة مخالفات" decoding="async" loading="lazy" src="./assets/tools/mukhaalafat-logo.webp"/></div>
+<div class="model-body"><div class="model-title"><span>مخالفات | مساعد إعداد الاعتراض</span><i aria-hidden="true">↗</i></div><p>ترتيب بيانات المخالفة وحساب المهلة وتجهيز نص الاعتراض ومعرفة طريقة التقديم.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
+</a>
+<a aria-label="فتح مقيّم مجالس" class="model-link" href="https://almohammdin.github.io/majalis-evaluator/" rel="noopener noreferrer" target="_blank">
+<div class="model-visual"><img alt="صورة مقيّم مجالس" decoding="async" loading="lazy" src="./assets/tools/majalis-evaluator.webp"/></div>
+<div class="model-body"><div class="model-title"><span>مقيّم مجالس</span><i aria-hidden="true">↗</i></div><p>تقييم منظم لأداء المجلس وممارساته، يكشف نقاط القوة وفرص التحسين ويحولها إلى أولويات واضحة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
 </a>
 <a aria-label="فتح مستكشف مسارات النمو" class="model-link" href="https://almohammdin.github.io/GrowthCompass/" rel="noopener noreferrer" target="_blank">
 <div class="model-visual"><img alt="صورة مستكشف مسارات النمو" decoding="async" loading="lazy" src="./assets/tools/growth-compass.webp"/></div>
@@ -465,18 +511,6 @@ button.btn{font-family:inherit;cursor:pointer}
 <a aria-label="فتح دليل نطاق عمل المصفي" class="model-link" href="https://almohammdin.github.io/MOSAFFY/?v=1" rel="noopener noreferrer" target="_blank">
 <div class="model-visual"><img alt="صورة دليل نطاق عمل المصفي" decoding="async" loading="lazy" src="./assets/tools/mosaffy-preview.webp"/></div>
 <div class="model-body"><div class="model-title"><span>دليل نطاق عمل المصفي</span><i aria-hidden="true">↗</i></div><p>تحديد مهام المصفي ومراحل التصفية الاختيارية والوثائق والمخرجات المطلوبة منذ البدء حتى إقفال الشركة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح فاحص الامتثال الإعلاني" class="model-link" href="https://almohammdin.github.io/ADsChek/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="شعار فاحص الامتثال الإعلاني" decoding="async" loading="lazy" src="https://almohammdin.github.io/ADsChek/assets/images/adschek-logo-preview.jpg"/></div>
-<div class="model-body"><div class="model-title"><span>فاحص الامتثال الإعلاني</span><i aria-hidden="true">↗</i></div><p>مراجعة الإعلان قبل نشره وفق نوع الحملة ومحتواها والقنوات المستخدمة، مع تحديد النقاط التي تحتاج تعديلًا.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح منصة امتداد للشركات العائلية" class="model-link" href="https://almohammdin.github.io/emtidad/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="شعار منصة امتداد للشركات العائلية" decoding="async" loading="lazy" src="https://almohammdin.github.io/mycv/assets/tools/emtidad-logo.png"/></div>
-<div class="model-body"><div class="model-title"><span>منصة امتداد للشركات العائلية</span><i aria-hidden="true">↗</i></div><p>منصة معرفية وأدوات استرشادية تساعد ملاك الشركات العائلية على تنظيم العلاقة بين العائلة والملكية والإدارة والاستعداد للانتقال بين الأجيال.</p><span class="model-open">فتح المنصة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح توسّع: أداة تقييم قرارات توسع الفروع" class="model-link" href="https://almohammdin.github.io/tawassu_branch/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="صورة توسّع: أداة تقييم قرارات توسع الفروع" decoding="async" loading="lazy" src="./assets/tools/tawassu-preview.webp?v=4"/></div>
-<div class="model-body"><div class="model-title"><span>توسّع | تقييم قرارات توسع الفروع</span><i aria-hidden="true">↗</i></div><p>تقييم مخاطر واشتراطات الفرع الجديد وفق طبيعة النشاط ونمط المبيعات ونوع الموقع، مع مؤشر خطر وأهم نقاط الحسم قبل التوقيع.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
 </a>
 </div>
 </div>
