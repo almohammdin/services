@@ -1,566 +1,172 @@
-<!DOCTYPE html>
+---
+---
+{% capture page_source %}{% include_relative index-source.html %}{% endcapture %}
+{% capture typography_head %}
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style id="typography-system-2026">
+@media screen {
+  html { font-size: 100%; }
+  body {
+    font-size: 18px;
+    line-height: 1.75;
+    font-weight: 400;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  :lang(en), [dir="ltr"], bdi {
+    font-family: "IBM Plex Sans", Arial, sans-serif;
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+    letter-spacing: 0;
+  }
+  p, li { text-wrap: pretty; }
 
-<html dir="rtl" lang="ar">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>خدمات الحوكمة وتطوير الأعمال</title>
-<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، إدارة المخاطر والنمو والاستثمار، والرحلات المعرفية المهنية." name="description"/>
-<link href="https://almohammdin.github.io/services/" rel="canonical"/>
-<meta content="website" property="og:type"/>
-<meta content="خدمات الحوكمة وتطوير الأعمال" property="og:title"/>
-<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، إدارة المخاطر والنمو والاستثمار، والرحلات المعرفية المهنية." property="og:description"/>
-<meta content="https://almohammdin.github.io/services/" property="og:url"/>
-<meta content="https://almohammdin.github.io/services/services-og.png" property="og:image"/>
-<meta content="https://almohammdin.github.io/services/services-og.png" property="og:image:secure_url"/>
-<meta content="image/png" property="og:image:type"/>
-<meta content="1200" property="og:image:width"/>
-<meta content="630" property="og:image:height"/>
-<meta content="ar_SA" property="og:locale"/>
-<meta content="summary_large_image" name="twitter:card"/>
-<meta content="خدمات الحوكمة وتطوير الأعمال" name="twitter:title"/>
-<meta content="خدمات حوكمة وتطوير أعمال للمنشآت وأصحاب الأعمال: جلسات بالساعة، مستشار غير متفرغ، إرشاد تنفيذي، عضوية مجالس، إدارة المخاطر والنمو والاستثمار، والرحلات المعرفية المهنية." name="twitter:description"/>
-<meta content="https://almohammdin.github.io/services/services-og.png" name="twitter:image"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&amp;family=Noto+Naskh+Arabic:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<style>
-:root{
-  --bg:#f4f6f8;--paper:#fff;--ink:#111827;--muted:#667085;--line:#e5e7eb;
-  --navy:#0a0e1a;--navy2:#122046;--blue:#1b3a6b;--gold:#c9a84c;--gold2:#a8862f;
-  --green:#0b7a53;--red:#b42318;--soft:#f8fafd;--radius:20px;--shadow:0 16px 42px rgba(10,14,26,.08);
+  h1 {
+    font-size: clamp(2.125rem, 4vw, 2.875rem);
+    line-height: 1.3;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: clamp(1.55rem, 2.5vw, 1.9rem);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  h3, strong, b,
+  .brand-name, .brand-role, .nav a, .kicker, .btn,
+  .num, .chip, .badge, .value-card .big, .tool .tag,
+  .cta-title, .result-number, .why-icon, .model-open,
+  .advisory-label, .advisory-link, .case-study-link {
+    font-weight: 700;
+  }
+
+  .brand-name { font-size: .9375rem; }
+  .brand-role { font-size: .8125rem; }
+  .nav a { font-size: .8125rem; }
+  .kicker { font-size: .875rem; }
+  .subtitle { font-size: 1.125rem; line-height: 1.75; }
+  .btn { font-size: .9375rem; }
+  .hero-panel-title { font-size: 1rem; }
+  .hero-panel p,
+  .point { font-size: .9375rem; line-height: 1.7; }
+
+  .sec-desc { font-size: 1rem; line-height: 1.75; }
+  .pos-card b,
+  .value-card b { font-size: 1.0625rem; }
+  .pos-card span,
+  .value-card span { font-size: 1rem; line-height: 1.7; }
+
+  .service-card h3 {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+  .service-card p {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+  .chip, .badge, .tool .tag,
+  .advisory-label, .advisory-meta span,
+  .service-tools-label, .service-tools a,
+  .case-study-badge span {
+    font-size: .8125rem;
+    font-weight: 600;
+  }
+  .example, .note, .copy-text {
+    font-size: .9375rem;
+    line-height: 1.75;
+  }
+
+  .tool b, .case b,
+  .audience-card b, .why-card b,
+  .result-card b { font-size: 1rem; }
+  .tool span, .case span,
+  .audience-card span, .why-card span,
+  .result-card p, .results-note {
+    font-size: .9375rem;
+    line-height: 1.75;
+  }
+  .about-story p {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+  }
+
+  .case-study-badge strong {
+    font-size: 1.55rem;
+    line-height: 1.4;
+  }
+  .case-study-content h3,
+  .advisory-card h3 {
+    font-size: 1.1875rem;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+  .case-study-content p,
+  .advisory-card p {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .case-study-point b,
+  .case-study-point span {
+    font-size: .9375rem;
+    line-height: 1.7;
+  }
+  .case-study-link,
+  .advisory-link,
+  .model-open {
+    font-size: .9375rem;
+    font-weight: 700;
+  }
+
+  .service-models h3,
+  .knowledge-product h3 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.45;
+    font-weight: 700;
+  }
+  .service-models-head p,
+  .model-body p,
+  .knowledge-product p,
+  .knowledge-example span {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+  .model-title {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    font-weight: 700;
+  }
+  .knowledge-example b,
+  .knowledge-product-media span {
+    font-size: .875rem;
+    font-weight: 700;
+  }
+
+  .cta-title {
+    font-size: clamp(1.45rem, 2.4vw, 1.75rem);
+    line-height: 1.45;
+  }
+  .cta-text { font-size: 1rem; line-height: 1.75; }
+  .footer { font-size: .875rem; }
+  .footer-title { font-size: .9375rem; }
+  .footer-role, .social-username { font-size: .8125rem; }
+  .footer-copy { font-size: .75rem; }
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(circle at 12% 0%,rgba(18,32,70,.08),transparent 34%),var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",Tahoma,Arial,sans-serif;line-height:1.85}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1120px;margin:0 auto;padding:18px 14px 44px}
-main.wrap{padding-top:8px}
-.bismillah{font-family:"Amiri Quran","Noto Naskh Arabic",serif;font-size:clamp(11px,1.3vw,14.5px);font-weight:400;color:var(--gold2);text-align:center;margin:5px auto 8px;letter-spacing:0;line-height:1.55}
-.bismillah:after{content:"۞";display:flex;align-items:center;justify-content:center;width:75px;height:8px;margin:1px auto 0;color:var(--gold);font-family:"Amiri Quran","Noto Naskh Arabic",serif;font-size:7px;line-height:1;background:linear-gradient(90deg,transparent,rgba(168,134,47,.7) 18%,rgba(168,134,47,.7) 82%,transparent) center/100% 1px no-repeat;text-shadow:0 0 3px var(--bg),0 0 3px var(--bg),0 0 3px var(--bg)}
-.topbar{position:sticky;top:0;z-index:30;background:linear-gradient(135deg,#0a0e1a,#122046);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.32);box-shadow:0 10px 26px rgba(10,14,26,.16)}
-.topbar-inner{max-width:1120px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:12px}
-.logo{width:90px;height:42px;object-fit:contain;display:block;flex:0 0 auto;padding:4px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.24)}
-.brand-meta{flex:1;min-width:0}
-.brand-name{font-size:14px;font-weight:800;color:#fff;line-height:1.4}
-.brand-role{font-size:12px;font-weight:700;color:#e8d59a;line-height:1.4}
-.nav{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:2px 0}
-.nav a{white-space:nowrap;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;box-shadow:0 4px 14px rgba(10,14,26,.03)}
-.nav a.primary{background:linear-gradient(140deg,#25d366,#59e391);border-color:#25d366;color:#062e16}
-.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#0a0e1a 0%,#122046 58%,#1b3a6b 100%);color:#fff;border-radius:30px;padding:34px 28px;margin:10px 0 16px;box-shadow:var(--shadow)}
-.hero:before{content:"";position:absolute;inset:auto -90px -130px auto;width:310px;height:310px;border-radius:50%;background:rgba(201,168,76,.14)}
-.hero:after{content:"";position:absolute;left:-80px;top:30px;width:190px;height:190px;border:24px solid rgba(255,255,255,.055);border-radius:50%}
-.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
-.kicker{display:inline-flex;align-items:center;gap:7px;background:rgba(201,168,76,.16);border:1px solid rgba(201,168,76,.32);color:#e8d59a;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:800;margin-bottom:14px}
-h1{font-size:35px;line-height:1.35;margin:0 0 12px;font-weight:800;letter-spacing:-.5px}
-.subtitle{font-size:17px;color:rgba(255,255,255,.86);max-width:760px;margin:0 0 18px}
-.hero-actions,.cta-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;padding:12px 18px;font-weight:800;font-size:14px;border:1px solid transparent;transition:.18s}
-.btn:hover{transform:translateY(-2px)}
-.btn.whatsapp{background:#25d366;color:#062e16;box-shadow:0 10px 25px rgba(37,211,102,.25)}
-.btn.gold{background:linear-gradient(140deg,#c9a84c,#a8862f);color:#1a1407;box-shadow:0 10px 25px rgba(201,168,76,.22)}
-.btn.ghost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff}
-.hero-panel{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:18px;backdrop-filter:blur(6px)}
-.hero-panel-title{font-size:15px;font-weight:800;color:#e8d59a;margin-bottom:10px}
-.hero-panel p{font-size:14px;color:rgba(255,255,255,.78);margin:0 0 12px}
-.hero-points{display:grid;gap:8px}
-.point{display:flex;gap:9px;align-items:flex-start;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:10px 12px;color:rgba(255,255,255,.88);font-size:13px;font-weight:700}
-.point i{font-style:normal;color:#e8d59a}
-section{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:24px 22px;margin:16px 0;box-shadow:var(--shadow)}
-.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}
-h2{font-size:24px;line-height:1.4;margin:0;color:var(--blue);font-weight:800;letter-spacing:-.2px;position:relative;padding-right:16px}
-h2:before{content:"";position:absolute;right:0;top:5px;bottom:5px;width:5px;border-radius:99px;background:linear-gradient(180deg,var(--gold),var(--gold2))}
-.sec-desc{margin:0;color:var(--muted);font-size:14px;max-width:620px}
-.positioning{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.pos-card{background:linear-gradient(180deg,#fbfcff,#fff);border:1px solid var(--line);border-radius:18px;padding:16px;border-top:4px solid var(--gold)}
-.pos-card b{display:block;color:var(--navy);font-size:15px;margin-bottom:5px}
-.pos-card span{display:block;color:var(--muted);font-size:13.5px}
-.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.service-card{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;overflow:hidden}
-.service-card:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(180deg,var(--gold),transparent)}
-.svc-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
-.num{width:34px;height:34px;border-radius:12px;background:#fdf6e3;color:var(--gold2);border:1px solid #efe0b5;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex:0 0 auto}
-.service-card h3{font-size:18px;line-height:1.45;margin:0;color:var(--navy);font-weight:800}
-.service-card p{margin:0 0 11px;color:#344054;font-size:14px}
-.chips{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 12px}
-.chip{background:#f8fafd;border:1px solid #d7e3f4;color:#1f3b57;border-radius:999px;padding:4px 9px;font-size:11.5px;font-weight:800}
-.example{background:#fff8f0;border:1px solid #f1dfbd;border-right:5px solid var(--gold);border-radius:14px;padding:11px 12px;color:#5a4630;font-size:13px;margin-top:10px}
-.example b{color:#8a6822}
-.value-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.value-card{background:linear-gradient(180deg,#fbfcff,#fff);border:1px solid var(--line);border-radius:18px;padding:17px}
-.value-card .big{font-size:26px;font-weight:900;color:var(--gold2);line-height:1}
-.value-card b{display:block;margin:9px 0 5px;color:var(--navy);font-size:15px}
-.value-card span{display:block;color:var(--muted);font-size:13.5px}
-.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.tool{display:flex;flex-direction:column;gap:5px;min-height:126px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;transition:.18s}
-.tool:hover{transform:translateY(-2px);border-color:#d5b75a;box-shadow:0 10px 24px rgba(10,14,26,.06)}
-.tool .tag{display:inline-flex;width:max-content;background:#fdf6e3;border:1px solid #efe0b5;color:var(--gold2);border-radius:999px;padding:2px 9px;font-size:11px;font-weight:900}
-.tool b{font-size:14px;color:var(--navy);line-height:1.5}
-.tool span{font-size:12.5px;color:var(--muted);line-height:1.6}
-.cases{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.case{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;border-top:4px solid var(--blue)}
-.case b{display:block;font-size:13.5px;color:var(--navy);margin-bottom:5px}
-.case span{display:block;font-size:12.5px;color:var(--muted);line-height:1.65}
-.copy-box{background:linear-gradient(135deg,#0a0e1a,#122046);color:#fff;border-radius:22px;padding:22px;border:1px solid rgba(201,168,76,.32)}
-.copy-text{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:16px;margin:14px 0;color:rgba(255,255,255,.9);font-size:14px}
-.copy-actions{display:flex;gap:10px;flex-wrap:wrap}
-button.btn{font-family:inherit;cursor:pointer}
-.cta-section{background:transparent;border:0;box-shadow:none;padding:0}
-.cta-card{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(135deg,#0a0e1a 0%,#122046 60%,#1b3a6b 100%);box-shadow:var(--shadow);padding:28px 24px;color:#fff;text-align:center}
-.cta-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 12%,rgba(201,168,76,.16),transparent 36%);pointer-events:none}
-.cta-inner{position:relative;z-index:1}
-.cta-title{font-size:24px;font-weight:900;margin:0 0 8px}
-.cta-text{color:rgba(255,255,255,.78);font-size:15px;margin:0 auto 18px;max-width:680px}
-.footer{text-align:center;color:#9fb0d0;font-size:12px;line-height:1.9;margin:18px 0 0;background:linear-gradient(135deg,#0a0e1a,#122046);border:1px solid rgba(201,168,76,.28);border-radius:22px;padding:18px 14px;box-shadow:var(--shadow)}
-.footer img{width:92px;height:44px;object-fit:contain;display:block;margin:0 auto 8px;padding:4px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.24)}
-.social{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:8px;direction:ltr}
-.social a{font-size:12px;font-weight:800;color:#9fb0d0}
-.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.badge{display:inline-flex;background:#f2f4f7;color:#344054;border:1px solid #eaecf0;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:800}
-.note{background:#f8fafd;border:1px solid #d7e3f4;border-right:5px solid var(--blue);border-radius:16px;padding:14px 15px;color:#1f3b57;font-size:13.5px;margin-top:12px}
-.bottom-cta{display:none;position:fixed;z-index:40;bottom:10px;left:10px;right:10px;gap:8px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:18px;padding:8px;box-shadow:0 14px 40px rgba(10,14,26,.14)}
-.bottom-cta a{flex:1;padding:10px 12px;border-radius:12px;text-align:center;font-weight:900;font-size:13px}
-.bottom-cta .wa{background:#25d366;color:#062e16}
-.bottom-cta .ln{background:#0a0e1a;color:#fff}
-@media(max-width:900px){
-  .hero-grid,.positioning,.value-grid{grid-template-columns:1fr}
-  .services-grid,.tools-grid,.audience-grid,.why-grid{grid-template-columns:1fr}
-  .cases{grid-template-columns:repeat(2,1fr)}
-  h1{font-size:28px}
-  .section-head{display:block}
-  .sec-desc{margin-top:8px}
-  .nav{display:none}
-}
-@media(max-width:560px){
-  .wrap{padding:12px 9px 80px}
-  .topbar-inner{padding:9px}
-  .hero{border-radius:22px;padding:24px 16px}
-  section{border-radius:18px;padding:18px 15px}
-  .services-grid,.tools-grid,.cases,.audience-grid,.why-grid{grid-template-columns:1fr}
-  .logo{width:78px;height:36px}
-  .brand-name{font-size:13px}
-  .brand-role{font-size:11px}
-  .hero-actions .btn,.cta-actions .btn{width:100%}
-  .bottom-cta{display:none!important}
-}
-@media print{
-  .topbar,.bottom-cta,.hero-actions,.cta-actions{display:none!important}
-  body{background:#fff}
-  section,.hero{box-shadow:none;break-inside:avoid}
+
+@media screen and (max-width: 900px) {
+  h1 { font-size: clamp(2rem, 8vw, 2.35rem); }
 }
 
-
-/* Audience & Why */
-.audience-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.audience-card{display:flex;align-items:flex-start;gap:12px;background:linear-gradient(180deg,#fbfcff,#fff);border:1px solid var(--line);border-radius:18px;padding:15px}
-.audience-dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(140deg,var(--gold),var(--gold2));margin-top:9px;flex:0 0 auto}
-.audience-card b{display:block;color:var(--navy);font-size:14.5px;margin-bottom:4px}
-.audience-card span{display:block;color:var(--muted);font-size:13.2px;line-height:1.75}
-.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.why-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;border-top:4px solid var(--gold)}
-.why-icon{width:30px;height:30px;border-radius:10px;background:#fdf6e3;border:1px solid #efe0b5;color:var(--gold2);display:flex;align-items:center;justify-content:center;font-weight:900;margin-bottom:10px}
-.why-card b{display:block;color:var(--navy);font-size:14.5px;margin-bottom:6px}
-.why-card span{display:block;color:var(--muted);font-size:13.2px;line-height:1.75}
-.service-tools{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px}
-.service-tools-label{font-size:11.5px;font-weight:900;color:#475467}
-.service-tools a{display:inline-flex;align-items:center;background:#f8fafd;border:1px solid #d7e3f4;color:#1f3b57;border-radius:999px;padding:4px 10px;font-size:11.5px;font-weight:900}
-.service-tools a:hover{border-color:var(--gold);color:var(--gold2);background:#fff8f0}
-
-/* About & Clients */
-.about-story{position:relative;overflow:hidden;background:linear-gradient(135deg,#fbfcff 0%,#fff 68%);border:1px solid var(--line);border-radius:20px;padding:22px 24px 22px 72px}
-.about-story:before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:linear-gradient(180deg,var(--gold),var(--gold2))}
-.about-story:after{content:"حـ";position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:28px;font-weight:900;color:rgba(27,58,107,.13);line-height:1}
-.about-story p{margin:0;color:#344054;font-size:15px;line-height:2}
-.about-story strong{color:var(--navy)}
-.clients-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
-.client-logo{min-width:0;min-height:148px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#fbfcff);border:1px solid var(--line);border-radius:18px;padding:16px;overflow:hidden;transition:.18s}
-.client-logo:hover{transform:translateY(-2px);border-color:#d5b75a;box-shadow:0 10px 24px rgba(10,14,26,.06)}
-.client-logo img{display:block;width:100%;height:112px;object-fit:contain;object-position:center}
-@media(max-width:900px){.clients-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:560px){.about-story{padding:18px 18px 18px 54px}.about-story:after{left:14px;font-size:23px}.about-story p{font-size:14px}.clients-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.client-logo{min-height:122px;padding:11px}.client-logo img{height:92px}}
-
-
-/* Tangible results */
-.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.result-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#fbfcff,#fff);border:1px solid var(--line);border-radius:18px;padding:18px 16px;border-top:4px solid var(--gold);min-height:210px}
-.result-card:after{content:"";position:absolute;left:-34px;bottom:-42px;width:110px;height:110px;border-radius:50%;background:rgba(27,58,107,.045);pointer-events:none}
-.result-number{position:relative;z-index:1;display:block;color:var(--gold2);font-size:29px;line-height:1.15;font-weight:900;letter-spacing:-.5px;margin-bottom:10px}
-.result-card b{position:relative;z-index:1;display:block;color:var(--navy);font-size:15px;line-height:1.6;margin-bottom:7px}
-.result-card p{position:relative;z-index:1;margin:0;color:var(--muted);font-size:13.2px;line-height:1.75}
-.results-note{margin-top:12px;background:#fff8f0;border:1px solid #f1dfbd;border-right:5px solid var(--gold);border-radius:14px;padding:11px 13px;color:#5a4630;font-size:12.8px}
-@media(max-width:900px){.results-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.results-grid{grid-template-columns:1fr}.result-card{min-height:auto}.result-number{font-size:27px}}
-
-
-/* Featured case study */
-.case-study-feature{margin-top:14px;display:grid;grid-template-columns:210px 1fr;gap:20px;align-items:stretch;background:linear-gradient(135deg,#0a0e1a,#122046 70%,#1b3a6b);color:#fff;border:1px solid rgba(201,168,76,.34);border-radius:20px;padding:20px;overflow:hidden;position:relative}
-.case-study-feature:after{content:"";position:absolute;left:-45px;bottom:-65px;width:180px;height:180px;border-radius:50%;border:28px solid rgba(255,255,255,.045)}
-.case-study-badge{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;border-left:1px solid rgba(255,255,255,.14);padding-left:20px}
-.case-study-badge span{display:inline-flex;background:rgba(201,168,76,.16);border:1px solid rgba(201,168,76,.35);color:#e8d59a;border-radius:999px;padding:5px 11px;font-size:11.5px;font-weight:900;margin-bottom:10px}
-.case-study-badge strong{font-size:25px;line-height:1.35;color:#fff}
-.case-study-content{position:relative;z-index:1}
-.case-study-content h3{margin:0 0 8px;font-size:19px;color:#fff;line-height:1.55}
-.case-study-content p{margin:0 0 12px;color:rgba(255,255,255,.78);font-size:13.5px;line-height:1.85}
-.case-study-points{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}
-.case-study-point{background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:10px 11px}
-.case-study-point b{display:block;color:#e8d59a;font-size:12px;margin-bottom:3px}
-.case-study-point span{display:block;color:rgba(255,255,255,.8);font-size:12px;line-height:1.65}
-.case-study-link{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(140deg,#c9a84c,#a8862f);color:#1a1407;border-radius:11px;padding:8px 13px;font-size:12px;font-weight:900}
-.case-study-link:hover{transform:translateY(-1px)}
-@media(max-width:900px){.case-study-feature{grid-template-columns:1fr}.case-study-badge{border-left:0;border-bottom:1px solid rgba(255,255,255,.14);padding:0 0 14px}.case-study-points{grid-template-columns:1fr}}
-@media(max-width:560px){.case-study-feature{padding:17px}.case-study-badge strong{font-size:21px}}
-
-
-/* Positive value section */
-.value-section{position:relative;overflow:hidden;background:linear-gradient(135deg,#fffaf0 0%,#f8fbff 58%,#eef8f3 100%);border-color:#e5d39a}
-.value-section:before{content:"";position:absolute;left:-65px;top:-80px;width:210px;height:210px;border-radius:50%;background:rgba(11,122,83,.07)}
-.value-section .section-head,.value-section .value-grid{position:relative;z-index:1}
-.value-section h2{color:var(--navy)}
-.value-section .value-card{background:rgba(255,255,255,.88);border-color:#e8ddba;box-shadow:0 10px 28px rgba(10,14,26,.055);border-top:4px solid var(--gold)}
-.value-section .value-card .big{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:linear-gradient(140deg,#0b7a53,#15966a);color:#fff;font-size:14px;box-shadow:0 8px 18px rgba(11,122,83,.16)}
-.value-section .value-card b{color:var(--navy);font-size:16px}
-.value-section .value-card span{color:#465467}
-
-/* Services advisory models */
-.hero-grid{grid-template-columns:1fr}
-.service-models{margin-top:18px;padding:22px;border-radius:20px;background:linear-gradient(135deg,#f8fafd 0%,#fff 72%);border:1px solid #d7e3f4;position:relative;overflow:hidden}
-.service-models:after{content:"";position:absolute;left:-42px;bottom:-64px;width:150px;height:150px;border-radius:50%;border:24px solid rgba(27,58,107,.035);pointer-events:none}
-.service-models-head{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:17px}
-.service-models h3{margin:0 0 4px;color:var(--navy);font-size:20px;line-height:1.5;font-weight:900}
-.service-models-head p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.75}
-.model-links-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:13px}
-.model-link{position:relative;display:flex;flex-direction:column;grid-column:span 2;min-width:0;min-height:354px;border-radius:18px;background:#fff;border:1px solid #d7e3f4;color:#1f3b57;overflow:hidden;box-shadow:0 7px 20px rgba(10,14,26,.045);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
-.model-link:hover,.model-link:focus-visible{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 16px 32px rgba(10,14,26,.11);outline:none}
-.model-link.featured{grid-column:span 3;border:2px solid rgba(201,168,76,.72);box-shadow:0 13px 30px rgba(10,14,26,.1)}
-.model-link.featured:before{content:"";position:absolute;z-index:3;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--gold2),#efd87f,var(--gold2))}
-.model-link.featured .model-visual{height:180px}
-.model-link.featured .model-title{font-size:16px}
-.model-visual{position:relative;width:100%;height:156px;background:#eef2f7;border-bottom:1px solid #e6ebf2;overflow:hidden}
-.model-visual:after{content:"";position:absolute;inset:auto 0 0;height:36%;background:linear-gradient(to top,rgba(10,14,26,.12),transparent);pointer-events:none}
-.model-visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
-.model-visual.logo{background:linear-gradient(145deg,#f7f9fc,#fff)}
-.model-visual.logo:after{display:none}
-.model-visual.logo img{object-fit:contain;padding:18px}
-.model-visual.mukhaalafat-logo img{padding:4px;transform:scale(1.34);object-position:center 62%}
-.model-body{display:flex;flex:1;flex-direction:column;padding:15px 16px 16px}
-.model-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;color:var(--navy);font-size:14.5px;font-weight:900;line-height:1.55}
-.model-title i{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;flex:0 0 27px;border-radius:9px;background:#fdf6e3;border:1px solid #efe0b5;color:var(--gold2);font-style:normal;font-size:14px;transition:transform .2s ease,background .2s ease}
-.model-link:hover .model-title i,.model-link:focus-visible .model-title i{transform:translate(-2px,-2px);background:#f8edce}
-.model-body p{margin:8px 0 14px;color:var(--muted);font-size:12.7px;line-height:1.75}
-.model-open{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;min-height:38px;margin-top:auto;border-radius:11px;background:linear-gradient(140deg,var(--navy),var(--navy2));color:#fff;font-size:12px;font-weight:900;transition:background .2s ease}
-.model-link:hover .model-open,.model-link:focus-visible .model-open{background:linear-gradient(140deg,var(--blue),var(--navy2))}
-.knowledge-product{margin-top:18px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(280px,.92fr);background:linear-gradient(135deg,#0a0e1a,#122046 64%,#1b3a6b);border:1px solid rgba(201,168,76,.34);border-radius:22px;overflow:hidden;box-shadow:var(--shadow);color:#fff}
-.knowledge-product-content{padding:25px 24px;display:flex;flex-direction:column;justify-content:center}
-.knowledge-product h3{margin:0 0 8px;color:#fff;font-size:24px;line-height:1.45;font-weight:900}
-.knowledge-product p{margin:0;color:rgba(255,255,255,.82);font-size:14px;line-height:1.85}
-.knowledge-example{margin-top:16px;padding:13px 14px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(255,255,255,.075)}
-.knowledge-example b{display:block;margin-bottom:4px;color:#f0d782;font-size:12px}
-.knowledge-example span{display:block;color:rgba(255,255,255,.78);font-size:12.5px;line-height:1.75}
-.knowledge-product-media{position:relative;display:flex;min-height:260px;overflow:hidden;background:#eef2f7}
-.knowledge-product-media img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .25s ease}
-.knowledge-product-media:hover img,.knowledge-product-media:focus-visible img{transform:scale(1.025)}
-.knowledge-product-media span{position:absolute;right:14px;bottom:14px;padding:8px 12px;border-radius:11px;background:rgba(10,14,26,.9);border:1px solid rgba(201,168,76,.42);color:#fff;font-size:12px;font-weight:900}
-@media(max-width:900px){.model-links-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.model-link,.model-link.featured{grid-column:auto}}
-@media(max-width:760px){.knowledge-product{grid-template-columns:1fr}.knowledge-product-media{min-height:210px}.knowledge-product-content{padding:21px 18px}.knowledge-product h3{font-size:21px}}
-@media(max-width:560px){.service-models{padding:16px}.model-links-grid{grid-template-columns:1fr}.model-link{min-height:0}.model-visual{height:170px}}
-@media(prefers-reduced-motion:reduce){.model-link,.model-title i,.model-open{transition:none}}
-
-
-/* Advisory pathways, tools and social footer */
-.positioning{grid-template-columns:repeat(4,1fr)}
-.advisory-section{position:relative;overflow:hidden;background:linear-gradient(135deg,#f7faff 0%,#fffaf0 100%);border-color:#dce5f0}
-.advisory-section:after{content:"";position:absolute;left:-70px;bottom:-95px;width:220px;height:220px;border-radius:50%;border:30px solid rgba(201,168,76,.07);pointer-events:none}
-.advisory-section .section-head,.advisory-grid{position:relative;z-index:1}
-.advisory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.advisory-card{position:relative;display:flex;flex-direction:column;min-height:310px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:19px;box-shadow:0 10px 26px rgba(10,14,26,.05);overflow:hidden}
-.advisory-card:before{content:"";position:absolute;right:0;left:0;top:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--gold))}
-.advisory-card.featured{border-color:#ddc57f;box-shadow:0 14px 32px rgba(201,168,76,.12)}
-.advisory-label{display:inline-flex;width:max-content;background:#fdf6e3;border:1px solid #efe0b5;color:var(--gold2);border-radius:999px;padding:4px 10px;font-size:11.5px;font-weight:900;margin-bottom:12px}
-.advisory-card h3{margin:0 0 9px;color:var(--navy);font-size:19px;line-height:1.5}
-.advisory-card p{margin:0 0 14px;color:#475467;font-size:13.5px;line-height:1.85}
-.advisory-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto;margin-bottom:15px}
-.advisory-meta span{background:#f8fafd;border:1px solid #d7e3f4;color:#1f3b57;border-radius:999px;padding:4px 9px;font-size:11.3px;font-weight:800}
-.advisory-link{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:12px;background:linear-gradient(140deg,var(--navy),var(--navy2));color:#fff;font-size:12.5px;font-weight:900;padding:9px 13px;transition:.18s}
-.advisory-link:hover{transform:translateY(-2px);background:linear-gradient(140deg,var(--blue),var(--navy2))}
-.footer .footer-logo{width:92px;height:44px;object-fit:contain;display:block;margin:0 auto 8px;padding:4px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.24)}
-.footer-title{font-size:13px;font-weight:900;color:#fff}
-.footer-role{font-size:11.5px;color:#b8c4da;margin-top:2px}
-.social-username{display:block;margin-top:12px;color:#e8d59a;font-size:13px;font-weight:800;letter-spacing:.2px;direction:ltr;unicode-bidi:isolate}
-.site-socials{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:8px;direction:ltr}
-.site-social-link{width:38px;height:38px;border-radius:11px;border:1px solid rgba(232,213,154,.28);background:rgba(255,255,255,.06);display:inline-flex;align-items:center;justify-content:center;color:#e8d59a;text-decoration:none;transition:transform .18s,border-color .18s,background .18s,box-shadow .18s}
-.site-social-link:hover{transform:translateY(-2px);border-color:#e8d59a;background:rgba(255,255,255,.11);box-shadow:0 8px 18px rgba(0,0,0,.18)}
-.footer .site-social-link img,.footer .site-social-link svg{width:17px;height:17px;display:block;object-fit:contain;fill:currentColor;margin:0;padding:0;border:0;border-radius:0;background:transparent}
-.footer-copy{margin-top:10px;color:#8394b3;font-size:10.5px}
-@media(max-width:900px){.positioning,.advisory-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.positioning,.advisory-grid{grid-template-columns:1fr}.advisory-card{min-height:auto}.service-models-head{display:block}.site-social-link{width:40px;height:40px}}
-@media print{.advisory-link,.site-socials,.social-username{display:none!important}}
-
+@media screen and (max-width: 560px) {
+  body { font-size: 17px; }
+  .brand-name { font-size: .875rem; }
+  .brand-role { font-size: .75rem; }
+  .about-story p { font-size: 1rem; }
+  .service-card h3 { font-size: 1.1875rem; }
+}
 </style>
-<link href="./assets/media/favicon.png" rel="icon" type="image/png"/><link href="./assets/media/favicon.png" rel="shortcut icon" type="image/png"/><link href="./assets/media/favicon.png" rel="apple-touch-icon" sizes="192x192" type="image/png"/></head>
-<body>
-<header class="topbar">
-<div class="topbar-inner">
-<img alt="شعار الخدمات" class="logo" src="./assets/media/site-logo.webp"/>
-<div class="brand-meta">
-<div class="brand-name">خدمات الحوكمة وتطوير الأعمال</div>
-<div class="brand-role">حوكمة وتطوير أعمال | استشارات وإرشاد | عضوية مجالس مستقلة</div>
-</div>
-<nav aria-label="روابط داخلية" class="nav"><a href="#about">من نحن</a><a href="#advisory">الاستشارات</a><a href="#services">الخدمات</a><a href="#audience">لمن هذه الخدمات</a><a href="#why">لماذا نحن</a><a href="#results">نماذج النتائج</a><a href="#clients">أبرز عملائنا</a></nav>
-</div>
-</header>
-<main class="wrap">
-<div class="bismillah">بسم الله الرحمن الرحيم</div>
-<section class="hero">
-<div class="hero-grid">
-<div>
-<div class="kicker">خدمات الحوكمة وتطوير الأعمال</div>
-<h1>قرار أقوى، صلاحيات أوضح، ونمو مستدام</h1>
-<p class="subtitle">نقدم خدمات حوكمة وتطوير أعمال للمنشآت في مراحل التأسيس والنمو والتحول، ونساند الملاك والقيادات عبر المشاريع الاستشارية، والجلسات بالساعة، والمستشار غير المتفرغ، والإرشاد التنفيذي، وعضوية مجالس الإدارة المستقلة. نوضح القرار، ونرتب الصلاحيات، ونراجع المخاطر، ونجهز المنشأة للنمو أو الشراكة أو الاستثمار أو التصفية.</p>
-<div class="badge-row"><span class="badge">حوكمة الشركات والمجالس</span><span class="badge">تنظيم الصلاحيات والقرارات</span><span class="badge">جلسات استشارية</span><span class="badge">مستشار غير متفرغ</span><span class="badge">إرشاد تنفيذي</span><span class="badge">عضوية مجالس مستقلة</span><span class="badge">الاستثمار والاستحواذ</span><span class="badge">إعادة الهيكلة والتصفية</span><span class="badge">الرحلات المعرفية المهنية</span></div>
-</div>
-
-</div>
-</section><section id="about">
-<div class="section-head">
-<div>
-<h2>من نحن</h2>
-</div>
-</div>
-<div class="about-story">
-<p>بدأ عملنا من ملاحظة متكررة: منشآت تملك فرصًا جيدة، لكنها تواجه قرارات غير موثقة، أو صلاحيات متداخلة، أو تحديات نمو تحتاج رأيًا مستقلًا. من هنا تشكل <strong>فريق حوكمة وتطوير أعمال</strong> يقوده نايف المحمدي، ويعاونه مستشارون متخصصون بحسب طبيعة كل ملف. نعمل مع الملاك ومجالس الإدارة والإدارات التنفيذية، كما نقدم جلسات استشارية وإرشادًا تنفيذيًا لأصحاب الأعمال والقيادات، لتحويل التعقيد إلى قرار منظم ومخرجات قابلة للتطبيق.</p>
-</div>
-</section>
-<section>
-<div class="section-head">
-<h2>دورنا</h2>
-</div>
-<div class="positioning">
-<div class="pos-card"><b>للمنشأة في بدايتها</b><span>نساعدها على تأسيس القرار والصلاحيات وعلاقة الشركاء على قواعد واضحة من البداية.</span></div>
-<div class="pos-card"><b>للمنشأة التي تنمو</b><span>نرتب الهيكل والصلاحيات ومسارات الاعتماد بما يواكب توسع الفروع والفرق.</span></div>
-<div class="pos-card"><b>للمنشأة أمام قرار مهم</b><span>نحلل البدائل ونراجع المخاطر ونقدم رأيًا مستقلًا يدعم قرار المالك أو المجلس.</span></div>
-<div class="pos-card"><b>للمنشأة في مرحلة تحول</b><span>نجهز مسارات الاستثمار أو الاستحواذ أو إعادة الهيكلة أو التصفية وفق وضعها الفعلي.</span></div>
-</div>
-</section><section class="advisory-section" id="advisory">
-<div class="section-head"><div><h2>طرق الاستفادة من الخبرة الاستشارية</h2><p class="sec-desc">ثلاثة مسارات مرنة بحسب طبيعة الحاجة: قرار محدد، دعم مستمر، أو إرشاد تنفيذي لصاحب العمل والقيادي.</p></div></div>
-<div class="advisory-grid">
-<article class="advisory-card">
-<span class="advisory-label">قرار محدد</span><h3>جلسات استشارية</h3>
-<p>جلسة مركزة لمناقشة موضوع محدد في الحوكمة، الشراكات، مجالس الإدارة، الصلاحيات، النمو، المخاطر، أو قرار تجاري يحتاج قراءة مستقلة.</p>
-<div class="advisory-meta"><span>ساعة استشارية</span><span>موضوع محدد</span><span>توصيات عملية</span></div>
-<a class="advisory-link" href="https://wa.me/966506350457?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%AD%D8%AC%D8%B2%20%D8%AC%D9%84%D8%B3%D8%A9%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D9%8A%D8%A9%20%D8%A8%D8%A7%D9%84%D8%B3%D8%A7%D8%B9%D8%A9." target="_blank" rel="noopener noreferrer">طلب جلسة استشارية ←</a>
-</article>
-<article class="advisory-card featured">
-<span class="advisory-label">دعم مستمر</span><h3>مستشار غير متفرغ</h3>
-<p>دعم استشاري مستمر للمالك أو الإدارة أو المجلس عبر اتفاق مرن، واجتماعات دورية، ومراجعة القرارات والملفات وفق حجم الاحتياج.</p>
-<div class="advisory-meta"><span>اتفاق مرن</span><span>اجتماعات دورية</span><span>متابعة قرارات</span></div>
-<a class="advisory-link" href="https://wa.me/966506350457?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%A7%D9%84%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%20%D8%BA%D9%8A%D8%B1%20%D8%A7%D9%84%D9%85%D8%AA%D9%81%D8%B1%D8%BA." target="_blank" rel="noopener noreferrer">مناقشة الاحتياج ←</a>
-</article>
-<article class="advisory-card">
-<span class="advisory-label">شريك تفكير</span><h3>الإرشاد التنفيذي ومرشد الأعمال</h3>
-<p>مسار خاص لأصحاب الأعمال والقيادات الذين يحتاجون مرشدًا مهنيًا وشريك تفكير مستقلًا لمناقشة القرارات الحساسة، الأولويات، النمو، وتحديات القيادة.</p>
-<div class="advisory-meta"><span>جلسات دورية</span><span>شريك تفكير</span><span>قرارات قيادية</span></div>
-<a class="advisory-link" href="https://wa.me/966506350457?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%A7%D9%84%D8%A5%D8%B1%D8%B4%D8%A7%D8%AF%20%D8%A7%D9%84%D8%AA%D9%86%D9%81%D9%8A%D8%B0%D9%8A%20%D9%88%D9%85%D8%B1%D8%B4%D8%AF%20%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84." target="_blank" rel="noopener noreferrer">طلب الإرشاد التنفيذي ←</a>
-</article>
-</div>
-</section><section id="audience"><div class="section-head"><div><h2>لمن هذه الخدمات؟</h2><p class="sec-desc">للمنشآت في مختلف المراحل، ولأصحاب الأعمال والقيادات الذين يحتاجون قرارًا أو توجيهًا أو دعمًا مؤسسيًا.</p></div></div><div class="audience-grid"><div class="audience-card"><span class="audience-dot"></span><div><b>رواد الأعمال والمؤسسون</b><span>يحتاجون تأسيس العلاقة بين الشركاء، وتحديد الأدوار والصلاحيات، وبناء القرار على قواعد واضحة.</span></div></div><div class="audience-card"><span class="audience-dot"></span><div><b>أصحاب الأعمال والقيادات</b><span>يحتاجون جلسة استشارية أو مرشد أعمال أو شريك تفكير مستقلًا في القرارات المهمة.</span></div></div><div class="audience-card"><span class="audience-dot"></span><div><b>شركات عائلية</b><span>تحتاج فصلًا واضحًا بين دور المالك ودور المدير، وترتيب العلاقة بين العائلة والإدارة.</span></div></div><div class="audience-card"><span class="audience-dot"></span><div><b>شركاء وملاك</b><span>يحتاجون آلية محددة للقرار، وتوزيع الصلاحيات، وتنظيم العلاقة بينهم وبين الإدارة.</span></div></div><div class="audience-card"><span class="audience-dot"></span><div><b>منشآت في مرحلة النمو</b><span>تحتاج هيكلًا وصلاحيات ومسارات اعتماد تواكب توسع الفروع والفرق والأنشطة.</span></div></div><div class="audience-card"><span class="audience-dot"></span><div><b>مجالس وإدارات تنفيذية</b><span>تحتاج عضوًا مستقلًا أو مستشارًا غير متفرغ يضيف قيمة للنقاش والقرار وإدارة المخاطر.</span></div></div><div class="audience-card"><span class="audience-dot"></span><div><b>شركات تفاوض صفقة</b><span>تحتاج ترتيب الوثائق والقرارات والصلاحيات قبل الاستثمار أو الاستحواذ أو دخول شريك.</span></div></div><div class="audience-card"><span class="audience-dot"></span><div><b>كيانات في مرحلة تحول</b><span>تحتاج إعادة هيكلة أو دمجًا أو فصل أنشطة أو تصفية اختيارية منظمة.</span></div></div></div></section><section id="why"><div class="section-head"><div><h2>لماذا نحن؟</h2></div></div><div class="why-grid"><div class="why-card"><div class="why-icon">✓</div><b>خبرة عملية طويلة</b><span>تجربة ممتدة في الإدارة، الشراكات، مجالس الإدارة، وتطوير الأعمال، مع فهم عملي لتحديات الشركات.</span></div><div class="why-card"><div class="why-icon">✓</div><b>عضوية مستقلة في مجالس الإدارة</b><span>نعمل من داخل بيئة القرار، من خلال عضوية مستقلة في مجالس الإدارة، وهذا يمنحنا فهمًا عمليًا لطريقة تفكير الملاك والمجالس والإدارة التنفيذية.</span></div><div class="why-card"><div class="why-icon">✓</div><b>فهم تجاري وقانوني</b><span>نقرأ الشركة من زاوية المالك والإدارة والمخاطر والجاهزية، ثم نحول ذلك إلى مسار واضح.</span></div><div class="why-card"><div class="why-icon">✓</div><b>فريق مستشارين متخصصين</b><span>يقود نايف المحمدي العمل، ويعاونه مستشارون بحسب طبيعة الملف: حوكمة، قانون، مالية.</span></div><div class="why-card"><div class="why-icon">✓</div><b>مخرجات قابلة للتطبيق</b><span>نسلم ما يساعد الشركة على القرار والتنفيذ: مصفوفات، تقارير، توصيات، مسارات عمل، وملفات جاهزة للنقاش.</span></div></div></section><section id="results"><div class="section-head"><div><h2>نماذج من أثر العمل</h2><p class="sec-desc">نتائج مختارة ودراسة حالة توضح كيف يتحول العمل الاستشاري من تحليل إلى قرار ومخرج قابل للتطبيق.</p></div></div><div class="results-grid"><article class="result-card"><span class="result-number">+132 مليون ريال</span><b>أثر تقديري لبرنامج جاهزية مؤسسية</b><p>برنامج لمدة 18 شهرًا في قطاع التعليم شمل إعادة الهيكلة، بناء البنية المؤسسية، ودراسات التوسع والشراكات.</p></article><article class="result-card"><span class="result-number">+600%</span><b>نمو الإيرادات خلال 3 سنوات</b><p>تطوير برنامج وقفي عبر بناء مصادر تمويل، وتحسين المتابعة، وتحويل الأداء إلى تقارير مالية شهرية.</p></article><article class="result-card"><span class="result-number">+1,700%</span><b>توسع قاعدة المشتركين</b><p>تحويل برنامج مساهمات إلى مورد مستدام من خلال تطوير آليات الاستقطاب، إدارة البيانات، والحوكمة التشغيلية.</p></article><article class="result-card"><span class="result-number">نحو 100 مليون ريال</span><b>محفظة وقفية ضمن إطار حوكمي</b><p>متابعة وتنسيق محفظة استثمارية وربط القرارات بين مجلس النظارة ولجنة الاستثمار ورفع توصيات مدعومة بالتحليل.</p></article></div><article class="case-study-feature">
-<div class="case-study-badge"><span>دراسة حالة</span><strong>اعتماد سياسة مكافآت مجلس الإدارة</strong></div>
-<div class="case-study-content">
-<h3>من إشكالية مزمنة إلى سياسة معتمدة</h3>
-<p>شركة مساهمة مقفلة في قطاع التعليم الأهلي لم تكن لديها آلية محدثة لمكافآت مجلس الإدارة. تم تحليل الوضع النظامي، وإجراء مقارنة معيارية مع شركات مماثلة، وتصميم سياسة متوازنة تراعي حجم الشركة وأدوار الأعضاء وممارسات السوق.</p>
-<div class="case-study-points">
-<div class="case-study-point"><b>الوضع</b><span>مبلغ قديم وغير ملائم، وغياب آلية للتحديث والتوزيع.</span></div>
-<div class="case-study-point"><b>المعالجة</b><span>تحليل نظامي ومقارنة سوقية وبناء سياسة متكاملة للمجلس واللجان.</span></div>
-<div class="case-study-point"><b>النتيجة</b><span>قبول مجلس الإدارة واعتماد السياسة من الجمعية العمومية.</span></div>
-</div>
-<a class="case-study-link" href="https://almohammdin.github.io/Board-Case/" rel="noopener" target="_blank">قراءة دراسة الحالة كاملة ←</a>
-</div>
-</article></section>
-<section id="services">
-<div class="section-head">
-<h2>الخدمات التي نقدمها</h2>
-</div>
-<div class="services-grid">
-<article class="service-card">
-<div class="svc-top"><div class="num">1</div><h3>تشخيص الوضع المؤسسي وخارطة المعالجة</h3></div>
-<p>ندخل على الشركة ونقرأ الوضع الحقيقي: الشركاء، الإدارة، الصلاحيات، القرارات، الوثائق، ومواطن التعطّل.</p>
-<div class="chips"><span class="chip">تقرير تشخيص</span><span class="chip">أولويات عاجلة</span><span class="chip">خارطة معالجة</span></div>
-<div class="example"><b>مثال:</b> شركة عندها خلاف متكرر حول من يعتمد المشتريات أو التوظيف؛ نرتب المشكلة في تقرير واضح يحدد صاحب القرار والمسار الصحيح.</div>
-</article>
-<article class="service-card">
-<div class="svc-top"><div class="num">2</div><h3>تأسيس نظام الحوكمة والصلاحيات</h3></div>
-<p>نبني للشركة نظامًا عمليًا لإدارة القرار: هيكل تنظيمي، مصفوفة صلاحيات، سجل قرارات، وسياسات أساسية.</p>
-<div class="chips"><span class="chip">هيكل تنظيمي</span><span class="chip">مصفوفة صلاحيات</span><span class="chip">سجل قرارات</span></div>
-<div class="example"><b>مثال:</b> مقهى يتوسع لعدة فروع وكل مدير يقرر بطريقته؛ نرتب من يوافق على ماذا، ومن يرفع لمن، وكيف يوثق القرار.</div>
-</article>
-<article class="service-card">
-<div class="svc-top"><div class="num">3</div><h3>تنظيم العلاقة بين الشركاء والإدارة</h3></div>
-<p>نرتب الحدود بين دور المالك ودور المدير، ونوضح علاقة الشركاء بالإدارة التنفيذية ومجلس الإدارة أو المديرين.</p>
-<div class="chips"><span class="chip">صلاحيات الشركاء</span><span class="chip">تعارض مصالح</span><span class="chip">آلية اجتماعات</span></div>
-<div class="example"><b>مثال:</b> شركة عائلية يتدخل فيها الشركاء بالتشغيل اليومي؛ نضع حدود القرار: ما يقرره الشركاء، وما يترك للإدارة.</div>
-</article>
-<article class="service-card">
-<div class="svc-top"><div class="num">4</div><h3>عضوية مجالس الإدارة واللجان</h3></div>
-<p>نقدم دور العضو المستقل أو المستشار الداعم لمجالس الإدارة واللجان، للمساهمة في تحسين جودة القرار، وطرح الأسئلة الصحيحة، ومراجعة المخاطر، ودعم الحوكمة داخل المجلس.</p>
-<div class="chips"><span class="chip">عضو مستقل</span><span class="chip">لجان المجلس</span><span class="chip">جودة القرار</span></div>
-<div class="example"><b>مثال:</b> شركة عائلية أو نامية تحتاج عضوًا مستقلًا يوازن النقاش داخل المجلس، ويراجع القرارات من زاوية الحوكمة والمخاطر والاستدامة قبل اعتمادها.</div>
-</article>
-<article class="service-card">
-<div class="svc-top"><div class="num">5</div><h3>إعادة الهيكلة والدمج والتحول المؤسسي</h3></div>
-<p>نراجع الكيانات والأنشطة والعقود والتراخيص، ثم نحدد أفضل مسار: دمج، فصل، تحويل، أو تأسيس كيان قابض.</p>
-<div class="chips"><span class="chip">تحليل كيانات</span><span class="chip">مقارنة بدائل</span><span class="chip">توصية نهائية</span></div>
-<div class="example"><b>مثال:</b> مجموعة عندها مؤسسة قديمة وشركة جديدة وأنشطة متداخلة؛ ندرس الوضع ونقترح الهيكل الأنسب قبل التوسع أو دخول المستثمر.</div>
-</article>
-<article class="service-card">
-<div class="svc-top"><div class="num">6</div><h3>تجهيز الشركة لدخول مستثمر أو شريك</h3></div>
-<p>نرفع جاهزية الشركة قبل التفاوض حتى تكون وثائقها وقراراتها وصلاحياتها أوضح وأسهل في الفحص.</p>
-<div class="chips"><span class="chip">جاهزية تفاوض</span><span class="chip">ملف فحص</span><span class="chip">حوكمة قبل الاستثمار</span></div>
-<div class="example"><b>مثال:</b> شركة تفاوض مستثمر وقراراتها غير موثقة؛ نجهز لها ملف حوكمة وصلاحيات وقرارات قبل الجلسات الحاسمة.</div>
-</article>
-<article class="service-card">
-<div class="svc-top"><div class="num">7</div><h3>تحليل المخاطر الإدارية والحوكمية</h3></div>
-<p>نكشف المخاطر التي قد تغيب عن القوائم المالية: تعارض مصالح، قرارات فردية، ضعف توثيق، أو اعتماد على شخص واحد.</p>
-<div class="chips"><span class="chip">مصفوفة مخاطر</span><span class="chip">نقاط حمراء</span><span class="chip">أولويات معالجة</span></div>
-<div class="example"><b>مثال:</b> مصنع فيه تداخل بين العائلة المالكة والإدارة التنفيذية؛ نعد مصفوفة تحدد أخطر النقاط التي يجب معالجتها فورًا.</div>
-</article>
-<article class="service-card">
-<div class="svc-top"><div class="num">8</div><h3>التصفية الاختيارية للشركات</h3></div>
-<p>نساعد الشركات التي ترغب في الإغلاق النظامي على تجهيز ملف التصفية، قرارات الشركاء، التصويت، وفهم المسار النظامي حتى الشطب.</p>
-<div class="chips"><span class="chip">مرحلة تمهيدية</span><span class="chip">قرارات الشركاء</span><span class="chip">شطب السجل</span></div>
-<div class="example"><b>مثال:</b> شركة توقفت عن النشاط وتريد الإغلاق النظامي؛ نرتب ملف التصفية من الفحص الأولي حتى مسار الإقفال.</div>
-</article>
-<article class="service-card">
-<div class="svc-top"><div class="num">9</div><h3>المتابعة الشهرية في الحوكمة وتطوير الأعمال</h3></div>
-<p>بعد بناء النظام، نتابع التطبيق فعليًا: زيارة شهرية، متابعة عن بعد، مراجعة قرارات، وتوجيه الفريق.</p>
-<div class="chips"><span class="chip">زيارة شهرية</span><span class="chip">متابعة عن بعد</span><span class="chip">تفعيل النظام</span></div>
-<div class="example"><b>مثال:</b> شركة طبقت مصفوفة صلاحيات جديدة؛ نتابع معها حتى يستمر الفريق على مسار القرار المعتمد.</div>
-</article>
-</div>
-<article class="knowledge-product" aria-labelledby="knowledge-journeys-title">
-<div class="knowledge-product-content">
-<h3 id="knowledge-journeys-title">الرحلات المعرفية المهنية</h3>
-<p>نصمم وننظم للشركات والجمعيات رحلات مهنية تجمع المعارض الدولية والزيارات القطاعية واللقاءات مع الشركات والخبراء، وتحول الرحلة إلى معرفة تطبيقية وعلاقات وفرص تعاون.</p>
-<div class="knowledge-example"><b>نموذج من الرحلات</b><span>سبق تنظيم رحلات معرفية إلى الصين وكوريا، ويجري العمل على رحلات جديدة. وتعرض صفحة رحلة سيئول المصاحبة لمعرض Cafe Show Seoul 2026 نموذج لشكل الرحلات وبرامجها.</span></div>
-</div>
-<a class="knowledge-product-media" href="https://almohammdin.github.io/Cafe-Show-Seoul2026/" target="_blank" rel="noopener noreferrer" aria-label="استعراض نموذج رحلة سيئول المعرفية">
-<img src="https://almohammdin.github.io/Cafe-Show-Seoul2026/seoul-trip-preview-v2.png" alt="نموذج رحلة سيئول المعرفية" loading="lazy" decoding="async"/>
-<span>استعراض النموذج ↗</span>
-</a>
-</article>
-<div aria-label="أدوات ونماذج استرشادية" class="service-models">
-<div class="service-models-head">
-<div>
-<h3>أدوات ونماذج استرشادية</h3>
-<p>أدوات رقمية تساعد على التشخيص الأولي وتنظيم النقاش. اضغط على أي بطاقة لفتح الأداة.</p>
-</div>
-</div>
-<div class="model-links-grid">
-<a aria-label="فتح منظومة أعمال المجالس: أداة مجالس" class="model-link featured" href="https://almohammdin.github.io/majalis/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="شعار منظومة أعمال المجالس: أداة مجالس" decoding="async" loading="lazy" src="./assets/tools/majalis-logo.svg"/></div>
-<div class="model-body"><div class="model-title"><span>منظومة أعمال المجالس: أداة مجالس</span><i aria-hidden="true">↗</i></div><p>إدارة اجتماعات مجالس الإدارة والجمعيات واللجان، من الدعوة وجدول الأعمال حتى المحضر والقرارات.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح منصة امتداد للشركات العائلية" class="model-link featured" href="https://almohammdin.github.io/emtidad/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="شعار منصة امتداد للشركات العائلية" decoding="async" loading="lazy" src="https://almohammdin.github.io/mycv/assets/tools/emtidad-logo.png"/></div>
-<div class="model-body"><div class="model-title"><span>منصة امتداد للشركات العائلية</span><i aria-hidden="true">↗</i></div><p>منصة معرفية وأدوات استرشادية تساعد ملاك الشركات العائلية على تنظيم العلاقة بين العائلة والملكية والإدارة والاستعداد للانتقال بين الأجيال.</p><span class="model-open">فتح المنصة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح مرصد المخاطر المؤسسية" class="model-link" href="https://almohammdin.github.io/risk-register/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="شعار مرصد المخاطر المؤسسية" decoding="async" loading="lazy" src="./assets/tools/risk-register-logo.svg"/></div>
-<div class="model-body"><div class="model-title"><span>مرصد المخاطر المؤسسية</span><i aria-hidden="true">↗</i></div><p>بناء سجل للمخاطر وتقييم احتمالها وأثرها، مع تحديد المسؤوليات وخطط المعالجة والمتابعة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح محرك الفحص المسبق للاستحواذ والاندماج" class="model-link" href="https://almohammdin.github.io/deal-check/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="شعار محرك الفحص المسبق للاستحواذ والاندماج" decoding="async" loading="lazy" src="./assets/tools/deal-check-logo.webp"/></div>
-<div class="model-body"><div class="model-title"><span>محرك الفحص المسبق للاستحواذ والاندماج</span><i aria-hidden="true">↗</i></div><p>فحص أولي لجاهزية الصفقة، يبرز الفجوات والإشارات الحمراء قبل التفاوض والفحص المهني المتخصص.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح فاحص الامتثال الإعلاني" class="model-link" href="https://almohammdin.github.io/ADsChek/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="شعار فاحص الامتثال الإعلاني" decoding="async" loading="lazy" src="https://almohammdin.github.io/ADsChek/assets/images/adschek-logo-preview.jpg"/></div>
-<div class="model-body"><div class="model-title"><span>فاحص الامتثال الإعلاني</span><i aria-hidden="true">↗</i></div><p>مراجعة الإعلان قبل نشره وفق نوع الحملة ومحتواها والقنوات المستخدمة، مع تحديد النقاط التي تحتاج تعديلًا.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح توسّع: أداة تقييم قرارات توسع الفروع" class="model-link" href="https://almohammdin.github.io/tawassu_branch/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo"><img alt="صورة توسّع: أداة تقييم قرارات توسع الفروع" decoding="async" loading="lazy" src="./assets/tools/tawassu-preview.webp?v=4"/></div>
-<div class="model-body"><div class="model-title"><span>توسّع | تقييم قرارات توسع الفروع</span><i aria-hidden="true">↗</i></div><p>تقييم مخاطر واشتراطات الفرع الجديد وفق طبيعة النشاط ونمط المبيعات ونوع الموقع، مع مؤشر خطر وأهم نقاط الحسم قبل التوقيع.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح مخالفات: مساعد إعداد الاعتراض" class="model-link" href="https://almohammdin.github.io/Mukhaalafat/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual logo mukhaalafat-logo"><img alt="شعار أداة مخالفات" decoding="async" loading="lazy" src="./assets/tools/mukhaalafat-logo.webp"/></div>
-<div class="model-body"><div class="model-title"><span>مخالفات | مساعد إعداد الاعتراض</span><i aria-hidden="true">↗</i></div><p>ترتيب بيانات المخالفة وحساب المهلة وتجهيز نص الاعتراض ومعرفة طريقة التقديم.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح مقيّم مجالس" class="model-link" href="https://almohammdin.github.io/majalis-evaluator/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual"><img alt="صورة مقيّم مجالس" decoding="async" loading="lazy" src="./assets/tools/majalis-evaluator.webp"/></div>
-<div class="model-body"><div class="model-title"><span>مقيّم مجالس</span><i aria-hidden="true">↗</i></div><p>تقييم منظم لأداء المجلس وممارساته، يكشف نقاط القوة وفرص التحسين ويحولها إلى أولويات واضحة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح مستكشف مسارات النمو" class="model-link" href="https://almohammdin.github.io/GrowthCompass/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual"><img alt="صورة مستكشف مسارات النمو" decoding="async" loading="lazy" src="./assets/tools/growth-compass.webp"/></div>
-<div class="model-body"><div class="model-title"><span>مستكشف مسارات النمو</span><i aria-hidden="true">↗</i></div><p>مقارنة مسارات النمو وتحديد الاتجاه الأنسب وحجم التغيير وطريقة التنفيذ وفق جاهزية المنشأة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح فحص صحة الحوكمة والمخاطر" class="model-link" href="https://almohammdin.github.io/GovCheck/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual"><img alt="صورة فحص صحة الحوكمة والمخاطر" decoding="async" loading="lazy" src="./assets/tools/govcheck-preview.webp"/></div>
-<div class="model-body"><div class="model-title"><span>فحص صحة الحوكمة والمخاطر</span><i aria-hidden="true">↗</i></div><p>فحص لوضوح الأدوار والقرارات والضبط الداخلي في الشراكات والمشاريع، مع قراءة أولية للمخاطر.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح حاسبة الشراكات" class="model-link" href="https://almohammdin.github.io/SHARAKAH/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual"><img alt="صورة حاسبة الشراكات" decoding="async" loading="lazy" src="./assets/tools/sharakah.webp"/></div>
-<div class="model-body"><div class="model-title"><span>حاسبة الشراكات</span><i aria-hidden="true">↗</i></div><p>تقدير مساهمات الشركاء وتوزيع الحصص وتجهيز أهم البنود التي تحتاج اتفاقًا واضحًا قبل بدء الشراكة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح مجلس الإدارة والمجلس الاستشاري والمرشد" class="model-link" href="https://almohammdin.github.io/Board-Advisory-Mentorship/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual"><img alt="صورة مجلس الإدارة والمجلس الاستشاري والمرشد" decoding="async" loading="lazy" src="./assets/tools/board-advisory-preview.svg"/></div>
-<div class="model-body"><div class="model-title"><span>مجلس الإدارة والمجلس الاستشاري والمرشد</span><i aria-hidden="true">↗</i></div><p>مقارنة واضحة بين المسارات الثلاثة من حيث الصلاحيات والمسؤوليات والتكلفة والقيمة المتوقعة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح دليل التقييم والجاهزية" class="model-link" href="https://almohammdin.github.io/valuation-guide/" rel="noopener noreferrer" target="_blank">
-<div class="model-visual"><img alt="صورة دليل التقييم والجاهزية" decoding="async" loading="lazy" src="./assets/tools/valuation-guide.webp"/></div>
-<div class="model-body"><div class="model-title"><span>دليل التقييم والجاهزية</span><i aria-hidden="true">↗</i></div><p>تقدير استرشادي لقيمة المنشأة وقياس جاهزيتها قبل دخول مستثمر أو بدء مفاوضات البيع والشراكة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-<a aria-label="فتح دليل نطاق عمل المصفي" class="model-link" href="https://almohammdin.github.io/MOSAFFY/?v=1" rel="noopener noreferrer" target="_blank">
-<div class="model-visual"><img alt="صورة دليل نطاق عمل المصفي" decoding="async" loading="lazy" src="./assets/tools/mosaffy-preview.webp"/></div>
-<div class="model-body"><div class="model-title"><span>دليل نطاق عمل المصفي</span><i aria-hidden="true">↗</i></div><p>تحديد مهام المصفي ومراحل التصفية الاختيارية والوثائق والمخرجات المطلوبة منذ البدء حتى إقفال الشركة.</p><span class="model-open">فتح الأداة <b aria-hidden="true">↗</b></span></div>
-</a>
-</div>
-</div>
-</section>
-<section class="value-section">
-<div class="section-head">
-<div>
-<h2>ماذا يتغير في منشأتك؟</h2>
-<p class="sec-desc">نتائج يلمسها المالك والفريق في القرار والتشغيل والنمو وحماية الشركة.</p>
-</div>
-</div>
-<div class="value-grid">
-<div class="value-card"><div class="big">01</div><b>قرارات أسرع وأقل تعطّلًا</b><span>يعرف كل شخص من يملك القرار وما الذي يحتاج اعتمادًا، فتقل الاجتماعات المتكررة والمعاملات المعلقة.</span></div>
-<div class="value-card"><div class="big">02</div><b>حماية المال والعلاقة بين الشركاء</b><span>تظهر الصلاحيات والمخاطر بوضوح، وتصبح حقوق الشركاء والتزاماتهم وآلية التعامل مع الخلافات أكثر ترتيبًا.</span></div>
-<div class="value-card"><div class="big">03</div><b>شركة أجهز للتوسع والاستثمار</b><span>ملفات مرتبة وقرارات موثقة وصلاحيات واضحة تجعل فتح الفروع أو دخول شريك أو مستثمر أكثر سهولة وقوة.</span></div>
-<div class="value-card"><div class="big">04</div><b>إدارة تعمل حتى بغياب المالك</b><span>ينتقل العمل من الاعتماد على الأشخاص إلى نظام مستمر؛ يعرف الفريق ما يفعل ومن يحاسب ومن يعتمد.</span></div>
-</div>
-</section>
-<section id="clients">
-<div class="section-head">
-<div>
-<h2>أبرز عملائنا</h2>
-<p class="sec-desc">نماذج من الجهات التي تشرفنا بالعمل معها في أعمال الحوكمة وتطوير الأعمال والاستشارات.</p>
-</div>
-</div>
-<div class="clients-grid"><div class="client-logo"><img alt="شعار مدارس الأقصى الأهلية والعالمية" decoding="async" loading="lazy" src="./assets/media/client-aqsa.webp"/></div><div class="client-logo"><img alt="شعار ويند كافيه" decoding="async" loading="lazy" src="./assets/media/client-wind.webp"/></div><div class="client-logo"><img alt="شعار ريادة للفنادق والمنتجعات" decoding="async" loading="lazy" src="./assets/media/client-riyada.webp"/></div><div class="client-logo"><img alt="شعار منيف النهدي" decoding="async" loading="lazy" src="./assets/media/client-munif.webp"/></div><div class="client-logo"><img alt="شعار منيف عامر النهدي وشركاه" decoding="async" loading="lazy" src="./assets/media/client-munif-amer.webp"/></div><div class="client-logo"><img alt="شعار مواشي" decoding="async" loading="lazy" src="./assets/media/client-mawashi.webp"/></div><div class="client-logo"><img alt="شعار المدينة للبلاستيك" decoding="async" loading="lazy" src="./assets/media/client-madina-plastic.webp"/></div><div class="client-logo"><img alt="شعار جمعية ملاك المطاعم والمقاهي" decoding="async" loading="lazy" src="./assets/media/client-rcoa.webp"/></div><div class="client-logo"><img alt="شعار أحد العملاء" decoding="async" loading="lazy" src="./assets/media/client-10.webp"/></div><div class="client-logo"><img alt="شعار أحد العملاء" decoding="async" loading="lazy" src="./assets/media/client-11.webp"/></div><div class="client-logo"><img alt="شعار شركة المقطورة الدولية" decoding="async" loading="lazy" src="./assets/media/client-trailer.webp"/></div><div class="client-logo"><img alt="شعار بحري" decoding="async" loading="lazy" src="./assets/media/client-bahri.webp"/></div></div>
-</section><section class="cta-section">
-<div class="cta-card">
-<div class="cta-inner">
-<div class="kicker">ابدأ من هنا</div>
-<div class="cta-title">عندك قرار مهم، تحدٍ إداري، أو مرحلة تحتاج ترتيب؟</div>
-<p class="cta-text">أرسل وصفًا مختصرًا للاحتياج والمرحلة الحالية. نحدد بعدها المسار الأنسب: جلسات استشارية، إرشاد تنفيذي، مستشار غير متفرغ، أو مشروع حوكمة وتطوير أعمال.</p>
-<div class="cta-actions" style="justify-content:center">
-<a class="btn whatsapp" href="https://wa.me/966506350457?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A7%D8%B7%D9%84%D8%B9%D8%AA%20%D8%B9%D9%84%D9%89%20%D9%85%D9%84%D9%81%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D9%86%D8%A7%D9%8A%D9%81%20%D8%A7%D9%84%D9%85%D8%AD%D9%85%D8%AF%D9%8A%20%D9%88%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D8%A7%D8%AD%D8%AA%D9%8A%D8%A7%D8%AC%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D9%8A." rel="noopener" target="_blank">تواصل عبر واتساب</a>
-<a class="btn ghost" href="https://linktr.ee/almohammdin" rel="noopener" target="_blank">استعراض الأدوات</a>
-</div>
-</div>
-</div>
-</section>
-<footer class="footer">
-<img class="footer-logo" alt="شعار الخدمات" src="./assets/media/site-logo.webp"/>
-<div class="footer-title">فريق حوكمة وتطوير أعمال</div>
-<div class="footer-role">إعداد نايف المحمدي · مستشار الحوكمة وتطوير الأعمال</div>
-<span class="social-username">almohammdin</span>
-<nav class="site-socials" aria-label="حسابات نايف المحمدي">
-<a class="site-social-link" href="https://x.com/almohammdin" target="_blank" rel="noopener noreferrer" aria-label="حساب نايف المحمدي في إكس" title="إكس"><img src="https://cdn.simpleicons.org/x/e8d59a" alt=""></a>
-<a class="site-social-link" href="https://www.linkedin.com/in/almohammdin/" target="_blank" rel="noopener noreferrer" aria-label="حساب نايف المحمدي في لينكدإن" title="لينكدإن"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.047c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"></path></svg></a>
-<a class="site-social-link" href="https://www.snapchat.com/add/almohammdin" target="_blank" rel="noopener noreferrer" aria-label="حساب نايف المحمدي في سناب شات" title="سناب شات"><img src="https://cdn.simpleicons.org/snapchat/e8d59a" alt=""></a>
-<a class="site-social-link" href="https://linktr.ee/almohammdin" target="_blank" rel="noopener noreferrer" aria-label="روابط نايف المحمدي في لينك تري" title="لينك تري"><img src="https://cdn.simpleicons.org/linktree/e8d59a" alt=""></a>
-</nav>
-<div class="footer-copy">© ملف تعريفي للخدمات</div>
-</footer>
-</main>
-</body>
-</html>
+</head>
+{% endcapture %}
+{{ page_source | replace: '</head>', typography_head }}
