@@ -1,0 +1,215 @@
+name: Apply typography system
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-typography.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update services typography
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+          marker = '/* ===== TYPOGRAPHY SYSTEM 2026 ===== */'
+          if marker in text:
+              raise SystemExit(0)
+
+          old_font = 'family=Amiri+Quran&amp;family=Noto+Naskh+Arabic:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&amp;display=swap'
+          new_font = 'family=Amiri+Quran&amp;family=Noto+Naskh+Arabic:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap'
+          if old_font not in text:
+              raise RuntimeError('Expected Google Fonts URL was not found')
+          text = text.replace(old_font, new_font, 1)
+
+          css = r'''
+
+/* ===== TYPOGRAPHY SYSTEM 2026 ===== */
+@media screen {
+  html { font-size: 100%; }
+  body {
+    font-size: 17px;
+    line-height: 1.75;
+    font-weight: 400;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  :lang(en), [dir="ltr"], bdi {
+    font-family: "IBM Plex Sans", Arial, sans-serif;
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+    letter-spacing: 0;
+  }
+  p, li { text-wrap: pretty; }
+
+  h1 {
+    font-size: clamp(2.125rem, 4vw, 2.875rem);
+    line-height: 1.3;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: clamp(1.55rem, 2.5vw, 1.9rem);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  h3, strong, b,
+  .brand-name, .brand-role, .nav a, .kicker, .btn,
+  .num, .chip, .badge, .value-card .big, .tool .tag,
+  .cta-title, .result-number, .why-icon, .model-open,
+  .advisory-label, .advisory-link, .case-study-link {
+    font-weight: 700;
+  }
+
+  .brand-name { font-size: .9375rem; }
+  .brand-role { font-size: .8125rem; }
+  .nav a { font-size: .8125rem; }
+  .kicker { font-size: .875rem; }
+  .subtitle { font-size: 1.125rem; line-height: 1.75; }
+  .btn { font-size: .9375rem; }
+  .hero-panel-title { font-size: 1rem; }
+  .hero-panel p,
+  .point { font-size: .9375rem; line-height: 1.7; }
+
+  .sec-desc { font-size: 1rem; line-height: 1.75; }
+  .pos-card b,
+  .value-card b { font-size: 1.0625rem; }
+  .pos-card span,
+  .value-card span { font-size: 1rem; line-height: 1.7; }
+
+  .service-card h3 {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+  .service-card p {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+  .chip, .badge, .tool .tag,
+  .advisory-label, .advisory-meta span,
+  .service-tools-label, .service-tools a,
+  .case-study-badge span {
+    font-size: .8125rem;
+    font-weight: 600;
+  }
+  .example, .note, .copy-text {
+    font-size: .9375rem;
+    line-height: 1.75;
+  }
+
+  .tool b, .case b,
+  .audience-card b, .why-card b,
+  .result-card b { font-size: 1rem; }
+  .tool span, .case span,
+  .audience-card span, .why-card span,
+  .result-card p, .results-note {
+    font-size: .9375rem;
+    line-height: 1.75;
+  }
+  .about-story p {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+  }
+
+  .case-study-badge strong {
+    font-size: 1.55rem;
+    line-height: 1.4;
+  }
+  .case-study-content h3,
+  .advisory-card h3 {
+    font-size: 1.1875rem;
+    line-height: 1.5;
+    font-weight: 700;
+  }
+  .case-study-content p,
+  .advisory-card p {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .case-study-point b,
+  .case-study-point span {
+    font-size: .9375rem;
+    line-height: 1.7;
+  }
+  .case-study-link,
+  .advisory-link,
+  .model-open {
+    font-size: .9375rem;
+    font-weight: 700;
+  }
+
+  .service-models h3,
+  .knowledge-product h3 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.45;
+    font-weight: 700;
+  }
+  .service-models-head p,
+  .model-body p,
+  .knowledge-product p,
+  .knowledge-example span {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+  .model-title {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    font-weight: 700;
+  }
+  .knowledge-example b,
+  .knowledge-product-media span {
+    font-size: .875rem;
+    font-weight: 700;
+  }
+
+  .cta-title {
+    font-size: clamp(1.45rem, 2.4vw, 1.75rem);
+    line-height: 1.45;
+  }
+  .cta-text { font-size: 1rem; line-height: 1.75; }
+  .footer { font-size: .875rem; }
+  .footer-title { font-size: .9375rem; }
+  .footer-role, .social-username { font-size: .8125rem; }
+  .footer-copy { font-size: .75rem; }
+}
+
+@media screen and (max-width: 900px) {
+  h1 { font-size: clamp(2rem, 8vw, 2.35rem); }
+}
+
+@media screen and (max-width: 560px) {
+  body { font-size: 17px; }
+  .brand-name { font-size: .875rem; }
+  .brand-role { font-size: .75rem; }
+  .about-story p { font-size: 1rem; }
+  .service-card h3 { font-size: 1.1875rem; }
+}
+'''
+
+          index = text.find('</style>')
+          if index < 0:
+              raise RuntimeError('Closing style tag was not found')
+          text = text[:index] + css + '\n' + text[index:]
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          if git diff --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "style: improve Arabic and English typography"
+          git push
