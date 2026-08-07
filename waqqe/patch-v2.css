@@ -1,0 +1,33 @@
+/* v0.2.0: mobile signing flow, normalized resize handle and compact brand polish */
+.overlay-handle{left:auto!important;right:-8px!important;cursor:nwse-resize}
+.brand-copy strong,.hero h1{font-synthesis:none}
+.tool-btn span{pointer-events:none}
+@media(max-width:850px){
+  .tools-panel{grid-template-columns:1fr 1fr}
+  .file-meta{grid-column:1/-1}
+  .add-tools{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr)}
+  .add-tools .tool-title{grid-column:1/-1}
+  .signature-tools{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;align-items:center}
+  .signature-tools .tool-title{grid-column:1/-1}
+  .signature-tools .signature-state{min-height:47px}
+  .signature-tools #manageSignature{width:auto;white-space:nowrap}
+}
+@media(max-width:580px){
+  .tools-panel{position:sticky;top:64px;z-index:42;padding:8px;border-radius:18px;background:rgba(255,254,252,.96);backdrop-filter:blur(14px)}
+  .file-meta,.signature-tools .tool-title,.signature-tools .signature-state{display:none}
+  .add-tools{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0}
+  .add-tools .tool-title{display:none}
+  .add-tools .tool-btn{min-height:44px;justify-content:center;gap:5px;padding:7px 5px;font-size:11.5px}
+  .add-tools .tool-btn svg{width:17px;height:17px}
+  .signature-tools{display:block;margin:6px 0 0}
+  .signature-tools #manageSignature{width:100%;min-height:38px;justify-content:center;padding:5px 8px;font-size:11px;background:#FAF7F2}
+  .viewer-toolbar{top:169px}
+  .pdf-stage{padding-top:13px}
+  .export-bar{padding-bottom:max(11px,env(safe-area-inset-bottom))}
+  .result-actions .share{min-height:58px}
+}
+@media(max-width:380px){
+  .privacy-pill{max-width:145px;overflow:hidden;text-overflow:ellipsis}
+  .add-tools .tool-btn{font-size:10.5px}
+  .viewer-toolbar{top:166px}
+}
