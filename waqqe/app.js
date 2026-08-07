@@ -134,8 +134,8 @@ $('#textInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('#confirmTex
 async function addSignatureOverlay(src){
   const page=state.pages[state.activePage-1];if(!page)return;
   pushHistory();const aspect=clamp(await imageAspect(src),1.2,6);
-  let nw=.32,nh=nw*(page.width/page.height)/aspect;
-  nh=clamp(nh,.035,.16);
+  let nw=.20,nh=nw*(page.width/page.height)/aspect;
+  nh=clamp(nh,.015,.12);
   const o={id:crypto.randomUUID?.()||('o'+Date.now()+Math.random()),type:'signature',page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src};
   state.overlays.push(o);renderOverlay(o);selectOverlay(o.id);toast('اسحب التوقيع إلى مكانه');
 }
@@ -176,7 +176,8 @@ function wireOverlay(o,el){
     handle.setPointerCapture(e.pointerId);
     const move=ev=>{
       const maxW=page.width-o.nx*page.width,maxH=page.height-o.ny*page.height;
-      let nwPx=clamp(ow+(ev.clientX-sx),70,maxW),nhPx;
+      const minW=o.type==='signature'?22:70;
+      let nwPx=clamp(ow+(ev.clientX-sx),minW,maxW),nhPx;
       if(o.type==='signature'){nhPx=nwPx/(o.aspect||2.5);if(nhPx>maxH){nhPx=maxH;nwPx=nhPx*(o.aspect||2.5)}}
       else nhPx=clamp(oh+(ev.clientY-sy),30,maxH);
       o.nw=nwPx/page.width;o.nh=nhPx/page.height;applyOverlay(o);
