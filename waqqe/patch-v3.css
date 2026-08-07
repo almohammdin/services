@@ -1,4 +1,4 @@
-/* v0.3.1: simpler mobile controls and Emtidad-style social footer */
+/* v0.3.2: simpler mobile controls and Emtidad-style social footer */
 .topbar-inner{justify-content:flex-start}
 .footer-social{display:flex;align-items:center;gap:10px}
 .footer-links{display:flex;align-items:center;gap:7px}
@@ -25,6 +25,8 @@
   .viewer-toolbar{display:none!important}
   .pdf-stage{padding-top:12px!important}
   .export-bar{border-radius:0 0 18px 18px}
+  body:has(.workspace:not(.hidden)) #signatureModal #saveSignature{font-size:0!important}
+  body:has(.workspace:not(.hidden)) #signatureModal #saveSignature::after{content:'حفظ وإضافة للمستند';font-size:14px}
   .footer-main{gap:14px}
   .footer-social{display:grid;justify-items:center;gap:8px}
   .footer-links{gap:8px}
