@@ -1,0 +1,33 @@
+/* v0.3.0: simpler mobile controls, quieter disclosure, Emtidad-style social footer */
+.topbar-inner{justify-content:flex-start}
+.footer-social{display:flex;align-items:center;gap:10px}
+.footer-links{display:flex;align-items:center;gap:7px}
+.footer-links a{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:var(--gold);transition:.18s ease}
+.footer-links a:hover{background:rgba(201,133,60,.14);border-color:rgba(201,133,60,.32);transform:translateY(-1px)}
+.social-icon{width:18px;height:18px;display:grid;place-items:center}
+.social-icon svg{width:17px;height:17px}
+.social-icon .brand-fill{fill:currentColor;stroke:none}
+.footer-bottom>span{max-width:780px;line-height:1.65}
+.modal-foot:has(#saveSignature){justify-content:flex-end}
+
+@media(max-width:850px){
+  .footer-social{flex-wrap:wrap;justify-content:center}
+}
+
+@media(max-width:580px){
+  .hero{padding-top:28px}
+  .tools-panel{top:64px;grid-template-columns:1fr;padding:7px 8px;border-radius:16px}
+  .file-meta,.signature-tools{display:none!important}
+  .add-tools{grid-template-columns:1.45fr .9fr .7fr!important;gap:6px!important}
+  .add-tools .tool-btn{min-height:46px!important;border-radius:12px!important}
+  .add-tools #addSignature{font-size:12px!important}
+  .viewer-toolbar{display:none!important}
+  .pdf-stage{padding-top:12px!important}
+  .export-bar{border-radius:0 0 18px 18px}
+  .footer-main{gap:14px}
+  .footer-social{display:grid;justify-items:center;gap:8px}
+  .footer-links{gap:8px}
+  .footer-links a{width:36px;height:36px}
+  .footer-bottom{font-size:10px;line-height:1.65;padding-inline:8px}
+  .footer-bottom>span{max-width:330px}
+}
