@@ -1,4 +1,4 @@
-/* v0.3.0: simpler mobile controls, quieter disclosure, Emtidad-style social footer */
+/* v0.3.1: simpler mobile controls and Emtidad-style social footer */
 .topbar-inner{justify-content:flex-start}
 .footer-social{display:flex;align-items:center;gap:10px}
 .footer-links{display:flex;align-items:center;gap:7px}
@@ -7,7 +7,8 @@
 .social-icon{width:18px;height:18px;display:grid;place-items:center}
 .social-icon svg{width:17px;height:17px}
 .social-icon .brand-fill{fill:currentColor;stroke:none}
-.footer-bottom>span{max-width:780px;line-height:1.65}
+.footer-bottom>span{display:none!important}
+.footer-bottom{justify-content:flex-end!important}
 .modal-foot:has(#saveSignature){justify-content:flex-end}
 
 @media(max-width:850px){
@@ -28,6 +29,5 @@
   .footer-social{display:grid;justify-items:center;gap:8px}
   .footer-links{gap:8px}
   .footer-links a{width:36px;height:36px}
-  .footer-bottom{font-size:10px;line-height:1.65;padding-inline:8px}
-  .footer-bottom>span{max-width:330px}
+  .footer-bottom{font-size:10px;line-height:1.65;padding-inline:8px;justify-content:center!important}
 }
