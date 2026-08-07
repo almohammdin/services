@@ -5,6 +5,12 @@ const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const SIG_KEY='waqqe_signature_v2';
 const LEGACY_SIG_KEY='waqqe_signature_v1';
+const FONT_STACKS={
+  craft:"NaifCraft, Tahoma, Arial, sans-serif",
+  modern:"-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif",
+  classic:"Georgia, 'Times New Roman', serif",
+  traditional:"'Times New Roman', Tahoma, serif"
+};
 const state={
   file:null,originalBytes:null,pdfjsDoc:null,pages:[],activePage:1,
   overlays:[],history:[],signature:null,uploadSignature:null,
@@ -14,6 +20,9 @@ const state={
 
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 const escapeHtml=t=>String(t).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const getSignatureColor=()=>window.WaqqeFeatures?.getSignatureColor?.()||'#102D43';
+const getTextFont=()=>window.WaqqeFeatures?.getTextFont?.()||'craft';
+const fontStack=key=>FONT_STACKS[key]||FONT_STACKS.craft;
 function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2600)}
 function loading(on,text='جاري تجهيز الملف…'){$('#loadingText').textContent=text;$('#loading').classList.toggle('hidden',!on)}
 function setStep(n){$$('.step').forEach(el=>{const s=+el.dataset.step;el.classList.toggle('active',s===n);el.classList.toggle('done',s<n)})}
@@ -119,13 +128,28 @@ $('#undoBtn').addEventListener('click',()=>{
 async function imageAspect(src){
   return new Promise(resolve=>{const im=new Image();im.onload=()=>resolve(im.naturalWidth/Math.max(1,im.naturalHeight));im.onerror=()=>resolve(2.5);im.src=src});
 }
+function hexRgb(hex){
+  const value=String(hex||'#102D43').replace('#','').trim();
+  const full=value.length===3?value.split('').map(x=>x+x).join(''):value.padEnd(6,'0').slice(0,6);
+  return [parseInt(full.slice(0,2),16),parseInt(full.slice(2,4),16),parseInt(full.slice(4,6),16)];
+}
+async function tintSignature(src,color){
+  const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=src});
+  const c=document.createElement('canvas');c.width=Math.max(1,img.naturalWidth);c.height=Math.max(1,img.naturalHeight);
+  const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,c.width,c.height);
+  const data=ctx.getImageData(0,0,c.width,c.height),d=data.data,[r,g,b]=hexRgb(color);
+  for(let k=0;k<d.length;k+=4){if(d[k+3]>0){d[k]=r;d[k+1]=g;d[k+2]=b}}
+  ctx.putImageData(data,0,0);return c.toDataURL('image/png');
+}
 $('#addSignature').addEventListener('click',async()=>{
   if(!state.signature){openSignatureModal('draw',true);return}
   await addSignatureOverlay(state.signature);
 });
 $('#addDate').addEventListener('click',()=>{
-  const date=new Intl.DateTimeFormat('ar-SA-u-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-  addTextOverlay('date',date);
+  const now=new Date();
+  const greg=new Intl.DateTimeFormat('ar-SA-u-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+  const hijri=new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+  addTextOverlay('date',`${greg} | ${hijri}`);
 });
 $('#addText').addEventListener('click',()=>{$('#textInput').value='';$('#textModal').classList.remove('hidden');setTimeout(()=>$('#textInput').focus(),80)});
 $('#closeText').addEventListener('click',()=>$('#textModal').classList.add('hidden'));
@@ -133,24 +157,30 @@ $('#confirmText').addEventListener('click',()=>{const t=$('#textInput').value.tr
 $('#textInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('#confirmText').click()});
 async function addSignatureOverlay(src){
   const page=state.pages[state.activePage-1];if(!page)return;
-  pushHistory();const aspect=clamp(await imageAspect(src),1.2,6);
+  pushHistory();
+  const coloredSrc=await tintSignature(src,getSignatureColor());
+  const aspect=clamp(await imageAspect(coloredSrc),1.2,6);
   let nw=.20,nh=nw*(page.width/page.height)/aspect;
   nh=clamp(nh,.015,.12);
-  const o={id:crypto.randomUUID?.()||('o'+Date.now()+Math.random()),type:'signature',page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src};
+  const o={id:crypto.randomUUID?.()||('o'+Date.now()+Math.random()),type:'signature',page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src:coloredSrc};
   state.overlays.push(o);renderOverlay(o);selectOverlay(o.id);toast('اسحب التوقيع إلى مكانه');
 }
 function addTextOverlay(type,text){
   const page=state.pages[state.activePage-1];if(!page)return;
-  pushHistory();const pxW=Math.min(300,Math.max(120,text.length*12));
-  const nw=clamp(pxW/page.width,.16,.48),nh=clamp(42/page.height,.035,.085);
-  const o={id:crypto.randomUUID?.()||('o'+Date.now()+Math.random()),type,page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,text};
+  pushHistory();const pxW=Math.min(type==='date'?390:300,Math.max(type==='date'?180:120,text.length*12));
+  const nw=clamp(pxW/page.width,type==='date'?.24:.16,type==='date'?.62:.48),nh=clamp(42/page.height,.035,.085);
+  const fontKey=type==='text'?getTextFont():'modern';
+  const o={id:crypto.randomUUID?.()||('o'+Date.now()+Math.random()),type,page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,text,fontKey};
   state.overlays.push(o);renderOverlay(o);selectOverlay(o.id);toast('تمت الإضافة، يمكنك تحريكها');
 }
 function renderOverlay(o){
   const page=state.pages[o.page-1];if(!page)return;
   const el=document.createElement('div');el.className='overlay-item';el.dataset.id=o.id;
   if(o.type==='signature')el.innerHTML=`<img src="${o.src}" alt="توقيع"><button class="overlay-delete" type="button" aria-label="حذف">×</button><i class="overlay-handle"></i>`;
-  else el.innerHTML=`<div class="overlay-text">${escapeHtml(o.text)}</div><button class="overlay-delete" type="button" aria-label="حذف">×</button><i class="overlay-handle"></i>`;
+  else{
+    el.innerHTML=`<div class="overlay-text">${escapeHtml(o.text)}</div><button class="overlay-delete" type="button" aria-label="حذف">×</button><i class="overlay-handle"></i>`;
+    el.querySelector('.overlay-text').style.fontFamily=fontStack(o.fontKey);
+  }
   page.layer.appendChild(el);o.el=el;applyOverlay(o);wireOverlay(o,el);
 }
 function applyOverlay(o){
@@ -196,12 +226,13 @@ $$('[data-sig-tab]').forEach(btn=>btn.addEventListener('click',()=>switchSigTab(
 function openSignatureModal(tab='saved',addAfter=false){state.pendingAddSignature=addAfter;$('#signatureModal').classList.remove('hidden');switchSigTab(tab);setTimeout(resizeSignatureCanvas,30)}
 function closeSignatureModal(){$('#signatureModal').classList.add('hidden');state.uploadSignature=null;$('#uploadPreviewBox').classList.add('hidden')}
 function switchSigTab(tab){$$('[data-sig-tab]').forEach(b=>b.classList.toggle('active',b.dataset.sigTab===tab));$$('[data-sig-pane]').forEach(p=>p.classList.toggle('hidden',p.dataset.sigPane!==tab));$('#saveSignature').dataset.mode=tab;renderSavedSignature();if(tab==='draw')setTimeout(resizeSignatureCanvas,20);updateSaveButton()}
-function initSignaturePad(){if(state.signaturePad)return;state.signaturePad=new SignaturePad($('#signatureCanvas'),{minWidth:1.1,maxWidth:2.8,penColor:'#102D43',backgroundColor:'rgba(0,0,0,0)'});state.signaturePad.addEventListener?.('endStroke',updateSaveButton)}
+function initSignaturePad(){if(state.signaturePad)return;state.signaturePad=new SignaturePad($('#signatureCanvas'),{minWidth:1.1,maxWidth:2.8,penColor:getSignatureColor(),backgroundColor:'rgba(0,0,0,0)'});state.signaturePad.addEventListener?.('endStroke',updateSaveButton)}
 function resizeSignatureCanvas(){
   initSignaturePad();const c=$('#signatureCanvas'),ratio=Math.max(window.devicePixelRatio||1,1),rect=c.getBoundingClientRect();if(!rect.width)return;
   const data=state.signaturePad.isEmpty()?null:state.signaturePad.toData();c.width=Math.round(rect.width*ratio);c.height=Math.round(210*ratio);c.getContext('2d').scale(ratio,ratio);if(data)state.signaturePad.fromData(data);
 }
 $('#clearSignature').addEventListener('click',()=>{state.signaturePad?.clear();updateSaveButton()});
+document.addEventListener('waqqe:signaturecolorchange',e=>{if(state.signaturePad&&e.detail?.color)state.signaturePad.penColor=e.detail.color});
 async function dataUrlToPreparedPng(dataUrl){
   const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=dataUrl});
   const scale=Math.min(1,1400/Math.max(img.naturalWidth,img.naturalHeight));
@@ -245,8 +276,8 @@ $('#saveSignature').addEventListener('click',async()=>{
 });
 $('#deleteSavedSignature').addEventListener('click',()=>{state.signature=null;try{localStorage.removeItem(SIG_KEY);localStorage.removeItem(LEGACY_SIG_KEY)}catch{}updateSignatureUi();switchSigTab('draw');toast('تم حذف التوقيع المحفوظ')});
 
-async function textToPng(text,width,height){
-  await document.fonts.ready;const scale=2,c=document.createElement('canvas');c.width=Math.ceil(width*scale);c.height=Math.ceil(height*scale);const ctx=c.getContext('2d');ctx.scale(scale,scale);ctx.clearRect(0,0,width,height);ctx.fillStyle='#172A38';ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction='rtl';ctx.font=`600 ${Math.max(13,Math.min(24,height*.48))}px NaifCraft, Tahoma, Arial`;ctx.fillText(text,width/2,height/2,width-8);return c.toDataURL('image/png');
+async function textToPng(text,width,height,fontKey='craft'){
+  await document.fonts.ready;const scale=2,c=document.createElement('canvas');c.width=Math.ceil(width*scale);c.height=Math.ceil(height*scale);const ctx=c.getContext('2d');ctx.scale(scale,scale);ctx.clearRect(0,0,width,height);ctx.fillStyle='#172A38';ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=document.documentElement.dir==='ltr'?'ltr':'rtl';ctx.font=`600 ${Math.max(13,Math.min(24,height*.48))}px ${fontStack(fontKey)}`;ctx.fillText(text,width/2,height/2,width-8);return c.toDataURL('image/png');
 }
 function drawOverlayOnPage(pdfPage,img,o,meta){
   const vp=meta.viewport;
@@ -267,7 +298,7 @@ async function createSignedPdf(){
     for(const o of state.overlays){
       const p=pages[o.page-1];if(!p)continue;let src=o.src;
       if(o.type!=='signature'){
-        const meta=state.pages[o.page-1],w=o.nw*meta.width,h=o.nh*meta.height;src=await textToPng(o.text,w,h);
+        const meta=state.pages[o.page-1],w=o.nw*meta.width,h=o.nh*meta.height;src=await textToPng(o.text,w,h,o.fontKey);
       }
       const img=/^data:image\/jpe?g/i.test(src)?await pdfDoc.embedJpg(src):await pdfDoc.embedPng(src);
       drawOverlayOnPage(p,img,o,state.pages[o.page-1]);
