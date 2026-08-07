@@ -1,4 +1,4 @@
-/* v0.3.2: simpler mobile controls and Emtidad-style social footer */
+/* v0.3.3: clearer signature management on mobile and Emtidad-style social footer */
 .topbar-inner{justify-content:flex-start}
 .footer-social{display:flex;align-items:center;gap:10px}
 .footer-links{display:flex;align-items:center;gap:7px}
@@ -18,15 +18,16 @@
 @media(max-width:580px){
   .hero{padding-top:28px}
   .tools-panel{top:64px;grid-template-columns:1fr;padding:7px 8px;border-radius:16px}
-  .file-meta,.signature-tools{display:none!important}
-  .add-tools{grid-template-columns:1.45fr .9fr .7fr!important;gap:6px!important}
+  .file-meta{display:none!important}
+  .add-tools{grid-template-columns:1.45fr .9fr .7fr!important;gap:6px!important;margin:0!important}
   .add-tools .tool-btn{min-height:46px!important;border-radius:12px!important}
   .add-tools #addSignature{font-size:12px!important}
+  .signature-tools{display:block!important;margin:6px 0 0!important}
+  .signature-tools .tool-title,.signature-tools .signature-state{display:none!important}
+  .signature-tools #manageSignature{display:flex!important;width:100%!important;min-height:38px!important;justify-content:center!important;padding:5px 8px!important;border-radius:11px!important;background:#FAF7F2!important;font-size:11.5px!important}
   .viewer-toolbar{display:none!important}
   .pdf-stage{padding-top:12px!important}
   .export-bar{border-radius:0 0 18px 18px}
-  body:has(.workspace:not(.hidden)) #signatureModal #saveSignature{font-size:0!important}
-  body:has(.workspace:not(.hidden)) #signatureModal #saveSignature::after{content:'حفظ وإضافة للمستند';font-size:14px}
   .footer-main{gap:14px}
   .footer-social{display:grid;justify-items:center;gap:8px}
   .footer-links{gap:8px}
