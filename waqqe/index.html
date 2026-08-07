@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0D3656">
-<title>وقّع | توقيع ملفات PDF على جهازك</title>
-<meta name="description" content="أداة بسيطة لتوقيع ملفات PDF من الجوال أو الكمبيوتر ثم مشاركتها، مع معالجة المستند داخل المتصفح.">
+<title>وقّع | توقيع ملفات PDF</title>
+<meta name="description" content="أداة بسيطة لتوقيع ملفات PDF من الجوال أو الكمبيوتر ثم مشاركة النسخة الموقعة.">
 <meta property="og:title" content="وقّع | توقيع ملفات PDF">
 <meta property="og:description" content="ارفع ملف PDF، ضع توقيعك، ثم شارك النسخة الموقعة.">
 <meta property="og:type" content="website">
@@ -14,6 +14,7 @@
 <link rel="preload" href="https://almohammdin.github.io/emtidad/assets/fonts/TheYearofHandicrafts-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css?v=0.1.0">
 <link rel="stylesheet" href="patch-v2.css?v=0.2.0">
+<link rel="stylesheet" href="patch-v3.css?v=0.3.0">
 </head>
 <body>
 <header class="topbar">
@@ -22,7 +23,6 @@
       <img src="logo.svg" alt="">
       <span class="brand-copy"><strong>وقّع</strong><small>PDF SIGNER</small></span>
     </a>
-    <span class="privacy-pill"><i class="privacy-dot"></i>المعالجة على جهازك</span>
   </div>
 </header>
 <section class="hero" id="hero">
@@ -43,10 +43,9 @@
       <div>
         <div class="upload-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></div>
         <h2>اختر ملف PDF</h2>
-        <p>من الملفات أو البريد أو واتساب. لا يحتاج حساب.</p>
+        <p>من الملفات أو البريد أو واتساب.</p>
         <button class="file-button" id="pickPdf" type="button"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>رفع PDF</button>
         <input id="pdfInput" type="file" accept="application/pdf,.pdf" hidden>
-        <div class="upload-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>المستند والتوقيع لا يرفعان إلى خادم الأداة</div>
       </div>
     </div>
   </section>
@@ -55,14 +54,14 @@
       <div class="file-meta"><small>الملف الحالي</small><strong id="fileName">—</strong><span id="fileInfo">—</span></div>
       <div class="tool-group add-tools">
         <p class="tool-title">أضف إلى المستند</p>
-        <button class="tool-btn primary" id="addSignature" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg><span>التوقيع</span></button>
+        <button class="tool-btn primary" id="addSignature" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg><span>أضف التوقيع</span></button>
         <button class="tool-btn" id="addDate" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v16H3zM7 2v6M17 2v6M3 10h18"/></svg><span>التاريخ</span></button>
         <button class="tool-btn" id="addText" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14M12 4v16M8 20h8"/></svg><span>نص</span></button>
       </div>
       <div class="tool-group signature-tools">
-        <p class="tool-title">التوقيع المحفوظ</p>
-        <div class="signature-state" id="signatureState"><i></i><span>لم يتم حفظ توقيع بعد</span></div>
-        <button class="tool-btn" id="manageSignature" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18.5c2.8-1.1 4.7-2.7 6.2-5.2 1.2 1.3 2.1 2.5 3.5 3.1 1.9.8 3.8-.1 6.3-2.4"/><path d="M5 8.5 13.4.1l3.5 3.5L8.5 12l-4.7 1.2Z"/></svg><span>إدارة التوقيع</span></button>
+        <p class="tool-title">التوقيع</p>
+        <div class="signature-state" id="signatureState"><i></i><span>أنشئ توقيعك للبدء</span></div>
+        <button class="tool-btn" id="manageSignature" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18.5c2.8-1.1 4.7-2.7 6.2-5.2 1.2 1.3 2.1 2.5 3.5 3.1 1.9.8 3.8-.1 6.3-2.4"/><path d="M5 8.5 13.4.1l3.5 3.5L8.5 12l-4.7 1.2Z"/></svg><span>إنشاء توقيع</span></button>
       </div>
     </aside>
     <section class="panel viewer-panel">
@@ -87,8 +86,19 @@
   </section>
 </div></main>
 <footer class="footer"><div class="container footer-shell">
-  <div class="footer-main"><div class="footer-brand"><span class="naif-mark" role="img" aria-label="شعار نايف المحمدي"></span><div class="footer-copy"><p>مستشار الحوكمة وتطوير الأعمال</p></div></div><a class="social-handle" href="https://linktr.ee/almohammdin" target="_blank" rel="noopener"><span>وسائل التواصل</span> Almohammdin</a></div>
-  <div class="footer-bottom"><span>معالجة المستند تتم داخل المتصفح</span><b>v0.2.0</b></div>
+  <div class="footer-main">
+    <div class="footer-brand"><span class="naif-mark" role="img" aria-label="شعار نايف المحمدي"></span><div class="footer-copy"><p>مستشار الحوكمة وتطوير الأعمال</p></div></div>
+    <div class="footer-social">
+      <div class="footer-links" aria-label="حسابات التواصل">
+        <a href="https://x.com/almohammdin" target="_blank" rel="noopener" aria-label="X" title="X"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="brand-fill" d="M4.4 3h4.8l3.8 5.1L17.5 3H20l-5.9 6.9L20.5 21h-4.8l-4.2-5.7L6.6 21H4l6.3-7.5L4.4 3Zm3.7 2 8.5 14h1.8L9.9 5H8.1Z"/></svg></span></a>
+        <a href="https://www.linkedin.com/in/almohammdin/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="brand-fill" d="M5.2 8.4h3.2V19H5.2V8.4Zm1.6-5.2a1.9 1.9 0 1 1 0 3.8 1.9 1.9 0 0 1 0-3.8Zm3.8 5.2h3.1v1.5h.1c.5-.8 1.6-1.8 3.5-1.8 3.3 0 4 2.2 4 5.1V19H18v-5.2c0-1.2 0-2.8-1.8-2.8s-2 1.3-2 2.7V19h-3.3V8.4Z"/></svg></span></a>
+        <a href="https://www.snapchat.com/add/almohammdin" target="_blank" rel="noopener" aria-label="Snapchat" title="Snapchat"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="brand-fill" d="M8.2 16.9c.8.3 1.1.7 1.3 1.1.7-.1 1.5-.2 2.5-.2s1.8.1 2.5.2c.2-.4.5-.8 1.3-1.1 1.2-.4 2.1-1 2.5-1.6-1.9-.7-2.1-2.3-2.1-4.7 0-2.7-1.7-4.5-4.2-4.5s-4.2 1.8-4.2 4.5c0 2.4-.2 4-2.1 4.7.4.6 1.3 1.2 2.5 1.6Z"/></svg></span></a>
+        <a href="https://linktr.ee/almohammdin" target="_blank" rel="noopener" aria-label="Linktree" title="Linktree"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="brand-fill" d="M13.736 5.852 17.644 2l1.92 1.92-3.852 3.736h5.644v2.736h-5.66l3.868 3.752-1.92 1.92-5.276-5.28-5.276 5.28-1.92-1.92 3.868-3.752H3.38V7.656h5.644L5.172 3.92 7.092 2l3.932 3.852V0h2.712v5.852ZM11.024 24v-8.604h2.712V24h-2.712Z"/></svg></span></a>
+      </div>
+      <a class="social-handle" href="https://linktr.ee/almohammdin" target="_blank" rel="noopener">Almohammdin</a>
+    </div>
+  </div>
+  <div class="footer-bottom"><span>وقّع أداة لإضافة وإدارة التوقيع على ملفات PDF، وتتم معالجة المستند والتوقيع محليًا داخل المتصفح.</span><b>v0.3.0</b></div>
 </div></footer>
 <div class="modal hidden" id="signatureModal" role="dialog" aria-modal="true" aria-labelledby="signatureTitle"><div class="modal-card">
   <div class="modal-head"><h3 id="signatureTitle">توقيعك</h3><button class="icon-close" id="closeSignature" type="button" aria-label="إغلاق">×</button></div>
@@ -98,7 +108,7 @@
     <div class="sig-pane hidden" data-sig-pane="upload"><label class="upload-label" for="signatureUpload"><div><strong>اختر صورة توقيع</strong><small>يقص الفراغ الأبيض ويحفظها كصورة شفافة</small></div></label><input id="signatureUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden><div class="signature-box hidden" id="uploadPreviewBox" style="margin-top:10px"><img id="uploadPreview" class="saved-preview" alt="معاينة التوقيع"></div></div>
     <div class="sig-pane hidden" data-sig-pane="draw"><div class="draw-wrap"><canvas class="draw-canvas" id="signatureCanvas"></canvas><div class="draw-actions"><button class="mini-link" id="clearSignature" type="button">مسح الرسم</button></div></div></div>
   </div>
-  <div class="modal-foot"><small>يحفظ التوقيع على هذا الجهاز فقط</small><button class="save-signature" id="saveSignature" type="button">حفظ واستخدام</button></div>
+  <div class="modal-foot"><button class="save-signature" id="saveSignature" type="button">حفظ التوقيع</button></div>
 </div></div>
 <div class="modal text-dialog hidden" id="textModal" role="dialog" aria-modal="true" aria-labelledby="textTitle"><div class="modal-card"><div class="modal-head"><h3 id="textTitle">إضافة نص</h3><button class="icon-close" id="closeText" type="button" aria-label="إغلاق">×</button></div><div class="modal-body"><input class="text-field" id="textInput" type="text" maxlength="80" placeholder="اكتب النص هنا"></div><div class="modal-foot"><small>يمكن تحريك النص وتغيير حجمه بعد إضافته</small><button class="save-signature" id="confirmText" type="button">إضافة</button></div></div></div>
 <div class="toast" id="toast"></div>
@@ -106,5 +116,6 @@
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@5.1.3/dist/signature_pad.umd.min.js"></script>
 <script type="module" src="app.js?v=0.2.0"></script>
+<script type="module" src="ux-v3.js?v=0.3.0"></script>
 </body>
 </html>
