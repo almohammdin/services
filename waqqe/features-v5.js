@@ -1,6 +1,7 @@
 (() => {
   const COLOR_KEY='waqqe_signature_color_v1';
   const FONT_KEY='waqqe_text_font_v1';
+  const DATE_KEY='waqqe_date_calendar_v1';
   const LANG_KEY='waqqe_lang_v1';
   const COLORS=[
     {key:'ink',value:'#172A38'},
@@ -17,28 +18,33 @@
   const LOCALE={ar:'ar-SA-u-nu-latn',en:'en-US',fr:'fr-FR',es:'es-ES',ur:'ur-PK-u-nu-latn'};
   const HIJRI={ar:'ar-SA-u-ca-islamic-umalqura-nu-latn',en:'en-US-u-ca-islamic-umalqura-nu-latn',fr:'fr-FR-u-ca-islamic-umalqura-nu-latn',es:'es-ES-u-ca-islamic-umalqura-nu-latn',ur:'ur-PK-u-ca-islamic-umalqura-nu-latn'};
   const COPY={
-    ar:{color:'لون التوقيع',font:'خط النص',craft:'امتداد',modern:'حديث',classic:'كلاسيكي',traditional:'رسمي'},
-    en:{color:'Signature color',font:'Text font',craft:'Emtidad',modern:'Modern',classic:'Classic',traditional:'Formal'},
-    fr:{color:'Couleur de signature',font:'Police du texte',craft:'Emtidad',modern:'Moderne',classic:'Classique',traditional:'Formelle'},
-    es:{color:'Color de firma',font:'Fuente del texto',craft:'Emtidad',modern:'Moderna',classic:'Clásica',traditional:'Formal'},
-    ur:{color:'دستخط کا رنگ',font:'متن کا فونٹ',craft:'امتداد',modern:'جدید',classic:'کلاسک',traditional:'رسمی'}
+    ar:{color:'لون التوقيع',font:'خط النص',craft:'امتداد',modern:'حديث',classic:'كلاسيكي',traditional:'رسمي',hijri:'هجري',gregorian:'ميلادي'},
+    en:{color:'Signature color',font:'Text font',craft:'Emtidad',modern:'Modern',classic:'Classic',traditional:'Formal',hijri:'Hijri',gregorian:'Gregorian'},
+    fr:{color:'Couleur de signature',font:'Police du texte',craft:'Emtidad',modern:'Moderne',classic:'Classique',traditional:'Formelle',hijri:'Hégirien',gregorian:'Grégorien'},
+    es:{color:'Color de firma',font:'Fuente del texto',craft:'Emtidad',modern:'Moderna',classic:'Clásica',traditional:'Formal',hijri:'Hégira',gregorian:'Gregoriano'},
+    ur:{color:'دستخط کا رنگ',font:'متن کا فونٹ',craft:'امتداد',modern:'جدید',classic:'کلاسک',traditional:'رسمی',hijri:'ہجری',gregorian:'عیسوی'}
   };
   let signatureColor='#172A38';
   let textFont='craft';
+  let dateType='gregorian';
   let pendingDate=false;
-  try{signatureColor=localStorage.getItem(COLOR_KEY)||signatureColor;textFont=localStorage.getItem(FONT_KEY)||textFont}catch{}
+  try{
+    signatureColor=localStorage.getItem(COLOR_KEY)||signatureColor;
+    textFont=localStorage.getItem(FONT_KEY)||textFont;
+    dateType=localStorage.getItem(DATE_KEY)||dateType;
+  }catch{}
   if(!COLORS.some(x=>x.value===signatureColor))signatureColor=COLORS[0].value;
   if(!FONTS.some(x=>x.key===textFont))textFont='craft';
+  if(!['hijri','gregorian'].includes(dateType))dateType='gregorian';
 
   const q=s=>document.querySelector(s);
   const lang=()=>{try{return localStorage.getItem(LANG_KEY)||document.documentElement.lang||'ar'}catch{return document.documentElement.lang||'ar'}};
   const copy=()=>COPY[lang()]||COPY.ar;
 
-  function dualDate(){
+  function formatDate(kind){
     const l=lang(),now=new Date();
-    const greg=new Intl.DateTimeFormat(LOCALE[l]||LOCALE.ar,{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
-    const hijri=new Intl.DateTimeFormat(HIJRI[l]||HIJRI.ar,{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
-    return `${greg} | ${hijri}`;
+    const locale=kind==='hijri'?(HIJRI[l]||HIJRI.ar):(LOCALE[l]||LOCALE.ar);
+    return new Intl.DateTimeFormat(locale,{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   }
   function saveColor(value){
     signatureColor=value;try{localStorage.setItem(COLOR_KEY,value)}catch{}
@@ -46,6 +52,7 @@
     syncControls();
   }
   function saveFont(value){textFont=value;try{localStorage.setItem(FONT_KEY,value)}catch{}syncControls()}
+  function saveDateType(value){dateType=value;try{localStorage.setItem(DATE_KEY,value)}catch{}syncControls()}
 
   function makeColorPicker(){
     const modal=q('#signatureModal .modal-body');if(!modal||q('.signature-color-picker'))return;
@@ -61,27 +68,60 @@
     body.appendChild(row);
     row.addEventListener('click',e=>{const b=e.target.closest('[data-text-font]');if(b)saveFont(b.dataset.textFont)});
   }
+  function makeDatePicker(){
+    if(q('.date-choice-popover'))return;
+    const pop=document.createElement('div');
+    pop.className='date-choice-popover';pop.hidden=true;
+    pop.innerHTML='<button type="button" data-date-type="hijri"></button><button type="button" data-date-type="gregorian"></button>';
+    document.body.appendChild(pop);
+    pop.addEventListener('click',e=>{
+      const b=e.target.closest('[data-date-type]');if(!b)return;
+      saveDateType(b.dataset.dateType);addChosenDate(b.dataset.dateType);closeDatePicker();
+    });
+  }
+  function placeDatePicker(){
+    const btn=q('#addDate'),pop=q('.date-choice-popover');if(!btn||!pop||pop.hidden)return;
+    const r=btn.getBoundingClientRect(),w=pop.offsetWidth||190;
+    const left=Math.max(10,Math.min(r.left+(r.width-w)/2,window.innerWidth-w-10));
+    const below=r.bottom+8,above=r.top-pop.offsetHeight-8;
+    pop.style.left=left+'px';
+    pop.style.top=((below+pop.offsetHeight<window.innerHeight-8||above<8)?below:above)+'px';
+  }
+  function openDatePicker(){const pop=q('.date-choice-popover');if(!pop)return;pop.hidden=false;syncControls();placeDatePicker()}
+  function closeDatePicker(){const pop=q('.date-choice-popover');if(pop)pop.hidden=true}
+  function addChosenDate(kind){
+    const input=q('#textInput'),confirm=q('#confirmText');if(!input||!confirm)return;
+    pendingDate=true;input.value=formatDate(kind);confirm.click();pendingDate=false;
+  }
+  function installDateChoice(){
+    const btn=q('#addDate');if(!btn)return;
+    btn.addEventListener('click',e=>{
+      e.preventDefault();e.stopImmediatePropagation();
+      const pop=q('.date-choice-popover');if(!pop)return;
+      if(pop.hidden)openDatePicker();else closeDatePicker();
+    },true);
+    document.addEventListener('click',e=>{if(!e.target.closest('#addDate')&&!e.target.closest('.date-choice-popover'))closeDatePicker()});
+    window.addEventListener('resize',()=>{closeDatePicker()},{passive:true});
+    window.addEventListener('scroll',()=>{closeDatePicker()},{passive:true,capture:true});
+  }
   function syncControls(){
     const c=copy();
     const colorLabel=q('.signature-color-picker .feature-label');if(colorLabel)colorLabel.textContent=c.color;
     document.querySelectorAll('[data-signature-color]').forEach(b=>b.classList.toggle('active',b.dataset.signatureColor===signatureColor));
     const fontLabel=q('.text-font-picker .feature-label');if(fontLabel)fontLabel.textContent=c.font;
     document.querySelectorAll('[data-text-font]').forEach(b=>{const active=b.dataset.textFont===textFont;b.classList.toggle('active',active);const small=b.querySelector('small');if(small)small.textContent=c[b.dataset.textFont]||b.dataset.textFont});
+    document.querySelectorAll('[data-date-type]').forEach(b=>{const key=b.dataset.dateType;b.textContent=c[key];b.classList.toggle('active',key===dateType)});
   }
-  function installDualDate(){
-    const btn=q('#addDate');if(!btn)return;
-    btn.addEventListener('click',e=>{
-      e.preventDefault();e.stopImmediatePropagation();
-      const input=q('#textInput'),confirm=q('#confirmText');if(!input||!confirm)return;
-      pendingDate=true;input.value=dualDate();confirm.click();pendingDate=false;
-    },true);
+  function init(){
+    makeColorPicker();makeFontPicker();makeDatePicker();syncControls();installDateChoice();
+    document.addEventListener('waqqe:languagechange',()=>{syncControls();closeDatePicker()});
   }
-  function init(){makeColorPicker();makeFontPicker();syncControls();installDualDate();document.addEventListener('waqqe:languagechange',syncControls)}
 
   window.WaqqeFeatures={
     getSignatureColor:()=>signatureColor,
     getTextFont:()=>pendingDate?'modern':textFont,
-    getDualDate:dualDate
+    getDateType:()=>dateType,
+    getDate:()=>formatDate(dateType)
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
