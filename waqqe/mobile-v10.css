@@ -1,0 +1,106 @@
+/* v0.10.0 — mobile language scrolling + compact full-height result */
+@media (max-width:759px){
+  html,body{max-width:100%;overflow-x:hidden}
+
+  /* Language card: scroll naturally with touch when the list exceeds the viewport */
+  .language-menu{
+    max-height:min(68dvh,430px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    touch-action:pan-y;
+  }
+  .language-option{flex:0 0 auto}
+
+  /* Result screen uses the actual visible mobile viewport */
+  body:has(#resultPanel:not(.hidden)){
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+  }
+  body:has(#resultPanel:not(.hidden)) .topbar{flex:0 0 auto}
+  body:has(#resultPanel:not(.hidden)) .topbar-inner{min-height:48px}
+  body:has(#resultPanel:not(.hidden)) .brand{gap:6px}
+  body:has(#resultPanel:not(.hidden)) .brand img{width:31px;height:31px}
+  body:has(#resultPanel:not(.hidden)) .brand-copy strong{font-size:18px;line-height:1}
+  body:has(#resultPanel:not(.hidden)) .brand-copy small{font-size:7px;line-height:1.1}
+  body:has(#resultPanel:not(.hidden)) .language-button{width:34px;height:34px}
+
+  body:has(#resultPanel:not(.hidden)) .hero{
+    flex:0 0 auto;
+    padding:7px 0 6px;
+  }
+  body:has(#resultPanel:not(.hidden)) .hero-logo{width:34px;height:34px;margin:0 auto 3px}
+  body:has(#resultPanel:not(.hidden)) .hero h1{font-size:24px;line-height:1.05;margin:0 auto 2px}
+  body:has(#resultPanel:not(.hidden)) .hero p{font-size:10.5px;line-height:1.3;margin:0 auto;max-width:92%}
+  body:has(#resultPanel:not(.hidden)) .steps{margin:5px auto 0;gap:4px;flex-wrap:nowrap}
+  body:has(#resultPanel:not(.hidden)) .step{gap:4px;font-size:9.5px;white-space:nowrap}
+  body:has(#resultPanel:not(.hidden)) .step b{width:19px;height:19px;font-size:9px}
+  body:has(#resultPanel:not(.hidden)) .step-line{width:16px}
+
+  body:has(#resultPanel:not(.hidden)) .main{
+    flex:1 1 auto;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    padding:7px 0;
+  }
+  body:has(#resultPanel:not(.hidden)) .main>.container{width:min(100% - 22px,620px)}
+  body:has(#resultPanel:not(.hidden)) .result-panel{
+    width:100%;
+    padding:14px 13px 11px;
+    border-radius:18px;
+    margin:0 auto;
+  }
+  body:has(#resultPanel:not(.hidden)) .result-icon{width:42px;height:42px;margin:0 auto 5px}
+  body:has(#resultPanel:not(.hidden)) .result-icon svg{width:21px;height:21px}
+  body:has(#resultPanel:not(.hidden)) .result-panel h2{font-size:20px;line-height:1.1}
+  body:has(#resultPanel:not(.hidden)) .result-panel>p{font-size:10.5px;line-height:1.35;margin:3px auto 8px}
+  body:has(#resultPanel:not(.hidden)) .result-file{padding:8px 9px;margin-bottom:8px;border-radius:12px;gap:7px}
+  body:has(#resultPanel:not(.hidden)) .result-file strong{font-size:11.5px;line-height:1.25}
+  body:has(#resultPanel:not(.hidden)) .result-file span{font-size:9px}
+  body:has(#resultPanel:not(.hidden)) .result-file>svg{width:22px!important;height:22px!important}
+  body:has(#resultPanel:not(.hidden)) .result-actions{gap:7px}
+  body:has(#resultPanel:not(.hidden)) .big-action{min-height:39px;font-size:11px;border-radius:12px}
+  body:has(#resultPanel:not(.hidden)) .restart{margin-top:5px;font-size:10px}
+
+  body:has(#resultPanel:not(.hidden)) .footer{flex:0 0 auto;margin-top:0}
+  body:has(#resultPanel:not(.hidden)) .footer-shell{padding:6px 0 4px}
+  body:has(#resultPanel:not(.hidden)) .footer-main{gap:8px}
+  body:has(#resultPanel:not(.hidden)) .footer-brand{gap:7px}
+  body:has(#resultPanel:not(.hidden)) .naif-mark{width:52px;height:23px}
+  body:has(#resultPanel:not(.hidden)) .footer-copy p{font-size:7.8px;line-height:1.2}
+  body:has(#resultPanel:not(.hidden)) .footer-links{gap:4px}
+  body:has(#resultPanel:not(.hidden)) .footer-links a{width:24px;height:24px;border-radius:7px}
+  body:has(#resultPanel:not(.hidden)) .social-icon{width:12px;height:12px}
+  body:has(#resultPanel:not(.hidden)) .social-handle{font-size:7.8px;padding:4px 6px}
+  body:has(#resultPanel:not(.hidden)) .footer-bottom{margin-top:4px;padding-top:3px;gap:6px;min-height:14px}
+  body:has(#resultPanel:not(.hidden)) .footer-privacy{
+    font-size:6.8px!important;
+    line-height:1.15!important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  body:has(#resultPanel:not(.hidden)) .footer-bottom>b{font-size:7px}
+}
+
+/* Short phones: shave only decorative height, keep actions comfortably tappable */
+@media (max-width:759px) and (max-height:700px){
+  body:has(#resultPanel:not(.hidden)) .topbar-inner{min-height:44px}
+  body:has(#resultPanel:not(.hidden)) .hero{padding:4px 0}
+  body:has(#resultPanel:not(.hidden)) .hero-logo{width:28px;height:28px;margin-bottom:1px}
+  body:has(#resultPanel:not(.hidden)) .hero h1{font-size:21px}
+  body:has(#resultPanel:not(.hidden)) .hero p{font-size:9.5px}
+  body:has(#resultPanel:not(.hidden)) .steps{margin-top:3px}
+  body:has(#resultPanel:not(.hidden)) .main{padding:4px 0}
+  body:has(#resultPanel:not(.hidden)) .result-panel{padding:10px 11px 8px}
+  body:has(#resultPanel:not(.hidden)) .result-icon{width:36px;height:36px;margin-bottom:3px}
+  body:has(#resultPanel:not(.hidden)) .result-panel h2{font-size:18px}
+  body:has(#resultPanel:not(.hidden)) .result-panel>p{margin-bottom:6px;font-size:9.8px}
+  body:has(#resultPanel:not(.hidden)) .result-file{padding:6px 8px;margin-bottom:6px}
+  body:has(#resultPanel:not(.hidden)) .big-action{min-height:36px}
+  body:has(#resultPanel:not(.hidden)) .footer-shell{padding:4px 0 2px}
+  body:has(#resultPanel:not(.hidden)) .footer-bottom{margin-top:2px;padding-top:2px}
+}
