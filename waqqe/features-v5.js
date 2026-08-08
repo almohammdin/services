@@ -15,14 +15,18 @@
     {key:'classic',family:"Georgia, 'Times New Roman', serif"},
     {key:'traditional',family:"'Times New Roman', Tahoma, serif"}
   ];
-  const LOCALE={ar:'ar-SA-u-nu-latn',en:'en-US',fr:'fr-FR',es:'es-ES',ur:'ur-PK-u-nu-latn'};
-  const HIJRI={ar:'ar-SA-u-ca-islamic-umalqura-nu-latn',en:'en-US-u-ca-islamic-umalqura-nu-latn',fr:'fr-FR-u-ca-islamic-umalqura-nu-latn',es:'es-ES-u-ca-islamic-umalqura-nu-latn',ur:'ur-PK-u-ca-islamic-umalqura-nu-latn'};
+  const LOCALE={ar:'ar-SA-u-nu-latn',en:'en-US',fr:'fr-FR',es:'es-ES',ur:'ur-PK-u-nu-latn',tr:'tr-TR',zh:'zh-CN',ko:'ko-KR',hi:'hi-IN-u-nu-latn'};
+  const HIJRI={ar:'ar-SA-u-ca-islamic-umalqura-nu-latn',en:'en-US-u-ca-islamic-umalqura-nu-latn',fr:'fr-FR-u-ca-islamic-umalqura-nu-latn',es:'es-ES-u-ca-islamic-umalqura-nu-latn',ur:'ur-PK-u-ca-islamic-umalqura-nu-latn',tr:'tr-TR-u-ca-islamic-umalqura-nu-latn',zh:'zh-CN-u-ca-islamic-umalqura-nu-latn',ko:'ko-KR-u-ca-islamic-umalqura-nu-latn',hi:'hi-IN-u-ca-islamic-umalqura-nu-latn'};
   const COPY={
     ar:{color:'لون التوقيع',font:'خط النص',craft:'امتداد',modern:'حديث',classic:'كلاسيكي',traditional:'رسمي',hijri:'هجري',gregorian:'ميلادي'},
     en:{color:'Signature color',font:'Text font',craft:'Emtidad',modern:'Modern',classic:'Classic',traditional:'Formal',hijri:'Hijri',gregorian:'Gregorian'},
     fr:{color:'Couleur de signature',font:'Police du texte',craft:'Emtidad',modern:'Moderne',classic:'Classique',traditional:'Formelle',hijri:'Hégirien',gregorian:'Grégorien'},
     es:{color:'Color de firma',font:'Fuente del texto',craft:'Emtidad',modern:'Moderna',classic:'Clásica',traditional:'Formal',hijri:'Hégira',gregorian:'Gregoriano'},
-    ur:{color:'دستخط کا رنگ',font:'متن کا فونٹ',craft:'امتداد',modern:'جدید',classic:'کلاسک',traditional:'رسمی',hijri:'ہجری',gregorian:'عیسوی'}
+    ur:{color:'دستخط کا رنگ',font:'متن کا فونٹ',craft:'امتداد',modern:'جدید',classic:'کلاسک',traditional:'رسمی',hijri:'ہجری',gregorian:'عیسوی'},
+    tr:{color:'İmza rengi',font:'Metin yazı tipi',craft:'Emtidad',modern:'Modern',classic:'Klasik',traditional:'Resmî',hijri:'Hicri',gregorian:'Miladi'},
+    zh:{color:'签名颜色',font:'文本字体',craft:'Emtidad',modern:'现代',classic:'经典',traditional:'正式',hijri:'回历',gregorian:'公历'},
+    ko:{color:'서명 색상',font:'텍스트 글꼴',craft:'Emtidad',modern:'모던',classic:'클래식',traditional:'정식',hijri:'히즈리력',gregorian:'그레고리력'},
+    hi:{color:'हस्ताक्षर का रंग',font:'टेक्स्ट फ़ॉन्ट',craft:'Emtidad',modern:'आधुनिक',classic:'क्लासिक',traditional:'औपचारिक',hijri:'हिजरी',gregorian:'ग्रेगोरियन'}
   };
   let signatureColor='#172A38';
   let textFont='craft';
