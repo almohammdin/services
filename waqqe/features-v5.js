@@ -6,9 +6,9 @@
   const COLORS=[
     {key:'ink',value:'#172A38'},
     {key:'navy',value:'#0D3656'},
-    {key:'sky',value:'#2D9CDB'},
+    {key:'sky',value:'#38A8FF'},
     {key:'green',value:'#1F8A4C'},
-    {key:'red',value:'#C43D3D'}
+    {key:'red',value:'#E53935'}
   ];
   const FONTS=[
     {key:'craft',family:"NaifCraft, Tahoma, Arial, sans-serif"},
@@ -38,8 +38,9 @@
     textFont=localStorage.getItem(FONT_KEY)||textFont;
     dateType=localStorage.getItem(DATE_KEY)||dateType;
   }catch{}
-  if(signatureColor==='#1D4E89')signatureColor='#2D9CDB';
+  if(signatureColor==='#1D4E89'||signatureColor==='#2D9CDB')signatureColor='#38A8FF';
   if(signatureColor==='#276749')signatureColor='#1F8A4C';
+  if(signatureColor==='#C43D3D')signatureColor='#E53935';
   if(!COLORS.some(x=>x.value===signatureColor))signatureColor=COLORS[0].value;
   if(!FONTS.some(x=>x.key===textFont))textFont='craft';
   if(!['hijri','gregorian'].includes(dateType))dateType='gregorian';
