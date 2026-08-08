@@ -1,0 +1,113 @@
+name: Waqqe editable output filename v0.9.0
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/waqqe-rename-v9.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch Waqqe rename feature
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          # index.html
+          p=Path('waqqe/index.html')
+          s=p.read_text()
+          if 'rename-v9.css' not in s:
+              s=s.replace('<link rel="stylesheet" href="compact-v8.css?v=0.8.0">','<link rel="stylesheet" href="compact-v8.css?v=0.8.0">\n<link rel="stylesheet" href="rename-v9.css?v=0.9.0">')
+          old='<div class="result-file"><div><strong id="resultName">—</strong><span id="resultInfo">—</span></div><svg width="29" height="29" viewBox="0 0 24 24" style="color:#C9853C" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>'
+          new='''<div class="result-file"><div class="result-file-main"><div class="result-name-row"><strong id="resultName">—</strong><button class="rename-file-btn" id="renameResult" type="button"><span class="rename-pencil" aria-hidden="true">✎</span><span id="renameResultLabel">عدل الاسم</span></button></div><div class="rename-editor hidden" id="renameEditor"><input id="renameInput" type="text" maxlength="180" autocomplete="off" aria-label="اسم الملف"><span class="rename-extension">.pdf</span><button class="save-rename" id="saveRename" type="button">حفظ</button><button id="cancelRename" type="button">إلغاء</button></div><span id="resultInfo">—</span></div><svg width="29" height="29" viewBox="0 0 24 24" style="color:#C9853C" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>'''
+          if old in s:
+              s=s.replace(old,new,1)
+          elif 'id="renameResult"' not in s:
+              raise SystemExit('result-file target not found')
+          s=s.replace('v0.8.0</b>','v0.9.0</b>')
+          p.write_text(s)
+
+          # app.js
+          p=Path('waqqe/app.js')
+          s=p.read_text()
+          old="function outputName(){const name=(state.file?.name||'document.pdf').replace(/\\.pdf$/i,'');return `${name}-signed.pdf`}"
+          new=r'''function signedWordForFilename(filename){
+  const base=String(filename||'').replace(/\.pdf$/i,'');
+  if(/[\u3040-\u30ff]/.test(base))return '署名済み';
+  if(/[\uac00-\ud7af]/.test(base))return '서명됨';
+  if(/[\u4e00-\u9fff]/.test(base))return '已签署';
+  if(/[\u0900-\u097f]/.test(base))return 'हस्ताक्षरित';
+  if(/[\u0400-\u04ff]/.test(base))return 'подписано';
+  if(/[\u0600-\u06ff]/.test(base)){
+    if(/[ٹپچڈڑژںھہے]/.test(base))return 'دستخط شدہ';
+    return 'موقع';
+  }
+  const lang=window.WaqqeI18n?.getLang?.()||'en';
+  return ({fr:'signé',es:'firmado',tr:'imzalı',en:'signed'}[lang]||'signed');
+}
+function outputName(){const name=(state.file?.name||'document.pdf').replace(/\.pdf$/i,'');return `${name} - ${signedWordForFilename(state.file?.name)}.pdf`}
+function cleanFileStem(value){return String(value||'').replace(/\.pdf$/i,'').replace(/[\\/:*?"<>|]/g,' ').replace(/\s+/g,' ').trim().slice(0,180)}
+function applyOutputName(stem){
+  if(!state.outputBlob)return false;
+  const clean=cleanFileStem(stem);if(!clean)return false;
+  state.outputFile=new File([state.outputBlob],`${clean}.pdf`,{type:'application/pdf'});
+  $('#resultName').textContent=state.outputFile.name;
+  return true;
+}'''
+          if old in s:
+              s=s.replace(old,new,1)
+          elif 'signedWordForFilename' not in s:
+              raise SystemExit('outputName target not found')
+
+          hook="$('#backToEdit').addEventListener('click',()=>{$('#resultPanel').classList.add('hidden');$('#workspace').classList.remove('hidden');setStep(2);$('#workspace').scrollIntoView({behavior:'smooth',block:'start'})});"
+          add=hook+r'''
+const renameResult=$('#renameResult'),renameEditor=$('#renameEditor'),renameInput=$('#renameInput');
+renameResult?.addEventListener('click',()=>{
+  if(!state.outputFile)return;
+  renameInput.value=state.outputFile.name.replace(/\.pdf$/i,'');
+  renameEditor.classList.remove('hidden');renameResult.classList.add('hidden');
+  requestAnimationFrame(()=>{renameInput.focus();renameInput.select()});
+});
+$('#cancelRename')?.addEventListener('click',()=>{renameEditor.classList.add('hidden');renameResult.classList.remove('hidden')});
+$('#saveRename')?.addEventListener('click',()=>{
+  if(!applyOutputName(renameInput.value)){toast(window.WaqqeI18n?.t?.('renameEmpty')||'اكتب اسم الملف');return}
+  renameEditor.classList.add('hidden');renameResult.classList.remove('hidden');
+  toast(window.WaqqeI18n?.t?.('renameSaved')||'تم تعديل اسم الملف');
+});
+renameInput?.addEventListener('keydown',e=>{if(e.key==='Enter'){$('#saveRename').click()}else if(e.key==='Escape'){$('#cancelRename').click()}});'''
+          if hook in s and "renameResult?.addEventListener" not in s:
+              s=s.replace(hook,add,1)
+          p.write_text(s)
+
+          # i18n.js: add labels and apply them
+          p=Path('waqqe/i18n.js')
+          s=p.read_text()
+          additions={
+            "close:'إغلاق'":"close:'إغلاق',renameFile:'عدل الاسم',saveName:'حفظ',cancelName:'إلغاء',renameEmpty:'اكتب اسم الملف',renameSaved:'تم تعديل اسم الملف'",
+            "close:'Close'":"close:'Close',renameFile:'Rename',saveName:'Save',cancelName:'Cancel',renameEmpty:'Enter a file name',renameSaved:'File name updated'",
+            "close:'Fermer'":"close:'Fermer',renameFile:'Renommer',saveName:'Enregistrer',cancelName:'Annuler',renameEmpty:'Saisissez un nom de fichier',renameSaved:'Nom du fichier modifié'",
+            "close:'Cerrar'":"close:'Cerrar',renameFile:'Cambiar nombre',saveName:'Guardar',cancelName:'Cancelar',renameEmpty:'Escribe un nombre de archivo',renameSaved:'Nombre actualizado'",
+            "close:'بند کریں'":"close:'بند کریں',renameFile:'نام بدلیں',saveName:'محفوظ کریں',cancelName:'منسوخ',renameEmpty:'فائل کا نام لکھیں',renameSaved:'فائل کا نام بدل دیا گیا'",
+            "close:'Kapat'":"close:'Kapat',renameFile:'Adı değiştir',saveName:'Kaydet',cancelName:'İptal',renameEmpty:'Dosya adı girin',renameSaved:'Dosya adı güncellendi'",
+            "close:'关闭'":"close:'关闭',renameFile:'修改名称',saveName:'保存',cancelName:'取消',renameEmpty:'请输入文件名',renameSaved:'文件名已修改'",
+            "close:'닫기'":"close:'닫기',renameFile:'이름 변경',saveName:'저장',cancelName:'취소',renameEmpty:'파일 이름을 입력하세요',renameSaved:'파일 이름이 변경되었습니다'",
+            "close:'बंद करें'":"close:'बंद करें',renameFile:'नाम बदलें',saveName:'सहेजें',cancelName:'रद्द करें',renameEmpty:'फ़ाइल का नाम लिखें',renameSaved:'फ़ाइल का नाम बदल दिया गया'"
+          }
+          for a,b in additions.items():
+              if a in s and 'renameFile' not in s[s.find(a):s.find(a)+220]: s=s.replace(a,b,1)
+          target="text('#resultPanel h2',t('fileReady'));text('#resultPanel p',t('fileReadyDesc'));buttonLabel('#shareResult',t('share'));buttonLabel('#downloadResult',t('download'));buttonLabel('#backToEdit',t('back'));"
+          repl=target+"text('#renameResultLabel',t('renameFile'));text('#saveRename',t('saveName'));text('#cancelRename',t('cancelName'));"
+          if target in s and "#renameResultLabel" not in s:
+              s=s.replace(target,repl,1)
+          p.write_text(s)
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "Waqqe Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add waqqe/index.html waqqe/app.js waqqe/i18n.js waqqe/rename-v9.css
+          git diff --cached --quiet || git commit -m "Add editable multilingual signed filename"
+          git push
