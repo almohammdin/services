@@ -1,0 +1,11 @@
+VALID | ganacsi-icon.jpg | format=JPEG | mode=RGB | size=128x128 | bytes=2985 | progressive=True | magic=ffd8ffe000104a464946000101000001 | sha256=efd5c315048152cd
+VALID | ganacsi-logo.png | format=PNG | mode=RGBA | size=600x200 | bytes=49206 | progressive=False | magic=89504e470d0a1a0a0000000d49484452 | sha256=472b94988c418eaa
+VALID | ganacsi-share-v2.jpg | format=JPEG | mode=RGB | size=1200x630 | bytes=47014 | progressive=False | magic=ffd8ffe000104a464946000101000000 | sha256=cccb477cae56b717
+BROKEN | ganacsi-share-v4.jpg | bytes=5786 | magic=ffd8ffe000104a464946000101000001 | sha256=398dc41bc1b01079 | error=OSError: broken data stream when reading image file
+VALID | ganacsi-share-v5.png | format=PNG | mode=P | size=600x315 | bytes=11269 | progressive=False | magic=89504e470d0a1a0a0000000d49484452 | sha256=fb2cae37f4e3d4d7
+BROKEN | ganacsi-share-v6.jpg | bytes=5823 | magic=2f396a2f34414151536b5a4a52674142 | sha256=88efd2cd650e9acf | error=UnidentifiedImageError: cannot identify image file 'ganacsi/assets/ganacsi-share-v6.jpg'
+BROKEN | ganacsi-share-v7.jpg | bytes=4967 | magic=ffd8ffe000104a464946000101000001 | sha256=2ce702bf26378086 | error=UnidentifiedImageError: cannot identify image file 'ganacsi/assets/ganacsi-share-v7.jpg'
+BROKEN | ganacsi-share-v8.jpg | bytes=333162 | magic=ffd8ffe000104a464946000101000001 | sha256=446f93632f7836fa | error=UnidentifiedImageError: cannot identify image file 'ganacsi/assets/ganacsi-share-v8.jpg'
+BROKEN | ganacsi-share.jpg | bytes=13285 | magic=ffd8ffe000104a464946000101000001 | sha256=29e5719286f5a92d | error=UnidentifiedImageError: cannot identify image file 'ganacsi/assets/ganacsi-share.jpg'
+BROKEN | ganacsi-whatsapp-preview-v2.jpg | bytes=333162 | magic=ffd8ffe000104a464946000101000001 | sha256=446f93632f7836fa | error=UnidentifiedImageError: cannot identify image file 'ganacsi/assets/ganacsi-whatsapp-preview-v2.jpg'
+BROKEN | ganacsi-whatsapp-preview.jpg | bytes=333162 | magic=ffd8ffe000104a464946000101000001 | sha256=446f93632f7836fa | error=UnidentifiedImageError: cannot identify image file 'ganacsi/assets/ganacsi-whatsapp-preview.jpg'
