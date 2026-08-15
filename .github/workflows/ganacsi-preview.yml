@@ -31,119 +31,94 @@ jobs:
           from PIL import Image, ImageDraw, ImageFont
           from pathlib import Path
 
-          W,H = 1200,630
-          out = Path('ganacsi/assets/ganacsi-share-wa-final.jpg')
-          report = Path('ganacsi/assets/ganacsi-share-wa-final.txt')
-          logo_path = Path('ganacsi/assets/ganacsi-logo.png')
+          W,H=1200,630
+          out=Path('ganacsi/assets/ganacsi-share-wa-final.jpg')
+          report=Path('ganacsi/assets/ganacsi-share-wa-final.txt')
+          bg=Image.new('RGB',(W,H),'white'); d=ImageDraw.Draw(bg)
+          navy='#092B3A'; green='#0B8A55'; border='#E3E8E8'; orange='#F59E0B'; blue='#1859C9'; purple='#5B39B6'; text='#111827'; muted='#6B7280'
+          reg='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'; bold='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+          def font(s,b=False): return ImageFont.truetype(bold if b else reg,s)
 
-          bg = Image.new('RGB',(W,H),'white')
-          d = ImageDraw.Draw(bg)
-
-          navy='#092B3A'; green='#0B8A55'; pale='#F6F8F8'; border='#E3E8E8'
-          orange='#F59E0B'; blue='#1859C9'; purple='#5B39B6'; text='#111827'; muted='#6B7280'
-
-          reg='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
-          bold='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
-          def font(size,b=False): return ImageFont.truetype(bold if b else reg,size)
-
-          # Exact GANACSI logo asset, resized only.
-          logo=Image.open(logo_path).convert('RGBA')
-          target_w=650
-          ratio=target_w/logo.width
-          logo=logo.resize((target_w,round(logo.height*ratio)),Image.Resampling.LANCZOS)
+          logo=Image.open('ganacsi/assets/ganacsi-logo.png').convert('RGBA')
+          tw=650; r=tw/logo.width; logo=logo.resize((tw,round(logo.height*r)),Image.Resampling.LANCZOS)
           bg.paste(logo,(38,28),logo)
           d.text((205,158),'Ganacsigaaga, hal muuqaal',font=font(28),fill=green)
 
-          # Dashboard shell
-          x0,y0,x1,y1=34,205,1166,608
-          d.rounded_rectangle((x0,y0,x1,y1),radius=20,fill='#FBFCFC',outline=border,width=2)
-          sidebar=195
-          d.line((x0+sidebar,y0+60,x0+sidebar,y1-15),fill=border,width=2)
+          d.rounded_rectangle((34,205,1166,608),radius=20,fill='#FBFCFC',outline=border,width=2)
+          d.line((229,265,229,593),fill=border,width=2); d.line((34,265,1166,265),fill=border,width=2)
+          d.text((760,226),'Hargeisa  ⌄',font=font(15),fill=text); d.text((895,226),'▣  15 Aug 2026',font=font(15),fill=text); d.text((1082,222),'●  A  ⌄',font=font(15),fill=navy)
 
-          # Top utility row
-          d.text((760,226),'Hargeisa  ⌄',font=font(15),fill=text)
-          d.text((895,226),'▣  15 Aug 2026',font=font(15),fill=text)
-          d.text((1082,222),'●  A  ⌄',font=font(15),fill=navy)
-          d.line((x0,y0+60,x1,y0+60),fill=border,width=2)
-
-          # Sidebar
           items=['Dashboard','Sales','Expenses','Receivables','Payables','Products','Customers','Reports','Settings']
           for i,label in enumerate(items):
               yy=278+i*34
-              if i==0:
-                  d.rounded_rectangle((52,yy-9,212,yy+22),radius=8,fill='#EAF7F0')
-                  fill=green
-              else: fill=text
-              bullet='◆' if i==0 else '○'
-              d.text((64,yy),bullet,font=font(13,True),fill=fill,anchor='lm')
-              d.text((88,yy),label,font=font(14),fill=fill,anchor='lm')
+              fill=green if i==0 else text
+              if i==0: d.rounded_rectangle((52,yy-9,212,yy+22),radius=8,fill='#EAF7F0')
+              d.text((64,yy),'◆' if i==0 else '○',font=font(13,True),fill=fill,anchor='lm'); d.text((88,yy),label,font=font(14),fill=fill,anchor='lm')
 
-          # KPI cards
-          card_y=285; card_h=142; gap=12
-          area_x=248; area_w=900
-          card_w=(area_w-gap*3)//4
-          kpis=[
-              ('Sales','$1,850','Today','12% vs yesterday',green),
-              ('Expenses','$620','Today','8% vs yesterday',orange),
-              ('Receivables','$2,450','Total outstanding','18 invoices',blue),
-              ('Payables','$840','Total outstanding','7 bills',purple),
-          ]
+          card_y=285; card_h=142; gap=12; area_x=248; area_w=900; card_w=(area_w-gap*3)//4
+          kpis=[('Sales','$1,850','Today','12% vs yesterday',green),('Expenses','$620','Today','8% vs yesterday',orange),('Receivables','$2,450','Total outstanding','18 invoices',blue),('Payables','$840','Total outstanding','7 bills',purple)]
           for i,(title,val,sub,foot,c) in enumerate(kpis):
-              x=area_x+i*(card_w+gap)
-              d.rounded_rectangle((x,card_y,x+card_w,card_y+card_h),radius=15,fill='white',outline=border,width=2)
-              d.ellipse((x+17,card_y+20,x+59,card_y+62),fill=c)
-              d.text((x+38,card_y+41),'↗' if i==0 else '•',font=font(23,True),fill='white',anchor='mm')
-              d.text((x+73,card_y+29),title,font=font(16,True),fill=text)
-              d.text((x+73,card_y+57),val,font=font(25,True),fill=c)
-              d.text((x+73,card_y+89),sub,font=font(13),fill=muted)
-              d.line((x+14,card_y+111,x+card_w-14,card_y+111),fill=border,width=1)
-              d.text((x+18,card_y+124),foot,font=font(12),fill=c)
+              x=area_x+i*(card_w+gap); d.rounded_rectangle((x,card_y,x+card_w,card_y+card_h),radius=15,fill='white',outline=border,width=2)
+              d.ellipse((x+17,card_y+20,x+59,card_y+62),fill=c); d.text((x+38,card_y+41),'↗' if i==0 else '•',font=font(23,True),fill='white',anchor='mm')
+              d.text((x+73,card_y+29),title,font=font(16,True),fill=text); d.text((x+73,card_y+57),val,font=font(25,True),fill=c); d.text((x+73,card_y+89),sub,font=font(13),fill=muted)
+              d.line((x+14,card_y+111,x+card_w-14,card_y+111),fill=border,width=1); d.text((x+18,card_y+124),foot,font=font(12),fill=c)
 
-          # Daily Check
-          dy=445
-          d.rounded_rectangle((248,dy,1148,590),radius=15,fill='white',outline=border,width=2)
-          d.text((277,dy+25),'▣  Daily Check',font=font(18,True),fill=text)
-          cols=[
-              ('Expected today','$1,200',text),
-              ('Received','$980',green),
-              ('Needs review','$120',orange),
-          ]
-          cx=[330,565,820]
-          for (lab,val,c),x in zip(cols,cx):
-              d.text((x,dy+65),lab,font=font(14),fill=muted)
-              d.text((x,dy+91),val,font=font(25,True),fill=c)
-          d.text((1002,dy+90),'!',font=font(25,True),fill=orange,anchor='mm')
-          # Progress bar
-          d.rounded_rectangle((278,dy+124,1115,dy+137),radius=7,fill='#E5E7EB')
-          d.rounded_rectangle((278,dy+124,735,dy+137),radius=7,fill=green)
-          d.rectangle((735,dy+124,900,dy+137),fill=orange)
+          dy=445; d.rounded_rectangle((248,dy,1148,590),radius=15,fill='white',outline=border,width=2); d.text((277,dy+25),'▣  Daily Check',font=font(18,True),fill=text)
+          for (lab,val,c),x in zip([('Expected today','$1,200',text),('Received','$980',green),('Needs review','$120',orange)],[330,565,820]):
+              d.text((x,dy+65),lab,font=font(14),fill=muted); d.text((x,dy+91),val,font=font(25,True),fill=c)
+          d.text((1002,dy+90),'!',font=font(25,True),fill=orange,anchor='mm'); d.rounded_rectangle((278,dy+124,1115,dy+137),radius=7,fill='#E5E7EB'); d.rounded_rectangle((278,dy+124,735,dy+137),radius=7,fill=green); d.rectangle((735,dy+124,900,dy+137),fill=orange)
 
           bg.save(out,'JPEG',quality=82,optimize=True,progressive=False,subsampling=2)
-
-          # Validate the exact generated file.
-          check=Image.open(out); check.load()
-          raw=out.read_bytes()
-          assert check.format=='JPEG', check.format
-          assert check.mode=='RGB', check.mode
-          assert check.size==(1200,630), check.size
-          assert raw[:3]==b'\xff\xd8\xff', raw[:3]
-          assert len(raw)<300_000, len(raw)
-          assert not check.info.get('progressive'), check.info
-          report.write_text(
-              f'format={check.format}\nmode={check.mode}\nwidth={check.width}\nheight={check.height}\nbytes={len(raw)}\nmagic={raw[:3].hex()}\nprogressive={bool(check.info.get("progressive"))}\n',
-              encoding='utf-8'
-          )
+          check=Image.open(out); check.load(); raw=out.read_bytes()
+          assert check.format=='JPEG' and check.mode=='RGB' and check.size==(1200,630) and raw[:3]==b'\xff\xd8\xff' and len(raw)<300_000 and not check.info.get('progressive')
+          report.write_text(f'format={check.format}\nmode={check.mode}\nwidth={check.width}\nheight={check.height}\nbytes={len(raw)}\nmagic={raw[:3].hex()}\nprogressive={bool(check.info.get("progressive"))}\n',encoding='utf-8')
           print(report.read_text())
           PY
 
-      - name: Commit generated preview
+      - name: Wire preview metadata and create clean share URL
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, shutil
+
+          image='https://almohammdin.github.io/services/ganacsi/assets/ganacsi-share-wa-final.jpg'
+          props=['og:image','og:image:url','og:image:secure_url']
+          names=['twitter:image']
+
+          for p in Path('ganacsi').glob('*.html'):
+              s=p.read_text(encoding='utf-8')
+              for prop in props:
+                  pat=rf'(<meta\s+property="{re.escape(prop)}"\s+content=")[^"]*("\s*/?>)'
+                  if re.search(pat,s): s=re.sub(pat,rf'\1{image}\2',s)
+                  elif prop=='og:image': s=s.replace('</head>',f'<meta property="og:image" content="{image}">\n</head>')
+              for name in names:
+                  pat=rf'(<meta\s+name="{re.escape(name)}"\s+content=")[^"]*("\s*/?>)'
+                  if re.search(pat,s): s=re.sub(pat,rf'\1{image}\2',s)
+                  else: s=s.replace('</head>',f'<meta name="twitter:image" content="{image}">\n</head>')
+              s=re.sub(r'(<meta\s+itemprop="image"\s+content=")[^"]*("\s*/?>)',rf'\1{image}\2',s)
+              s=re.sub(r'(<link\s+rel="image_src"\s+href=")[^"]*("\s*/?>)',rf'\1{image}\2',s)
+              p.write_text(s,encoding='utf-8')
+
+          # New URL = clean WhatsApp cache key, while serving the full product page itself.
+          src=Path('ganacsi/invest.html'); dst=Path('ganacsi/share.html')
+          s=src.read_text(encoding='utf-8')
+          s=re.sub(r'(<meta\s+property="og:url"\s+content=")[^"]*(")',r'\1https://almohammdin.github.io/services/ganacsi/share.html\2',s)
+          if 'rel="canonical"' in s:
+              s=re.sub(r'(<link\s+rel="canonical"\s+href=")[^"]*(")',r'\1https://almohammdin.github.io/services/ganacsi/share.html\2',s)
+          else:
+              s=s.replace('</head>','<link rel="canonical" href="https://almohammdin.github.io/services/ganacsi/share.html">\n</head>')
+          dst.write_text(s,encoding='utf-8')
+
+          # Remove an obsolete staging helper if present.
+          helper=Path('ganacsi/assets/ganacsi-share-wa-final.b64')
+          if helper.exists(): helper.unlink()
+          PY
+
+      - name: Commit verified preview and metadata
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ganacsi/assets/ganacsi-share-wa-final.jpg ganacsi/assets/ganacsi-share-wa-final.txt
-          if git diff --cached --quiet; then
-            echo 'Preview already current.'
-            exit 0
-          fi
-          git commit -m 'Generate valid GANACSI social preview image'
+          git add -A ganacsi
+          if git diff --cached --quiet; then echo 'Everything already current.'; exit 0; fi
+          git commit -m 'Publish verified GANACSI social preview and share page'
           git push
