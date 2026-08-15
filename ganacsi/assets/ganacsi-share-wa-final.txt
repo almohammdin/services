@@ -1,0 +1,7 @@
+format=JPEG
+mode=RGB
+width=1200
+height=630
+bytes=68777
+magic=ffd8ff
+progressive=False
