@@ -25,17 +25,49 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --disable-pip-version-check pillow
 
-      - name: Build baseline JPEG preview
+      - name: Recover source and build real JPEG
         run: |
           python - <<'PY'
           from PIL import Image
           from pathlib import Path
+          from io import BytesIO
+          import base64
 
           src = Path('ganacsi/assets/ganacsi-share-v8.jpg')
           dst = Path('ganacsi/assets/ganacsi-share-wa-final.jpg')
           report = Path('ganacsi/assets/ganacsi-share-wa-final.txt')
 
-          im = Image.open(src).convert('RGB')
+          raw = src.read_bytes()
+          print('source_bytes=', len(raw), 'first16=', raw[:16])
+
+          def open_image(payload):
+              try:
+                  img = Image.open(BytesIO(payload))
+                  img.load()
+                  return img
+              except Exception:
+                  return None
+
+          im = open_image(raw)
+          decode_level = 0
+          payload = raw
+          while im is None and decode_level < 3:
+              try:
+                  text = payload.decode('ascii')
+                  compact = ''.join(text.split())
+                  payload = base64.b64decode(compact, validate=False)
+                  decode_level += 1
+                  print('base64_decode_level=', decode_level, 'decoded_bytes=', len(payload), 'first16=', payload[:16])
+                  im = open_image(payload)
+              except Exception as exc:
+                  raise RuntimeError(f'Could not recover image after {decode_level} decode levels: {exc}')
+
+          if im is None:
+              raise RuntimeError('Source is neither an image nor recoverable base64 image data')
+
+          print('recovered_format=', im.format, 'recovered_size=', im.size, 'mode=', im.mode, 'decode_level=', decode_level)
+          im = im.convert('RGB')
+
           if im.size != (1200, 630):
               canvas = Image.new('RGB', (1200, 630), 'white')
               im.thumbnail((1200, 630), Image.Resampling.LANCZOS)
@@ -47,7 +79,7 @@ jobs:
           im.save(
               dst,
               format='JPEG',
-              quality=52,
+              quality=55,
               optimize=True,
               progressive=False,
               subsampling=2,
@@ -55,13 +87,15 @@ jobs:
           )
 
           check = Image.open(dst)
+          check.load()
           size_bytes = dst.stat().st_size
           assert check.format == 'JPEG'
           assert check.mode == 'RGB'
           assert check.size == (1200, 630)
           assert size_bytes < 150_000, size_bytes
+
           report.write_text(
-              f'format=JPEG\nmode=RGB\nwidth={check.width}\nheight={check.height}\nbytes={size_bytes}\nprogressive={bool(check.info.get("progressive"))}\n',
+              f'format=JPEG\nmode=RGB\nwidth={check.width}\nheight={check.height}\nbytes={size_bytes}\nprogressive={bool(check.info.get("progressive"))}\ndecode_level={decode_level}\nmagic={dst.read_bytes()[:3].hex()}\n',
               encoding='utf-8'
           )
           print(report.read_text())
@@ -76,5 +110,5 @@ jobs:
             echo 'Preview already up to date.'
             exit 0
           fi
-          git commit -m 'Generate lightweight GANACSI WhatsApp preview'
+          git commit -m 'Generate valid GANACSI WhatsApp preview JPEG'
           git push
