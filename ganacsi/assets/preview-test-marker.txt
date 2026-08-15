@@ -1,1 +1,2 @@
-GANACSI v7 preview ready
+preview-v8-full-dashboard
+root-direct-platform
