@@ -1,4 +1,4 @@
-name: Recover GANACSI Preview
+name: Build GANACSI Social Preview
 
 on:
   push:
@@ -11,91 +11,139 @@ permissions:
   contents: write
 
 jobs:
-  recover:
+  build-preview:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install recovery tools
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Pillow
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Build 1200x630 baseline JPEG
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq libjpeg-turbo-progs imagemagick ffmpeg
-
-      - name: Inspect and recover
-        run: |
-          set +e
-          SRC='ganacsi/assets/ganacsi-share-v8.jpg'
-          OUT='ganacsi/assets/ganacsi-share-wa-final.jpg'
-          REPORT='ganacsi/assets/ganacsi-recovery-report.txt'
-          : > "$REPORT"
-
-          echo '=== file ===' | tee -a "$REPORT"
-          file "$SRC" 2>&1 | tee -a "$REPORT"
-          echo '=== bytes ===' | tee -a "$REPORT"
-          wc -c "$SRC" | tee -a "$REPORT"
-          echo '=== first 128 bytes ===' | tee -a "$REPORT"
-          xxd -l 128 "$SRC" | tee -a "$REPORT"
-          echo '=== jpeginfo ===' | tee -a "$REPORT"
-          jpeginfo -c "$SRC" 2>&1 | tee -a "$REPORT"
-          echo '=== identify ===' | tee -a "$REPORT"
-          identify -verbose "$SRC" 2>&1 | head -80 | tee -a "$REPORT"
-          echo '=== ffprobe ===' | tee -a "$REPORT"
-          ffprobe -v error -show_entries stream=codec_name,width,height,pix_fmt -of default=nw=1 "$SRC" 2>&1 | tee -a "$REPORT"
-
-          rm -f /tmp/recovered*.jpg /tmp/recovered.ppm "$OUT"
-
-          echo '=== try djpeg ===' | tee -a "$REPORT"
-          djpeg -recover -outfile /tmp/recovered.ppm "$SRC" 2>&1 | tee -a "$REPORT"
-          if [ -s /tmp/recovered.ppm ]; then
-            cjpeg -quality 55 -optimize -outfile /tmp/recovered-djpeg.jpg /tmp/recovered.ppm 2>&1 | tee -a "$REPORT"
-          fi
-
-          echo '=== try ImageMagick ===' | tee -a "$REPORT"
-          convert "$SRC" -background white -alpha remove -alpha off -resize '1200x630>' -gravity center -extent 1200x630 -quality 55 /tmp/recovered-im.jpg 2>&1 | tee -a "$REPORT"
-
-          echo '=== try ffmpeg ===' | tee -a "$REPORT"
-          ffmpeg -y -v warning -err_detect ignore_err -i "$SRC" -vf "scale=1200:630:force_original_aspect_ratio=decrease,pad=1200:630:(ow-iw)/2:(oh-ih)/2:white" -frames:v 1 -q:v 8 /tmp/recovered-ff.jpg 2>&1 | tee -a "$REPORT"
-
-          set -e
           python - <<'PY'
-          from PIL import Image, ImageFile
+          from PIL import Image, ImageDraw, ImageFont
           from pathlib import Path
-          ImageFile.LOAD_TRUNCATED_IMAGES = True
-          candidates = [Path('/tmp/recovered-djpeg.jpg'), Path('/tmp/recovered-im.jpg'), Path('/tmp/recovered-ff.jpg')]
+
+          W,H = 1200,630
           out = Path('ganacsi/assets/ganacsi-share-wa-final.jpg')
-          report = Path('ganacsi/assets/ganacsi-recovery-report.txt')
-          valid=[]
-          for p in candidates:
-              if not p.exists() or p.stat().st_size == 0:
-                  continue
-              try:
-                  im=Image.open(p); im.load()
-                  valid.append((p, im.size, im.mode, p.stat().st_size))
-              except Exception as e:
-                  with report.open('a') as f: f.write(f'candidate broken {p}: {e}\n')
-          with report.open('a') as f: f.write('valid_candidates='+repr(valid)+'\n')
-          if not valid:
-              raise SystemExit('No decoder could recover source')
-          p=valid[0][0]
-          im=Image.open(p).convert('RGB')
-          if im.size != (1200,630):
-              canvas=Image.new('RGB',(1200,630),'white')
-              im.thumbnail((1200,630),Image.Resampling.LANCZOS)
-              canvas.paste(im,((1200-im.width)//2,(630-im.height)//2))
-              im=canvas
-          im.save(out,'JPEG',quality=55,optimize=True,progressive=False,subsampling=2)
+          report = Path('ganacsi/assets/ganacsi-share-wa-final.txt')
+          logo_path = Path('ganacsi/assets/ganacsi-logo.png')
+
+          bg = Image.new('RGB',(W,H),'white')
+          d = ImageDraw.Draw(bg)
+
+          navy='#092B3A'; green='#0B8A55'; pale='#F6F8F8'; border='#E3E8E8'
+          orange='#F59E0B'; blue='#1859C9'; purple='#5B39B6'; text='#111827'; muted='#6B7280'
+
+          reg='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+          bold='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+          def font(size,b=False): return ImageFont.truetype(bold if b else reg,size)
+
+          # Exact GANACSI logo asset, resized only.
+          logo=Image.open(logo_path).convert('RGBA')
+          target_w=650
+          ratio=target_w/logo.width
+          logo=logo.resize((target_w,round(logo.height*ratio)),Image.Resampling.LANCZOS)
+          bg.paste(logo,(38,28),logo)
+          d.text((205,158),'Ganacsigaaga, hal muuqaal',font=font(28),fill=green)
+
+          # Dashboard shell
+          x0,y0,x1,y1=34,205,1166,608
+          d.rounded_rectangle((x0,y0,x1,y1),radius=20,fill='#FBFCFC',outline=border,width=2)
+          sidebar=195
+          d.line((x0+sidebar,y0+60,x0+sidebar,y1-15),fill=border,width=2)
+
+          # Top utility row
+          d.text((760,226),'Hargeisa  ⌄',font=font(15),fill=text)
+          d.text((895,226),'▣  15 Aug 2026',font=font(15),fill=text)
+          d.text((1082,222),'●  A  ⌄',font=font(15),fill=navy)
+          d.line((x0,y0+60,x1,y0+60),fill=border,width=2)
+
+          # Sidebar
+          items=['Dashboard','Sales','Expenses','Receivables','Payables','Products','Customers','Reports','Settings']
+          for i,label in enumerate(items):
+              yy=278+i*34
+              if i==0:
+                  d.rounded_rectangle((52,yy-9,212,yy+22),radius=8,fill='#EAF7F0')
+                  fill=green
+              else: fill=text
+              bullet='◆' if i==0 else '○'
+              d.text((64,yy),bullet,font=font(13,True),fill=fill,anchor='lm')
+              d.text((88,yy),label,font=font(14),fill=fill,anchor='lm')
+
+          # KPI cards
+          card_y=285; card_h=142; gap=12
+          area_x=248; area_w=900
+          card_w=(area_w-gap*3)//4
+          kpis=[
+              ('Sales','$1,850','Today','12% vs yesterday',green),
+              ('Expenses','$620','Today','8% vs yesterday',orange),
+              ('Receivables','$2,450','Total outstanding','18 invoices',blue),
+              ('Payables','$840','Total outstanding','7 bills',purple),
+          ]
+          for i,(title,val,sub,foot,c) in enumerate(kpis):
+              x=area_x+i*(card_w+gap)
+              d.rounded_rectangle((x,card_y,x+card_w,card_y+card_h),radius=15,fill='white',outline=border,width=2)
+              d.ellipse((x+17,card_y+20,x+59,card_y+62),fill=c)
+              d.text((x+38,card_y+41),'↗' if i==0 else '•',font=font(23,True),fill='white',anchor='mm')
+              d.text((x+73,card_y+29),title,font=font(16,True),fill=text)
+              d.text((x+73,card_y+57),val,font=font(25,True),fill=c)
+              d.text((x+73,card_y+89),sub,font=font(13),fill=muted)
+              d.line((x+14,card_y+111,x+card_w-14,card_y+111),fill=border,width=1)
+              d.text((x+18,card_y+124),foot,font=font(12),fill=c)
+
+          # Daily Check
+          dy=445
+          d.rounded_rectangle((248,dy,1148,590),radius=15,fill='white',outline=border,width=2)
+          d.text((277,dy+25),'▣  Daily Check',font=font(18,True),fill=text)
+          cols=[
+              ('Expected today','$1,200',text),
+              ('Received','$980',green),
+              ('Needs review','$120',orange),
+          ]
+          cx=[330,565,820]
+          for (lab,val,c),x in zip(cols,cx):
+              d.text((x,dy+65),lab,font=font(14),fill=muted)
+              d.text((x,dy+91),val,font=font(25,True),fill=c)
+          d.text((1002,dy+90),'!',font=font(25,True),fill=orange,anchor='mm')
+          # Progress bar
+          d.rounded_rectangle((278,dy+124,1115,dy+137),radius=7,fill='#E5E7EB')
+          d.rounded_rectangle((278,dy+124,735,dy+137),radius=7,fill=green)
+          d.rectangle((735,dy+124,900,dy+137),fill=orange)
+
+          bg.save(out,'JPEG',quality=82,optimize=True,progressive=False,subsampling=2)
+
+          # Validate the exact generated file.
           check=Image.open(out); check.load()
-          assert check.format=='JPEG' and check.mode=='RGB' and check.size==(1200,630)
-          with report.open('a') as f:
-              f.write(f'FINAL format={check.format} mode={check.mode} size={check.size} bytes={out.stat().st_size} magic={out.read_bytes()[:3].hex()}\n')
+          raw=out.read_bytes()
+          assert check.format=='JPEG', check.format
+          assert check.mode=='RGB', check.mode
+          assert check.size==(1200,630), check.size
+          assert raw[:3]==b'\xff\xd8\xff', raw[:3]
+          assert len(raw)<300_000, len(raw)
+          assert not check.info.get('progressive'), check.info
+          report.write_text(
+              f'format={check.format}\nmode={check.mode}\nwidth={check.width}\nheight={check.height}\nbytes={len(raw)}\nmagic={raw[:3].hex()}\nprogressive={bool(check.info.get("progressive"))}\n',
+              encoding='utf-8'
+          )
           print(report.read_text())
           PY
 
-      - name: Commit recovered preview
+      - name: Commit generated preview
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ganacsi/assets/ganacsi-share-wa-final.jpg ganacsi/assets/ganacsi-recovery-report.txt
-          git commit -m 'Recover valid GANACSI preview JPEG' || exit 0
+          git add ganacsi/assets/ganacsi-share-wa-final.jpg ganacsi/assets/ganacsi-share-wa-final.txt
+          if git diff --cached --quiet; then
+            echo 'Preview already current.'
+            exit 0
+          fi
+          git commit -m 'Generate valid GANACSI social preview image'
           git push
