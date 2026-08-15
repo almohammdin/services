@@ -1,4 +1,4 @@
-name: Build GANACSI WhatsApp Preview
+name: Audit GANACSI Preview Assets
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  build-preview:
+  audit-images:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,90 +25,46 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --disable-pip-version-check pillow
 
-      - name: Recover source and build real JPEG
+      - name: Audit all GANACSI images
         run: |
           python - <<'PY'
           from PIL import Image
           from pathlib import Path
-          from io import BytesIO
-          import base64
+          import hashlib
 
-          src = Path('ganacsi/assets/ganacsi-share-v8.jpg')
-          dst = Path('ganacsi/assets/ganacsi-share-wa-final.jpg')
-          report = Path('ganacsi/assets/ganacsi-share-wa-final.txt')
+          root = Path('ganacsi/assets')
+          report = root / 'ganacsi-image-audit.txt'
+          rows = []
 
-          raw = src.read_bytes()
-          print('source_bytes=', len(raw), 'first16=', raw[:16])
-
-          def open_image(payload):
+          for p in sorted(root.iterdir()):
+              if p.suffix.lower() not in {'.jpg', '.jpeg', '.png', '.webp'}:
+                  continue
+              raw = p.read_bytes()
+              magic = raw[:16].hex()
+              sha256 = hashlib.sha256(raw).hexdigest()[:16]
               try:
-                  img = Image.open(BytesIO(payload))
-                  img.load()
-                  return img
-              except Exception:
-                  return None
-
-          im = open_image(raw)
-          decode_level = 0
-          payload = raw
-          while im is None and decode_level < 3:
-              try:
-                  text = payload.decode('ascii')
-                  compact = ''.join(text.split())
-                  payload = base64.b64decode(compact, validate=False)
-                  decode_level += 1
-                  print('base64_decode_level=', decode_level, 'decoded_bytes=', len(payload), 'first16=', payload[:16])
-                  im = open_image(payload)
+                  im = Image.open(p)
+                  im.load()
+                  rows.append(
+                      f'VALID | {p.name} | format={im.format} | mode={im.mode} | size={im.width}x{im.height} | bytes={len(raw)} | progressive={bool(im.info.get("progressive"))} | magic={magic} | sha256={sha256}'
+                  )
               except Exception as exc:
-                  raise RuntimeError(f'Could not recover image after {decode_level} decode levels: {exc}')
+                  rows.append(
+                      f'BROKEN | {p.name} | bytes={len(raw)} | magic={magic} | sha256={sha256} | error={type(exc).__name__}: {exc}'
+                  )
 
-          if im is None:
-              raise RuntimeError('Source is neither an image nor recoverable base64 image data')
-
-          print('recovered_format=', im.format, 'recovered_size=', im.size, 'mode=', im.mode, 'decode_level=', decode_level)
-          im = im.convert('RGB')
-
-          if im.size != (1200, 630):
-              canvas = Image.new('RGB', (1200, 630), 'white')
-              im.thumbnail((1200, 630), Image.Resampling.LANCZOS)
-              x = (1200 - im.width) // 2
-              y = (630 - im.height) // 2
-              canvas.paste(im, (x, y))
-              im = canvas
-
-          im.save(
-              dst,
-              format='JPEG',
-              quality=55,
-              optimize=True,
-              progressive=False,
-              subsampling=2,
-              dpi=(72, 72),
-          )
-
-          check = Image.open(dst)
-          check.load()
-          size_bytes = dst.stat().st_size
-          assert check.format == 'JPEG'
-          assert check.mode == 'RGB'
-          assert check.size == (1200, 630)
-          assert size_bytes < 150_000, size_bytes
-
-          report.write_text(
-              f'format=JPEG\nmode=RGB\nwidth={check.width}\nheight={check.height}\nbytes={size_bytes}\nprogressive={bool(check.info.get("progressive"))}\ndecode_level={decode_level}\nmagic={dst.read_bytes()[:3].hex()}\n',
-              encoding='utf-8'
-          )
+          report.write_text('\n'.join(rows) + '\n', encoding='utf-8')
           print(report.read_text())
           PY
 
-      - name: Commit generated preview
+      - name: Commit audit report
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add ganacsi/assets/ganacsi-share-wa-final.jpg ganacsi/assets/ganacsi-share-wa-final.txt
+          git add ganacsi/assets/ganacsi-image-audit.txt
           if git diff --cached --quiet; then
-            echo 'Preview already up to date.'
+            echo 'Audit already up to date.'
             exit 0
           fi
-          git commit -m 'Generate valid GANACSI WhatsApp preview JPEG'
+          git commit -m 'Audit GANACSI preview image files'
           git push
