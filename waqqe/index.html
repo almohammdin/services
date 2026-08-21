@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="compact-v8.css?v=0.8.0">
 <link rel="stylesheet" href="rename-v9.css?v=0.9.0">
 <link rel="stylesheet" href="mobile-v10.css?v=0.10.0">
+<link rel="stylesheet" href="stamp-v11.css?v=0.11.1">
 </head>
 <body>
 <header class="topbar">
@@ -65,13 +66,19 @@
       <div class="tool-group add-tools">
         <p class="tool-title">أضف إلى المستند</p>
         <button class="tool-btn primary" id="addSignature" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg><span>أضف التوقيع</span></button>
+        <button class="tool-btn" id="addStamp" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13.5h8l2 3.5H6l2-3.5Z"/><path d="M9.5 13.5V9.8a2.5 2.5 0 0 1 5 0v3.7"/><path d="M5 20h14"/></svg><span>أضف الختم</span></button>
         <button class="tool-btn" id="addDate" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v16H3zM7 2v6M17 2v6M3 10h18"/></svg><span>التاريخ</span></button>
         <button class="tool-btn" id="addText" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14M12 4v16M8 20h8"/></svg><span>نص</span></button>
       </div>
       <div class="tool-group signature-tools">
-        <p class="tool-title">التوقيع</p>
-        <div class="signature-state" id="signatureState"><i></i><span>أنشئ توقيعك للبدء</span></div>
-        <button class="tool-btn" id="manageSignature" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18.5c2.8-1.1 4.7-2.7 6.2-5.2 1.2 1.3 2.1 2.5 3.5 3.1 1.9.8 3.8-.1 6.3-2.4"/><path d="M5 8.5 13.4.1l3.5 3.5L8.5 12l-4.7 1.2Z"/></svg><span>إنشاء توقيع</span></button>
+        <p class="tool-title">التوقيعات</p>
+        <div class="signature-state" id="signatureState"><i></i><span>أضف توقيعك الأول للبدء</span></div>
+        <button class="tool-btn" id="manageSignature" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18.5c2.8-1.1 4.7-2.7 6.2-5.2 1.2 1.3 2.1 2.5 3.5 3.1 1.9.8 3.8-.1 6.3-2.4"/><path d="M5 8.5 13.4.1l3.5 3.5L8.5 12l-4.7 1.2Z"/></svg><span>إدارة التوقيعات</span></button>
+      </div>
+      <div class="tool-group stamp-tools">
+        <p class="tool-title">الختم</p>
+        <div class="signature-state" id="stampState"><i></i><span>لم يتم حفظ ختم بعد</span></div>
+        <button class="tool-btn" id="manageStamp" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13.5h8l2 3.5H6l2-3.5Z"/><path d="M9.5 13.5V9.8a2.5 2.5 0 0 1 5 0v3.7"/><path d="M5 20h14"/></svg><span>إدارة الختم</span></button>
       </div>
     </aside>
 
@@ -94,7 +101,7 @@
     <p>تم تثبيت التوقيع والعناصر داخل PDF. أرسله من قائمة مشاركة جهازك أو نزّله.</p>
     <div class="result-file"><div><strong id="resultName">—</strong><span id="resultInfo">—</span></div><svg width="29" height="29" viewBox="0 0 24 24" style="color:#C9853C" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
     <div class="result-actions"><button class="big-action share" id="shareResult" type="button">مشاركة إلى واتساب أو البريد</button><button class="big-action download" id="downloadResult" type="button">تنزيل PDF</button></div>
-    <button class="restart" id="backToEdit" type="button">العودة للمستند</button>
+    <button class="restart" id="backToEdit" type="button">ابدأ من جديد</button>
   </section>
 </div></main>
 
@@ -111,18 +118,28 @@
       <a class="social-handle" href="https://linktr.ee/almohammdin" target="_blank" rel="noopener">Almohammdin</a>
     </div>
   </div>
-  <div class="footer-bottom"><span class="footer-privacy">خصوصيتك محفوظة: لا تحتفظ المنصة بملفات PDF، ويُحفظ توقيعك محليًا ضمن بيانات المتصفح على جهازك لتسهيل استخدامه لاحقًا.</span><b>v0.10.0</b></div>
+  <div class="footer-bottom"><span class="footer-privacy">خصوصيتك محفوظة: لا تحتفظ المنصة بملفات PDF، وتُحفظ توقيعاتك وختمك محليًا على جهازك لتسهيل استخدامها لاحقًا.</span><b>v0.11.2</b></div>
 </div></footer>
 
 <div class="modal hidden" id="signatureModal" role="dialog" aria-modal="true" aria-labelledby="signatureTitle"><div class="modal-card">
   <div class="modal-head"><h3 id="signatureTitle">توقيعك</h3><button class="icon-close" id="closeSignature" type="button" aria-label="إغلاق">×</button></div>
   <div class="modal-body">
     <div class="signature-tabs"><button class="tab-btn active" data-sig-tab="saved" type="button">المحفوظ</button><button class="tab-btn" data-sig-tab="upload" type="button">رفع صورة</button><button class="tab-btn" data-sig-tab="draw" type="button">ارسم التوقيع</button></div>
-    <div class="sig-pane" data-sig-pane="saved"><div class="signature-box" id="savedSignatureBox"></div><div class="draw-actions"><button class="mini-link hidden" id="deleteSavedSignature" type="button">حذف التوقيع المحفوظ</button></div></div>
+    <div class="sig-pane" data-sig-pane="saved"><div class="signature-box signature-library" id="savedSignatureBox"></div><div class="draw-actions"><button class="mini-link hidden" id="deleteSavedSignature" type="button">حذف التوقيع المحدد</button></div></div>
     <div class="sig-pane hidden" data-sig-pane="upload"><label class="upload-label" for="signatureUpload"><div><strong>اختر صورة توقيع</strong><small>يقص الفراغ الأبيض ويحفظها كصورة شفافة</small></div></label><input id="signatureUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden><div class="signature-box hidden" id="uploadPreviewBox" style="margin-top:10px"><img id="uploadPreview" class="saved-preview" alt="معاينة التوقيع"></div></div>
     <div class="sig-pane hidden" data-sig-pane="draw"><div class="draw-wrap"><canvas class="draw-canvas" id="signatureCanvas"></canvas><div class="draw-actions"><button class="mini-link" id="clearSignature" type="button">مسح الرسم</button></div></div></div>
   </div>
   <div class="modal-foot"><button class="save-signature" id="saveSignature" type="button">حفظ التوقيع</button></div>
+</div></div>
+
+<div class="modal hidden" id="stampModal" role="dialog" aria-modal="true" aria-labelledby="stampTitle"><div class="modal-card stamp-modal-card">
+  <div class="modal-head"><h3 id="stampTitle">ختمك</h3><button class="icon-close" id="closeStamp" type="button" aria-label="إغلاق">×</button></div>
+  <div class="modal-body">
+    <div class="signature-tabs stamp-tabs"><button class="tab-btn active" data-stamp-tab="saved" type="button">المحفوظ</button><button class="tab-btn" data-stamp-tab="upload" type="button">رفع صورة</button></div>
+    <div class="stamp-pane" data-stamp-pane="saved"><div class="signature-box" id="savedStampBox"></div><div class="draw-actions"><button class="mini-link hidden" id="deleteSavedStamp" type="button">حذف الختم المحفوظ</button></div></div>
+    <div class="stamp-pane hidden" data-stamp-pane="upload"><label class="upload-label" for="stampUpload"><div><strong>اختر صورة الختم</strong><small>PNG أو JPG أو WebP — تزال الخلفية البيضاء تلقائيًا</small></div></label><input id="stampUpload" type="file" accept="image/png,image/jpeg,image/webp" hidden><div class="signature-box hidden" id="stampPreviewBox" style="margin-top:10px"><img id="stampPreview" class="saved-preview stamp-preview" alt="معاينة الختم"></div></div>
+  </div>
+  <div class="modal-foot"><button class="save-signature" id="saveStamp" type="button">حفظ الختم</button></div>
 </div></div>
 
 <div class="modal text-dialog hidden" id="textModal" role="dialog" aria-modal="true" aria-labelledby="textTitle"><div class="modal-card"><div class="modal-head"><h3 id="textTitle">إضافة نص</h3><button class="icon-close" id="closeText" type="button" aria-label="إغلاق">×</button></div><div class="modal-body"><input class="text-field" id="textInput" type="text" maxlength="80" placeholder="اكتب النص هنا"></div><div class="modal-foot"><small>يمكن تحريك النص وتغيير حجمه بعد إضافته</small><button class="save-signature" id="confirmText" type="button">إضافة</button></div></div></div>
@@ -132,10 +149,10 @@
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@5.1.3/dist/signature_pad.umd.min.js"></script>
 <script src="rename-v9.js?v=0.9.0"></script>
-<script type="module" src="app.js?v=0.5.0"></script>
+<script type="module" src="app.js?v=0.11.2"></script>
 <script type="module" src="ux-v3.js?v=0.4.1"></script>
 <script src="features-v5.js?v=0.7.2"></script>
-<script src="i18n.js?v=0.6.0"></script>
+<script src="i18n.js?v=0.11.1"></script>
 <script src="ui-v6.js?v=0.6.0"></script>
 </body>
 </html>

@@ -35,9 +35,22 @@
       }
     };
 
+    const stampCopy={
+      ar:{signatures:'التوقيعات',signatureStart:'أضف توقيعك الأول للبدء',signatureReady:'التوقيعات جاهزة',createSignature:'إدارة التوقيعات',changeSignature:'إدارة التوقيعات',yourSignature:'توقيعاتك',deleteSignature:'حذف التوقيع المحدد',emptySignature:'لا توجد توقيعات محفوظة. أضف توقيعًا جديدًا.',addStamp:'أضف الختم',stamp:'الختم',stampStart:'لم يتم حفظ ختم بعد',stampReady:'الختم محفوظ وجاهز',manageStamp:'إدارة الختم',yourStamp:'ختمك',deleteStamp:'حذف الختم المحفوظ',chooseStampImage:'اختر صورة الختم',stampPrep:'PNG أو JPG أو WebP — تزال الخلفية البيضاء تلقائيًا',emptyStamp:'لا يوجد ختم محفوظ. ارفع صورة ختم لإضافتها.',saveStamp:'حفظ الختم',saveStampAdd:'حفظ وإضافة للمستند',dragStamp:'اسحب الختم إلى مكانه',stampImageReady:'تم تجهيز صورة الختم',stampImageError:'تعذر قراءة صورة الختم',sessionStamp:'تعذر حفظ الختم محليًا، سيبقى لهذه الجلسة فقط',stampSaved:'تم حفظ الختم',stampDeleted:'تم حذف الختم المحفوظ',privacy:'خصوصيتك محفوظة: لا تحتفظ المنصة بملفات PDF، وتُحفظ توقيعاتك وختمك محليًا على جهازك لتسهيل استخدامها لاحقًا.'},
+      en:{signatures:'Signatures',signatureStart:'Add your first signature to start',signatureReady:'Signatures ready',createSignature:'Manage signatures',changeSignature:'Manage signatures',yourSignature:'Your signatures',deleteSignature:'Delete selected signature',emptySignature:'No saved signatures. Add a new signature.',addStamp:'Add stamp',stamp:'Stamp',stampStart:'No stamp saved yet',stampReady:'Stamp saved and ready',manageStamp:'Manage stamp',yourStamp:'Your stamp',deleteStamp:'Delete saved stamp',chooseStampImage:'Choose a stamp image',stampPrep:'PNG, JPG, or WebP — white background is removed automatically',emptyStamp:'No saved stamp. Upload a stamp image to add it.',saveStamp:'Save stamp',saveStampAdd:'Save and add to document',dragStamp:'Drag the stamp into position',stampImageReady:'Stamp image is ready',stampImageError:'The stamp image could not be read',sessionStamp:'The stamp could not be saved locally and will remain for this session',stampSaved:'Stamp saved',stampDeleted:'Saved stamp deleted',privacy:'Privacy: PDF files are not stored; your signatures and stamp are saved locally on your device for easier reuse.'},
+      fr:{signatures:'Signatures',signatureStart:'Ajoutez votre première signature',signatureReady:'Signatures prêtes',createSignature:'Gérer les signatures',changeSignature:'Gérer les signatures',yourSignature:'Vos signatures',deleteSignature:'Supprimer la signature sélectionnée',emptySignature:'Aucune signature enregistrée. Ajoutez-en une.',addStamp:'Ajouter le cachet',stamp:'Cachet',stampStart:'Aucun cachet enregistré',stampReady:'Cachet enregistré et prêt',manageStamp:'Gérer le cachet',yourStamp:'Votre cachet',deleteStamp:'Supprimer le cachet enregistré',chooseStampImage:'Choisir une image du cachet',stampPrep:'PNG, JPG ou WebP — le fond blanc est supprimé automatiquement',emptyStamp:'Aucun cachet enregistré. Importez une image.',saveStamp:'Enregistrer le cachet',saveStampAdd:'Enregistrer et ajouter au document',dragStamp:'Placez le cachet à l’endroit souhaité',stampImageReady:'L’image du cachet est prête',stampImageError:'Impossible de lire l’image du cachet',sessionStamp:'Le cachet restera disponible pour cette session',stampSaved:'Cachet enregistré',stampDeleted:'Cachet enregistré supprimé',privacy:'Confidentialité : les PDF ne sont pas conservés ; vos signatures et votre cachet sont enregistrés localement sur votre appareil.'},
+      es:{signatures:'Firmas',signatureStart:'Añade tu primera firma',signatureReady:'Firmas listas',createSignature:'Gestionar firmas',changeSignature:'Gestionar firmas',yourSignature:'Tus firmas',deleteSignature:'Eliminar firma seleccionada',emptySignature:'No hay firmas guardadas. Añade una nueva.',addStamp:'Añadir sello',stamp:'Sello',stampStart:'Aún no hay sello guardado',stampReady:'Sello guardado y listo',manageStamp:'Gestionar sello',yourStamp:'Tu sello',deleteStamp:'Eliminar sello guardado',chooseStampImage:'Elige una imagen del sello',stampPrep:'PNG, JPG o WebP — el fondo blanco se elimina automáticamente',emptyStamp:'No hay sello guardado. Sube una imagen.',saveStamp:'Guardar sello',saveStampAdd:'Guardar y añadir al documento',dragStamp:'Arrastra el sello hasta su lugar',stampImageReady:'La imagen del sello está lista',stampImageError:'No se pudo leer la imagen del sello',sessionStamp:'El sello permanecerá durante esta sesión',stampSaved:'Sello guardado',stampDeleted:'Sello guardado eliminado',privacy:'Privacidad: los PDF no se almacenan; tus firmas y sello se guardan localmente en tu dispositivo.'},
+      ur:{signatures:'دستخط',signatureStart:'اپنا پہلا دستخط شامل کریں',signatureReady:'دستخط تیار ہیں',createSignature:'دستخط منظم کریں',changeSignature:'دستخط منظم کریں',yourSignature:'آپ کے دستخط',deleteSignature:'منتخب دستخط حذف کریں',emptySignature:'کوئی محفوظ دستخط نہیں۔ نیا دستخط شامل کریں۔',addStamp:'مہر شامل کریں',stamp:'مہر',stampStart:'ابھی کوئی مہر محفوظ نہیں',stampReady:'مہر محفوظ اور تیار ہے',manageStamp:'مہر منظم کریں',yourStamp:'آپ کی مہر',deleteStamp:'محفوظ مہر حذف کریں',chooseStampImage:'مہر کی تصویر منتخب کریں',stampPrep:'PNG، JPG یا WebP — سفید پس منظر خودکار طور پر ہٹ جاتا ہے',emptyStamp:'کوئی محفوظ مہر نہیں۔ تصویر اپ لوڈ کریں۔',saveStamp:'مہر محفوظ کریں',saveStampAdd:'محفوظ کریں اور دستاویز میں شامل کریں',dragStamp:'مہر کو مطلوبہ جگہ پر لے جائیں',stampImageReady:'مہر کی تصویر تیار ہے',stampImageError:'مہر کی تصویر پڑھی نہیں جا سکی',sessionStamp:'مہر موجودہ سیشن میں دستیاب رہے گی',stampSaved:'مہر محفوظ ہو گئی',stampDeleted:'محفوظ مہر حذف ہو گئی',privacy:'رازداری: PDF محفوظ نہیں ہوتی؛ آپ کے دستخط اور مہر آپ کے آلے پر مقامی طور پر محفوظ رہتے ہیں۔'},
+      tr:{signatures:'İmzalar',signatureStart:'İlk imzanızı ekleyin',signatureReady:'İmzalar hazır',createSignature:'İmzaları yönet',changeSignature:'İmzaları yönet',yourSignature:'İmzalarınız',deleteSignature:'Seçili imzayı sil',emptySignature:'Kayıtlı imza yok. Yeni bir imza ekleyin.',addStamp:'Kaşe ekle',stamp:'Kaşe',stampStart:'Henüz kaşe kaydedilmedi',stampReady:'Kaşe kayıtlı ve hazır',manageStamp:'Kaşeyi yönet',yourStamp:'Kaşeniz',deleteStamp:'Kayıtlı kaşeyi sil',chooseStampImage:'Kaşe görseli seç',stampPrep:'PNG, JPG veya WebP — beyaz arka plan otomatik kaldırılır',emptyStamp:'Kayıtlı kaşe yok. Bir görsel yükleyin.',saveStamp:'Kaşeyi kaydet',saveStampAdd:'Kaydet ve belgeye ekle',dragStamp:'Kaşeyi istediğiniz konuma sürükleyin',stampImageReady:'Kaşe görseli hazır',stampImageError:'Kaşe görseli okunamadı',sessionStamp:'Kaşe bu oturumda kullanılacak',stampSaved:'Kaşe kaydedildi',stampDeleted:'Kayıtlı kaşe silindi',privacy:'Gizlilik: PDF dosyaları saklanmaz; imzalarınız ve kaşeniz cihazınızda yerel olarak kaydedilir.'},
+      zh:{signatures:'签名',signatureStart:'添加您的第一个签名',signatureReady:'签名已就绪',createSignature:'管理签名',changeSignature:'管理签名',yourSignature:'您的签名',deleteSignature:'删除所选签名',emptySignature:'没有已保存的签名，请添加新签名。',addStamp:'添加印章',stamp:'印章',stampStart:'尚未保存印章',stampReady:'印章已保存并可用',manageStamp:'管理印章',yourStamp:'您的印章',deleteStamp:'删除已保存印章',chooseStampImage:'选择印章图片',stampPrep:'PNG、JPG 或 WebP — 自动移除白色背景',emptyStamp:'没有已保存的印章，请上传图片。',saveStamp:'保存印章',saveStampAdd:'保存并添加到文档',dragStamp:'将印章拖到所需位置',stampImageReady:'印章图片已准备好',stampImageError:'无法读取印章图片',sessionStamp:'印章将在当前会话中可用',stampSaved:'印章已保存',stampDeleted:'已删除保存的印章',privacy:'隐私：平台不会存储 PDF；您的签名和印章仅保存在设备本地。'},
+      ko:{signatures:'서명',signatureStart:'첫 서명을 추가하세요',signatureReady:'서명 준비됨',createSignature:'서명 관리',changeSignature:'서명 관리',yourSignature:'내 서명',deleteSignature:'선택한 서명 삭제',emptySignature:'저장된 서명이 없습니다. 새 서명을 추가하세요.',addStamp:'도장 추가',stamp:'도장',stampStart:'저장된 도장이 없습니다',stampReady:'도장 준비됨',manageStamp:'도장 관리',yourStamp:'내 도장',deleteStamp:'저장된 도장 삭제',chooseStampImage:'도장 이미지 선택',stampPrep:'PNG, JPG 또는 WebP — 흰 배경은 자동 제거됩니다',emptyStamp:'저장된 도장이 없습니다. 이미지를 업로드하세요.',saveStamp:'도장 저장',saveStampAdd:'저장하고 문서에 추가',dragStamp:'도장을 원하는 위치로 이동하세요',stampImageReady:'도장 이미지가 준비되었습니다',stampImageError:'도장 이미지를 읽을 수 없습니다',sessionStamp:'도장은 현재 세션에서 사용할 수 있습니다',stampSaved:'도장 저장됨',stampDeleted:'저장된 도장 삭제됨',privacy:'개인정보: PDF는 저장되지 않으며 서명과 도장은 기기에 로컬로 저장됩니다.'},
+      hi:{signatures:'हस्ताक्षर',signatureStart:'अपना पहला हस्ताक्षर जोड़ें',signatureReady:'हस्ताक्षर तैयार हैं',createSignature:'हस्ताक्षर प्रबंधित करें',changeSignature:'हस्ताक्षर प्रबंधित करें',yourSignature:'आपके हस्ताक्षर',deleteSignature:'चयनित हस्ताक्षर हटाएँ',emptySignature:'कोई हस्ताक्षर सहेजा नहीं है। नया जोड़ें।',addStamp:'मुहर जोड़ें',stamp:'मुहर',stampStart:'अभी कोई मुहर सहेजी नहीं है',stampReady:'मुहर तैयार है',manageStamp:'मुहर प्रबंधित करें',yourStamp:'आपकी मुहर',deleteStamp:'सहेजी मुहर हटाएँ',chooseStampImage:'मुहर की छवि चुनें',stampPrep:'PNG, JPG या WebP — सफेद पृष्ठभूमि स्वतः हटती है',emptyStamp:'कोई मुहर सहेजी नहीं है। छवि अपलोड करें।',saveStamp:'मुहर सहेजें',saveStampAdd:'सहेजें और दस्तावेज़ में जोड़ें',dragStamp:'मुहर को सही जगह खिसकाएँ',stampImageReady:'मुहर की छवि तैयार है',stampImageError:'मुहर की छवि पढ़ी नहीं जा सकी',sessionStamp:'मुहर इस सत्र में उपलब्ध रहेगी',stampSaved:'मुहर सहेजी गई',stampDeleted:'सहेजी मुहर हटाई गई',privacy:'गोपनीयता: PDF संग्रहित नहीं होते; आपके हस्ताक्षर और मुहर आपके डिवाइस पर स्थानीय रूप से सहेजे जाते हैं।'}
+    };
+    const restartCopy={ar:'ابدأ من جديد',en:'Start over',fr:'Recommencer',es:'Empezar de nuevo',ur:'دوبارہ شروع کریں',tr:'Baştan başla',zh:'重新开始',ko:'처음부터 시작',hi:'फिर से शुरू करें'};
+
     const q=s=>document.querySelector(s);
-    let lang='ar',saveMode='save',applying=false;
-    const t=k=>(copy[lang]&&copy[lang][k])||copy.ar[k]||k;
+    let lang='ar',saveMode='save',stampSaveMode='save',applying=false;
+    const t=k=>k==='back'?(restartCopy[lang]||restartCopy.ar):(stampCopy[lang]&&stampCopy[lang][k])||stampCopy.ar[k]||(copy[lang]&&copy[lang][k])||copy.ar[k]||k;
     const setText=(el,value)=>{if(el&&el.textContent!==value)el.textContent=value};
     const text=(selector,value)=>setText(q(selector),value);
     const html=(selector,value)=>{const el=q(selector);if(el&&el.innerHTML!==value)el.innerHTML=value};
@@ -71,6 +84,14 @@
       setText(q('#savedSignatureBox .signature-empty'),t('emptySignature'));
     }
 
+    function updateStampState(){
+      const box=q('#stampState');if(!box)return;
+      const ready=box.classList.contains('ready');
+      setText(box.querySelector('span'),ready?t('stampReady'):t('stampStart'));
+      buttonLabel('#manageStamp',t('manageStamp'));
+      setText(q('#savedStampBox .signature-empty'),t('emptyStamp'));
+    }
+
     function updateFileInfo(){
       const el=q('#fileInfo');if(!el||el.textContent==='—')return;
       const m=el.textContent.match(/^(.*?)\s*·\s*(\d+)\s+(.+)$/);if(!m)return;
@@ -78,8 +99,9 @@
     }
 
     function updateSaveButton(){buttonLabel('#saveSignature',saveMode==='add'?t('saveAdd'):t('saveSignature'))}
+    function updateStampSaveButton(){buttonLabel('#saveStamp',stampSaveMode==='add'?t('saveStampAdd'):t('saveStamp'))}
 
-    const toastMap={'اختر ملف PDF':'selectPdf','الملف كبير جدًا لهذه النسخة':'largeFile','تعذر فتح الملف. قد يكون محميًا أو تالفًا.':'openError','اكتب النص أولًا':'typeText','اسحب التوقيع إلى مكانه':'dragSignature','تمت الإضافة، يمكنك تحريكها':'itemAdded','تم تجهيز صورة التوقيع':'imageReady','استخدم PNG أو JPG أو WebP':'imageTypes','تعذر قراءة صورة التوقيع':'imageError','سيستخدم التوقيع في الجلسة الحالية':'sessionSignature','تعذر حفظ التوقيع محليًا، سيبقى لهذه الجلسة فقط':'sessionSignature','تم حفظ التوقيع':'signatureSaved','تم حذف التوقيع المحفوظ':'signatureDeleted','أضف التوقيع أو عنصرًا إلى المستند أولًا':'addFirst','تم إنشاء الملف الموقع':'signedReady','تعذر إنشاء الملف. قد يكون PDF محميًا ضد التعديل.':'createError','تم تنزيل الملف. أرفقه في واتساب أو البريد.':'downloadAttach','تم تنزيل الملف بدل المشاركة':'downloadFallback'};
+    const toastMap={'اختر ملف PDF':'selectPdf','الملف كبير جدًا لهذه النسخة':'largeFile','تعذر فتح الملف. قد يكون محميًا أو تالفًا.':'openError','اكتب النص أولًا':'typeText','اسحب التوقيع إلى مكانه':'dragSignature','اسحب الختم إلى مكانه':'dragStamp','تمت الإضافة، يمكنك تحريكها':'itemAdded','تم تجهيز صورة التوقيع':'imageReady','تم تجهيز صورة الختم':'stampImageReady','استخدم PNG أو JPG أو WebP':'imageTypes','تعذر قراءة صورة التوقيع':'imageError','تعذر قراءة صورة الختم':'stampImageError','سيستخدم التوقيع في الجلسة الحالية':'sessionSignature','تعذر حفظ التوقيع محليًا، سيبقى لهذه الجلسة فقط':'sessionSignature','تعذر حفظ الختم محليًا، سيبقى لهذه الجلسة فقط':'sessionStamp','تم حفظ التوقيع':'signatureSaved','تم حفظ الختم':'stampSaved','تم حذف التوقيع المحفوظ':'signatureDeleted','تم حذف الختم المحفوظ':'stampDeleted','أضف التوقيع أو عنصرًا إلى المستند أولًا':'addFirst','تم إنشاء الملف الموقع':'signedReady','تعذر إنشاء الملف. قد يكون PDF محميًا ضد التعديل.':'createError','تم تنزيل الملف. أرفقه في واتساب أو البريد.':'downloadAttach','تم تنزيل الملف بدل المشاركة':'downloadFallback'};
     const loadingMap={'جاري تجهيز الملف…':'preparing','جاري فتح ملف PDF…':'openingPdf','جاري تثبيت العناصر داخل PDF…':'fixingPdf'};
     function translateDynamicNode(el,map){if(!el||applying)return;const key=map[el.textContent.trim()];if(key){applying=true;setText(el,t(key));applying=false}}
 
@@ -95,8 +117,8 @@
       document.querySelectorAll('.step').forEach((el,i)=>{const next=`<b>${i+1}</b>${t('step'+(i+1))}`;if(el.innerHTML!==next)el.innerHTML=next});
       text('.upload-zone h2',t('choosePdf'));text('.upload-zone p',t('chooseHint'));buttonLabel('#pickPdf',t('uploadPdf'));
       text('.file-meta small',t('currentFile'));
-      const titles=document.querySelectorAll('.tool-title');if(titles[0])setText(titles[0],t('addToDoc'));if(titles[1])setText(titles[1],t('signature'));
-      buttonLabel('#addSignature',t('addSignature'));buttonLabel('#addDate',t('date'));buttonLabel('#addText',t('text'));
+      const titles=document.querySelectorAll('.tool-title');if(titles[0])setText(titles[0],t('addToDoc'));if(titles[1])setText(titles[1],t('signatures'));if(titles[2])setText(titles[2],t('stamp'));
+      buttonLabel('#addSignature',t('addSignature'));buttonLabel('#addStamp',t('addStamp'));buttonLabel('#addDate',t('date'));buttonLabel('#addText',t('text'));
       text('.viewer-status span',t('page'));buttonLabel('#undoBtn',t('undo'));buttonLabel('#changeFile',t('changeFile'));
       text('.export-copy strong',t('ready'));text('.export-copy span',t('newCopy'));buttonLabel('#exportPdf',t('createSigned'));
       text('#resultPanel h2',t('fileReady'));text('#resultPanel p',t('fileReadyDesc'));buttonLabel('#shareResult',t('share'));buttonLabel('#downloadResult',t('download'));buttonLabel('#backToEdit',t('back'));
@@ -104,8 +126,11 @@
       text('#signatureTitle',t('yourSignature'));q('#closeSignature')?.setAttribute('aria-label',t('close'));
       document.querySelectorAll('[data-sig-tab]').forEach(tab=>{if(tab.dataset.sigTab==='saved')setText(tab,t('saved'));if(tab.dataset.sigTab==='upload')setText(tab,t('uploadImage'));if(tab.dataset.sigTab==='draw')setText(tab,t('drawSignature'))});
       buttonLabel('#deleteSavedSignature',t('deleteSignature'));text('[data-sig-pane="upload"] .upload-label strong',t('chooseSignatureImage'));text('[data-sig-pane="upload"] .upload-label small',t('imagePrep'));buttonLabel('#clearSignature',t('clearDrawing'));
+      text('#stampTitle',t('yourStamp'));q('#closeStamp')?.setAttribute('aria-label',t('close'));
+      document.querySelectorAll('[data-stamp-tab]').forEach(tab=>setText(tab,tab.dataset.stampTab==='saved'?t('saved'):t('uploadImage')));
+      buttonLabel('#deleteSavedStamp',t('deleteStamp'));text('[data-stamp-pane="upload"] .upload-label strong',t('chooseStampImage'));text('[data-stamp-pane="upload"] .upload-label small',t('stampPrep'));
       text('#textTitle',t('addText'));q('#closeText')?.setAttribute('aria-label',t('close'));const input=q('#textInput');if(input)input.placeholder=t('textPlaceholder');text('#textModal .modal-foot small',t('textHelp'));buttonLabel('#confirmText',t('add'));
-      updateSignatureState();updateFileInfo();updateSaveButton();
+      updateSignatureState();updateStampState();updateFileInfo();updateSaveButton();updateStampSaveButton();
       const load=q('#loadingText');if(load){const key=loadingMap[load.textContent.trim()];if(key)setText(load,t(key))}
       applying=false;
     }
@@ -117,6 +142,8 @@
 
     const sig=q('#signatureState');if(sig)new MutationObserver(()=>{if(!applying)updateSignatureState()}).observe(sig,{attributes:true,childList:true,subtree:true});
     const saved=q('#savedSignatureBox');if(saved)new MutationObserver(()=>{if(!applying)updateSignatureState()}).observe(saved,{childList:true,subtree:true});
+    const stamp=q('#stampState');if(stamp)new MutationObserver(()=>{if(!applying)updateStampState()}).observe(stamp,{attributes:true,childList:true,subtree:true});
+    const savedStamp=q('#savedStampBox');if(savedStamp)new MutationObserver(()=>{if(!applying)updateStampState()}).observe(savedStamp,{childList:true,subtree:true});
     const info=q('#fileInfo');if(info)new MutationObserver(()=>{if(!applying)updateFileInfo()}).observe(info,{childList:true,subtree:true});
     const toast=q('#toast');if(toast)new MutationObserver(()=>translateDynamicNode(toast,toastMap)).observe(toast,{childList:true,subtree:true});
     const loading=q('#loadingText');if(loading)new MutationObserver(()=>translateDynamicNode(loading,loadingMap)).observe(loading,{childList:true,subtree:true});
@@ -124,6 +151,9 @@
     q('#addSignature')?.addEventListener('click',()=>setTimeout(()=>{if(!q('#signatureModal')?.classList.contains('hidden')){saveMode='add';updateSaveButton()}},0));
     q('#manageSignature')?.addEventListener('click',()=>setTimeout(()=>{if(!q('#signatureModal')?.classList.contains('hidden')&&q('#signatureState')?.classList.contains('ready')){saveMode='save';updateSaveButton()}},0));
     q('#closeSignature')?.addEventListener('click',()=>{saveMode='save'});
+    q('#addStamp')?.addEventListener('click',()=>setTimeout(()=>{if(!q('#stampModal')?.classList.contains('hidden')){stampSaveMode='add';updateStampSaveButton()}},0));
+    q('#manageStamp')?.addEventListener('click',()=>setTimeout(()=>{if(!q('#stampModal')?.classList.contains('hidden')){stampSaveMode='save';updateStampSaveButton()}},0));
+    q('#closeStamp')?.addEventListener('click',()=>{stampSaveMode='save'});
 
     q('#addDate')?.addEventListener('click',e=>{
       e.preventDefault();e.stopImmediatePropagation();

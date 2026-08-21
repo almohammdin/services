@@ -5,6 +5,8 @@ const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const SIG_KEY='waqqe_signature_v2';
 const LEGACY_SIG_KEY='waqqe_signature_v1';
+const SIG_LIBRARY_KEY='waqqe_signatures_v3';
+const STAMP_KEY='waqqe_stamp_v1';
 const FONT_STACKS={
   craft:"NaifCraft, Tahoma, Arial, sans-serif",
   modern:"-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif",
@@ -13,12 +15,15 @@ const FONT_STACKS={
 };
 const state={
   file:null,originalBytes:null,pdfjsDoc:null,pages:[],activePage:1,
-  overlays:[],history:[],signature:null,uploadSignature:null,
+  overlays:[],history:[],signatures:[],activeSignatureId:null,signature:null,uploadSignature:null,
+  stamp:null,uploadStamp:null,
   signaturePad:null,pendingAddSignature:false,outputBlob:null,outputFile:null,
+  pendingAddStamp:false,
   renderToken:0,observer:null
 };
 
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+const newId=prefix=>crypto.randomUUID?.()||(`${prefix}${Date.now()}${Math.random()}`);
 const escapeHtml=t=>String(t).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const getSignatureColor=()=>window.WaqqeFeatures?.getSignatureColor?.()||'#102D43';
 const getTextFont=()=>window.WaqqeFeatures?.getTextFont?.()||'craft';
@@ -31,24 +36,52 @@ function outputName(){const name=(state.file?.name||'document.pdf').replace(/\.p
 function updateUndo(){$('#undoBtn').disabled=!state.history.length}
 function updateActivePageLabel(){$('#activePageLabel').textContent=`${state.activePage} / ${state.pdfjsDoc?.numPages||1}`}
 function updateSignatureUi(){
-  const ready=!!state.signature, el=$('#signatureState');
+  const ready=state.signatures.length>0, el=$('#signatureState');
   el.classList.toggle('ready',ready);
-  el.querySelector('span').textContent=ready?'التوقيع محفوظ وجاهز':'لم يتم حفظ توقيع بعد';
+  el.querySelector('span').textContent=ready?`${state.signatures.length} توقيع محفوظ`:'لم يتم حفظ توقيع بعد';
   $('#deleteSavedSignature')?.classList.toggle('hidden',!ready);
   renderSavedSignature();
 }
+function persistSignatures(){
+  try{
+    localStorage.setItem(SIG_LIBRARY_KEY,JSON.stringify(state.signatures));
+    localStorage.removeItem(SIG_KEY);localStorage.removeItem(LEGACY_SIG_KEY);
+    return true;
+  }catch{return false}
+}
+function selectSignature(id){
+  const entry=state.signatures.find(x=>x.id===id)||state.signatures[0]||null;
+  state.activeSignatureId=entry?.id||null;state.signature=entry?.data||null;
+  persistSignatures();renderSavedSignature();updateSignatureUi();updateSaveButton();
+}
 function loadSavedSignature(){
   try{
-    state.signature=localStorage.getItem(SIG_KEY)||localStorage.getItem(LEGACY_SIG_KEY)||null;
-    if(state.signature&&!localStorage.getItem(SIG_KEY)) localStorage.setItem(SIG_KEY,state.signature);
-  }catch{state.signature=null}
+    const parsed=JSON.parse(localStorage.getItem(SIG_LIBRARY_KEY)||'[]');
+    state.signatures=Array.isArray(parsed)?parsed.filter(x=>x&&x.id&&/^data:image\//.test(x.data||'')):[];
+    const legacy=localStorage.getItem(SIG_KEY)||localStorage.getItem(LEGACY_SIG_KEY)||null;
+    if(!state.signatures.length&&legacy)state.signatures=[{id:newId('sig'),data:legacy,createdAt:Date.now()}];
+    state.activeSignatureId=state.signatures[0]?.id||null;state.signature=state.signatures[0]?.data||null;
+    persistSignatures();
+  }catch{state.signatures=[];state.activeSignatureId=null;state.signature=null}
   updateSignatureUi();
 }
 function renderSavedSignature(){
   const box=$('#savedSignatureBox'); if(!box)return;
-  box.innerHTML=state.signature
-    ? `<img class="saved-preview" src="${state.signature}" alt="التوقيع المحفوظ">`
-    : '<div class="signature-empty">لا يوجد توقيع محفوظ على هذا الجهاز.<br>ارفع صورة أو ارسم توقيعك مرة واحدة.</div>';
+  box.innerHTML=state.signatures.length
+    ? state.signatures.map((entry,index)=>`<button class="signature-choice${entry.id===state.activeSignatureId?' active':''}" type="button" data-signature-id="${escapeHtml(entry.id)}" aria-label="توقيع ${index+1}"><img src="${entry.data}" alt="توقيع محفوظ ${index+1}"><span class="choice-check">✓</span></button>`).join('')
+    : '<div class="signature-empty">لا توجد توقيعات محفوظة على هذا الجهاز.<br>ارفع صورة أو ارسم توقيعًا جديدًا.</div>';
+}
+$('#savedSignatureBox').addEventListener('click',e=>{const choice=e.target.closest('[data-signature-id]');if(choice)selectSignature(choice.dataset.signatureId)});
+
+function updateStampUi(){
+  const ready=!!state.stamp,el=$('#stampState');
+  el.classList.toggle('ready',ready);el.querySelector('span').textContent=ready?'الختم محفوظ وجاهز':'لم يتم حفظ ختم بعد';
+  $('#deleteSavedStamp')?.classList.toggle('hidden',!ready);renderSavedStamp();
+}
+function loadSavedStamp(){try{state.stamp=localStorage.getItem(STAMP_KEY)||null}catch{state.stamp=null}updateStampUi()}
+function renderSavedStamp(){
+  const box=$('#savedStampBox');if(!box)return;
+  box.innerHTML=state.stamp?`<img class="saved-preview stamp-preview" src="${state.stamp}" alt="الختم المحفوظ">`:'<div class="signature-empty">لا يوجد ختم محفوظ على هذا الجهاز.<br>ارفع صورة ختم لإضافتها إلى المستند.</div>';
 }
 
 $('#pickPdf').addEventListener('click',()=>$('#pdfInput').click());
@@ -145,6 +178,10 @@ $('#addSignature').addEventListener('click',async()=>{
   if(!state.signature){openSignatureModal('draw',true);return}
   await addSignatureOverlay(state.signature);
 });
+$('#addStamp').addEventListener('click',async()=>{
+  if(!state.stamp){openStampModal('upload',true);return}
+  await addStampOverlay(state.stamp);
+});
 $('#addDate').addEventListener('click',()=>{
   const now=new Date();
   const greg=new Intl.DateTimeFormat('ar-SA-u-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
@@ -159,24 +196,38 @@ async function addSignatureOverlay(src){
   const page=state.pages[state.activePage-1];if(!page)return;
   pushHistory();
   const coloredSrc=await tintSignature(src,getSignatureColor());
-  const aspect=clamp(await imageAspect(coloredSrc),1.2,6);
-  let nw=.20,nh=nw*(page.width/page.height)/aspect;
-  nh=clamp(nh,.015,.12);
-  const o={id:crypto.randomUUID?.()||('o'+Date.now()+Math.random()),type:'signature',page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src:coloredSrc};
+  const aspect=clamp(await imageAspect(coloredSrc),.2,10);
+  const {nw,nh}=initialImageSize(page,aspect,.20,.015,.26);
+  const o={id:newId('o'),type:'signature',page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src:coloredSrc};
   state.overlays.push(o);renderOverlay(o);selectOverlay(o.id);toast('اسحب التوقيع إلى مكانه');
+}
+async function addStampOverlay(src){
+  const page=state.pages[state.activePage-1];if(!page)return;
+  pushHistory();
+  const aspect=clamp(await imageAspect(src),.55,5);
+  const {nw,nh}=initialImageSize(page,aspect,.18,.035,.28);
+  const o={id:newId('o'),type:'stamp',page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src};
+  state.overlays.push(o);renderOverlay(o);selectOverlay(o.id);toast('اسحب الختم إلى مكانه');
+}
+function initialImageSize(page,aspect,preferredWidth,minHeight,maxHeight){
+  let nw=preferredWidth,nh=nw*(page.width/page.height)/aspect;
+  if(nh<minHeight){nh=minHeight;nw=nh*(page.height/page.width)*aspect}
+  if(nh>maxHeight){nh=maxHeight;nw=nh*(page.height/page.width)*aspect}
+  if(nw>.62){nw=.62;nh=nw*(page.width/page.height)/aspect}
+  return{nw,nh};
 }
 function addTextOverlay(type,text){
   const page=state.pages[state.activePage-1];if(!page)return;
   pushHistory();const pxW=Math.min(type==='date'?390:300,Math.max(type==='date'?180:120,text.length*12));
   const nw=clamp(pxW/page.width,type==='date'?.24:.16,type==='date'?.62:.48),nh=clamp(42/page.height,.035,.085);
   const fontKey=type==='text'?getTextFont():'modern';
-  const o={id:crypto.randomUUID?.()||('o'+Date.now()+Math.random()),type,page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,text,fontKey};
+  const o={id:newId('o'),type,page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,text,fontKey};
   state.overlays.push(o);renderOverlay(o);selectOverlay(o.id);toast('تمت الإضافة، يمكنك تحريكها');
 }
 function renderOverlay(o){
   const page=state.pages[o.page-1];if(!page)return;
-  const el=document.createElement('div');el.className='overlay-item';el.dataset.id=o.id;
-  if(o.type==='signature')el.innerHTML=`<img src="${o.src}" alt="توقيع"><button class="overlay-delete" type="button" aria-label="حذف">×</button><i class="overlay-handle"></i>`;
+  const el=document.createElement('div');el.className='overlay-item';el.dataset.id=o.id;el.dataset.type=o.type;
+  if(o.type==='signature'||o.type==='stamp')el.innerHTML=`<img src="${o.src}" alt="${o.type==='stamp'?'ختم':'توقيع'}"><button class="overlay-delete" type="button" aria-label="حذف">×</button><i class="overlay-handle"></i>`;
   else{
     el.innerHTML=`<div class="overlay-text">${escapeHtml(o.text)}</div><button class="overlay-delete" type="button" aria-label="حذف">×</button><i class="overlay-handle"></i>`;
     el.querySelector('.overlay-text').style.fontFamily=fontStack(o.fontKey);
@@ -206,9 +257,9 @@ function wireOverlay(o,el){
     handle.setPointerCapture(e.pointerId);
     const move=ev=>{
       const maxW=page.width-o.nx*page.width,maxH=page.height-o.ny*page.height;
-      const minW=o.type==='signature'?22:70;
+      const isImage=o.type==='signature'||o.type==='stamp',minW=isImage?22:70;
       let nwPx=clamp(ow+(ev.clientX-sx),minW,maxW),nhPx;
-      if(o.type==='signature'){nhPx=nwPx/(o.aspect||2.5);if(nhPx>maxH){nhPx=maxH;nwPx=nhPx*(o.aspect||2.5)}}
+      if(isImage){nhPx=nwPx/(o.aspect||2.5);if(nhPx>maxH){nhPx=maxH;nwPx=nhPx*(o.aspect||2.5)}}
       else nhPx=clamp(oh+(ev.clientY-sy),30,maxH);
       o.nw=nwPx/page.width;o.nh=nhPx/page.height;applyOverlay(o);
     };
@@ -269,12 +320,54 @@ $('#saveSignature').addEventListener('click',async()=>{
     else if(state.signaturePad&&!state.signaturePad.isEmpty())data=await dataUrlToPreparedPng(state.signaturePad.toDataURL('image/png'));
   }catch(err){console.error(err)}
   if(!data)return;
-  const shouldAdd=state.pendingAddSignature;state.signature=data;
-  try{localStorage.setItem(SIG_KEY,data)}catch{toast('تعذر حفظ التوقيع محليًا، سيبقى لهذه الجلسة فقط')}
+  const shouldAdd=state.pendingAddSignature;
+  let entry=state.signatures.find(x=>x.data===data);
+  if(!entry){entry={id:newId('sig'),data,createdAt:Date.now()};state.signatures.push(entry)}
+  state.activeSignatureId=entry.id;state.signature=entry.data;
+  if(!persistSignatures())toast('تعذر حفظ التوقيع محليًا، سيبقى لهذه الجلسة فقط');
   updateSignatureUi();closeSignatureModal();state.pendingAddSignature=false;toast('تم حفظ التوقيع');
   if(shouldAdd&&state.pdfjsDoc)await addSignatureOverlay(data);
 });
-$('#deleteSavedSignature').addEventListener('click',()=>{state.signature=null;try{localStorage.removeItem(SIG_KEY);localStorage.removeItem(LEGACY_SIG_KEY)}catch{}updateSignatureUi();switchSigTab('draw');toast('تم حذف التوقيع المحفوظ')});
+$('#deleteSavedSignature').addEventListener('click',()=>{
+  if(!state.activeSignatureId)return;
+  state.signatures=state.signatures.filter(x=>x.id!==state.activeSignatureId);
+  const next=state.signatures[0]||null;state.activeSignatureId=next?.id||null;state.signature=next?.data||null;
+  try{localStorage.removeItem(LEGACY_SIG_KEY)}catch{}
+  persistSignatures();updateSignatureUi();
+  if(!state.signatures.length)switchSigTab('draw');
+  toast('تم حذف التوقيع المحفوظ');
+});
+
+$('#manageStamp').addEventListener('click',()=>openStampModal(state.stamp?'saved':'upload',false));
+$('#closeStamp').addEventListener('click',closeStampModal);
+$('#stampModal').addEventListener('pointerdown',e=>{if(e.target===$('#stampModal'))closeStampModal()});
+$$('[data-stamp-tab]').forEach(btn=>btn.addEventListener('click',()=>switchStampTab(btn.dataset.stampTab)));
+function openStampModal(tab='saved',addAfter=false){state.pendingAddStamp=addAfter;$('#stampModal').classList.remove('hidden');switchStampTab(tab)}
+function closeStampModal(){$('#stampModal').classList.add('hidden');state.uploadStamp=null;$('#stampPreviewBox').classList.add('hidden')}
+function switchStampTab(tab){
+  $$('[data-stamp-tab]').forEach(b=>b.classList.toggle('active',b.dataset.stampTab===tab));
+  $$('[data-stamp-pane]').forEach(p=>p.classList.toggle('hidden',p.dataset.stampPane!==tab));
+  $('#saveStamp').dataset.mode=tab;renderSavedStamp();updateStampSaveButton();
+}
+function updateStampSaveButton(){const mode=$('#saveStamp').dataset.mode||'saved';$('#saveStamp').disabled=mode==='saved'?!state.stamp:!state.uploadStamp}
+$('#stampUpload').addEventListener('change',e=>{
+  const f=e.target.files?.[0];if(!f)return;
+  if(!/^image\/(png|jpeg|webp)$/i.test(f.type)){toast('استخدم PNG أو JPG أو WebP');e.target.value='';return}
+  const r=new FileReader();
+  r.onload=async()=>{try{state.uploadStamp=await dataUrlToPreparedPng(r.result);$('#stampPreview').src=state.uploadStamp;$('#stampPreviewBox').classList.remove('hidden');updateStampSaveButton();toast('تم تجهيز صورة الختم')}catch(err){console.error(err);toast('تعذر قراءة صورة الختم')}};
+  r.readAsDataURL(f);e.target.value='';
+});
+$('#saveStamp').addEventListener('click',async()=>{
+  const data=$('#saveStamp').dataset.mode==='upload'?state.uploadStamp:state.stamp;if(!data)return;
+  const shouldAdd=state.pendingAddStamp;state.stamp=data;
+  try{localStorage.setItem(STAMP_KEY,data)}catch{toast('تعذر حفظ الختم محليًا، سيبقى لهذه الجلسة فقط')}
+  updateStampUi();closeStampModal();state.pendingAddStamp=false;toast('تم حفظ الختم');
+  if(shouldAdd&&state.pdfjsDoc)await addStampOverlay(data);
+});
+$('#deleteSavedStamp').addEventListener('click',()=>{
+  state.stamp=null;try{localStorage.removeItem(STAMP_KEY)}catch{}
+  updateStampUi();switchStampTab('upload');toast('تم حذف الختم المحفوظ');
+});
 
 async function textToPng(text,width,height,fontKey='craft'){
   await document.fonts.ready;const scale=2,c=document.createElement('canvas');c.width=Math.ceil(width*scale);c.height=Math.ceil(height*scale);const ctx=c.getContext('2d');ctx.scale(scale,scale);ctx.clearRect(0,0,width,height);ctx.fillStyle='#172A38';ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=document.documentElement.dir==='ltr'?'ltr':'rtl';ctx.font=`600 ${Math.max(13,Math.min(24,height*.48))}px ${fontStack(fontKey)}`;ctx.fillText(text,width/2,height/2,width-8);return c.toDataURL('image/png');
@@ -297,7 +390,7 @@ async function createSignedPdf(){
     const pdfDoc=await PDFLib.PDFDocument.load(state.originalBytes.slice(),{ignoreEncryption:false}),pages=pdfDoc.getPages();
     for(const o of state.overlays){
       const p=pages[o.page-1];if(!p)continue;let src=o.src;
-      if(o.type!=='signature'){
+      if(o.type!=='signature'&&o.type!=='stamp'){
         const meta=state.pages[o.page-1],w=o.nw*meta.width,h=o.nh*meta.height;src=await textToPng(o.text,w,h,o.fontKey);
       }
       const img=/^data:image\/jpe?g/i.test(src)?await pdfDoc.embedJpg(src):await pdfDoc.embedPng(src);
@@ -311,7 +404,16 @@ async function createSignedPdf(){
 $('#exportPdf').addEventListener('click',createSignedPdf);
 $('#shareResult').addEventListener('click',shareOutput);
 $('#downloadResult').addEventListener('click',downloadOutput);
-$('#backToEdit').addEventListener('click',()=>{$('#resultPanel').classList.add('hidden');$('#workspace').classList.remove('hidden');setStep(2);$('#workspace').scrollIntoView({behavior:'smooth',block:'start'})});
+$('#backToEdit').addEventListener('click',startOver);
+function startOver(){
+  state.observer?.disconnect();state.renderToken++;
+  Promise.resolve(state.pdfjsDoc?.destroy?.()).catch(()=>{});
+  state.file=null;state.originalBytes=null;state.pdfjsDoc=null;state.pages=[];state.activePage=1;
+  state.overlays=[];state.history=[];state.outputBlob=null;state.outputFile=null;
+  $('#pdfInput').value='';$('#pdfStage').innerHTML='';$('#fileName').textContent='—';$('#fileInfo').textContent='—';
+  $('#resultPanel').classList.add('hidden');$('#workspace').classList.add('hidden');$('#uploadPanel').classList.remove('hidden');
+  updateUndo();updateActivePageLabel();setStep(1);$('#uploadPanel').scrollIntoView({behavior:'smooth',block:'center'});
+}
 async function shareOutput(){
   if(!state.outputFile){await createSignedPdf();if(!state.outputFile)return}
   try{
@@ -325,5 +427,6 @@ let resizeTimer;
 window.addEventListener('resize',()=>{
   clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(state.pdfjsDoc&&$('#workspace')&&!$('#workspace').classList.contains('hidden'))renderPdf();if(!$('#signatureModal').classList.contains('hidden'))resizeSignatureCanvas()},260);
 });
-window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSignatureModal();$('#textModal').classList.add('hidden')}});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSignatureModal();closeStampModal();$('#textModal').classList.add('hidden')}});
 loadSavedSignature();
+loadSavedStamp();
