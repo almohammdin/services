@@ -295,9 +295,88 @@ button.btn{font-family:inherit;cursor:pointer}
 @media(max-width:560px){.positioning,.advisory-grid{grid-template-columns:1fr}.advisory-card{min-height:auto}.service-models-head{display:block}.site-social-link{width:40px;height:40px}}
 @media print{.advisory-link,.site-socials,.social-username{display:none!important}}
 
+/* 2026 compact refinement — preserves the original content and identity */
+.today-strip{background:#070b15;color:#bac5d8;border-bottom:1px solid rgba(201,168,76,.2);min-height:30px;padding:5px 14px;font-size:11.5px;line-height:1.55}
+.today-strip-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.today-dates,.makkah-time{display:flex;align-items:center;gap:9px;white-space:nowrap}
+.today-dates i{width:3px;height:3px;border-radius:50%;background:#73809a}
+.makkah-time{color:#e8d59a;font-weight:700}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#31cf73;box-shadow:0 0 0 3px rgba(49,207,115,.12)}
+
+/* Services: same cards and copy, with less vertical expansion */
+.service-card{padding:14px}
+.svc-top{gap:9px;margin-bottom:7px}
+.num{width:30px;height:30px;border-radius:10px;font-size:12.5px}
+.service-card h3{font-size:16.5px}
+.service-card p{font-size:13.2px;line-height:1.7;margin-bottom:8px}
+.chips{gap:5px;margin-bottom:8px}
+.chip{padding:3px 8px;font-size:11px}
+.example{padding:8px 10px;margin-top:7px;font-size:12.2px;line-height:1.65}
+@media(min-width:901px){#services .services-grid{grid-template-columns:repeat(3,1fr);gap:10px}}
+@media(min-width:561px) and (max-width:900px){#services .services-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* Audience and why-us become one compact visual section */
+#audience>#why{margin:18px 0 0;padding:18px 0 0;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none;background:transparent}
+@media(min-width:901px){.audience-grid{grid-template-columns:repeat(4,1fr);gap:9px}.why-grid{grid-template-columns:repeat(5,1fr);gap:9px}}
+.audience-card,.why-card{padding:12px}
+.audience-card{gap:9px}
+.audience-card span,.why-card span{font-size:12.6px;line-height:1.65}
+.why-icon{width:27px;height:27px;margin-bottom:7px}
+
+/* Tools and client logos are approximately 20% shorter */
+.service-models{margin-top:14px;padding:18px}
+.service-models-head{margin-bottom:13px}
+.model-links-grid{gap:10px}
+.model-link{min-height:286px}
+.model-link.featured{min-height:286px}
+.model-visual{height:125px}
+.model-link.featured .model-visual{height:144px}
+.model-body{padding:12px 13px 13px}
+.model-body p{margin:6px 0 10px;line-height:1.65}
+.model-open{min-height:34px}
+.clients-grid{gap:10px}
+.client-logo{min-height:118px;padding:13px;border-radius:16px}
+.client-logo img{height:90px}
+
+/* Lighter call-to-action and a one-row desktop footer */
+.cta-card{padding:20px 18px;border-radius:20px}
+.cta-title{font-size:21px;margin-bottom:5px}
+.cta-text{font-size:14px;line-height:1.65;margin-bottom:13px}
+.footer{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;text-align:right;line-height:1.55;margin-top:10px;padding:11px 14px;border-radius:18px}
+.footer .footer-logo{width:76px;height:36px;margin:0;padding:3px}
+.footer-identity{min-width:0}
+.footer-title{font-size:13px}
+.footer-role{font-size:11.5px;margin-top:1px}
+.social-username{margin-top:3px;font-size:11.5px;text-align:right}
+.footer-copy{margin-top:2px;font-size:10px}
+.site-socials{margin-top:0;gap:7px}
+.site-social-link{width:34px;height:34px;border-radius:10px}
+
+@media(max-width:560px){
+  .today-strip{padding:4px 9px;font-size:10.5px}
+  .today-strip-inner{align-items:flex-start;gap:8px}
+  .today-dates{display:grid;gap:0;white-space:normal}
+  .today-dates i{display:none}
+  .makkah-time{padding-top:5px}
+  .model-link{min-height:0}
+  .model-visual,.model-link.featured .model-visual{height:136px}
+  .client-logo{min-height:98px;padding:9px}
+  .client-logo img{height:74px}
+  .footer{grid-template-columns:auto 1fr;gap:10px;padding:11px;text-align:right}
+  .footer .footer-logo{width:64px;height:34px}
+  .site-socials{grid-column:1/-1;justify-content:center}
+  .social-username{text-align:right}
+}
+
 </style>
 <link href="./assets/media/favicon.png" rel="icon" type="image/png"/><link href="./assets/media/favicon.png" rel="shortcut icon" type="image/png"/><link href="./assets/media/favicon.png" rel="apple-touch-icon" sizes="192x192" type="image/png"/></head>
 <body>
+<div class="today-strip" aria-label="تاريخ اليوم وتوقيت مكة المكرمة">
+<div class="today-strip-inner">
+<div class="today-dates"><span id="gregorian-date">—</span><i aria-hidden="true"></i><span id="hijri-date">—</span></div>
+<strong class="makkah-time"><span class="live-dot" aria-hidden="true"></span><span id="makkah-time">مكة المكرمة —</span></strong>
+</div>
+</div>
 <header class="topbar">
 <div class="topbar-inner">
 <img alt="شعار الخدمات" class="logo" src="./assets/media/site-logo.webp"/>
@@ -550,17 +629,39 @@ button.btn{font-family:inherit;cursor:pointer}
 </section>
 <footer class="footer">
 <img class="footer-logo" alt="شعار الخدمات" src="./assets/media/site-logo.webp"/>
+<div class="footer-identity">
 <div class="footer-title">فريق حوكمة وتطوير أعمال</div>
 <div class="footer-role">إعداد نايف المحمدي · مستشار الحوكمة وتطوير الأعمال</div>
 <span class="social-username">almohammdin</span>
+</div>
 <nav class="site-socials" aria-label="حسابات نايف المحمدي">
 <a class="site-social-link" href="https://x.com/almohammdin" target="_blank" rel="noopener noreferrer" aria-label="حساب نايف المحمدي في إكس" title="إكس"><img src="https://cdn.simpleicons.org/x/e8d59a" alt=""></a>
 <a class="site-social-link" href="https://www.linkedin.com/in/almohammdin/" target="_blank" rel="noopener noreferrer" aria-label="حساب نايف المحمدي في لينكدإن" title="لينكدإن"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.047c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"></path></svg></a>
 <a class="site-social-link" href="https://www.snapchat.com/add/almohammdin" target="_blank" rel="noopener noreferrer" aria-label="حساب نايف المحمدي في سناب شات" title="سناب شات"><img src="https://cdn.simpleicons.org/snapchat/e8d59a" alt=""></a>
 <a class="site-social-link" href="https://linktr.ee/almohammdin" target="_blank" rel="noopener noreferrer" aria-label="روابط نايف المحمدي في لينك تري" title="لينك تري"><img src="https://cdn.simpleicons.org/linktree/e8d59a" alt=""></a>
 </nav>
-<div class="footer-copy">© ملف تعريفي للخدمات</div>
 </footer>
 </main>
+<script>
+(function(){
+  const zone="Asia/Riyadh";
+  const gregorian=document.getElementById("gregorian-date");
+  const hijri=document.getElementById("hijri-date");
+  const clock=document.getElementById("makkah-time");
+  function updateDateTime(){
+    const now=new Date();
+    gregorian.textContent=new Intl.DateTimeFormat("ar-SA-u-ca-gregory",{timeZone:zone,weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(now);
+    hijri.textContent="الموافق "+new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura",{timeZone:zone,day:"numeric",month:"long",year:"numeric"}).format(now);
+    clock.textContent="مكة المكرمة "+new Intl.DateTimeFormat("ar-SA",{timeZone:zone,hour:"numeric",minute:"2-digit",second:"2-digit"}).format(now);
+  }
+  updateDateTime();
+  window.setInterval(updateDateTime,1000);
+
+  const audience=document.getElementById("audience");
+  const why=document.getElementById("why");
+  if(audience&&why){audience.appendChild(why)}
+})();
+</script>
 </body>
 </html>
+
