@@ -650,9 +650,9 @@ button.btn{font-family:inherit;cursor:pointer}
   const clock=document.getElementById("makkah-time");
   function updateDateTime(){
     const now=new Date();
-    gregorian.textContent=new Intl.DateTimeFormat("ar-SA-u-ca-gregory",{timeZone:zone,weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(now);
-    hijri.textContent="الموافق "+new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura",{timeZone:zone,day:"numeric",month:"long",year:"numeric"}).format(now);
-    clock.textContent="مكة المكرمة "+new Intl.DateTimeFormat("ar-SA",{timeZone:zone,hour:"numeric",minute:"2-digit",second:"2-digit"}).format(now);
+    gregorian.textContent=new Intl.DateTimeFormat("ar-SA",{calendar:"gregory",numberingSystem:"latn",timeZone:zone,weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(now);
+    hijri.textContent="الموافق "+new Intl.DateTimeFormat("ar-SA",{calendar:"islamic-umalqura",numberingSystem:"latn",timeZone:zone,day:"numeric",month:"long",year:"numeric"}).format(now);
+    clock.textContent="مكة المكرمة "+new Intl.DateTimeFormat("ar-SA",{numberingSystem:"latn",timeZone:zone,hour:"numeric",minute:"2-digit",second:"2-digit"}).format(now);
   }
   updateDateTime();
   window.setInterval(updateDateTime,1000);
