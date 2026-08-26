@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0a0e1a">
+  <title>الإدارة | خدمات الحوكمة وتطوير الأعمال</title>
+  <style>
+    :root{--navy:#0a0e1a;--navy2:#122046;--gold:#c9a84c;--gold2:#a8862f;--muted:#667085;--line:#e5e7eb;--green:#0b7a53;--red:#b42318}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Tahoma,Arial,sans-serif;background:radial-gradient(circle at 12% 0%,rgba(18,32,70,.15),transparent 34%),#f4f6f8;color:#111827;display:grid;place-items:center;padding:22px}
+    .shell{width:min(920px,100%);background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:0 24px 65px rgba(10,14,26,.13);overflow:hidden}.head{padding:25px 28px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-bottom:4px solid var(--gold)}.head small{color:#e8d59a;font-weight:700}.head h1{margin:5px 0 0;font-size:27px}.body{padding:25px 28px}.login{max-width:500px;margin:0 auto}.field{margin:0 0 14px}.field label{display:block;margin-bottom:7px;font-size:13px;font-weight:800}.field input{width:100%;min-height:48px;border:1px solid #d7dce5;border-radius:13px;padding:10px 13px;font:inherit;outline:none}.field input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,168,76,.14)}button,.link-btn{border:0;border-radius:12px;min-height:45px;padding:10px 15px;font:inherit;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.primary{background:var(--navy);color:#fff}.soft{background:#f8f5ea;color:#6c5416;border:1px solid #e5d6a1}.row{display:flex;gap:9px;flex-wrap:wrap}.msg{min-height:22px;margin-top:11px;font-size:13px;font-weight:700;color:var(--red)}.workspace[hidden],.login[hidden]{display:none!important}.who{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 15px;border:1px solid #e3e7ee;background:#f8fafc;border-radius:15px;margin-bottom:20px}.who strong,.who span{display:block}.who span{color:var(--muted);font-size:12px;margin-top:3px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{display:block;border:1px solid #dfe4ec;border-radius:20px;padding:22px;background:linear-gradient(145deg,#fff,#f9fafc);text-decoration:none;color:inherit;transition:.18s}.card:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:0 13px 28px rgba(10,14,26,.08)}.card .tag{display:inline-block;border-radius:999px;padding:5px 9px;background:#f4ecd1;color:#705816;font-size:11px;font-weight:800}.card h2{margin:13px 0 7px;font-size:21px}.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}.footer{padding:16px 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:12px}.footer a{color:var(--navy);font-weight:800;text-decoration:none}@media(max-width:650px){.cards{grid-template-columns:1fr}.head,.body,.footer{padding-left:18px;padding-right:18px}.who{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="head"><small>خدمات الحوكمة وتطوير الأعمال</small><h1>الإدارة</h1></header>
+    <section class="body">
+      <form class="login" id="loginForm">
+        <h2>دخول الإدارة</h2><p>استخدم بيانات الدخول نفسها المستخدمة في منصة مجالس.</p>
+        <div class="field"><label for="email">البريد الإلكتروني</label><input id="email" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="password">كلمة المرور</label><input id="password" type="password" autocomplete="current-password" required></div>
+        <div class="row"><button class="primary" type="submit" id="loginBtn">دخول</button><button class="soft" type="button" id="resetBtn">نسيت كلمة المرور</button></div>
+        <div class="msg" id="loginMsg" role="status"></div>
+      </form>
+      <div class="workspace" id="workspace" hidden>
+        <div class="who"><div><strong>مساحة الإدارة الخاصة</strong><span id="userEmail"></span></div><button class="soft" type="button" id="logoutBtn">تسجيل الخروج</button></div>
+        <div class="cards">
+          <a class="card" href="./naif/"><span class="tag">هوية شخصية</span><h2>إدارة نايف</h2><p>عروض الأسعار، بيانات العملاء والمتابعة، والحفظ السحابي الخاص بهوية نايف.</p></a>
+          <a class="card" href="./hatta/"><span class="tag">هوية شركة</span><h2>إدارة حتى</h2><p>عروض الأسعار، بيانات العملاء والمتابعة، والحفظ السحابي الخاص بشركة حتى.</p></a>
+        </div>
+      </div>
+    </section>
+    <footer class="footer"><span>ذاكرة سحابية منفصلة لكل إدارة</span><a href="../../">العودة إلى صفحة خدماتي</a></footer>
+  </main>
+  <script type="module">
+    import{initializeApp}from'https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js';
+    import{getAuth,setPersistence,browserLocalPersistence,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail}from'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
+    const config={apiKey:'AIzaSyCHefMzpFRZi6TQHMt7NTkqMAzPFQB3_6U',authDomain:'majalis-admin.firebaseapp.com',projectId:'majalis-admin',storageBucket:'majalis-admin.firebasestorage.app',messagingSenderId:'7816691347',appId:'1:7816691347:web:fdee56d2bc246ae262d766',measurementId:'G-GT45S5QZSN'};
+    const ADMIN_UID='KvM4dx24l0VNRC2ueBgOL9tanlW2',auth=getAuth(initializeApp(config));await setPersistence(auth,browserLocalPersistence).catch(console.error);
+    const $=id=>document.getElementById(id),msg=(text='')=>$('loginMsg').textContent=text;
+    onAuthStateChanged(auth,async user=>{const ok=user?.uid===ADMIN_UID;$('loginForm').hidden=ok;$('workspace').hidden=!ok;if(ok){$('userEmail').textContent=user.email||'';msg('')}else if(user){await signOut(auth);msg('هذا الحساب غير مخول بالدخول.')}});
+    $('loginForm').addEventListener('submit',async e=>{e.preventDefault();msg('');$('loginBtn').disabled=true;try{const result=await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value);if(result.user.uid!==ADMIN_UID)throw new Error('unauthorized')}catch(err){msg(err.message==='unauthorized'?'هذا الحساب غير مخول بالدخول.':'تعذر الدخول. تحقق من البريد وكلمة المرور.')}finally{$('loginBtn').disabled=false}});
+    $('resetBtn').addEventListener('click',async()=>{const email=$('email').value.trim();if(!email){msg('اكتب البريد الإلكتروني أولًا.');return}try{await sendPasswordResetEmail(auth,email);msg('أُرسل رابط إعادة تعيين كلمة المرور إلى بريدك.')}catch{msg('تعذر إرسال رابط إعادة التعيين.')}});
+    $('logoutBtn').addEventListener('click',()=>signOut(auth));
+  </script>
+</body>
+</html>
+
