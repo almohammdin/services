@@ -1,1 +1,31 @@
-__PLACEHOLDER__
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet">
+<title>دراسة رياح البن - دخول خاص</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Tahoma,Arial,sans-serif;background:#0b1f33;color:#fff}
+#gate{min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 80% 10%,rgba(42,87,200,.25),transparent 30%),radial-gradient(circle at 10% 90%,rgba(154,116,41,.22),transparent 28%),#0b1f33}
+.box{width:min(440px,100%);background:#fff;color:#13273a;border-radius:22px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#f2ead8;color:#805f20;font-size:11px;font-weight:700;margin-bottom:14px}h1{font-size:23px;margin:0 0 8px}p{font-size:13px;color:#607080;line-height:1.7;margin:0 0 18px}label{display:block;font-size:12px;font-weight:700;margin-bottom:6px}input{width:100%;border:1px solid #d8dfe8;border-radius:11px;padding:12px 13px;font-size:18px;direction:ltr;text-align:center;letter-spacing:2px;outline:none}input:focus{border-color:#476ed4;box-shadow:0 0 0 3px rgba(71,110,212,.12)}button{width:100%;margin-top:11px;border:0;border-radius:11px;padding:12px;background:#15385e;color:#fff;font-weight:700;cursor:pointer}#error{min-height:20px;margin-top:9px;font-size:12px;color:#a73d3d;text-align:center}.note{margin-top:14px;padding-top:12px;border-top:1px solid #edf0f4;font-size:10.5px;color:#8794a0;text-align:center}#viewer{display:none;width:100%;height:100vh;border:0;background:#f5f4ef}
+</style></head><body>
+<div id="gate"><div class="box"><div class="badge">محتوى خاص</div><h1>دراسة رياح البن</h1><p>دراسة خيارات التحول والحوكمة من زاوية المؤسس. أدخل رمز الوصول لفتح النسخة التفاعلية.</p><form id="form"><label for="pw">رمز الوصول</label><input id="pw" type="password" inputmode="numeric" autocomplete="current-password" autofocus><button type="submit">فتح الدراسة</button><div id="error"></div></form><div class="note">محتوى الدراسة مشفر داخل الصفحة، والفهرسة العامة معطلة.</div></div></div>
+<iframe id="viewer" title="دراسة رياح البن"></iframe>
+<script>
+const SALT="Jp+uYFiX7KakjQb2JFt9Eg==",IV="LUdcaNakCrvDIF5f";
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function unlock(pw){
+ const raw=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+ const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(SALT),iterations:200000,hash:'SHA-256'},raw,{name:'AES-GCM',length:256},false,['decrypt']);
+ const parts=await Promise.all([fetch('payload/01.txt',{cache:'no-store'}).then(r=>r.text()),fetch('payload/02.txt',{cache:'no-store'}).then(r=>r.text()),fetch('payload/03.txt',{cache:'no-store'}).then(r=>r.text()),fetch('payload/04.txt',{cache:'no-store'}).then(r=>r.text()),fetch('payload/05.txt',{cache:'no-store'}).then(r=>r.text()),fetch('payload/06.txt',{cache:'no-store'}).then(r=>r.text())]);
+ const txt=parts.join('');
+ const dec=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(IV)},key,b64(txt.trim()));
+ const stream=new Blob([dec]).stream().pipeThrough(new DecompressionStream('gzip'));
+ return await new Response(stream).text();
+}
+const gate=document.getElementById('gate'),viewer=document.getElementById('viewer'),err=document.getElementById('error');
+document.getElementById('form').addEventListener('submit',async e=>{e.preventDefault();err.textContent='جارٍ التحقق...';try{const html=await unlock(document.getElementById('pw').value);const blob=new Blob([html],{type:'text/html;charset=utf-8'});viewer.src=URL.createObjectURL(blob);gate.style.display='none';viewer.style.display='block';document.title='دراسة رياح البن - خاصة';}catch(x){err.textContent='رمز الوصول غير صحيح.';}});
+</script></body></html>
