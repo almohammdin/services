@@ -6,9 +6,16 @@ const signatureModal=$('#signatureModal');
 const saveSignature=$('#saveSignature');
 const savedSignatureBox=$('#savedSignatureBox');
 const toast=$('#toast');
+const signatureActionHint=$('#signatureActionHint');
+let signatureAddMode=false;
 
 const tr=(key,fallback)=>window.WaqqeI18n?.t?.(key)||fallback;
 function signatureReady(){return !!signatureState?.classList.contains('ready')}
+function syncSignatureActionHint(){
+  if(!signatureActionHint)return;
+  signatureActionHint.textContent=tr('dragSignature','سيظهر التوقيع داخل الصفحة لتضعه في مكانه');
+  signatureActionHint.hidden=!signatureAddMode||!!signatureModal?.classList.contains('hidden');
+}
 function syncSignatureCopy(){
   if(!signatureState)return;
   const stateLabel=signatureState.querySelector('span');
@@ -26,16 +33,20 @@ function syncSignatureCopy(){
     const value=tr('emptySignature','أنشئ توقيعك من الرسم أو أضف صورة.');
     if(empty.textContent!==value)empty.textContent=value;
   }
+  syncSignatureActionHint();
 }
 
 signatureState&&new MutationObserver(syncSignatureCopy).observe(signatureState,{attributes:true,childList:true,subtree:true});
 savedSignatureBox&&new MutationObserver(syncSignatureCopy).observe(savedSignatureBox,{childList:true,subtree:true});
+signatureModal&&new MutationObserver(()=>{if(signatureModal.classList.contains('hidden'))signatureAddMode=false;syncSignatureActionHint()}).observe(signatureModal,{attributes:true,attributeFilter:['class']});
 document.addEventListener('waqqe:languagechange',syncSignatureCopy);
 syncSignatureCopy();
 
 addSignature?.addEventListener('click',()=>{
+  signatureAddMode=true;
   setTimeout(()=>{
     if(signatureModal&&!signatureModal.classList.contains('hidden')) saveSignature.textContent=tr('saveAdd','حفظ وإضافة للمستند');
+    syncSignatureActionHint();
   },0);
 });
 
@@ -48,8 +59,10 @@ manageSignature?.addEventListener('click',e=>{
 },true);
 
 manageSignature?.addEventListener('click',()=>{
+  signatureAddMode=false;
   setTimeout(()=>{
     if(signatureModal&&!signatureModal.classList.contains('hidden')) saveSignature.textContent=tr('saveSignature','حفظ التوقيع');
+    syncSignatureActionHint();
   },0);
 });
 
