@@ -1,0 +1,37 @@
+window.transformStudy=function(h){
+  h=h.replaceAll('المساهمة الة','المساهمة المبسطة')
+     .replaceAll('شركة مساهمة ة','شركة مساهمة مبسطة')
+     .replaceAll('يمكن للة أن تتبنى','يمكن للمساهمة المبسطة أن تتبنى')
+     .replaceAll('Investor Entry · دخول المستثمر','دخول المستثمر')
+     .replaceAll('<div class="route-icon">A</div>','<div class="route-icon">1</div>')
+     .replaceAll('<div class="route-icon">B</div>','<div class="route-icon">2</div>')
+     .replaceAll('<div class="route-icon">C</div>','<div class="route-icon">3</div>')
+     .replaceAll('تصور الصفقة + حق الأولوية + Tag Along + Drag Along + فئة الأسهم المناسبة.','تصور الصفقة + حق الأولوية + حق اللحاق بالبيع (Tag Along) + حق الإلزام بالبيع (Drag Along) + فئة الأسهم المناسبة.')
+     .replaceAll('سيناريوهات ملكية وتصويت + أثر التخفيف (Dilution).','سيناريوهات ملكية وتصويت + أثر التخفيف في الملكية (Dilution).')
+     .replaceAll('أثر التخفيف (Dilution)','أثر التخفيف في الملكية (Dilution)')
+     .replaceAll('مصفوفة صلاحيات (DoA)','مصفوفة الصلاحيات')
+     .replaceAll('DoA','مصفوفة الصلاحيات')
+     .replaceAll('Tag/Drag','حق اللحاق بالبيع وحق الإلزام بالبيع')
+     .replaceAll('حوكمة · استثمار · M&A · سوق المال','حوكمة · استثمار · الاندماج والاستحواذ (M&A) · سوق المال')
+     .replaceAll('مجلس استشاري (Advisory Board)','المجلس الاستشاري (Advisory Board)');
+
+  function sec(title){
+    const i=h.indexOf('<h2>'+title+'</h2>');
+    if(i<0)return null;
+    const s=h.lastIndexOf('<section',i),e=h.indexOf('</section>',i);
+    return s>=0&&e>=0?[s,e+10]:null;
+  }
+
+  const css=`.cmp{display:grid;grid-template-columns:1fr 170px 1fr;gap:12px}.cc{border:1px solid var(--line);border-radius:18px;padding:17px;background:#fff}.cc.a{background:#f7f9ff;border-color:#bfd0f5}.cc.b{background:#fffaf1;border-color:#decda7}.ct{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700;background:#e9efff;color:#294db7}.cc.b .ct{background:#f4e8cd;color:#7c5a19}.cc h3{font-size:18px;margin:8px 0 5px}.cc p,.cp{font-size:11.5px;color:var(--muted)}.mid{border-radius:18px;background:#0b1f33;color:#fff;padding:15px;text-align:center;display:flex;flex-direction:column;justify-content:center}.mid b{font-size:18px}.mid span{font-size:10.5px;color:#d3dee8}.rows{margin-top:12px;display:grid;gap:7px}.cr{display:grid;grid-template-columns:110px 1fr 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden}.cr>*{padding:9px 10px;font-size:10.8px}.cr strong{background:#f6f8fa}.cr div{border-right:1px solid var(--line)}.vr{margin-top:12px;padding:12px;border-radius:13px;background:#f3f7ff;border:1px solid #c9d5f1;color:#3f5571;font-size:11.5px}.vr b{color:#244ba8}.oz{margin-top:18px;border-radius:24px;background:linear-gradient(145deg,#071f33,#0d3656);padding:22px;color:#fff}.oh{display:grid;grid-template-columns:1fr 220px;gap:15px;margin-bottom:14px}.oh h2{color:#fff;margin:0 0 5px}.oh p{color:#cbd7e1;font-size:11.5px;margin:0}.on{border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:10px;background:rgba(255,255,255,.05);font-size:10px;color:#d6e0e8}.og{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px}.oc{background:#fff;color:var(--ink);border-radius:15px;padding:14px}.oc.f{grid-row:span 2;background:#fff4dc}.oc small{color:#8b671e;font-weight:700}.oc h3{font-size:14px;margin:5px 0}.oc p{font-size:10.5px;color:var(--muted);margin:0}.ob{margin-top:7px;padding-top:7px;border-top:1px dashed #dde3e8;font-size:10px;color:#526577}.oi{margin-top:7px;padding:6px 8px;border-radius:9px;background:#edf3ff;color:#294db7;font-size:10px;font-weight:700}@media(max-width:850px){.cmp,.oh{grid-template-columns:1fr}.og{grid-template-columns:1fr 1fr}.oc.f{grid-row:auto}}@media(max-width:600px){.cr{grid-template-columns:1fr}.og{grid-template-columns:1fr}}`;
+
+  const cmp=`<section class="section"><div class="section-head"><div><h2>المقارنة التي تهم المؤسس</h2><p class="sub">الفرق في المجلس، حقوق المؤسس، دخول المستثمر، والمرحلة المؤسسية المستهدفة.</p></div></div><div class="cmp"><article class="cc a"><span class="ct">المساهمة المبسطة</span><h3>مرونة أعلى في التصميم</h3><p>تفصيل الإدارة والتعيين والعزل ونسب القرارات وقيود الأسهم في النظام الأساس.</p><div class="cp"><b>سلطان:</b> مساحة أوسع للمقعد والفئة والقرارات المحجوزة.</div></article><div class="mid"><small>الترجيح لرياح البن</small><b>المبسطة كمرحلة نضج</b><span>ثم الانتقال إلى مساهمة غير مدرجة عند قرب مستثمر مؤسسي أو سوق المال.</span></div><article class="cc b"><span class="ct">المساهمة غير المدرجة</span><h3>بنية مؤسسية أكثر انتظاماً</h3><p>مجلس إدارة إلزامي وهيكل مألوف أكثر للصناديق والمستشار المالي والصفقات.</p><div class="cp"><b>سلطان:</b> حماية مركزه ضمن إطار أكثر تنظيماً.</div></article></div><div class="rows"><div class="cr"><strong>المجلس</strong><div>المبسطة: مرونة في التعيين</div><div>غير المدرجة: مجلس إلزامي</div></div><div class="cr"><strong>المؤسس</strong><div>المبسطة: أدوات حماية أوسع</div><div>غير المدرجة: حماية ضمن إطار أكثر تقيداً</div></div><div class="cr"><strong>المستثمر</strong><div>المبسطة: أنسب للصفقة الخاصة</div><div>غير المدرجة: أكثر ألفة للمستثمر المؤسسي</div></div><div class="cr"><strong>سوق المال</strong><div>المبسطة: مرحلة نضج</div><div>غير المدرجة: أقرب لمسار الإدراج</div></div></div><div class="vr"><b>الترجيح:</b> عندما يكون الإدراج أو المستثمر المؤسسي هدفاً متوسط المدى، تستفيد رياح البن من مرونة المساهمة المبسطة لبناء المجلس والصلاحيات وفئات الأسهم، ثم تنتقل لاحقاً إلى الشركة المساهمة غير المدرجة عند الحاجة.</div></section>`;
+
+  const off=`<section class="oz"><div class="oh"><div><small style="color:#d6b56f">مرحلة ما بعد الدراسة</small><h2>من التحليل إلى مخرجات قابلة للاعتماد</h2><p>يمكن تطوير أي محور إلى مسار مستقل ينتهي بوثائق وقرارات قابلة للإحالة إلى فريق الشركة والمحامي ومستشار الحوكمة.</p></div><div class="on">نطاق كل مسار يحدد بعد مراجعة ما أنجزته الشركة ومستشاروها، حتى يكون العمل مكملاً لما هو قائم.</div></div><div class="og"><article class="oc f"><small>المسار الرئيسي</small><h3>هيكل التحول والحوكمة</h3><p>تجميع مركز سلطان، فئات الأسهم، المجلس، التصويت، نسب القرارات ودخول المستثمر في تصميم واحد.</p><div class="ob"><b>المخرجات:</b> خريطة حوكمة + نموذج المجلس + مصفوفة قرارات + تصور فئات الأسهم.</div><div class="oi">قبل اعتماد الصياغة النهائية للتحول</div></article><article class="oc"><small>01 · المؤسس</small><h3>سيناريوهات ملكية سلطان</h3><p>أثر الزيادة والبيع ودخول المستثمر.</p><div class="ob"><b>المخرج:</b> سيناريوهات ملكية وتصويت + أثر التخفيف في الملكية (Dilution).</div></article><article class="oc"><small>02 · الصلاحيات</small><h3>مصفوفة المجلس والإدارة</h3><p>توزيع القرار والحدود المالية والتشغيلية.</p><div class="ob"><b>المخرج:</b> مصفوفة الصلاحيات + قرارات محجوزة + ضوابط تفويض.</div></article><article class="oc"><small>03 · المستثمر</small><h3>تصميم الدخول والخروج</h3><p>فئة المستثمر وحقوقه وآلية خروجه.</p><div class="ob"><b>المخرج:</b> تصور الصفقة + حق اللحاق بالبيع (Tag Along) + حق الإلزام بالبيع (Drag Along) + فئة الأسهم المناسبة.</div></article><article class="oc"><small>04 · النضج</small><h3>خارطة المرحلة التالية</h3><p>المجلس واللجان والتقارير والمخاطر على مراحل.</p><div class="ob"><b>المخرج:</b> خارطة 18-24 شهراً.</div></article></div></section>`;
+
+  let a=sec('المقارنة التي تهم المؤسس');
+  if(a)h=h.slice(0,a[0])+cmp+h.slice(a[1]);
+  a=sec('مسارات تطبيقية يمكن تطويرها عند الحاجة')||sec('حزمة التنفيذ المقترحة');
+  if(a)h=h.slice(0,a[0])+off+h.slice(a[1]);
+  h=h.replace('</style>',css+'</style>');
+  return h;
+};
