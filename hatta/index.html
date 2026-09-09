@@ -9,6 +9,7 @@
     html,body{margin:0;min-height:100%;background:#fbfaf7;color:#17233c;font-family:Tahoma,Arial,sans-serif}
     .loading{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center;background:#061f56;color:#fff}
     .loading b{color:#d2a05a}
+    .loading a{color:#fff}
   </style>
 </head>
 <body>
@@ -28,13 +29,10 @@
       });
     }
 
-    function setImage(container,src,alt){
-      if(!container || !src) return;
-      container.textContent='';
-      const img=document.createElement('img');
-      img.src=src;
-      img.alt=alt;
-      container.appendChild(img);
+    function setImg(el,src,alt){
+      if(!el || !src) return;
+      el.setAttribute('src',src);
+      el.setAttribute('alt',alt||'');
     }
 
     try{
@@ -67,29 +65,49 @@
         doc.head.appendChild(copy);
       });
 
-      const markLogo=(guide.querySelector('.mini-brand img')||{}).src || (guide.querySelector('.mini-brand img')||{}).getAttribute?.('src') || '';
-      const fullLogo=(guide.querySelector('.cover-logo img')||{}).src || (guide.querySelector('.cover-logo img')||{}).getAttribute?.('src') || markLogo;
+      const markNode=guide.querySelector('.mini-brand img');
+      const fullNode=guide.querySelector('.cover-logo img');
+      const markLogo=markNode ? (markNode.getAttribute('src')||'') : '';
+      const fullLogo=fullNode ? (fullNode.getAttribute('src')||markLogo) : markLogo;
 
       doc.title='حتى لحلول الأعمال — الحوكمة وتطوير الأعمال';
       doc.body.classList.add('hatta-version');
+
+      const canonical=doc.querySelector('link[rel="canonical"]');
+      if(canonical) canonical.setAttribute('href',location.href);
       const titleMeta=doc.querySelector('meta[property="og:title"]');
       if(titleMeta) titleMeta.setAttribute('content','حتى لحلول الأعمال — الحوكمة وتطوير الأعمال');
+      const urlMeta=doc.querySelector('meta[property="og:url"]');
+      if(urlMeta) urlMeta.setAttribute('content',location.href);
       let theme=doc.querySelector('meta[name="theme-color"]');
       if(!theme){theme=doc.createElement('meta');theme.name='theme-color';doc.head.appendChild(theme);}
       theme.setAttribute('content','#061f56');
-      const canonical=doc.querySelector('link[rel="canonical"]');
-      if(canonical) canonical.setAttribute('href',location.href);
 
-      const brandStrong=doc.querySelector('.brand-title strong');
-      const brandSub=doc.querySelector('.brand-title span');
-      if(brandStrong) brandStrong.textContent='حتى لحلول الأعمال';
-      if(brandSub) brandSub.textContent='الحوكمة وتطوير الأعمال';
-      setImage(doc.querySelector('.mark'),markLogo,'علامة حتى');
-      setImage(doc.querySelector('.side-mark'),fullLogo,'شعار حتى لحلول الأعمال');
+      const brandName=doc.querySelector('.brand-name');
+      const brandRole=doc.querySelector('.brand-role');
+      if(brandName) brandName.textContent='حتى لحلول الأعمال';
+      if(brandRole) brandRole.textContent='الحوكمة وتطوير الأعمال | استشارات وإرشاد | عضوية مجالس مستقلة';
+      setImg(doc.querySelector('.topbar .logo'),markLogo,'علامة حتى');
+
       const kicker=doc.querySelector('.hero .kicker');
       if(kicker) kicker.textContent='حتى لحلول الأعمال';
-      const footerStrong=doc.querySelector('.footer strong');
-      if(footerStrong) footerStrong.textContent='حتى لحلول الأعمال — الحوكمة وتطوير الأعمال.';
+
+      const heroGrid=doc.querySelector('.hero-grid');
+      if(heroGrid && fullLogo && !heroGrid.querySelector('.hatta-hero-brand')){
+        const brandCard=doc.createElement('div');
+        brandCard.className='hatta-hero-brand';
+        const img=doc.createElement('img');
+        img.src=fullLogo;
+        img.alt='حتى لحلول الأعمال';
+        brandCard.appendChild(img);
+        heroGrid.appendChild(brandCard);
+      }
+
+      setImg(doc.querySelector('.footer .footer-logo'),fullLogo,'حتى لحلول الأعمال');
+      const footerTitle=doc.querySelector('.footer-title');
+      const footerRole=doc.querySelector('.footer-role');
+      if(footerTitle) footerTitle.textContent='حتى لحلول الأعمال';
+      if(footerRole) footerRole.textContent='الحوكمة وتطوير الأعمال';
 
       const identityStyle=doc.createElement('style');
       identityStyle.id='hatta-brand-identity';
@@ -99,74 +117,86 @@ ${faces}
   --navy:#061f56;--navy2:#0b2f75;--gold:#b47a2d;--gold2:#d2a05a;
   --sand:#e6d2ae;--paper:#fbfaf7;--ink:#17233c;--muted:#657084;
   --white:#fff;--line:rgba(6,31,86,.13);--danger:#b42318;--green:#087a55;
-  --radius:26px;--shadow:0 24px 70px rgba(6,31,86,.12);
+  --radius:26px;--shadow:0 20px 56px rgba(6,31,86,.10);
 }
 ${roots}
-:root{
-  --night:var(--navy);--night2:var(--navy2);--purple:var(--navy);--purple2:var(--navy2);
-  --coral:var(--gold);--cream:var(--paper);--text:var(--ink);--good:var(--green);--warn:var(--gold2);
-}
-html{scroll-behavior:smooth;background:var(--paper)}
-body,.site{background:var(--paper)!important;color:var(--ink)!important;font-family:"IBM Plex Sans Arabic","Hatta Mada",Tahoma,Arial,sans-serif!important}
+html{scroll-behavior:smooth;background:var(--paper)!important}
+body{background:var(--paper)!important;color:var(--ink)!important;font-family:"IBM Plex Sans Arabic","Hatta Mada",Tahoma,Arial,sans-serif!important}
 button,input,textarea,select{font-family:"IBM Plex Sans Arabic","Hatta Mada",Tahoma,Arial,sans-serif!important}
 .en,[lang="en"],[dir="ltr"]{font-family:"El Messiri",Arial,sans-serif!important}
-h1,h2,h3,h4,.brand-title strong,.kicker,.btn{font-family:"Hatta Mada","IBM Plex Sans Arabic",sans-serif!important}
-.wrap{width:min(1180px,calc(100% - 40px))!important;margin-inline:auto!important}
-.topbar{height:74px!important;background:rgba(251,250,247,.94)!important;border-bottom:1px solid var(--line)!important;box-shadow:none!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-.nav{min-height:74px!important}
-.brand{gap:13px!important}
-.mark{width:48px!important;height:48px!important;border-radius:14px!important;background:#fff!important;border:1px solid var(--line)!important;box-shadow:0 10px 28px rgba(6,31,86,.08)!important;overflow:hidden!important;padding:7px!important;display:grid!important;place-items:center!important;color:transparent!important}
-.mark img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important}
-.brand-title strong{color:var(--navy)!important;font-size:18px!important;font-weight:800!important;line-height:1.25!important}
-.brand-title span{color:var(--muted)!important}
-.social-icon{border-color:var(--line)!important;color:var(--navy)!important;background:#fff!important}
-.btn{border-radius:999px!important;font-weight:700!important;letter-spacing:0!important}
-.btn.primary{background:var(--navy)!important;color:#fff!important;border-color:var(--navy)!important;box-shadow:none!important}
-.btn.primary:hover{background:var(--navy2)!important;border-color:var(--navy2)!important;transform:translateY(-1px)}
-.hero{position:relative!important;overflow:hidden!important;background-color:var(--navy)!important;background-image:var(--frame-dark,none),var(--frame-dark-opposite,none),radial-gradient(circle at 18% 22%,rgba(210,160,90,.16),transparent 30%),radial-gradient(circle at 82% 74%,rgba(255,255,255,.08),transparent 28%)!important;background-repeat:no-repeat!important;background-position:left top,right bottom,center,center!important;background-size:min(42vw,590px) auto,min(42vw,590px) auto,auto,auto!important;color:#fff!important}
+h1,h2,h3,h4,.brand-name,.kicker,.btn,.cta-title{font-family:"Hatta Mada","IBM Plex Sans Arabic",sans-serif!important}
+
+/* أعلى الصفحة: تباين مؤسسي واضح */
+.today-strip{background:#031532!important;color:#d8e1ef!important;border-bottom:1px solid rgba(210,160,90,.30)!important}
+.today-strip .makkah-time{color:var(--gold2)!important}
+.topbar{background:rgba(6,31,86,.98)!important;border-bottom:1px solid rgba(210,160,90,.38)!important;box-shadow:0 10px 30px rgba(6,31,86,.20)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important}
+.topbar-inner{max-width:1180px!important;padding:10px 16px!important;gap:14px!important}
+.topbar .logo{width:76px!important;height:48px!important;object-fit:contain!important;padding:7px!important;border-radius:14px!important;background:#fff!important;border:1px solid rgba(255,255,255,.62)!important;box-shadow:0 8px 24px rgba(0,0,0,.16)!important}
+.brand-meta{min-width:185px!important}
+.brand-name{color:#fff!important;font-size:17px!important;font-weight:800!important;line-height:1.3!important}
+.brand-role{color:var(--gold2)!important;font-size:11.5px!important;font-weight:600!important;line-height:1.55!important}
+.nav{gap:7px!important}
+.nav a{background:rgba(255,255,255,.09)!important;border:1px solid rgba(255,255,255,.20)!important;color:#fff!important;box-shadow:none!important;padding:7px 11px!important}
+.nav a:hover,.nav a:focus-visible{background:#fff!important;color:var(--navy)!important;border-color:#fff!important}
+
+/* Hero */
+.hero{position:relative!important;overflow:hidden!important;padding:0!important;margin:16px 0 20px!important;border:0!important;border-radius:30px!important;background-color:var(--navy)!important;background-image:var(--frame-dark,none),var(--frame-dark-opposite,none),radial-gradient(circle at 18% 20%,rgba(210,160,90,.18),transparent 30%)!important;background-repeat:no-repeat!important;background-position:left top,right bottom,center!important;background-size:min(43vw,600px) auto,min(43vw,600px) auto,auto!important;color:#fff!important;box-shadow:0 24px 70px rgba(6,31,86,.20)!important}
 .hero:before,.hero:after{display:none!important}
-.hero-grid{grid-template-columns:1.05fr .95fr!important;gap:70px!important;padding:90px 0!important;align-items:center!important}
-.kicker{color:var(--gold2)!important;font-size:13px!important;font-weight:700!important;letter-spacing:.01em!important;display:flex!important;align-items:center!important;gap:10px!important}
-.kicker:before{content:"";width:24px;height:2px;background:currentColor;display:inline-block;border-radius:3px}
-.hero h1{font-family:"Hatta Mada","IBM Plex Sans Arabic",sans-serif!important;font-size:clamp(44px,6.4vw,82px)!important;line-height:1.08!important;letter-spacing:-.02em!important;font-weight:800!important;color:#fff!important;margin-top:18px!important}
-.hero p{color:#dfe6f3!important;font-size:18px!important;line-height:1.95!important;max-width:690px!important}
-.hero .btn.secondary{background:transparent!important;color:#fff!important;border-color:rgba(255,255,255,.28)!important}
-.hero-points{color:#dfe6f3!important}
-.hero-points i{background:var(--gold2)!important}
-.hero-panel{background:#fff!important;color:var(--ink)!important;border:1px solid rgba(255,255,255,.28)!important;border-radius:34px!important;box-shadow:0 30px 80px rgba(0,0,0,.24)!important;overflow:hidden!important}
-.hero-panel-inner{background-image:var(--frame-light-opposite,none)!important;background-repeat:no-repeat!important;background-position:right bottom!important;background-size:68% auto!important}
-.hero-panel h3{color:var(--navy)!important;font-family:"Hatta Mada","IBM Plex Sans Arabic",sans-serif!important}
-.hero-panel p,.hero-panel li{color:var(--muted)!important}
-.side-mark{width:min(250px,78%)!important;height:auto!important;min-height:92px!important;background:#fff!important;border:1px solid var(--line)!important;border-radius:20px!important;padding:14px!important;display:grid!important;place-items:center!important;color:transparent!important}
-.side-mark img{display:block!important;width:100%!important;max-height:105px!important;object-fit:contain!important}
-.section{padding:92px 0!important;border-top:1px solid var(--line)!important;background:var(--paper)!important}
-.section.soft{background:#fff!important}
-.section-head{display:grid!important;grid-template-columns:1fr minmax(260px,440px)!important;gap:48px!important;align-items:end!important;margin-bottom:48px!important}
-.section-head h2{font-family:"Hatta Mada","IBM Plex Sans Arabic",sans-serif!important;font-size:clamp(32px,4vw,52px)!important;line-height:1.25!important;color:var(--navy)!important;margin:0!important}
-.section-head p{color:var(--muted)!important;font-size:16px!important;line-height:1.9!important}
-.problem,.step,.service{background:#fff!important;border:1px solid var(--line)!important;border-radius:var(--radius)!important;box-shadow:0 12px 38px rgba(6,31,86,.06)!important}
-.problem.visual{background-color:var(--navy)!important;color:#fff!important;background-image:var(--frame-dark,none),var(--frame-dark-opposite,none)!important;background-repeat:no-repeat!important;background-position:left top,right bottom!important;background-size:74% auto!important}
-.problem.visual h3,.problem.visual strong{color:#fff!important}
-.problem.visual p{color:#dfe6f3!important}
-.step b,.service h3,.problem h3{color:var(--navy)!important}
-.step:before,.service:before{color:var(--gold)!important}
-.footer{background-color:var(--navy)!important;color:#dfe6f3!important;border-top:0!important;background-image:var(--frame-dark,none),var(--frame-dark-opposite,none)!important;background-repeat:no-repeat!important;background-position:left top,right bottom!important;background-size:min(34vw,430px) auto!important}
-.footer strong{color:#fff!important;font-family:"Hatta Mada","IBM Plex Sans Arabic",sans-serif!important}
-.footer a{color:#fff!important}
-@media(max-width:960px){
-  .hero-grid,.section-head{grid-template-columns:1fr!important;gap:38px!important}
-  .hero-grid{padding:72px 0!important}
-  .hero{background-size:78vw auto,78vw auto,auto,auto!important}
+.hero-grid{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr)!important;gap:56px!important;align-items:center!important;padding:62px 54px!important;position:relative!important;z-index:1!important}
+.kicker{display:inline-flex!important;width:max-content!important;align-items:center!important;gap:9px!important;background:rgba(210,160,90,.12)!important;border:1px solid rgba(210,160,90,.45)!important;color:#f0c986!important;border-radius:999px!important;padding:7px 13px!important;font-size:13px!important;font-weight:700!important;margin-bottom:16px!important}
+.hero h1{color:#fff!important;font-size:clamp(43px,5.6vw,76px)!important;line-height:1.12!important;letter-spacing:-.015em!important;font-weight:800!important;margin:0 0 16px!important;max-width:760px!important}
+.hero .subtitle{color:#e8eef8!important;font-size:17px!important;line-height:1.95!important;max-width:760px!important}
+.hero .badge-row{gap:7px!important;margin-top:18px!important}
+.hero .badge{background:rgba(255,255,255,.10)!important;color:#fff!important;border:1px solid rgba(255,255,255,.20)!important;padding:5px 10px!important;font-weight:700!important}
+.hatta-hero-brand{min-height:270px!important;display:grid!important;place-items:center!important;background:#fff!important;border:1px solid rgba(255,255,255,.7)!important;border-radius:28px!important;padding:34px 28px!important;box-shadow:0 28px 70px rgba(0,0,0,.24)!important;background-image:var(--frame-light-opposite,none)!important;background-repeat:no-repeat!important;background-position:right bottom!important;background-size:78% auto!important}
+.hatta-hero-brand img{display:block!important;width:min(100%,430px)!important;height:auto!important;max-height:190px!important;object-fit:contain!important}
+
+/* المحتوى */
+main.wrap{max-width:1180px!important;padding-top:8px!important}
+.bismillah{color:var(--gold)!important}
+section{border-color:var(--line)!important;box-shadow:0 12px 38px rgba(6,31,86,.055)!important}
+h2{color:var(--navy)!important}
+h2:before{background:var(--gold)!important}
+.sec-desc,.service-card p,.tool span,.case span,.advisory-card p,.audience-card span,.why-card span{color:var(--muted)!important}
+.service-card,.pos-card,.value-card,.tool,.case,.advisory-card,.audience-card,.why-card,.client-logo{border-color:var(--line)!important}
+.service-card h3,.pos-card b,.value-card b,.tool b,.case b,.advisory-card h3{color:var(--navy)!important}
+.num,.tool .tag,.advisory-label{background:#f7efe2!important;color:#8f5e1f!important;border-color:#e6d2ae!important}
+.chip,.advisory-meta span{background:#f3f6fb!important;color:var(--navy)!important;border-color:rgba(6,31,86,.14)!important}
+.example{background:#fcf7ef!important;color:#5b4731!important;border-color:#e6d2ae!important;border-right-color:var(--gold)!important}
+.advisory-link{background:var(--navy)!important;color:#fff!important}
+.advisory-link:hover{background:var(--navy2)!important}
+
+/* CTA والفوتر */
+.cta-card,.copy-box{background-color:var(--navy)!important;background-image:var(--frame-dark,none),var(--frame-dark-opposite,none)!important;background-repeat:no-repeat!important;background-position:left top,right bottom!important;color:#fff!important;border-color:rgba(210,160,90,.28)!important}
+.cta-title{color:#fff!important}
+.cta-text,.copy-text{color:#e8eef8!important}
+.footer{background-color:var(--navy)!important;color:#d8e1ef!important;border:1px solid rgba(210,160,90,.28)!important;background-image:var(--frame-dark,none),var(--frame-dark-opposite,none)!important;background-repeat:no-repeat!important;background-position:left top,right bottom!important;background-size:min(34vw,430px) auto!important}
+.footer .footer-logo{width:112px!important;height:56px!important;object-fit:contain!important;background:#fff!important;border:1px solid rgba(255,255,255,.65)!important;border-radius:12px!important;padding:7px!important}
+.footer-title{color:#fff!important;font-family:"Hatta Mada","IBM Plex Sans Arabic",sans-serif!important;font-size:15px!important}
+.footer-role{color:var(--gold2)!important}
+.footer-copy{color:#aebcd1!important}
+.social-username,.site-socials{display:none!important}
+.footer{grid-template-columns:auto minmax(0,1fr)!important}
+
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr!important;gap:30px!important;padding:48px 34px!important}
+  .hatta-hero-brand{min-height:210px!important;max-width:560px!important;width:100%!important}
+  .hero{background-size:82vw auto,82vw auto,auto!important}
 }
-@media(max-width:620px){
-  .wrap{width:min(100% - 26px,1180px)!important}
-  .topbar{height:auto!important}.nav{min-height:68px!important}
-  .mark{width:42px!important;height:42px!important}.brand-title span{display:none!important}
-  .hero-grid{padding:58px 0!important;gap:30px!important}
-  .hero h1{font-size:clamp(38px,12vw,58px)!important}
-  .hero p{font-size:16px!important}
-  .section{padding:70px 0!important}.section-head{gap:18px!important;margin-bottom:34px!important}
-  .hero-panel{border-radius:24px!important}
+@media(max-width:760px){
+  .topbar-inner{padding:9px 12px!important}
+  .topbar .logo{width:64px!important;height:42px!important}
+  .brand-name{font-size:15px!important}
+  .brand-role{font-size:10.5px!important}
+}
+@media(max-width:560px){
+  .hero{border-radius:22px!important;margin-top:10px!important}
+  .hero-grid{padding:34px 20px!important;gap:24px!important}
+  .hero h1{font-size:clamp(36px,11vw,52px)!important}
+  .hero .subtitle{font-size:15px!important;line-height:1.85!important}
+  .hatta-hero-brand{min-height:165px!important;border-radius:20px!important;padding:22px!important}
+  .hatta-hero-brand img{max-height:125px!important}
+  .footer .footer-logo{width:86px!important;height:46px!important}
 }
       `;
       doc.head.appendChild(identityStyle);
@@ -175,7 +205,7 @@ h1,h2,h3,h4,.brand-title strong,.kicker,.btn{font-family:"Hatta Mada","IBM Plex 
       document.write('<!doctype html>\n'+doc.documentElement.outerHTML);
       document.close();
     }catch(err){
-      document.body.innerHTML='<div class="loading"><div><b>حتى لحلول الأعمال</b><br>تعذر تحميل النسخة حاليا.<br><a style="color:#fff" href="../">فتح النسخة الأساسية</a></div></div>';
+      document.body.innerHTML='<div class="loading"><div><b>حتى لحلول الأعمال</b><br>تعذر تحميل النسخة حاليا.<br><a href="../">فتح النسخة الأساسية</a></div></div>';
     }
   })();
   </script>
