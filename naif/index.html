@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>نايف — الحوكمة وتطوير الأعمال</title>
+  <style>
+    html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:#fbf8f3;color:#170f21}
+    .loading{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="loading">جاري تحميل نسخة نايف…</div>
+  <script>
+  (async function(){
+    try{
+      const sourceUrl=new URL('../index-source.html',location.href);
+      const res=await fetch(sourceUrl,{cache:'no-store'});
+      if(!res.ok) throw new Error('تعذر تحميل المصدر');
+      const html=await res.text();
+      const doc=new DOMParser().parseFromString(html,'text/html');
+      doc.title='نايف — الحوكمة وتطوير الأعمال';
+
+      const base=new URL('../',location.href);
+      doc.querySelectorAll('[src],[href]').forEach(function(el){
+        ['src','href'].forEach(function(attr){
+          const value=el.getAttribute(attr);
+          if(!value || /^(?:#|data:|mailto:|tel:|https?:|\/\/|\/)/i.test(value)) return;
+          try{ el.setAttribute(attr,new URL(value,base).href); }catch(e){}
+        });
+      });
+
+      const canonical=doc.querySelector('link[rel="canonical"]');
+      if(canonical) canonical.setAttribute('href',location.href);
+      document.open();
+      document.write('<!doctype html>\n'+doc.documentElement.outerHTML);
+      document.close();
+    }catch(err){
+      document.body.innerHTML='<div class="loading"><div><strong>تعذر تحميل الصفحة.</strong><br><a href="../">فتح النسخة الأساسية</a></div></div>';
+    }
+  })();
+  </script>
+</body>
+</html>
