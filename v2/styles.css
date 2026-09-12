@@ -1765,9 +1765,10 @@ p {
   transition: transform 150ms var(--ease-out), background 160ms ease;
 }
 
-.social-links img {
+.social-links svg {
   width: 15px;
   height: 15px;
+  fill: currentColor;
 }
 
 .toast {
