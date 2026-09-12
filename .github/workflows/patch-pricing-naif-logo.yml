@@ -1,0 +1,34 @@
+name: Patch pricing Naif logo
+
+on:
+  push:
+    paths:
+      - .github/workflows/patch-pricing-naif-logo.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch pricing file
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('pricing/index.html')
+          html = p.read_text(encoding='utf-8')
+          html = html.replace('.brand-logo.naif-logo{max-width:68mm;max-height:23mm}', '.brand-logo.naif-logo{max-width:68mm;max-height:23mm;filter:brightness(0) contrast(1.25);opacity:.98}')
+          html = html.replace('.footer-naif{width:22mm;height:10mm;object-fit:contain;display:inline-block}', '.footer-naif{width:22mm;height:10mm;object-fit:contain;display:inline-block;filter:brightness(0) contrast(1.25);opacity:.98}')
+          p.write_text(html, encoding='utf-8')
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pricing/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix Naif logo contrast in pricing tool"
+          git push
