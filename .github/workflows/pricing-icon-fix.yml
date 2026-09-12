@@ -1,0 +1,78 @@
+name: Fix pricing iPhone icon
+
+on:
+  push:
+    paths:
+      - '.github/workflows/pricing-icon-fix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch pricing index head
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, json
+          p = Path('pricing/index.html')
+          html = p.read_text(encoding='utf-8')
+          block = '''
+          <link rel="apple-touch-icon" sizes="180x180" href="/services/pricing/apple-touch-icon.png?v=20260912-main">
+          <link rel="icon" type="image/png" sizes="32x32" href="/services/pricing/icons/favicon-32x32.png?v=20260912-main">
+          <link rel="icon" type="image/png" sizes="16x16" href="/services/pricing/icons/favicon-16x16.png?v=20260912-main">
+          <link rel="manifest" href="/services/pricing/manifest.webmanifest?v=20260912-main">
+          <meta name="apple-mobile-web-app-capable" content="yes">
+          <meta name="mobile-web-app-capable" content="yes">
+          <meta name="apple-mobile-web-app-title" content="تسعير نايف">
+          <meta name="application-name" content="تسعير نايف">
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+          <meta name="theme-color" content="#101828">
+          '''
+          html = re.sub(r'\n?<link rel="apple-touch-icon"[^>]*>', '', html)
+          html = re.sub(r'\n?<link rel="icon"[^>]*>', '', html)
+          html = re.sub(r'\n?<link rel="manifest"[^>]*>', '', html)
+          html = re.sub(r'\n?<meta name="apple-mobile-web-app-capable"[^>]*>', '', html)
+          html = re.sub(r'\n?<meta name="mobile-web-app-capable"[^>]*>', '', html)
+          html = re.sub(r'\n?<meta name="apple-mobile-web-app-title"[^>]*>', '', html)
+          html = re.sub(r'\n?<meta name="application-name"[^>]*>', '', html)
+          html = re.sub(r'\n?<meta name="apple-mobile-web-app-status-bar-style"[^>]*>', '', html)
+          html = re.sub(r'\n?<meta name="theme-color"[^>]*>', '', html)
+          html = html.replace('<title>أداة التسعير وإصدار العروض</title>', '<title>تسعير نايف</title>')
+          if '<title>تسعير نايف</title>' in html:
+            html = html.replace('<title>تسعير نايف</title>', '<title>تسعير نايف</title>\n' + block, 1)
+          elif '</head>' in html:
+            html = html.replace('</head>', block + '\n</head>', 1)
+          p.write_text(html, encoding='utf-8')
+          m = Path('pricing/manifest.webmanifest')
+          manifest = {
+            "name":"أداة التسعير وإصدار العروض",
+            "short_name":"تسعير نايف",
+            "start_url":"/services/pricing/?source=homescreen",
+            "scope":"/services/pricing/",
+            "display":"standalone",
+            "background_color":"#101828",
+            "theme_color":"#101828",
+            "dir":"rtl",
+            "lang":"ar-SA",
+            "icons":[
+              {"src":"/services/pricing/apple-touch-icon.png","sizes":"180x180","type":"image/png","purpose":"any maskable"},
+              {"src":"/services/pricing/icons/favicon-32x32.png","sizes":"32x32","type":"image/png"},
+              {"src":"/services/pricing/icons/favicon-16x16.png","sizes":"16x16","type":"image/png"}
+            ]
+          }
+          m.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8')
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pricing/index.html pricing/manifest.webmanifest
+          if ! git diff --cached --quiet; then
+            git commit -m "Patch pricing iPhone home screen icon metadata"
+            git push
+          fi
