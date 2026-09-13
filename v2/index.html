@@ -4,27 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#061f56">
-  <title>حتى لحلول الأعمال | خدمات وأدوات الحوكمة وتطوير الأعمال</title>
-  <meta name="description" content="حتى لحلول الأعمال: خدمات استشارية، أدوات رقمية مدفوعة، ومنصات مؤسسية في الحوكمة والمجالس والصلاحيات والمخاطر والنمو والشراكات وإعادة الهيكلة.">
+  <title>حتى لحلول الأعمال | حوكمة وقرار ونمو</title>
+  <meta name="description" content="حلول استشارية وأدوات رقمية ومنصات مؤسسية تساعد الملاك ومجالس الإدارة والقيادات على ترتيب القرار في الحوكمة والنمو والشراكات والتحول.">
   <link rel="canonical" href="https://almohammdin.github.io/services/v2/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_SA">
-  <meta property="og:title" content="حتى لحلول الأعمال | نرتب قرار شركتك">
-  <meta property="og:description" content="استشارات وأدوات عملية للحوكمة والقرار والنمو، من التشخيص حتى التطبيق.">
+  <meta property="og:title" content="حتى لحلول الأعمال | حوكمة وقرار ونمو">
+  <meta property="og:description" content="حلول استشارية وأدوات ومنصات تساعد القيادات على ترتيب القرار من التشخيص حتى التطبيق.">
+  <meta property="og:locale:alternate" content="en_US">
   <meta property="og:url" content="https://almohammdin.github.io/services/v2/">
   <meta property="og:image" content="https://almohammdin.github.io/hatta-brand-guide/hatta-brand-guide-og.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="حتى لحلول الأعمال | نرتب قرار شركتك">
-  <meta name="twitter:description" content="استشارات وأدوات عملية للحوكمة والقرار والنمو، من التشخيص حتى التطبيق.">
+  <meta name="twitter:title" content="حتى لحلول الأعمال | حوكمة وقرار ونمو">
+  <meta name="twitter:description" content="حلول استشارية وأدوات ومنصات تساعد القيادات على ترتيب القرار من التشخيص حتى التطبيق.">
   <meta name="twitter:image" content="https://almohammdin.github.io/hatta-brand-guide/hatta-brand-guide-og.jpg">
   <link rel="icon" href="../assets/media/favicon.png" type="image/png">
   <link rel="preload" href="./assets/Hatta-Mada-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/media/hatta-logo-official.webp" as="image" type="image/webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>document.documentElement.classList.add('js');</script>
-  <link rel="stylesheet" href="./styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    document.documentElement.classList.add("js");
+    try {
+      const queryLanguage = new URLSearchParams(location.search).get("lang");
+      const savedLanguage = localStorage.getItem("hatta-services-v2-language");
+      const initialLanguage = queryLanguage === "en" || queryLanguage === "ar" ? queryLanguage : savedLanguage === "en" ? "en" : "ar";
+      document.documentElement.lang = initialLanguage;
+      document.documentElement.dir = initialLanguage === "en" ? "ltr" : "rtl";
+      document.documentElement.dataset.language = initialLanguage;
+    } catch (error) {}
+  </script>
+  <link rel="stylesheet" href="./styles.css?v=20260913-2">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -68,9 +79,11 @@
         <a href="#services">الخدمات</a>
         <a href="#platforms">المنصات</a>
         <a href="#about">عن حتى</a>
+        <a class="nav-contact" href="#contact">ناقش احتياجك</a>
       </nav>
 
-      <a class="header-action" href="#contact">ناقش احتياجك</a>
+      <button class="language-toggle" type="button" aria-label="Switch to English" data-language-toggle><span lang="en" dir="ltr">EN</span></button>
+      <span class="sr-only" aria-live="polite" data-language-status></span>
     </div>
   </header>
 
@@ -78,32 +91,30 @@
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-copy reveal">
-          <div class="eyebrow"><span></span> حتى لحلول الأعمال</div>
+          <div class="eyebrow">حتى لحلول الأعمال</div>
           <h1 id="hero-title">نرتب قرار شركتك<br>قبل أن تكبر التعقيدات</h1>
-          <p>نجمع بين الخبرة الاستشارية والأدوات الرقمية لخدمة الملاك ومجالس الإدارة والقيادات في الحوكمة، الصلاحيات، المخاطر، النمو، الشراكات وإعادة الهيكلة.</p>
+          <p>نعمل مع الملاك ومجالس الإدارة والقيادات لترتيب الموقف، مقارنة البدائل، وتحويل القرار إلى مسار قابل للتنفيذ في الحوكمة والنمو والشراكات والتحول المؤسسي.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#solutions">استعرض الحلول <span aria-hidden="true">←</span></a>
             <a class="button button-ghost" href="#contact">ناقش احتياجك</a>
           </div>
         </div>
 
-        <div class="hero-visual reveal" aria-label="من المشكلة إلى قرار منظم">
+        <div class="hero-visual reveal" aria-label="من موقف معقد إلى قرار قابل للتنفيذ">
           <div class="decision-card">
             <div class="decision-head">
-              <span class="live-mark"><i></i> مسار الحل</span>
+              <span class="live-mark"><i></i> مسار القرار</span>
               <span class="decision-brand">حتى</span>
             </div>
-            <div class="decision-title">من احتياج غير مرتب<br><strong>إلى قرار قابل للتنفيذ</strong></div>
+            <div class="decision-title">من موقف معقد<br><strong>إلى قرار قابل للتنفيذ</strong></div>
             <div class="decision-flow" aria-hidden="true">
-              <div><span>01</span><b>شخّص</b><small>افهم الوضع</small></div>
+              <div><span>01</span><b>افهم</b><small>شخّص الوضع</small></div>
               <i></i>
-              <div><span>02</span><b>قرّر</b><small>قارن البدائل</small></div>
+              <div><span>02</span><b>قارن</b><small>وازن البدائل</small></div>
               <i></i>
-              <div><span>03</span><b>طبّق</b><small>فعّل الحل</small></div>
+              <div><span>03</span><b>نفذ</b><small>فعّل القرار</small></div>
             </div>
-            <div class="decision-options">
-              <span>أداة رقمية</span><span>تقييم مهني</span><span>مشروع استشاري</span>
-            </div>
+            <p class="decision-summary">الحل يتشكل بحسب القرار، من التشخيص حتى التطبيق.</p>
           </div>
         </div>
       </div>
@@ -111,8 +122,8 @@
       <div class="container trust-row reveal" aria-label="عناصر الثقة">
         <div><strong>منذ 2007</strong><span>خبرة تنفيذية</span></div>
         <div><strong>من داخل المجلس</strong><span>فهم لبيئة القرار</span></div>
-        <div><strong>حلول عملية</strong><span>استشارات وأدوات ومنصات</span></div>
-        <div><strong>مخرجات واضحة</strong><span>جاهزة للنقاش والتطبيق</span></div>
+        <div><strong>من التشخيص إلى التطبيق</strong><span>مسار متكامل</span></div>
+        <div><strong>استشارات وأدوات ومنصات</strong><span>حل يناسب الموقف</span></div>
       </div>
     </section>
 
@@ -120,56 +131,51 @@
       <div class="container">
         <div class="section-heading reveal">
           <div>
-            <span class="section-kicker">ابدأ من احتياجك</span>
-            <h2 id="needs-title">ما القرار الذي تريد ترتيبه؟</h2>
+            <span class="section-kicker">ابدأ من قرارك</span>
+            <h2 id="needs-title">ما القرار الذي يحتاج إلى ترتيب؟</h2>
           </div>
-          <p>اختر نقطة البداية، وحتى تربطك بالأداة أو الخدمة أو المنصة المناسبة.</p>
+          <p>اختر القرار الذي يشغلك الآن، ونربطك بالمسار الأنسب له.</p>
         </div>
 
         <div class="needs-grid">
           <a class="need-card reveal" href="#tools" data-focus-filter="governance">
-            <span class="need-number">01</span><i class="need-icon" aria-hidden="true">⌁</i>
+            <span class="need-number">01</span><i class="need-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V8m0 0 8-4 8 4M4 8h16M7 11v5m5-5v5m5-5v5M3 19h18"/></svg></i>
             <h3>رفع فاعلية المجلس</h3>
             <p>تقييم الأداء، تنظيم الاجتماعات، وتحسين جودة القرارات واللجان.</p>
             <b>شاهد الحلول <span aria-hidden="true">←</span></b>
           </a>
           <a class="need-card reveal" href="#services">
-            <span class="need-number">02</span><i class="need-icon" aria-hidden="true">⌘</i>
+            <span class="need-number">02</span><i class="need-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v4m0 10v4M3 12h4m10 0h4M7.5 7.5 10 10m4 4 2.5 2.5m0-9L14 10m-4 4-2.5 2.5"/><circle cx="12" cy="12" r="3"/></svg></i>
             <h3>ترتيب الحوكمة والصلاحيات</h3>
             <p>توضيح الأدوار، الاعتمادات، وعلاقة الملاك بالإدارة التنفيذية.</p>
             <b>شاهد الحلول <span aria-hidden="true">←</span></b>
           </a>
           <a class="need-card reveal" href="#tools" data-focus-filter="risk">
-            <span class="need-number">03</span><i class="need-icon" aria-hidden="true">◇</i>
+            <span class="need-number">03</span><i class="need-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v6c0 4.8-3 7.7-8 9-5-1.3-8-4.2-8-9V6l8-3Z"/><path d="M12 8v5m0 3h.01"/></svg></i>
             <h3>رصد المخاطر والامتثال</h3>
             <p>كشف النقاط الحمراء وترتيب المسؤوليات وخطط المعالجة والمتابعة.</p>
             <b>شاهد الحلول <span aria-hidden="true">←</span></b>
           </a>
           <a class="need-card reveal" href="#tools" data-focus-filter="growth">
-            <span class="need-number">04</span><i class="need-icon" aria-hidden="true">↗</i>
+            <span class="need-number">04</span><i class="need-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 18 5-5 4 3 7-9"/><path d="M15 7h5v5"/></svg></i>
             <h3>تجهيز النمو والتوسع</h3>
             <p>اختبار الفرع الجديد ومسارات النمو وجاهزية المنشأة للاستثمار.</p>
             <b>شاهد الحلول <span aria-hidden="true">←</span></b>
           </a>
           <a class="need-card reveal" href="#tools" data-focus-filter="partnerships">
-            <span class="need-number">05</span><i class="need-icon" aria-hidden="true">∞</i>
+            <span class="need-number">05</span><i class="need-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 20c.4-3.7 2.2-5.5 5-5.5S12.6 16.3 13 20m-2-3.8c1-1.1 2.5-1.7 4.4-1.7 2.8 0 4.6 1.8 5 5.5"/></svg></i>
             <h3>تنظيم الشراكات</h3>
             <p>توزيع الأدوار والحصص والقرارات قبل بدء الشراكة أو دخول مستثمر.</p>
             <b>شاهد الحلول <span aria-hidden="true">←</span></b>
           </a>
           <a class="need-card reveal" href="#services">
-            <span class="need-number">06</span><i class="need-icon" aria-hidden="true">◎</i>
+            <span class="need-number">06</span><i class="need-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 5h5v5H6zM13 14h5v5h-5zM15.5 5v4a3 3 0 0 1-3 3H9a3 3 0 0 0-3 3v4"/></svg></i>
             <h3>إعادة الهيكلة والتحول</h3>
             <p>مقارنة خيارات الدمج والفصل والتحويل والتصفية الاختيارية.</p>
             <b>شاهد الحلول <span aria-hidden="true">←</span></b>
           </a>
         </div>
 
-        <div class="solution-types reveal" aria-label="أنواع الحلول">
-          <a href="#tools"><span>01</span><div><strong>أدوات رقمية مدفوعة</strong><small>تقييمات وتقارير ومخرجات محددة</small></div><i aria-hidden="true">←</i></a>
-          <a href="#services"><span>02</span><div><strong>خدمات استشارية</strong><small>تشخيص وتصميم وتنفيذ</small></div><i aria-hidden="true">←</i></a>
-          <a href="#platforms"><span>03</span><div><strong>منصات مؤسسية</strong><small>تشغيل ومتابعة مستمرة</small></div><i aria-hidden="true">←</i></a>
-        </div>
       </div>
     </section>
 
@@ -177,10 +183,10 @@
       <div class="container">
         <div class="section-heading light reveal">
           <div>
-            <span class="section-kicker">منتجات رقمية</span>
-            <h2 id="tools-title">أدوات مدفوعة بنتائج واضحة</h2>
+            <span class="section-kicker">أدوات القرار</span>
+            <h2 id="tools-title">أدوات لقرارات أدق</h2>
           </div>
-          <p>المعرفة العامة والعينات متاحة للاطلاع. التقييمات، التقارير، الحفظ والاستخدام الكامل تقدم كمنتجات مدفوعة.</p>
+          <p>كل أداة مصممة لموقف محدد، وتمنحك قراءة منظمة تساعدك على المقارنة وتحديد الخطوة التالية.</p>
         </div>
 
         <div class="tool-filters reveal" role="toolbar" aria-label="تصفية الأدوات">
@@ -195,33 +201,30 @@
           <article class="tool-card tool-card-featured reveal" data-category="governance">
             <div class="tool-media"><img src="../assets/tools/govcheck-preview.webp" alt="معاينة فحص صحة الحوكمة" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>أداة مدفوعة</span><small>شراء لمرة واحدة</small></div>
               <h3>فحص صحة الحوكمة</h3>
               <p>قياس وضوح الأدوار والقرارات والضبط الداخلي، ثم ترتيب فجوات الحوكمة حسب الأولوية.</p>
               <dl><div><dt>المخرج</dt><dd>درجة تفصيلية، فجوات وأولويات معالجة</dd></div><div><dt>مناسب لـ</dt><dd>الملاك والشركاء والمنشآت النامية</dd></div></dl>
-              <button class="tool-action" type="button" data-request="فحص صحة الحوكمة">اطلب الوصول <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="govcheck">اطلب الوصول <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card tool-card-featured reveal" data-category="governance">
             <div class="tool-media"><img src="../assets/tools/majalis-evaluator.webp" alt="معاينة مقيّم مجالس" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>تقييم مهني</span><small>لكل مجلس</small></div>
               <h3>مقيّم مجالس</h3>
               <p>تقييم منظم لأداء المجلس وممارساته، يحول النتائج إلى نقاط قوة وأولويات تطوير قابلة للنقاش.</p>
               <dl><div><dt>المخرج</dt><dd>تقرير تقييم ومحاور تحسين المجلس</dd></div><div><dt>مناسب لـ</dt><dd>مجالس الإدارة واللجان وأمناء المجالس</dd></div></dl>
-              <button class="tool-action" type="button" data-request="مقيّم مجالس">اطلب التقييم <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="board-evaluator">اطلب التقييم <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card tool-card-featured reveal" data-category="risk">
             <div class="tool-media tool-media-logo"><img src="../assets/tools/risk-register-logo.svg" alt="مرصد المخاطر المؤسسية" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>حل مدفوع</span><small>إعداد ومتابعة</small></div>
               <h3>مرصد المخاطر المؤسسية</h3>
               <p>بناء سجل حي للمخاطر، يربط الاحتمال والأثر بالمسؤول وخطة المعالجة وحالة المتابعة.</p>
               <dl><div><dt>المخرج</dt><dd>سجل مخاطر، خريطة حرارية وخطط معالجة</dd></div><div><dt>مناسب لـ</dt><dd>الإدارة التنفيذية ولجان المخاطر</dd></div></dl>
-              <button class="tool-action" type="button" data-request="مرصد المخاطر المؤسسية">اطلب الحل <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="risk-register">اطلب الحل <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
@@ -231,66 +234,60 @@
               <b>مصفوفة<br>الصلاحيات</b>
             </div>
             <div class="tool-body">
-              <div class="tool-tags"><span>أداة مدفوعة</span><small>إعداد للمنشأة</small></div>
               <h3>مصفوفة الصلاحيات</h3>
               <p>تنظيم من يوصي ويراجع ويعتمد وينفذ في القرارات الإدارية والمالية والتشغيلية.</p>
               <dl><div><dt>المخرج</dt><dd>مصفوفة قابلة للاعتماد والتحديث</dd></div></dl>
-              <button class="tool-action" type="button" data-request="مصفوفة الصلاحيات">اطلب الإعداد <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="authority-matrix">اطلب الإعداد <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card reveal" data-category="growth">
             <div class="tool-media"><img src="../assets/tools/growth-compass.webp" alt="معاينة مستكشف مسارات النمو" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>أداة مدفوعة</span><small>تقرير قرار</small></div>
               <h3>مستكشف مسارات النمو</h3>
               <p>مقارنة مسارات النمو وتحديد الاتجاه الأنسب وحجم التغيير وفق جاهزية المنشأة.</p>
               <dl><div><dt>المخرج</dt><dd>مقارنة مسارات وتوصية أولية</dd></div></dl>
-              <button class="tool-action" type="button" data-request="مستكشف مسارات النمو">اطلب التقرير <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="growth-path">اطلب التقرير <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card reveal" data-category="growth">
             <div class="tool-media tool-media-contain"><img src="../assets/tools/tawassu-preview.webp" alt="معاينة أداة توسع" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>أداة مدفوعة</span><small>لكل فرع</small></div>
               <h3>توسع | قرار الفرع الجديد</h3>
               <p>تقييم مخاطر واشتراطات الفرع الجديد قبل توقيع العقد والالتزام بالموقع.</p>
               <dl><div><dt>المخرج</dt><dd>مؤشر مخاطر ونقاط حسم قبل التوقيع</dd></div></dl>
-              <button class="tool-action" type="button" data-request="توسع - تقييم الفرع الجديد">اطلب التقييم <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="tawassu">اطلب التقييم <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card reveal" data-category="growth partnerships">
             <div class="tool-media tool-media-contain"><img src="../assets/tools/deal-check-logo.webp" alt="محرك الفحص المسبق للصفقات" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>أداة مدفوعة</span><small>لكل صفقة</small></div>
               <h3>محرك الفحص المسبق للصفقات</h3>
               <p>فحص أولي لجاهزية الاستحواذ أو الاندماج، وإبراز الفجوات والإشارات الحمراء قبل التفاوض.</p>
               <dl><div><dt>المخرج</dt><dd>ملخص جاهزية ونقاط حمراء</dd></div></dl>
-              <button class="tool-action" type="button" data-request="محرك الفحص المسبق للصفقات">اطلب الفحص <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="deal-check">اطلب الفحص <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card reveal" data-category="partnerships">
             <div class="tool-media"><img src="../assets/tools/sharakah.webp" alt="معاينة حاسبة الشراكات" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>أداة مدفوعة</span><small>لكل شراكة</small></div>
               <h3>حاسبة الشراكات</h3>
-              <p>تقدير المساهمات وتوزيع الحصص، وكشف البنود التي تحتاج اتفاقا واضحا قبل بدء الشراكة.</p>
+              <p>تقدير المساهمات وتوزيع الحصص، وكشف البنود التي تحتاج إلى اتفاق قبل بدء الشراكة.</p>
               <dl><div><dt>المخرج</dt><dd>تقدير حصص وقائمة نقاط اتفاق</dd></div></dl>
-              <button class="tool-action" type="button" data-request="حاسبة الشراكات">اطلب التقرير <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="partnership-calculator">اطلب التقرير <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card reveal" data-category="growth partnerships">
             <div class="tool-media"><img src="../assets/tools/valuation-guide.webp" alt="معاينة دليل التقييم والجاهزية" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>أداة مدفوعة</span><small>تقرير استرشادي</small></div>
               <h3>دليل التقييم والجاهزية</h3>
               <p>تقدير استرشادي لقيمة المنشأة وقياس جاهزيتها قبل دخول مستثمر أو مفاوضات البيع والشراكة.</p>
               <dl><div><dt>المخرج</dt><dd>تقدير أولي ومؤشرات جاهزية</dd></div></dl>
-              <button class="tool-action" type="button" data-request="دليل التقييم والجاهزية">اطلب التقرير <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="valuation-readiness">اطلب التقرير <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
@@ -300,33 +297,30 @@
               <b>فحص الإعلان<br>قبل النشر</b>
             </div>
             <div class="tool-body">
-              <div class="tool-tags"><span>فحص مدفوع</span><small>لكل إعلان</small></div>
               <h3>فاحص الامتثال الإعلاني</h3>
               <p>مراجعة الإعلان وفق نوع الحملة والمحتوى والقنوات، وتحديد النقاط التي تحتاج تعديلا.</p>
               <dl><div><dt>المخرج</dt><dd>نتيجة فحص وقائمة تعديلات</dd></div></dl>
-              <button class="tool-action" type="button" data-request="فاحص الامتثال الإعلاني">اطلب الفحص <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="ad-compliance">اطلب الفحص <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card reveal" data-category="risk">
             <div class="tool-media tool-media-contain"><img src="../assets/tools/mukhaalafat-logo.webp" alt="معاينة أداة مخالفات" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>خدمة رقمية</span><small>لكل اعتراض</small></div>
               <h3>مخالفات | إعداد الاعتراض</h3>
               <p>ترتيب بيانات المخالفة وحساب المهلة وتجهيز نص الاعتراض ومعرفة مسار التقديم.</p>
               <dl><div><dt>المخرج</dt><dd>مسودة اعتراض وبيانات تقديم مرتبة</dd></div></dl>
-              <button class="tool-action" type="button" data-request="مخالفات - إعداد الاعتراض">اطلب الإعداد <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="objections">اطلب الإعداد <span aria-hidden="true">←</span></button>
             </div>
           </article>
 
           <article class="tool-card reveal" data-category="partnerships">
             <div class="tool-media"><img src="../assets/tools/mosaffy-preview.webp" alt="معاينة دليل نطاق عمل المصفي" loading="lazy" decoding="async"></div>
             <div class="tool-body">
-              <div class="tool-tags"><span>دليل مدفوع</span><small>تصفية اختيارية</small></div>
               <h3>دليل نطاق عمل المصفي</h3>
               <p>تحديد مهام المصفي ومراحل التصفية والوثائق والمخرجات المطلوبة حتى إقفال الشركة.</p>
               <dl><div><dt>المخرج</dt><dd>نطاق عمل ومراحل ووثائق مطلوبة</dd></div></dl>
-              <button class="tool-action" type="button" data-request="دليل نطاق عمل المصفي">اطلب الدليل <span aria-hidden="true">←</span></button>
+              <button class="tool-action" type="button" data-request="liquidator-guide">اطلب الدليل <span aria-hidden="true">←</span></button>
             </div>
           </article>
         </div>
@@ -337,33 +331,33 @@
       <div class="container">
         <div class="section-heading reveal">
           <div>
-            <span class="section-kicker">الخبرة الاستشارية</span>
-            <h2 id="services-title">خدمات تعالج أصل المشكلة</h2>
+            <span class="section-kicker">الاستشارات</span>
+            <h2 id="services-title">استشارات ترتب القرار من أساسه</h2>
           </div>
-          <p>نبدأ بتشخيص الوضع، ثم نصمم المخرج ونساند المنشأة في التطبيق حسب النطاق المتفق عليه.</p>
+          <p>نشخص الوضع، نصمم الحل، ونساند المنشأة في التطبيق وفق نطاق ومخرجات متفق عليها.</p>
         </div>
 
         <div class="services-grid">
-          <article class="service-card reveal"><span>01</span><h3>التشخيص المؤسسي وخارطة المعالجة</h3><p>قراءة وضع الشركاء والإدارة والصلاحيات والقرارات والوثائق ومواطن التعطل.</p><ul><li>تقرير تشخيص</li><li>أولويات عاجلة</li><li>خارطة معالجة</li></ul><button type="button" data-request="التشخيص المؤسسي وخارطة المعالجة">اطلب الخدمة <i aria-hidden="true">←</i></button></article>
-          <article class="service-card reveal"><span>02</span><h3>تأسيس الحوكمة والصلاحيات</h3><p>بناء نظام عملي للقرار يشمل الهيكل ومصفوفة الصلاحيات والسياسات وسجل القرارات.</p><ul><li>هيكل تنظيمي</li><li>مصفوفة صلاحيات</li><li>مسارات اعتماد</li></ul><button type="button" data-request="تأسيس الحوكمة والصلاحيات">ناقش المشروع <i aria-hidden="true">←</i></button></article>
-          <article class="service-card reveal"><span>03</span><h3>مجالس الإدارة واللجان</h3><p>تنظيم أعمال المجلس واللجان، ورفع جودة النقاش والقرار والمتابعة والتقييم.</p><ul><li>أطر وسياسات المجلس</li><li>تقييم الأداء</li><li>عضوية مستقلة</li></ul><button type="button" data-request="خدمات مجالس الإدارة واللجان">ناقش احتياج المجلس <i aria-hidden="true">←</i></button></article>
-          <article class="service-card reveal"><span>04</span><h3>الشركاء والشركات العائلية</h3><p>فصل دور المالك عن المدير، وتنظيم العلاقة بين العائلة والملكية والإدارة.</p><ul><li>علاقة الشركاء</li><li>تعارض المصالح</li><li>تعاقب الأجيال</li></ul><button type="button" data-request="تنظيم الشركاء والشركات العائلية">اطلب الخدمة <i aria-hidden="true">←</i></button></article>
-          <article class="service-card reveal"><span>05</span><h3>المخاطر والامتثال</h3><p>كشف المخاطر الإدارية والحوكمية، وتحديد المسؤوليات وخطط المعالجة والمتابعة.</p><ul><li>مصفوفة مخاطر</li><li>نقاط حمراء</li><li>خطط معالجة</li></ul><button type="button" data-request="تحليل المخاطر والامتثال">اطلب التحليل <i aria-hidden="true">←</i></button></article>
-          <article class="service-card reveal"><span>06</span><h3>النمو والاستثمار والصفقات</h3><p>تقييم التوسع ورفع جاهزية المنشأة لدخول مستثمر أو شريك أو تنفيذ استحواذ.</p><ul><li>جاهزية الاستثمار</li><li>فحص أولي</li><li>بدائل النمو</li></ul><button type="button" data-request="النمو والاستثمار والصفقات">ناقش القرار <i aria-hidden="true">←</i></button></article>
-          <article class="service-card reveal"><span>07</span><h3>إعادة الهيكلة والتحول</h3><p>مراجعة الكيانات والأنشطة والعقود والتراخيص، ثم مقارنة مسارات الدمج أو الفصل أو التحويل.</p><ul><li>تحليل الكيانات</li><li>مقارنة البدائل</li><li>توصية نهائية</li></ul><button type="button" data-request="إعادة الهيكلة والتحول المؤسسي">ناقش المشروع <i aria-hidden="true">←</i></button></article>
-          <article class="service-card reveal"><span>08</span><h3>التصفية الاختيارية</h3><p>ترتيب الملف والقرارات ونطاق العمل والمسار النظامي للشركات التي ترغب في الإغلاق المنظم.</p><ul><li>فحص أولي</li><li>قرارات الشركاء</li><li>مسار الإقفال</li></ul><button type="button" data-request="التصفية الاختيارية للشركات">اطلب الخدمة <i aria-hidden="true">←</i></button></article>
-          <article class="service-card reveal"><span>09</span><h3>المتابعة الشهرية للحوكمة والنمو</h3><p>مساندة دورية للقيادة لمتابعة القرارات والأولويات والمخاطر وفرص تطوير الأعمال.</p><ul><li>اجتماع متابعة</li><li>مراجعة القرارات</li><li>أولويات الشهر التالي</li></ul><button type="button" data-request="المتابعة الشهرية للحوكمة وتطوير الأعمال">ناقش نطاق المتابعة <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>01</span><h3>التشخيص المؤسسي وخارطة المعالجة</h3><p>نفحص علاقة الشركاء بالإدارة، ومسارات القرار، والصلاحيات والوثائق، ثم نرتب مواطن التعطل حسب الأولوية.</p><button type="button" data-request="institutional-diagnosis">اطلب الخدمة <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>02</span><h3>تأسيس الحوكمة والصلاحيات</h3><p>نبني هيكلا عمليا للقرار يجمع الأدوار والصلاحيات والسياسات ومسارات الاعتماد والمتابعة.</p><button type="button" data-request="governance-authority">ناقش المشروع <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>03</span><h3>مجالس الإدارة واللجان</h3><p>ننظم أعمال المجلس واللجان، ونرفع جودة النقاش والقرار والمتابعة والتقييم.</p><button type="button" data-request="boards-committees">ناقش احتياج المجلس <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>04</span><h3>الشركاء والشركات العائلية</h3><p>نفصل دور المالك عن المدير، وننظم العلاقة بين العائلة والملكية والإدارة وتعاقب الأجيال.</p><button type="button" data-request="family-business">اطلب الخدمة <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>05</span><h3>المخاطر والامتثال</h3><p>نكشف المخاطر الإدارية والحوكمية، ونحدد المسؤوليات وخطط المعالجة والمتابعة.</p><button type="button" data-request="risk-compliance">اطلب التحليل <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>06</span><h3>النمو والاستثمار والصفقات</h3><p>نقيم التوسع ونرفع جاهزية المنشأة لدخول مستثمر أو شريك أو تنفيذ استحواذ.</p><button type="button" data-request="growth-deals">ناقش القرار <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>07</span><h3>إعادة الهيكلة والتحول</h3><p>نراجع الكيانات والأنشطة والعقود والتراخيص، ثم نقارن مسارات الدمج أو الفصل أو التحويل.</p><button type="button" data-request="restructuring">ناقش المشروع <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>08</span><h3>التصفية الاختيارية</h3><p>نرتب الملف والقرارات ونطاق العمل والمسار النظامي حتى الإغلاق المنظم للشركة.</p><button type="button" data-request="liquidation">اطلب الخدمة <i aria-hidden="true">←</i></button></article>
+          <article class="service-card reveal"><span>09</span><h3>المتابعة الشهرية للحوكمة والنمو</h3><p>نساند القيادة دوريا في متابعة القرارات والأولويات والمخاطر وفرص تطوير الأعمال.</p><button type="button" data-request="monthly-advisory">ناقش نطاق المتابعة <i aria-hidden="true">←</i></button></article>
         </div>
 
         <div class="work-modes reveal" aria-labelledby="work-modes-title">
-          <div class="work-modes-copy"><span class="section-kicker">طرق العمل</span><h3 id="work-modes-title">نطاق يناسب حجم القرار</h3><p>من جلسة مركزة إلى دور مستمر داخل بيئة القرار.</p></div>
+          <div class="work-modes-copy"><span class="section-kicker">نطاق المشاركة</span><h3 id="work-modes-title">المشاركة التي تناسب قرارك</h3><p>من جلسة مركزة إلى دور استشاري مستمر داخل بيئة القرار.</p></div>
           <div class="work-modes-list">
-            <button type="button" data-request="جلسة استشارية"><b>جلسة استشارية</b><small>قرار محدد</small></button>
-            <button type="button" data-request="تقييم مهني"><b>تقييم مهني</b><small>تقرير وتوصيات</small></button>
-            <button type="button" data-request="مشروع استشاري متكامل"><b>مشروع متكامل</b><small>تشخيص وتصميم وتنفيذ</small></button>
-            <button type="button" data-request="مستشار غير متفرغ"><b>مستشار غير متفرغ</b><small>دعم مستمر</small></button>
-            <button type="button" data-request="الإرشاد التنفيذي"><b>إرشاد تنفيذي</b><small>شريك تفكير</small></button>
-            <button type="button" data-request="عضوية مجلس أو لجنة"><b>عضوية مجلس أو لجنة</b><small>قيمة داخل القرار</small></button>
+            <button type="button" data-request="consultation"><b>جلسة استشارية</b><small>قرار محدد</small></button>
+            <button type="button" data-request="professional-assessment"><b>تقييم مهني</b><small>تقرير وتوصيات</small></button>
+            <button type="button" data-request="advisory-project"><b>مشروع متكامل</b><small>تشخيص وتصميم وتنفيذ</small></button>
+            <button type="button" data-request="fractional-advisor"><b>مستشار غير متفرغ</b><small>دعم مستمر</small></button>
+            <button type="button" data-request="executive-mentoring"><b>إرشاد تنفيذي</b><small>شريك تفكير</small></button>
+            <button type="button" data-request="board-membership"><b>عضوية مجلس أو لجنة</b><small>قيمة داخل القرار</small></button>
           </div>
         </div>
       </div>
@@ -372,33 +366,28 @@
     <section class="section platforms-section" id="platforms" aria-labelledby="platforms-title">
       <div class="container">
         <div class="section-heading reveal">
-          <div><span class="section-kicker">ترخيص مؤسسي</span><h2 id="platforms-title">منصات للعمل المستمر</h2></div>
-          <p>حلول لاستخدام المنشأة وفريقها، تقدم بعرض تجريبي ثم ترخيص يتناسب مع نطاق الاستخدام.</p>
+          <div><span class="section-kicker">المنصات</span><h2 id="platforms-title">منصات تدعم العمل المؤسسي</h2></div>
+          <p>حلول تستخدمها المنشأة وفرقها لتنظيم الاجتماعات والوثائق والمعرفة والمتابعة ضمن تشغيل مستمر.</p>
         </div>
 
         <div class="platforms-grid">
           <article class="platform-card reveal">
             <div class="platform-logo"><img src="../assets/tools/majalis-logo.svg" alt="مجالس" loading="lazy"></div>
-            <div class="platform-content"><span>منصة حوكمة الاجتماعات</span><h3>مجالس</h3><p>إدارة اجتماعات مجالس الإدارة والجمعيات واللجان من الدعوة وجدول الأعمال حتى المحضر والقرارات والأرشيف.</p><div class="platform-features"><b>دعوات وجدول أعمال</b><b>محاضر وقرارات</b><b>وثائق وأرشيف</b></div><button type="button" data-request="منصة مجالس">احجز عرضا تجريبيا <i aria-hidden="true">←</i></button></div>
+            <div class="platform-content"><span>منصة حوكمة الاجتماعات</span><h3>مجالس</h3><p>إدارة اجتماعات مجالس الإدارة والجمعيات واللجان من الدعوة وجدول الأعمال حتى المحضر والقرارات والأرشيف.</p><div class="platform-features"><b>دعوات وجدول أعمال</b><b>محاضر وقرارات</b><b>وثائق وأرشيف</b></div><button type="button" data-request="majalis">احجز عرضا تجريبيا <i aria-hidden="true">←</i></button></div>
           </article>
           <article class="platform-card reveal">
             <div class="platform-logo"><img src="https://almohammdin.github.io/mycv/assets/tools/emtidad-logo.png" alt="امتداد" loading="lazy"></div>
-            <div class="platform-content"><span>منصة الشركات العائلية</span><h3>امتداد</h3><p>معرفة وأدوات وتجارب تساعد الشركات العائلية على تنظيم العلاقة بين العائلة والملكية والإدارة والاستعداد للانتقال بين الأجيال.</p><div class="platform-features"><b>الميثاق العائلي</b><b>مركز معرفة</b><b>نماذج وقوائم</b></div><button type="button" data-request="منصة امتداد">اطلب عرض المنصة <i aria-hidden="true">←</i></button></div>
+            <div class="platform-content"><span>منصة الشركات العائلية</span><h3>امتداد</h3><p>معرفة وأدوات وتجارب تساعد الشركات العائلية على تنظيم العلاقة بين العائلة والملكية والإدارة والاستعداد للانتقال بين الأجيال.</p><div class="platform-features"><b>الميثاق العائلي</b><b>مركز معرفة</b><b>نماذج وقوائم</b></div><button type="button" data-request="emtidad">اطلب عرض المنصة <i aria-hidden="true">←</i></button></div>
           </article>
         </div>
-
-        <article class="journey-card reveal">
-          <div><span class="section-kicker">خدمة معرفية</span><h3>الرحلات المعرفية المهنية</h3><p>نصمم للشركات والجمعيات رحلات تجمع المعارض الدولية والزيارات القطاعية واللقاءات المهنية، وتحول الرحلة إلى معرفة تطبيقية وعلاقات وفرص تعاون.</p><button type="button" data-request="الرحلات المعرفية المهنية">ناقش رحلة معرفية <i aria-hidden="true">←</i></button></div>
-          <a href="https://almohammdin.github.io/Cafe-Show-Seoul2026/" target="_blank" rel="noopener noreferrer"><span>نموذج سابق</span><strong>رحلة سيئول المعرفية</strong><small>استعرض النموذج <i aria-hidden="true">↗</i></small></a>
-        </article>
       </div>
     </section>
 
     <section class="section previews-section" id="previews" aria-labelledby="previews-title">
       <div class="container">
         <div class="section-heading reveal">
-          <div><span class="section-kicker">معرفة وعينات</span><h2 id="previews-title">شاهد طريقة التفكير قبل الشراء</h2></div>
-          <p>مواد عامة ونماذج تعريفية تبين منهج العمل، بينما تبقى التقييمات والتقارير المخصصة ضمن المنتجات المدفوعة.</p>
+          <div><span class="section-kicker">محتوى مهني</span><h2 id="previews-title">نماذج من منهج العمل</h2></div>
+          <p>محتوى مختار يعرض طريقة تناولنا لملفات الحوكمة والقرار المؤسسي.</p>
         </div>
 
         <div class="preview-grid">
@@ -408,24 +397,115 @@
           <a class="preview-card reveal" href="https://almohammdin.github.io/Board-Case/" target="_blank" rel="noopener noreferrer">
             <div class="case-preview" aria-hidden="true"><small>دراسة حالة</small><strong>سياسة مكافآت<br>مجلس الإدارة</strong><span>من إشكالية مزمنة إلى سياسة معتمدة</span></div><div><span>دراسة حالة</span><h3>كيف تحول ملف غير مرتب إلى قرار معتمد؟</h3><b>اقرأ الحالة <i aria-hidden="true">↗</i></b></div>
           </a>
-          <a class="preview-card reveal" href="https://almohammdin.github.io/Cafe-Show-Seoul2026/" target="_blank" rel="noopener noreferrer">
-            <div class="seoul-preview" aria-hidden="true"><span>SEOUL</span><strong>معرفة<br>وعلاقات<br>وفرص</strong></div><div><span>نموذج خدمة</span><h3>نموذج الرحلة المعرفية إلى سيئول</h3><b>استعرض النموذج <i aria-hidden="true">↗</i></b></div>
-          </a>
         </div>
+
+        <details class="knowledge-article reveal">
+          <summary>
+            <span class="knowledge-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"/></svg></span>
+            <span class="knowledge-summary-copy"><small>دليل تطبيقي</small><strong>نوع السهم وفئة السهم</strong><span>كيف تختلف الحقوق وقوة التصويت داخل النوع نفسه؟</span></span>
+            <i class="knowledge-toggle" aria-hidden="true"></i>
+          </summary>
+
+          <div class="knowledge-body">
+            <div class="knowledge-lead">
+              <span class="section-kicker">النوع والفئة</span>
+              <h3>السهم يمثل جزءا من رأس مال الشركة، والفئة تحدد الحقوق المرتبطة به</h3>
+              <p><strong>نوع السهم</strong> يحدد الإطار العام. <strong>فئة السهم</strong> تضبط التفاصيل داخل النوع نفسه، مثل عدد الأصوات لكل سهم أو أولوية الأرباح أو شروط الاسترداد.</p>
+              <p class="legal-scope">تنطبق التفاصيل الآتية على شركة المساهمة غير المدرجة في السوق المالية؛ وتخضع الشركات المدرجة للوائح هيئة السوق المالية.</p>
+            </div>
+
+            <section class="voting-example" aria-labelledby="voting-example-title">
+              <span>مثال افتراضي على اختلاف قوة التصويت</span>
+              <h4 id="voting-example-title">نفس عدد الأسهم، وقوة تصويت مختلفة</h4>
+              <div class="voting-rows">
+                <div><strong>مساهم أ</strong><p>100 سهم عادي · الفئة الأولى · 10 أصوات للسهم</p><b>= 1,000 صوت</b></div>
+                <div><strong>مساهم ب</strong><p>100 سهم عادي · الفئة الثانية · صوت واحد للسهم</p><b>= 100 صوت</b></div>
+              </div>
+              <p>كلاهما يملك 100 سهم عادي، بينما الفئة الأولى تمنح قوة تصويت أعلى لأن عدد الأصوات المرتبط بكل سهم مختلف.</p>
+            </section>
+
+            <div class="share-types">
+              <article class="share-type-card">
+                <div class="share-type-head"><span>1</span><small>نظام الشركات، المادة 108</small></div>
+                <h4>الأسهم العادية</h4>
+                <strong>ملكية عادية في رأس المال</strong>
+                <p>صاحب السهم العادي يملك حصة في الشركة. ويمكن للنظام الأساس أن يمنح فئات الأسهم العادية أوزانا مختلفة في التصويت.</p>
+                <p class="use-example"><b>مثال استخدام</b> فئة للمؤسسين بقوة تصويت أعلى، وفئة للمستثمرين بقوة تصويت اعتيادية.</p>
+              </article>
+
+              <article class="share-type-card">
+                <div class="share-type-head"><span>2</span><small>المادة 108، والمادة 53 من اللائحة التنفيذية</small></div>
+                <h4>الأسهم الممتازة</h4>
+                <strong>سهم يمنح أولوية مالية</strong>
+                <p>يمكن أن تمنح شروط الإصدار أولوية على الأسهم العادية، مثل نسبة ثابتة سنوية من أرباح الشركة عند وجود أرباح سنوية كافية، أو نسبة أعلى من أصحاب الأسهم العادية.</p>
+                <p class="use-example"><b>مثال استخدام</b> فئة مستثمرين يراد منحها أولوية في الأرباح ضمن شروط الإصدار.</p>
+              </article>
+
+              <article class="share-type-card share-type-wide">
+                <div class="share-type-head"><span>3</span><small>نظام الشركات، المادة 108 · اللائحة التنفيذية، المادتان 51 و53</small></div>
+                <h4>الأسهم القابلة للاسترداد</h4>
+                <strong>معنى الاسترداد هنا: الشركة تسترد هذه الأسهم من المساهم مقابل دفع قيمة الاسترداد له</strong>
+                <p>عند إصدار هذه الفئة تكتب الشروط التي تحدد وقت ممارسة الشركة لخيار الاسترداد وطريقة حساب قيمته. عندما تمارس الشركة الخيار، تدفع للمساهم قيمة الاسترداد عن الأسهم المحددة، ثم تلغى الأسهم المستردة وفق الإجراءات النظامية.</p>
+
+                <div class="redemption-facts" aria-label="تفاصيل الاسترداد">
+                  <div><span>من يسترد؟</span><b>الشركة نفسها تمارس خيار الاسترداد.</b></div>
+                  <div><span>ماذا تسترد؟</span><b>الأسهم القابلة للاسترداد التي سبق أن أصدرتها.</b></div>
+                  <div><span>ممن تسترد؟</span><b>من المساهم الذي يملك تلك الأسهم.</b></div>
+                  <div><span>ما المقابل؟</span><b>تدفع للمساهم قيمة الاسترداد وفق السعر أو المعادلة المكتوبة في شروط الإصدار.</b></div>
+                </div>
+
+                <div class="redemption-example">
+                  <h5>مثال تطبيقي افتراضي: إصدار 10,000 سهم قابل للاسترداد</h5>
+                  <div><span>1</span><p><b>الإصدار</b> تصدر شركة المشروع 10,000 سهم قابل للاسترداد بقيمة <bdi dir="ltr">SAR 10</bdi> للسهم، بإجمالي <bdi dir="ltr">SAR 100,000</bdi>.</p></div>
+                  <div><span>2</span><p><b>شرط الاسترداد</b> يكتب في النظام الأساس وقرار الإصدار أن للشركة خيار استرداد هذه الأسهم بعد 3 سنوات بسعر <bdi dir="ltr">SAR 10</bdi> للسهم.</p></div>
+                  <div><span>3</span><p><b>ممارسة الخيار</b> بعد مضي 3 سنوات تقرر الشركة ممارسة خيار الاسترداد وفقا للشرط المكتوب.</p></div>
+                  <div><span>4</span><p><b>النتيجة</b> تدفع الشركة للمساهم <bdi dir="ltr">SAR 100,000</bdi>، وتلغى الأسهم المستردة، وتستكمل إجراءات تخفيض رأس المال المرتبطة بالاسترداد.</p></div>
+                </div>
+              </article>
+            </div>
+
+            <section class="share-comparison" aria-labelledby="share-comparison-title">
+              <span class="section-kicker">مقارنة أنواع الأسهم</span>
+              <h4 id="share-comparison-title">ماذا يمنح كل نوع من الأسهم؟</h4>
+              <p>التصويت والأولوية المالية والاسترداد تختلف بحسب نوع السهم وشروط الإصدار.</p>
+              <div class="comparison-table-wrap">
+                <table>
+                  <thead>
+                    <tr><th scope="col">المحور</th><th scope="col">الأسهم العادية</th><th scope="col">الأسهم الممتازة</th><th scope="col">الأسهم القابلة للاسترداد</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row">حق التصويت</th><td><strong>نعم</strong></td><td><strong>لا<sup>1</sup></strong></td><td><strong>لا<sup>1</sup></strong></td></tr>
+                    <tr><th scope="row">أولوية في الأرباح</th><td>اعتيادية</td><td><strong>نعم</strong></td><td>بحسب شروط الإصدار</td></tr>
+                    <tr><th scope="row">الاسترداد كخاصية للنوع</th><td>ليس من خصائص النوع</td><td>ليس من خصائص النوع</td><td><strong>نعم، وفق شروط الإصدار</strong></td></tr>
+                    <tr><th scope="row">تعدد الفئات</th><td><strong>نعم</strong></td><td><strong>نعم</strong></td><td><strong>نعم</strong></td></tr>
+                    <tr><th scope="row">سقف %50 المشترك</th><td>خارج السقف</td><td><strong>ينطبق<sup>2</sup></strong></td><td><strong>ينطبق<sup>2</sup></strong></td></tr>
+                    <tr><th scope="row">الاستخدام الأقرب</th><td>الملكية والتصويت</td><td>الأولوية المالية</td><td>الاسترداد وفق شروط الإصدار</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="comparison-notes">
+                <p><sup>1</sup> لا تمنح الأسهم الممتازة أو القابلة للاسترداد حق التصويت في الجمعيات العامة. وإذا نصت شروط الإصدار على نسبة الأرباح المشار إليها، وكانت لدى الشركة أرباح سنوية كافية ولم توزع النسبة 3 سنوات متتالية، جاز للجمعية الخاصة لأصحاب الفئة أن تقرر مشاركتهم في التصويت بصوت واحد لكل سهم، إلى أن تدفع الشركة أرباح السنوات السابقة.</p>
+                <p><sup>2</sup> المادة 51 تجعل الأسهم الممتازة والقابلة للاسترداد وفئاتها مجتمعة ضمن سقف %50 من رأس المال.</p>
+              </div>
+            </section>
+
+            <p class="knowledge-reference"><strong>المرجع:</strong> <a href="https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/a8376aea-1bc3-49d4-9027-aed900b555af/1" target="_blank" rel="noopener noreferrer">نظام الشركات</a>، المادتان 107 و108، والمادة 110 عند تعديل حقوق الفئات؛ و<a href="https://mc.gov.sa/ar/Documents/R.pdf" target="_blank" rel="noopener noreferrer">اللائحة التنفيذية للشركات غير المدرجة</a>، المادتان 51 و53. الحد الأقصى المشترك للأسهم الممتازة والقابلة للاسترداد هو %50 من رأس مال الشركة غير المدرجة.</p>
+          </div>
+        </details>
       </div>
     </section>
 
     <section class="section impact-section" id="impact" aria-labelledby="impact-title">
       <div class="container">
         <div class="section-heading reveal">
-          <div><span class="section-kicker">أثر العمل</span><h2 id="impact-title">مخرجات تتحول إلى قيمة</h2></div>
+          <div><span class="section-kicker">الأثر</span><h2 id="impact-title">أثر يمكن قياسه</h2></div>
           <p>نماذج مختارة من أعمال سابقة في الجاهزية المؤسسية والتطوير والاستثمار والحوكمة.</p>
         </div>
         <div class="impact-grid">
-          <article class="impact-card reveal"><strong>+132 مليون ريال</strong><h3>أثر تقديري لبرنامج جاهزية مؤسسية</h3><p>إعادة هيكلة وبناء بنية مؤسسية ودراسات توسع وشراكات في قطاع التعليم.</p></article>
-          <article class="impact-card reveal"><strong>+600%</strong><h3>نمو الإيرادات خلال 3 سنوات</h3><p>تطوير برنامج وقفي وبناء مصادر تمويل وتحسين المتابعة والتقارير الشهرية.</p></article>
-          <article class="impact-card reveal"><strong>+1,700%</strong><h3>توسع قاعدة المشتركين</h3><p>تحويل برنامج مساهمات إلى مورد مستدام عبر الاستقطاب والبيانات والحوكمة التشغيلية.</p></article>
-          <article class="impact-card reveal"><strong>نحو 100 مليون ريال</strong><h3>محفظة ضمن إطار حوكمي</h3><p>ربط القرارات بين مجلس النظارة ولجنة الاستثمار ورفع توصيات مدعومة بالتحليل.</p></article>
+          <article class="impact-card reveal"><strong><bdi dir="ltr">SAR 132+</bdi> مليون</strong><h3>أثر تقديري لبرنامج جاهزية مؤسسية</h3><p>إعادة هيكلة وبناء بنية مؤسسية ودراسات توسع وشراكات في قطاع التعليم.</p></article>
+          <article class="impact-card reveal"><strong><bdi dir="ltr">%600+</bdi></strong><h3>نمو الإيرادات خلال 3 سنوات</h3><p>تطوير برنامج وقفي وبناء مصادر تمويل وتحسين المتابعة والتقارير الشهرية.</p></article>
+          <article class="impact-card reveal"><strong><bdi dir="ltr">%1,700+</bdi></strong><h3>توسع قاعدة المشتركين</h3><p>تحويل برنامج مساهمات إلى مورد مستدام عبر الاستقطاب والبيانات والحوكمة التشغيلية.</p></article>
+          <article class="impact-card reveal"><strong><bdi dir="ltr">SAR 100</bdi> مليون</strong><h3>محفظة ضمن إطار حوكمي</h3><p>ربط القرارات بين مجلس النظارة ولجنة الاستثمار ورفع توصيات مدعومة بالتحليل.</p></article>
         </div>
 
         <div class="clients reveal" aria-labelledby="clients-title">
@@ -456,9 +536,9 @@
         </div>
         <div class="about-copy reveal">
           <span class="section-kicker">عن حتى</span>
-          <h2 id="about-title">حلول يقودها فهم واقعي لبيئة القرار</h2>
-          <p>بدأت حتى من ملاحظة متكررة: منشآت تملك فرصا جيدة، لكن القرار فيها غير موثق، أو الصلاحيات متداخلة، أو النمو أسرع من النظام الداخلي. لذلك نجمع بين الاستشارة والأداة والتنفيذ حتى يتحول التعقيد إلى قرار منظم ومخرج قابل للتطبيق.</p>
-          <div class="founder-line"><strong>بقيادة نايف المحمدي</strong><span>مؤسس حتى ومستشار الحوكمة وتطوير الأعمال، بخبرة تنفيذية ممتدة منذ 2007 في الإدارة ومجالس الإدارة والشراكات وتطوير الأعمال، ويعاونه مختصون بحسب طبيعة كل ملف.</span></div>
+          <h2 id="about-title">فهم واقعي لبيئة القرار</h2>
+          <p>تعمل حتى مع المنشآت التي تملك فرصة حقيقية للنمو، وتحتاج قراراتها وصلاحياتها وهياكلها إلى مزيد من التنظيم. نجمع بين الاستشارة والأداة والتطبيق لبناء قرارات منظمة وقابلة للتنفيذ.</p>
+          <div class="founder-line"><strong>يقود حتى نايف المحمدي</strong><span>مؤسس الشركة ومستشار الحوكمة وتطوير الأعمال، بخبرة تنفيذية ممتدة منذ 2007 في الإدارة ومجالس الإدارة والشراكات وتطوير الأعمال.</span></div>
         </div>
       </div>
     </section>
@@ -466,21 +546,21 @@
     <section class="contact-section" id="contact" aria-labelledby="contact-title">
       <div class="container contact-grid">
         <div class="contact-copy reveal">
-          <span class="section-kicker">ابدأ من هنا</span>
+          <span class="section-kicker">ناقش احتياجك</span>
           <h2 id="contact-title">ابدأ بالقرار الذي أمامك الآن</h2>
-          <p>اختر الحل، واكتب وصفا مختصرا للوضع والنتيجة التي تريدها. نحدد بعدها المسار الأنسب: أداة، جلسة، تقييم مهني، منصة أو مشروع متكامل.</p>
-          <div class="contact-points"><span><i>✓</i> رد يبدأ بفهم الاحتياج</span><span><i>✓</i> نطاق واضح قبل البدء</span><span><i>✓</i> مخرج مرتبط بالقرار</span></div>
+          <p>اختر المجال، واكتب وصفا مختصرا للوضع والنتيجة المطلوبة. نراجع الاحتياج ونقترح المسار الأنسب له.</p>
+          <div class="contact-points"><span><i>✓</i> فهم الاحتياج</span><span><i>✓</i> تحديد النطاق</span><span><i>✓</i> اقتراح المسار</span></div>
         </div>
 
         <form class="contact-form reveal" data-contact-form>
           <label for="request-type">الخدمة أو الحل</label>
           <div class="select-wrap"><select id="request-type" name="requestType" data-request-select>
-            <option value="أحتاج مساعدة في اختيار الحل">أحتاج مساعدة في اختيار الحل</option>
+            <option value="help">أحتاج مساعدة في اختيار الحل</option>
             <optgroup label="الأدوات الرقمية">
-              <option>فحص صحة الحوكمة</option><option>مقيّم مجالس</option><option>مرصد المخاطر المؤسسية</option><option>مصفوفة الصلاحيات</option><option>مستكشف مسارات النمو</option><option>توسع - تقييم الفرع الجديد</option><option>محرك الفحص المسبق للصفقات</option><option>حاسبة الشراكات</option><option>دليل التقييم والجاهزية</option><option>فاحص الامتثال الإعلاني</option><option>مخالفات - إعداد الاعتراض</option><option>دليل نطاق عمل المصفي</option>
+              <option value="govcheck">فحص صحة الحوكمة</option><option value="board-evaluator">مقيّم مجالس</option><option value="risk-register">مرصد المخاطر المؤسسية</option><option value="authority-matrix">مصفوفة الصلاحيات</option><option value="growth-path">مستكشف مسارات النمو</option><option value="tawassu">توسع - تقييم الفرع الجديد</option><option value="deal-check">محرك الفحص المسبق للصفقات</option><option value="partnership-calculator">حاسبة الشراكات</option><option value="valuation-readiness">دليل التقييم والجاهزية</option><option value="ad-compliance">فاحص الامتثال الإعلاني</option><option value="objections">مخالفات - إعداد الاعتراض</option><option value="liquidator-guide">دليل نطاق عمل المصفي</option>
             </optgroup>
             <optgroup label="الخدمات والمنصات">
-              <option>جلسة استشارية</option><option>مشروع استشاري متكامل</option><option>مستشار غير متفرغ</option><option>المتابعة الشهرية للحوكمة وتطوير الأعمال</option><option>الإرشاد التنفيذي</option><option>عضوية مجلس أو لجنة</option><option>منصة مجالس</option><option>منصة امتداد</option><option>الرحلات المعرفية المهنية</option>
+              <option value="consultation">جلسة استشارية</option><option value="professional-assessment">تقييم مهني</option><option value="advisory-project">مشروع استشاري متكامل</option><option value="fractional-advisor">مستشار غير متفرغ</option><option value="monthly-advisory">المتابعة الشهرية للحوكمة وتطوير الأعمال</option><option value="executive-mentoring">الإرشاد التنفيذي</option><option value="board-membership">عضوية مجلس أو لجنة</option><option value="majalis">منصة مجالس</option><option value="emtidad">منصة امتداد</option>
             </optgroup>
           </select><span aria-hidden="true">⌄</span></div>
 
@@ -511,6 +591,6 @@
   </footer>
 
   <div class="toast" role="status" aria-live="polite" data-toast>تم اختيار الحل. أكمل وصف احتياجك.</div>
-  <script src="./app.js" defer></script>
+  <script src="./app.js?v=20260913-2" defer></script>
 </body>
 </html>
