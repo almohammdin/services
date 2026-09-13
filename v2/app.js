@@ -39,6 +39,7 @@
     "liquidator-guide": { ar: "دليل نطاق عمل المصفي", en: "Liquidator Scope Guide" },
     "institutional-diagnosis": { ar: "التشخيص المؤسسي وخارطة المعالجة", en: "Institutional Diagnosis and Action Map" },
     "governance-authority": { ar: "تأسيس الحوكمة والصلاحيات", en: "Governance and Authority Framework" },
+    "ownership-structuring": { ar: "هيكلة الملكية وفئات الأسهم", en: "Ownership and Share-Class Structuring" },
     "boards-committees": { ar: "مجالس الإدارة واللجان", en: "Boards and Committees" },
     "family-business": { ar: "الشركاء والشركات العائلية", en: "Partners and Family Businesses" },
     "risk-compliance": { ar: "المخاطر والامتثال", en: "Risk and Compliance Advisory" },
@@ -57,7 +58,7 @@
   };
 
   const ADVISORY_REQUEST_KEYS = [
-    "institutional-diagnosis", "governance-authority", "boards-committees", "family-business",
+    "institutional-diagnosis", "governance-authority", "ownership-structuring", "boards-committees", "family-business",
     "risk-compliance", "growth-deals", "restructuring", "liquidation"
   ];
 
@@ -71,7 +72,7 @@
     "عن حتى": "About Hatta",
     "ناقش احتياجك": "Discuss your needs",
     "حتى لحلول الأعمال": "Hatta Business Solutions",
-    "نرتب قرار شركتك": "We structure your company’s decisions",
+    "نرتب قرارك": "We structure your decision",
     "قبل أن تكبر التعقيدات": "before complexity grows",
     "نعمل مع الملاك ومجالس الإدارة والقيادات لترتيب الموقف، مقارنة البدائل، وتحويل القرار إلى مسار قابل للتنفيذ في الحوكمة والنمو والشراكات والتحول المؤسسي.": "We work with owners, boards and executives to frame the situation, compare alternatives and turn decisions into an actionable path across governance, growth, partnerships and institutional transformation.",
     "استعرض الحلول": "Explore solutions",
@@ -239,10 +240,12 @@
     "من إشكالية مزمنة إلى سياسة معتمدة": "From a persistent issue to an approved policy",
     "كيف تحول ملف غير مرتب إلى قرار معتمد؟": "How do you turn an unstructured matter into an approved decision?",
     "اقرأ الحالة": "Read the case",
-    "دليل تطبيقي": "Practical guide",
+    "من حلول هيكلة الملكية والحوكمة": "Ownership Structuring & Governance",
     "نوع السهم وفئة السهم": "Share Type and Share Class",
-    "كيف تختلف الحقوق وقوة التصويت داخل النوع نفسه؟": "How can rights and voting power differ within the same share type?",
-    "النوع والفئة": "Type and class",
+    "كيف تختلف الحقوق وقوة التصويت عند ترتيب حقوق المؤسسين أو دخول مستثمر؟": "How do rights and voting power change when structuring founders’ rights or bringing in an investor?",
+    "هيكلة الملكية": "Ownership structuring",
+    "فئة السهم ليست تفصيلا قانونيا؛ بل أداة لتصميم السلطة والعائد داخل الشركة": "A share class is not merely a legal detail; it shapes control and financial returns within the company",
+    "عند تأسيس شركة مساهمة مبسطة، أو دخول مستثمر، أو إعادة ترتيب حقوق المؤسسين، نبدأ من الهدف التجاري ثم نصمم فئات الأسهم وحقوقها بما يخدم الحوكمة والنمو ويحمي توازن الشركاء.": "When establishing a simplified joint-stock company, bringing in an investor or restructuring founders’ rights, we start with the commercial objective and then design share classes and rights to support governance and growth while preserving balance among the partners.",
     "السهم حصة في الشركة، والفئة تحدد الحقوق التي تحملها هذه الحصة": "A share is an ownership interest; its class defines the rights attached to that interest",
     "السهم يمثل جزءا من رأس مال الشركة، والفئة تحدد الحقوق المرتبطة به": "A share represents part of the company’s capital, while its class defines the rights attached to it",
     "تنطبق التفاصيل الآتية على شركة المساهمة غير المدرجة في السوق المالية؛ وتخضع الشركات المدرجة للوائح هيئة السوق المالية.": "The following details apply to joint-stock companies not listed on the capital market. Listed companies are subject to Capital Market Authority regulations.",
@@ -327,6 +330,9 @@
     "، المادتان 51 و53. الحد الأقصى المشترك للأسهم الممتازة والقابلة للاسترداد هو %50 من رأس مال الشركة غير المدرجة.": ", Articles 51 and 53. The combined maximum for preferred and redeemable shares is 50% of the unlisted company’s share capital.",
     "المرجع:": "Reference:",
     "نظام الشركات، المادتان 108 و110، واللائحة التنفيذية، المادتان 51 و53. الحد الأقصى للأسهم الممتازة والقابلة للاسترداد هو %50 من رأس مال الشركة.": "Companies Law, Articles 108 and 110, and Implementing Regulations, Articles 51 and 53. Preferred and redeemable shares may not exceed 50% of the company’s share capital.",
+    "خدمة استشارية مرتبطة بالدليل": "Advisory service related to this guide",
+    "نصمم هيكل الملكية وفئات الأسهم بما يوازن بين التمويل والسيطرة والعائد.": "We design ownership and share-class structures that balance funding, control and financial returns.",
+    "ناقش هيكلة الملكية": "Discuss ownership structuring",
     "الأثر": "Impact",
     "أثر يمكن قياسه": "Measurable impact",
     "نماذج مختارة من أعمال سابقة في الجاهزية المؤسسية والتطوير والاستثمار والحوكمة.": "Selected outcomes from previous work in institutional readiness, development, investment and governance.",
@@ -356,6 +362,7 @@
     "إرسال الاحتياج عبر واتساب": "Send your request via WhatsApp",
     "سيفتح واتساب برسالة مرتبة يمكنك مراجعتها قبل الإرسال.": "WhatsApp will open with a prepared message that you can review before sending.",
     "الحوكمة وتطوير الأعمال": "Governance and Business Development",
+    "أسسها": "Founded by",
     "تم اختيار الحل. أكمل وصف احتياجك.": "Solution selected. Add a brief description of your need.",
     "←": "→"
   };
@@ -395,6 +402,7 @@
     "شركة المقطورة الدولية": "International Trailer Company",
     "بحري": "Bahri",
     "حسابات التواصل": "Social profiles",
+    "نايف المحمدي - المؤسس": "Naif Al-Mohammdi — Founder",
     "إكس": "X",
     "لينكدإن": "LinkedIn",
     "سناب شات": "Snapchat",
