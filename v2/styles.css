@@ -1386,6 +1386,7 @@ html[dir="ltr"] .main-nav {
 }
 
 .knowledge-body {
+  min-width: 0;
   display: grid;
   gap: 24px;
   padding: 34px;
@@ -1633,6 +1634,7 @@ html[dir="ltr"] .main-nav {
 }
 
 .share-comparison {
+  min-width: 0;
   padding: 26px;
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -1653,6 +1655,9 @@ html[dir="ltr"] .main-nav {
 }
 
 .comparison-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 15px;
