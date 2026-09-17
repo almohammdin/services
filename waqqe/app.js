@@ -19,7 +19,7 @@ const state={
   stamp:null,uploadStamp:null,
   signaturePad:null,pendingAddSignature:false,outputBlob:null,outputFile:null,
   pendingAddStamp:false,
-  renderToken:0,observer:null
+  renderToken:0,observer:null,pageScrollTarget:null,pageScrollHandler:null
 };
 
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
@@ -161,13 +161,42 @@ async function renderPdf(){
   setupPageObserver();
 }
 function setupPageObserver(){
-  if(!('IntersectionObserver' in window))return;
   const root=$('#pdfStage');
-  state.observer=new IntersectionObserver(entries=>{
-    const visible=entries.filter(x=>x.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
-    if(visible?.intersectionRatio>.28)setActivePage(+visible.target.dataset.page);
-  },{root,threshold:[.28,.45,.65]});
-  $$('.page-frame').forEach(el=>state.observer.observe(el));
+  const scrollsInside=root.scrollHeight>root.clientHeight+2&&getComputedStyle(root).overflowY!=='visible';
+  const scrollTarget=scrollsInside?root:window;
+  let scheduled=false;
+  const sync=()=>{
+    if(scheduled)return;
+    scheduled=true;
+    requestAnimationFrame(()=>{scheduled=false;resolveActivePage()});
+  };
+  state.pageScrollTarget?.removeEventListener('scroll',state.pageScrollHandler);
+  state.pageScrollTarget=scrollTarget;state.pageScrollHandler=sync;
+  scrollTarget.addEventListener('scroll',sync,{passive:true});
+  if('IntersectionObserver' in window){
+    state.observer=new IntersectionObserver(sync,{root:scrollsInside?root:null,threshold:[0,.01,.1,.25,.5,.75,1]});
+    $$('.page-frame').forEach(el=>state.observer.observe(el));
+  }
+  resolveActivePage();
+}
+function resolveActivePage(){
+  if(!state.pages.length)return state.activePage;
+  const stage=$('#pdfStage'),scrollsInside=stage.scrollHeight>stage.clientHeight+2&&getComputedStyle(stage).overflowY!=='visible';
+  const bounds=scrollsInside?stage.getBoundingClientRect():{top:0,right:window.innerWidth,bottom:window.innerHeight,left:0};
+  const viewportCenter=(bounds.top+bounds.bottom)/2;
+  let best=null;
+  state.pages.forEach((page,index)=>{
+    const rect=page.wrapper.getBoundingClientRect();
+    const visibleWidth=Math.max(0,Math.min(rect.right,bounds.right)-Math.max(rect.left,bounds.left));
+    const visibleHeight=Math.max(0,Math.min(rect.bottom,bounds.bottom)-Math.max(rect.top,bounds.top));
+    const visibleArea=visibleWidth*visibleHeight;
+    const centerDistance=Math.abs((rect.top+rect.bottom)/2-viewportCenter);
+    if(visibleArea>0&&(!best||visibleArea>best.visibleArea||(visibleArea===best.visibleArea&&centerDistance<best.centerDistance))){
+      best={page:index+1,visibleArea,centerDistance};
+    }
+  });
+  if(best)setActivePage(best.page);
+  return state.activePage;
 }
 function setActivePage(n){
   state.activePage=n;
@@ -199,20 +228,23 @@ async function tintSignature(src,color){
   ctx.putImageData(data,0,0);return c.toDataURL('image/png');
 }
 $('#addSignature').addEventListener('click',async()=>{
+  resolveActivePage();
   if(!state.signature){openSignatureModal('draw',true);return}
   await addSignatureOverlay(state.signature);
 });
 $('#addStamp').addEventListener('click',async()=>{
+  resolveActivePage();
   if(!state.stamp){openStampModal('upload',true);return}
   await addStampOverlay(state.stamp);
 });
 $('#addDate').addEventListener('click',()=>{
+  resolveActivePage();
   const now=new Date();
   const greg=new Intl.DateTimeFormat('ar-SA-u-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   const hijri=new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   addTextOverlay('date',`${greg} | ${hijri}`);
 });
-$('#addText').addEventListener('click',()=>{$('#textInput').value='';$('#textModal').classList.remove('hidden');setTimeout(()=>$('#textInput').focus(),80)});
+$('#addText').addEventListener('click',()=>{resolveActivePage();$('#textInput').value='';$('#textModal').classList.remove('hidden');setTimeout(()=>$('#textInput').focus(),80)});
 $('#closeText').addEventListener('click',()=>$('#textModal').classList.add('hidden'));
 $('#confirmText').addEventListener('click',()=>{const t=$('#textInput').value.trim();if(!t){toast('اكتب النص أولًا');return}$('#textModal').classList.add('hidden');addTextOverlay('text',t)});
 $('#textInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('#confirmText').click()});
@@ -249,6 +281,7 @@ function revealOverlay(o){
   });
 }
 function addTextOverlay(type,text){
+  resolveActivePage();
   const page=state.pages[state.activePage-1];if(!page)return;
   pushHistory();const pxW=Math.min(type==='date'?390:300,Math.max(type==='date'?180:120,text.length*12));
   const nw=clamp(pxW/page.width,type==='date'?.24:.16,type==='date'?.62:.48),nh=clamp(42/page.height,.035,.085);
@@ -448,6 +481,8 @@ $('#backToEdit').addEventListener('click',startOver);
 function startOver(){
   hidePlacementHint(true);
   state.observer?.disconnect();state.renderToken++;
+  state.pageScrollTarget?.removeEventListener('scroll',state.pageScrollHandler);
+  state.pageScrollTarget=null;state.pageScrollHandler=null;
   Promise.resolve(state.pdfjsDoc?.destroy?.()).catch(()=>{});
   state.file=null;state.originalBytes=null;state.pdfjsDoc=null;state.pages=[];state.activePage=1;
   state.overlays=[];state.history=[];state.outputBlob=null;state.outputFile=null;
