@@ -72,7 +72,7 @@
     "عن حتى": "About Hatta",
     "ناقش احتياجك": "Discuss your needs",
     "حتى لحلول الأعمال": "Hatta Business Solutions",
-    "نرتب قرارك": "We structure your decision",
+    "نرتب قـرارك": "We structure your decision",
     "قبل أن تكبر التعقيدات": "before complexity grows",
     "نعمل مع الملاك ومجالس الإدارة والقيادات لترتيب الموقف، مقارنة البدائل، وتحويل القرار إلى مسار قابل للتنفيذ في الحوكمة والنمو والشراكات والتحول المؤسسي.": "We work with owners, boards and executives to frame the situation, compare alternatives and turn decisions into an actionable path across governance, growth, partnerships and institutional transformation.",
     "استعرض الحلول": "Explore solutions",
@@ -96,7 +96,7 @@
     "استشارات وأدوات ومنصات": "Advisory, tools and platforms",
     "حل يناسب الموقف": "A solution matched to the situation",
     "ابدأ من قرارك": "Start with your decision",
-    "ما القرار الذي يحتاج إلى ترتيب؟": "Which decision needs structure?",
+    "ما القرار الذي يحتاج إلى تـرتيب؟": "Which decision needs structure?",
     "اختر القرار الذي يشغلك الآن، ونربطك بالمسار الأنسب له.": "Choose the decision in front of you, and we will connect it to the right path.",
     "رفع فاعلية المجلس": "Improve board effectiveness",
     "تقييم الأداء، تنظيم الاجتماعات، وتحسين جودة القرارات واللجان.": "Assess performance, structure meetings and improve the quality of board and committee decisions.",
@@ -112,7 +112,7 @@
     "إعادة الهيكلة والتحول": "Restructuring and transformation",
     "مقارنة خيارات الدمج والفصل والتحويل والتصفية الاختيارية.": "Compare merger, separation, conversion and voluntary liquidation options.",
     "أدوات القرار": "Decision tools",
-    "أدوات لقرارات أدق": "Tools for sharper decisions",
+    "أدوات لقـرارات أدق": "Tools for sharper decisions",
     "كل أداة مصممة لموقف محدد، وتمنحك قراءة منظمة تساعدك على المقارنة وتحديد الخطوة التالية.": "Each tool is built for a specific situation and provides a structured view to help you compare options and define the next step.",
     "الكل": "All",
     "الحوكمة والمجالس": "Governance and boards",
@@ -126,6 +126,7 @@
     "مناسب لـ": "Best for",
     "الملاك والشركاء والمنشآت النامية": "Owners, partners and growing companies",
     "اطلب الوصول": "Request access",
+    "ابدأ التقييم": "Start the assessment",
     "مقيّم مجالس": "Board Evaluator",
     "تقييم منظم لأداء المجلس وممارساته، يحول النتائج إلى نقاط قوة وأولويات تطوير قابلة للنقاش.": "A structured assessment of board performance and practices, turning findings into strengths and practical development priorities.",
     "تقرير تقييم ومحاور تحسين المجلس": "Assessment report and board improvement priorities",
@@ -173,7 +174,7 @@
     "نطاق عمل ومراحل ووثائق مطلوبة": "Scope, stages and required documents",
     "اطلب الدليل": "Request the guide",
     "الاستشارات": "Advisory services",
-    "استشارات ترتب القرار من أساسه": "Advisory that structures the decision at its core",
+    "استشارات ترتب القرار من أسـاسه": "Advisory that structures the decision at its core",
     "نشخص الوضع، نصمم الحل، ونساند المنشأة في التطبيق وفق نطاق ومخرجات متفق عليها.": "We diagnose the situation, design the solution and support implementation against an agreed scope and deliverables.",
     "التشخيص المؤسسي وخارطة المعالجة": "Institutional Diagnosis and Action Map",
     "نفحص علاقة الشركاء بالإدارة، ومسارات القرار، والصلاحيات والوثائق، ثم نرتب مواطن التعطل حسب الأولوية.": "We review the owner–management relationship, decision paths, authorities and documents, then prioritize points of friction.",
@@ -220,7 +221,7 @@
     "دعوات وجدول أعمال": "Invitations and agendas",
     "محاضر وقرارات": "Minutes and decisions",
     "وثائق وأرشيف": "Documents and archives",
-    "احجز عرضا تجريبيا": "Book a demo",
+    "احجز عرض تجريبي": "Book a demo",
     "منصة الشركات العائلية": "Family Business Platform",
     "امتداد": "Emtidad",
     "معرفة وأدوات وتجارب تساعد الشركات العائلية على تنظيم العلاقة بين العائلة والملكية والإدارة والاستعداد للانتقال بين الأجيال.": "Knowledge, tools and practical experiences that help family businesses structure family, ownership and management relationships and prepare for generational transition.",
@@ -244,7 +245,7 @@
     "نوع السهم وفئة السهم": "Share Type and Share Class",
     "كيف تختلف الحقوق وقوة التصويت عند ترتيب حقوق المؤسسين أو دخول مستثمر؟": "How do rights and voting power change when structuring founders’ rights or bringing in an investor?",
     "هيكلة الملكية": "Ownership structuring",
-    "فئة السهم ليست تفصيلا قانونيا؛ بل أداة لتصميم السلطة والعائد داخل الشركة": "A share class is not merely a legal detail; it shapes control and financial returns within the company",
+    "فئة السهم تصمم توزيع السلطة والعائد بين المساهمين داخل الشركة": "A share class shapes how control and financial returns are distributed among shareholders",
     "عند تأسيس شركة مساهمة مبسطة، أو دخول مستثمر، أو إعادة ترتيب حقوق المؤسسين، نبدأ من الهدف التجاري ثم نصمم فئات الأسهم وحقوقها بما يخدم الحوكمة والنمو ويحمي توازن الشركاء.": "When establishing a simplified joint-stock company, bringing in an investor or restructuring founders’ rights, we start with the commercial objective and then design share classes and rights to support governance and growth while preserving balance among the partners.",
     "السهم حصة في الشركة، والفئة تحدد الحقوق التي تحملها هذه الحصة": "A share is an ownership interest; its class defines the rights attached to that interest",
     "السهم يمثل جزءا من رأس مال الشركة، والفئة تحدد الحقوق المرتبطة به": "A share represents part of the company’s capital, while its class defines the rights attached to it",
@@ -310,11 +311,10 @@
     "اعتيادية": "Standard",
     "بحسب شروط الإصدار": "Subject to the terms of issue",
     "استرداد السهم من الشركة": "Redemption by the company",
-    "الاسترداد كخاصية للنوع": "Redemption as a feature of the share type",
-    "ليس من خصائص النوع": "Not a feature of this share type",
+    "النوع الذي يتضمن خاصية الاسترداد": "Share type with a redemption feature",
     "نعم، وفق شروط الإصدار": "Yes, subject to the terms of issue",
     "تعدد الفئات": "Multiple classes",
-    "سقف %50 المشترك": "Combined 50% cap",
+    "السقف المشترك 50%": "Combined 50% cap",
     "خارج السقف": "Outside the cap",
     "ينطبق": "Applies",
     "الاستخدام الأقرب": "Typical use",
@@ -322,29 +322,36 @@
     "الأولوية المالية": "Financial priority",
     "الاسترداد وفق شروط الإصدار": "Redemption under the terms of issue",
     "المادة 53 من اللائحة التنفيذية تورد حالة استثنائية للتصويت عند بقاء النسبة المقررة من الأرباح مستحقة لمدة 3 سنوات متتالية، ويكون التصويت بصوت واحد لكل سهم حتى دفع الأرباح السابقة.": "Article 53 of the Implementing Regulations provides an exceptional voting case when the prescribed profit entitlement remains unpaid for 3 consecutive years. Each share then carries one vote until the outstanding profits are paid.",
-    "لا تمنح الأسهم الممتازة أو القابلة للاسترداد حق التصويت في الجمعيات العامة. وإذا نصت شروط الإصدار على نسبة الأرباح المشار إليها، وكانت لدى الشركة أرباح سنوية كافية ولم توزع النسبة 3 سنوات متتالية، جاز للجمعية الخاصة لأصحاب الفئة أن تقرر مشاركتهم في التصويت بصوت واحد لكل سهم، إلى أن تدفع الشركة أرباح السنوات السابقة.": "Preferred and redeemable shares do not carry voting rights in general assemblies. If the terms of issue provide for the stated profit percentage, the company has sufficient annual profits and that percentage remains undistributed for 3 consecutive years, the special assembly of that class may resolve to let its holders vote at one vote per share until the company pays the outstanding profits.",
-    "المادة 51 تجعل الأسهم الممتازة والقابلة للاسترداد وفئاتها مجتمعة ضمن سقف %50 من رأس المال.": "Article 51 places preferred and redeemable shares, including all of their classes, under a combined cap of 50% of the share capital.",
+    "يكون حق التصويت في الجمعيات العامة للأسهم العادية. وتجيز المادة 53 حالة استثنائية لمشاركة أصحاب الأسهم الممتازة أو القابلة للاسترداد في التصويت بصوت واحد لكل سهم عند تحقق شروط الأرباح الواردة فيها، ويستمر ذلك حتى دفع أرباح السنوات السابقة.": "Voting rights in general assemblies attach to ordinary shares. Article 53 provides an exception allowing preferred or redeemable shareholders to vote at one vote per share when its profit conditions are met, until prior-year dividends are paid.",
+    "المادة 51 تجعل الأسهم الممتازة والقابلة للاسترداد وفئاتها مجتمعة ضمن سقف 50% من رأس المال.": "Article 51 places preferred and redeemable shares, including all of their classes, under a combined cap of 50% of the share capital.",
     "نظام الشركات": "Companies Law",
     "، المادتان 107 و108، والمادة 110 عند تعديل حقوق الفئات؛ و": ", Articles 107 and 108, and Article 110 when class rights are amended; and the ",
     "اللائحة التنفيذية للشركات غير المدرجة": "Implementing Regulations for Unlisted Companies",
-    "، المادتان 51 و53. الحد الأقصى المشترك للأسهم الممتازة والقابلة للاسترداد هو %50 من رأس مال الشركة غير المدرجة.": ", Articles 51 and 53. The combined maximum for preferred and redeemable shares is 50% of the unlisted company’s share capital.",
+    "، المادتان 51 و53. الحد الأقصى المشترك للأسهم الممتازة والقابلة للاسترداد هو 50% من رأس مال الشركة غير المدرجة.": ", Articles 51 and 53. The combined maximum for preferred and redeemable shares is 50% of the unlisted company’s share capital.",
     "المرجع:": "Reference:",
-    "نظام الشركات، المادتان 108 و110، واللائحة التنفيذية، المادتان 51 و53. الحد الأقصى للأسهم الممتازة والقابلة للاسترداد هو %50 من رأس مال الشركة.": "Companies Law, Articles 108 and 110, and Implementing Regulations, Articles 51 and 53. Preferred and redeemable shares may not exceed 50% of the company’s share capital.",
+    "نظام الشركات، المادتان 108 و110، واللائحة التنفيذية، المادتان 51 و53. الحد الأقصى للأسهم الممتازة والقابلة للاسترداد هو 50% من رأس مال الشركة.": "Companies Law, Articles 108 and 110, and Implementing Regulations, Articles 51 and 53. Preferred and redeemable shares may not exceed 50% of the company’s share capital.",
     "خدمة استشارية مرتبطة بالدليل": "Advisory service related to this guide",
     "نصمم هيكل الملكية وفئات الأسهم بما يوازن بين التمويل والسيطرة والعائد.": "We design ownership and share-class structures that balance funding, control and financial returns.",
     "ناقش هيكلة الملكية": "Discuss ownership structuring",
     "الأثر": "Impact",
     "أثر يمكن قياسه": "Measurable impact",
     "نماذج مختارة من أعمال سابقة في الجاهزية المؤسسية والتطوير والاستثمار والحوكمة.": "Selected outcomes from previous work in institutional readiness, development, investment and governance.",
+    "أكثر من": "More than",
+    "132 مليون ﷼": "SAR 132 million",
+    "100 مليون ﷼": "SAR 100 million",
     "مليون": "million",
     "أثر تقديري لبرنامج جاهزية مؤسسية": "Estimated impact of an institutional readiness program",
     "إعادة هيكلة وبناء بنية مؤسسية ودراسات توسع وشراكات في قطاع التعليم.": "Restructuring, institutional design, expansion studies and partnerships in the education sector.",
+    "التقدير مبني على أثر البرنامج ونطاق الأعمال المرتبط به.": "The estimate reflects the program’s impact and the related scope of work.",
     "نمو الإيرادات خلال 3 سنوات": "Revenue growth over 3 years",
     "تطوير برنامج وقفي وبناء مصادر تمويل وتحسين المتابعة والتقارير الشهرية.": "Developing an endowment program, building funding sources and improving monthly follow-up and reporting.",
+    "القياس من بداية البرنامج حتى نهاية السنة الثالثة.": "Measured from program launch through the end of year three.",
     "توسع قاعدة المشتركين": "Subscriber base growth",
     "تحويل برنامج مساهمات إلى مورد مستدام عبر الاستقطاب والبيانات والحوكمة التشغيلية.": "Turning a contribution program into a sustainable resource through acquisition, data and operating governance.",
+    "القياس من خط الأساس حتى نهاية البرنامج.": "Measured from the baseline through program completion.",
     "محفظة ضمن إطار حوكمي": "Portfolio under a governance framework",
     "ربط القرارات بين مجلس النظارة ولجنة الاستثمار ورفع توصيات مدعومة بالتحليل.": "Connecting decisions between the board of trustees and investment committee, supported by evidence-based recommendations.",
+    "قيمة المحفظة التي شملها إطار الحوكمة.": "Portfolio value covered by the governance framework.",
     "ثقة ممتدة": "Trusted relationships",
     "نماذج من الجهات التي عملنا معها": "Selected organizations we have worked with",
     "نرتب الطريق حتى تصل الأعمال": "We structure the path so business can move forward",
@@ -353,7 +360,7 @@
     "يقود حتى نايف المحمدي": "Hatta is led by Naif Al-Mohammdi",
     "مؤسس الشركة ومستشار الحوكمة وتطوير الأعمال، بخبرة تنفيذية ممتدة منذ 2007 في الإدارة ومجالس الإدارة والشراكات وتطوير الأعمال.": "Founder and Governance and Business Development Advisor, with executive experience since 2007 across management, boards, partnerships and business development.",
     "ابدأ بالقرار الذي أمامك الآن": "Start with the decision in front of you",
-    "اختر المجال، واكتب وصفا مختصرا للوضع والنتيجة المطلوبة. نراجع الاحتياج ونقترح المسار الأنسب له.": "Choose the area and briefly describe the situation and desired outcome. We will review the need and recommend the most suitable path.",
+    "اختر المجال، واكتب وصف مختصر للوضع والنتيجة المطلوبة. نراجع الاحتياج ونقترح المسار الأنسب.": "Choose the area and briefly describe the situation and desired outcome. We will review the need and recommend the most suitable path.",
     "فهم الاحتياج": "Understand the need",
     "تحديد النطاق": "Define the scope",
     "اقتراح المسار": "Recommend the path",
@@ -413,12 +420,16 @@
     ar: {
       openMenu: "فتح القائمة", closeMenu: "إغلاق القائمة", switchLabel: "Switch to English", switchText: "EN", switchLanguage: "en", switchDirection: "ltr",
       languageStatus: "تم التحويل إلى العربية", toolsGroup: "الأدوات الرقمية", advisoryGroup: "الخدمات الاستشارية", servicesGroup: "الخدمات والمنصات",
+      showAllTools: "استعرض جميع الأدوات", showFeaturedTools: "عرض الأدوات المختارة",
+      showAllServices: "استعرض جميع الخدمات", showFeaturedServices: "عرض الخدمات المختارة",
       whatsappIntro: "السلام عليكم، اطلعت على صفحة حتى لحلول الأعمال.", whatsappSelection: "الخدمة أو الحل", whatsappDetails: "وصف الاحتياج",
       whatsappFallback: "أرغب في مناقشة الاحتياج ومعرفة المسار المناسب."
     },
     en: {
       openMenu: "Open menu", closeMenu: "Close menu", switchLabel: "التحويل إلى العربية", switchText: "العربية", switchLanguage: "ar", switchDirection: "rtl",
       languageStatus: "Switched to English", toolsGroup: "Decision Tools", advisoryGroup: "Advisory Services", servicesGroup: "Engagement Models and Platforms",
+      showAllTools: "View all tools", showFeaturedTools: "Show featured tools",
+      showAllServices: "View all services", showFeaturedServices: "Show featured services",
       whatsappIntro: "Hello, I reviewed the Hatta Business Solutions page.", whatsappSelection: "Service or solution", whatsappDetails: "Need summary",
       whatsappFallback: "I would like to discuss my needs and identify the most suitable path."
     }
@@ -433,6 +444,11 @@
   const languageStatus = document.querySelector("[data-language-status]");
   const filterButtons = [...document.querySelectorAll("[data-filter]")];
   const toolCards = [...document.querySelectorAll("[data-category]")];
+  const toolsToggle = document.querySelector("[data-tools-toggle]");
+  const toolsToggleLabel = document.querySelector("[data-tools-toggle-label]");
+  const serviceCards = [...document.querySelectorAll(".service-card")];
+  const servicesToggle = document.querySelector("[data-services-toggle]");
+  const servicesToggleLabel = document.querySelector("[data-services-toggle-label]");
   const requestButtons = [...document.querySelectorAll("[data-request]")];
   const requestSelect = document.querySelector("[data-request-select]");
   const contactForm = document.querySelector("[data-contact-form]");
@@ -444,6 +460,17 @@
   let languageAnimation;
   let toastTimer;
   let currentLanguage = document.documentElement.lang === "en" ? "en" : "ar";
+  let activeToolFilter = "all";
+  let toolsExpanded = false;
+  let servicesExpanded = false;
+
+  const syncCatalogControls = () => {
+    const ui = UI[currentLanguage];
+    if (toolsToggle) toolsToggle.setAttribute("aria-expanded", String(toolsExpanded));
+    if (toolsToggleLabel) toolsToggleLabel.textContent = toolsExpanded ? ui.showFeaturedTools : ui.showAllTools;
+    if (servicesToggle) servicesToggle.setAttribute("aria-expanded", String(servicesExpanded));
+    if (servicesToggleLabel) servicesToggleLabel.textContent = servicesExpanded ? ui.showFeaturedServices : ui.showAllServices;
+  };
 
   const getStoredLanguage = () => {
     try {
@@ -600,6 +627,7 @@
       languageToggleText.lang = ui.switchLanguage;
       languageToggleText.dir = ui.switchDirection;
     }
+    syncCatalogControls();
     if (persist) {
       try { localStorage.setItem(STORAGE_KEY, currentLanguage); } catch (error) {}
     }
@@ -651,6 +679,7 @@
   };
 
   const setFilter = (filter, animate = true) => {
+    activeToolFilter = filter;
     filterButtons.forEach((button) => {
       const active = button.dataset.filter === filter;
       button.classList.toggle("is-active", active);
@@ -658,7 +687,9 @@
     });
     toolCards.forEach((card) => {
       const categories = (card.dataset.category || "").split(/\s+/);
-      const visible = filter === "all" || categories.includes(filter);
+      const matchesFilter = filter === "all" || categories.includes(filter);
+      const includedInInitialSet = !card.classList.contains("tool-card-secondary");
+      const visible = matchesFilter && (filter !== "all" || toolsExpanded || includedInInitialSet);
       if (!visible) filterAnimations.get(card)?.cancel();
       card.hidden = !visible;
       if (visible) {
@@ -666,10 +697,30 @@
         if (animate) animateFilteredCard(card);
       }
     });
+    if (toolsToggle) toolsToggle.hidden = filter !== "all";
+    syncCatalogControls();
   };
 
   filterButtons.forEach((button) => button.addEventListener("click", () => setFilter(button.dataset.filter || "all")));
   document.querySelectorAll("[data-focus-filter]").forEach((link) => link.addEventListener("click", () => setFilter(link.dataset.focusFilter || "all")));
+  toolsToggle?.addEventListener("click", () => {
+    toolsExpanded = !toolsExpanded;
+    setFilter(activeToolFilter);
+  });
+
+  const setServicesExpanded = (expanded) => {
+    servicesExpanded = expanded;
+    serviceCards.forEach((card) => {
+      if (!card.classList.contains("service-card-secondary")) return;
+      card.hidden = !servicesExpanded;
+      if (servicesExpanded) card.classList.add("is-visible");
+    });
+    syncCatalogControls();
+  };
+
+  servicesToggle?.addEventListener("click", () => setServicesExpanded(!servicesExpanded));
+  setFilter("all", false);
+  setServicesExpanded(false);
 
   const showToast = () => {
     if (!toast) return;
