@@ -59,6 +59,15 @@ function formatBytes(bytes){if(bytes<1024)return bytes+' B';if(bytes<1048576)ret
 function outputName(){const name=(state.file?.name||'document.pdf').replace(/\.pdf$/i,'');return `${name}-signed.pdf`}
 function updateUndo(){$('#undoBtn').disabled=!state.history.length}
 function updateActivePageLabel(){$('#activePageLabel').textContent=`${state.activePage} / ${state.pdfjsDoc?.numPages||1}`}
+function updatePageTarget(){
+  const box=$('#pageTarget'),select=$('#targetPageSelect'),count=state.pdfjsDoc?.numPages||0;
+  if(!box||!select)return;
+  box.classList.toggle('hidden',count<2);
+  if(count&&select.options.length!==count){
+    select.innerHTML=Array.from({length:count},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+  }
+  if(count)select.value=String(state.activePage);
+}
 function updateSignatureUi(){
   const ready=state.signatures.length>0, el=$('#signatureState');
   el.classList.toggle('ready',ready);
@@ -127,7 +136,7 @@ async function openPdf(file){
     $('#fileName').textContent=file.name;
     $('#fileInfo').textContent=`${formatBytes(file.size)} · ${doc.numPages} صفحة`;
     $('#uploadPanel').classList.add('hidden');$('#resultPanel').classList.add('hidden');$('#workspace').classList.remove('hidden');
-    setStep(2);await renderPdf();updateUndo();updateActivePageLabel();
+    setStep(2);await renderPdf();updateUndo();updateActivePageLabel();updatePageTarget();
     $('#workspace').scrollIntoView({behavior:scrollBehavior(),block:'start'});
   }catch(err){console.error(err);toast('تعذر فتح الملف. قد يكون محميًا أو تالفًا.')}finally{loading(false)}
 }
@@ -207,8 +216,13 @@ function resolveActivePage(){
 function setActivePage(n){
   state.activePage=n;
   $$('.page-frame').forEach(x=>x.classList.toggle('active',+x.dataset.page===n));
-  updateActivePageLabel();
+  updateActivePageLabel();updatePageTarget();
 }
+$('#targetPageSelect').addEventListener('change',e=>{
+  const pageNumber=clamp(Number(e.target.value)||1,1,state.pdfjsDoc?.numPages||1);
+  setActivePage(pageNumber);
+  state.pages[pageNumber-1]?.wrapper.scrollIntoView({behavior:scrollBehavior(),block:'center'});
+});
 function cleanOverlay(o){const {el,...safe}=o;return safe}
 function pushHistory(){state.history.push(JSON.stringify(state.overlays.map(cleanOverlay)));if(state.history.length>30)state.history.shift();updateUndo()}
 function clearOverlayEls(){$$('.overlay-item').forEach(el=>el.remove())}
@@ -234,23 +248,20 @@ async function tintSignature(src,color){
   ctx.putImageData(data,0,0);return c.toDataURL('image/png');
 }
 $('#addSignature').addEventListener('click',async()=>{
-  resolveActivePage();
   if(!state.signature){openSignatureModal('draw',true);return}
   await addSignatureOverlay(state.signature);
 });
 $('#addStamp').addEventListener('click',async()=>{
-  resolveActivePage();
   if(!state.stamp){openStampModal('upload',true);return}
   await addStampOverlay(state.stamp);
 });
 $('#addDate').addEventListener('click',()=>{
-  resolveActivePage();
   const now=new Date();
   const greg=new Intl.DateTimeFormat('ar-SA-u-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   const hijri=new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   addTextOverlay('date',`${greg} | ${hijri}`);
 });
-$('#addText').addEventListener('click',()=>{resolveActivePage();$('#textInput').value='';$('#textModal').classList.remove('hidden');setTimeout(()=>$('#textInput').focus(),80)});
+$('#addText').addEventListener('click',()=>{$('#textInput').value='';$('#textModal').classList.remove('hidden');setTimeout(()=>$('#textInput').focus(),80)});
 $('#closeText').addEventListener('click',()=>$('#textModal').classList.add('hidden'));
 $('#confirmText').addEventListener('click',()=>{const t=$('#textInput').value.trim();if(!t){toast('اكتب النص أولًا');return}$('#textModal').classList.add('hidden');addTextOverlay('text',t)});
 $('#textInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('#confirmText').click()});
@@ -287,7 +298,6 @@ function revealOverlay(o){
   });
 }
 function addTextOverlay(type,text){
-  resolveActivePage();
   const page=state.pages[state.activePage-1];if(!page)return;
   pushHistory();const pxW=Math.min(type==='date'?390:300,Math.max(type==='date'?180:120,text.length*12));
   const nw=clamp(pxW/page.width,type==='date'?.24:.16,type==='date'?.62:.48),nh=clamp(42/page.height,.035,.085);
@@ -494,6 +504,7 @@ function startOver(){
   state.file=null;state.originalBytes=null;state.pdfjsDoc=null;state.pages=[];state.activePage=1;
   state.overlays=[];state.history=[];state.outputBlob=null;state.outputFile=null;
   $('#pdfInput').value='';$('#pdfStage').innerHTML='';$('#fileName').textContent='—';$('#fileInfo').textContent='—';
+  $('#pageTarget').classList.add('hidden');$('#targetPageSelect').innerHTML='';
   $('#resultPanel').classList.add('hidden');$('#workspace').classList.add('hidden');$('#uploadPanel').classList.remove('hidden');
   updateUndo();updateActivePageLabel();setStep(1);$('#uploadPanel').scrollIntoView({behavior:scrollBehavior(),block:'center'});
 }
