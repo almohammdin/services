@@ -19,7 +19,7 @@ const state={
   stamp:null,uploadStamp:null,
   signaturePad:null,pendingAddSignature:false,outputBlob:null,outputFile:null,
   pendingAddStamp:false,
-  renderToken:0,observer:null,pageScrollTarget:null,pageScrollHandler:null
+  renderToken:0,observer:null,pageScrollHandler:null
 };
 
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
@@ -162,27 +162,33 @@ async function renderPdf(){
 }
 function setupPageObserver(){
   const root=$('#pdfStage');
-  const scrollsInside=root.scrollHeight>root.clientHeight+2&&getComputedStyle(root).overflowY!=='visible';
-  const scrollTarget=scrollsInside?root:window;
   let scheduled=false;
   const sync=()=>{
     if(scheduled)return;
     scheduled=true;
     requestAnimationFrame(()=>{scheduled=false;resolveActivePage()});
   };
-  state.pageScrollTarget?.removeEventListener('scroll',state.pageScrollHandler);
-  state.pageScrollTarget=scrollTarget;state.pageScrollHandler=sync;
-  scrollTarget.addEventListener('scroll',sync,{passive:true});
+  window.removeEventListener('scroll',state.pageScrollHandler);
+  root.removeEventListener('scroll',state.pageScrollHandler);
+  state.pageScrollHandler=sync;
+  window.addEventListener('scroll',sync,{passive:true});
+  root.addEventListener('scroll',sync,{passive:true});
   if('IntersectionObserver' in window){
-    state.observer=new IntersectionObserver(sync,{root:scrollsInside?root:null,threshold:[0,.01,.1,.25,.5,.75,1]});
+    state.observer=new IntersectionObserver(sync,{root:null,threshold:[0,.01,.1,.25,.5,.75,1]});
     $$('.page-frame').forEach(el=>state.observer.observe(el));
   }
   resolveActivePage();
 }
 function resolveActivePage(){
   if(!state.pages.length)return state.activePage;
-  const stage=$('#pdfStage'),scrollsInside=stage.scrollHeight>stage.clientHeight+2&&getComputedStyle(stage).overflowY!=='visible';
-  const bounds=scrollsInside?stage.getBoundingClientRect():{top:0,right:window.innerWidth,bottom:window.innerHeight,left:0};
+  const stageRect=$('#pdfStage').getBoundingClientRect();
+  const bounds={
+    top:Math.max(0,stageRect.top),
+    right:Math.min(window.innerWidth,stageRect.right),
+    bottom:Math.min(window.innerHeight,stageRect.bottom),
+    left:Math.max(0,stageRect.left)
+  };
+  if(bounds.bottom<=bounds.top||bounds.right<=bounds.left)return state.activePage;
   const viewportCenter=(bounds.top+bounds.bottom)/2;
   let best=null;
   state.pages.forEach((page,index)=>{
@@ -481,8 +487,9 @@ $('#backToEdit').addEventListener('click',startOver);
 function startOver(){
   hidePlacementHint(true);
   state.observer?.disconnect();state.renderToken++;
-  state.pageScrollTarget?.removeEventListener('scroll',state.pageScrollHandler);
-  state.pageScrollTarget=null;state.pageScrollHandler=null;
+  window.removeEventListener('scroll',state.pageScrollHandler);
+  $('#pdfStage')?.removeEventListener('scroll',state.pageScrollHandler);
+  state.pageScrollHandler=null;
   Promise.resolve(state.pdfjsDoc?.destroy?.()).catch(()=>{});
   state.file=null;state.originalBytes=null;state.pdfjsDoc=null;state.pages=[];state.activePage=1;
   state.overlays=[];state.history=[];state.outputBlob=null;state.outputFile=null;
