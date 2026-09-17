@@ -65,8 +65,12 @@ function updatePageTarget(){
   box.classList.toggle('hidden',count<2);
   if(count&&select.options.length!==count){
     select.innerHTML=Array.from({length:count},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+    select.value=String(state.activePage);
   }
-  if(count)select.value=String(state.activePage);
+}
+function getTargetPage(){
+  const selected=Number($('#targetPageSelect')?.value);
+  return clamp(Number.isInteger(selected)?selected:state.activePage,1,state.pdfjsDoc?.numPages||1);
 }
 function updateSignatureUi(){
   const ready=state.signatures.length>0, el=$('#signatureState');
@@ -216,7 +220,7 @@ function resolveActivePage(){
 function setActivePage(n){
   state.activePage=n;
   $$('.page-frame').forEach(x=>x.classList.toggle('active',+x.dataset.page===n));
-  updateActivePageLabel();updatePageTarget();
+  updateActivePageLabel();
 }
 $('#targetPageSelect').addEventListener('change',e=>{
   const pageNumber=clamp(Number(e.target.value)||1,1,state.pdfjsDoc?.numPages||1);
@@ -266,20 +270,20 @@ $('#closeText').addEventListener('click',()=>$('#textModal').classList.add('hidd
 $('#confirmText').addEventListener('click',()=>{const t=$('#textInput').value.trim();if(!t){toast('اكتب النص أولًا');return}$('#textModal').classList.add('hidden');addTextOverlay('text',t)});
 $('#textInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('#confirmText').click()});
 async function addSignatureOverlay(src){
-  const page=state.pages[state.activePage-1];if(!page)return;
+  const pageNumber=getTargetPage(),page=state.pages[pageNumber-1];if(!page)return;
   pushHistory();
   const coloredSrc=await tintSignature(src,getSignatureColor());
   const aspect=clamp(await imageAspect(coloredSrc),.2,10);
   const {nw,nh}=initialImageSize(page,aspect,.20,.015,.26);
-  const o={id:newId('o'),type:'signature',page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src:coloredSrc};
+  const o={id:newId('o'),type:'signature',page:pageNumber,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src:coloredSrc};
   state.overlays.push(o);renderOverlay(o,true);selectOverlay(o.id);showPlacementHint('dragSignature');revealOverlay(o);
 }
 async function addStampOverlay(src){
-  const page=state.pages[state.activePage-1];if(!page)return;
+  const pageNumber=getTargetPage(),page=state.pages[pageNumber-1];if(!page)return;
   pushHistory();
   const aspect=clamp(await imageAspect(src),.55,5);
   const {nw,nh}=initialImageSize(page,aspect,.18,.035,.28);
-  const o={id:newId('o'),type:'stamp',page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src};
+  const o={id:newId('o'),type:'stamp',page:pageNumber,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,src};
   state.overlays.push(o);renderOverlay(o,true);selectOverlay(o.id);showPlacementHint('dragStamp');revealOverlay(o);
 }
 function initialImageSize(page,aspect,preferredWidth,minHeight,maxHeight){
@@ -298,11 +302,11 @@ function revealOverlay(o){
   });
 }
 function addTextOverlay(type,text){
-  const page=state.pages[state.activePage-1];if(!page)return;
+  const pageNumber=getTargetPage(),page=state.pages[pageNumber-1];if(!page)return;
   pushHistory();const pxW=Math.min(type==='date'?390:300,Math.max(type==='date'?180:120,text.length*12));
   const nw=clamp(pxW/page.width,type==='date'?.24:.16,type==='date'?.62:.48),nh=clamp(42/page.height,.035,.085);
   const fontKey=type==='text'?getTextFont():'modern';
-  const o={id:newId('o'),type,page:state.activePage,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,text,fontKey};
+  const o={id:newId('o'),type,page:pageNumber,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,text,fontKey};
   state.overlays.push(o);renderOverlay(o,true);selectOverlay(o.id);showPlacementHint('itemAdded');revealOverlay(o);
 }
 function renderOverlay(o,animate=false){
