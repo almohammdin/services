@@ -117,6 +117,7 @@
       document.querySelectorAll('.step').forEach((el,i)=>{const next=`<b>${i+1}</b>${t('step'+(i+1))}`;if(el.innerHTML!==next)el.innerHTML=next});
       text('.upload-zone h2',t('choosePdf'));text('.upload-zone p',t('chooseHint'));buttonLabel('#pickPdf',t('uploadPdf'));
       text('.file-meta small',t('currentFile'));
+      text('.page-target label',t('page'));q('#targetPageSelect')?.setAttribute('aria-label',t('page'));
       const titles=document.querySelectorAll('.tool-title');if(titles[0])setText(titles[0],t('addToDoc'));if(titles[1])setText(titles[1],t('signatures'));if(titles[2])setText(titles[2],t('stamp'));
       buttonLabel('#addSignature',t('addSignature'));buttonLabel('#addStamp',t('addStamp'));buttonLabel('#addDate',t('date'));buttonLabel('#addText',t('text'));
       text('.viewer-status span',t('page'));buttonLabel('#undoBtn',t('undo'));buttonLabel('#changeFile',t('changeFile'));
