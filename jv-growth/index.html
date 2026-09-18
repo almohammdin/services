@@ -80,6 +80,61 @@
   .compare td:not(:first-child)::before{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important}}
+
+/* Motion layer */
+.motion-card{position:relative;isolation:isolate;transition:transform 260ms var(--ease),box-shadow 260ms var(--ease),border-color 220ms ease;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--lift,0));transform-style:preserve-3d}
+.motion-card:before{content:"";position:absolute;top:0;right:18px;left:auto;width:0;height:3px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,var(--gold),#E7B16C);transition:width 280ms var(--ease);z-index:3}
+.motion-card:hover{--lift:-4px;border-color:#D8C6AF;box-shadow:0 18px 38px rgba(13,54,86,.10)}
+.motion-card:hover:before{width:calc(100% - 36px)}
+.motion-card>*{position:relative;z-index:1}
+
+.staggerItem{opacity:0;transform:translateY(18px) scale(.992);transition:opacity 520ms var(--ease),transform 520ms var(--ease);transition-delay:var(--delay,0ms)}
+.staggerItem.staggerOn{opacity:1;transform:none}
+
+.scenarioFlowBox,.scenarioFlowArrow{transition:opacity 220ms ease,transform 280ms var(--ease),box-shadow 280ms ease,border-color 220ms ease}
+.scenarioFlowBox.flowActive{transform:translateY(-4px);border-color:#C9A270;box-shadow:0 15px 34px rgba(13,54,86,.11)}
+.scenarioFlowBox.core.flowActive{box-shadow:0 18px 42px rgba(7,31,51,.22)}
+.scenarioFlowBox.flowDim{opacity:.48}
+.scenarioFlowArrow{opacity:.45}
+.scenarioFlowArrow.flowActive{opacity:1;transform:translateX(-4px);animation:arrowNudge 900ms var(--ease) both}
+.scenarioPanel{transition:opacity 170ms ease,transform 220ms var(--ease)}
+.scenarioPanel.switching{opacity:.25;transform:translateY(7px)}
+@keyframes arrowNudge{0%{transform:translateX(4px)}55%{transform:translateX(-5px)}100%{transform:translateX(0)}}
+
+.roadmap{--road-progress:0%}
+.roadmap:after{content:"";position:absolute;top:28px;right:12.5%;width:var(--road-progress);max-width:75%;height:2px;background:linear-gradient(90deg,var(--gold),var(--green));z-index:0;transition:width 160ms linear}
+.roadStep{transition:transform 260ms var(--ease),opacity 220ms ease}
+.roadStep .roadNo{transition:transform 260ms var(--ease),background 260ms ease,color 260ms ease,border-color 260ms ease,box-shadow 260ms ease}
+.roadStep.roadActive{transform:translateY(-3px)}
+.roadStep.roadActive .roadNo{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 10px 24px rgba(13,54,86,.15)}
+.roadStep.roadPassed .roadNo{border-color:#C99A63;color:var(--gold)}
+
+details summary:after{transition:transform 240ms var(--ease),color 180ms ease}
+details[open] summary:after{transform:rotate(90deg)}
+.ownershipFold[open] .ownershipBody,.faq details[open] p{animation:foldIn 320ms var(--ease) both}
+@keyframes foldIn{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:none}}
+
+.countNum{display:inline-block;min-width:1.4ch;font-family:Arial,sans-serif!important;font-variant-numeric:tabular-nums;transition:transform 220ms var(--ease)}
+.countNum.countDone{animation:countPop 380ms var(--ease)}
+@keyframes countPop{0%{transform:translateY(3px) scale(.94)}70%{transform:translateY(-2px) scale(1.06)}100%{transform:none}}
+
+@media(hover:hover) and (pointer:fine){
+  .motion-card{will-change:transform}
+}
+@media(hover:none),(pointer:coarse){
+  .motion-card:hover{--lift:0;box-shadow:inherit}
+  .motion-card:active{transform:scale(.985)}
+  .motion-card:before{display:none}
+}
+@media(max-width:960px){
+  .roadmap:after{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .motion-card,.staggerItem,.scenarioFlowBox,.scenarioFlowArrow,.scenarioPanel,.roadStep,.roadStep .roadNo,details summary:after,.countNum{transition:none!important;animation:none!important;transform:none!important}
+  .staggerItem{opacity:1!important}
+  .roadmap:after{transition:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -95,7 +150,7 @@
 
 <section class="sec soft reveal" id="structure"><div class="c"><div class="head"><h2>شركة المساهمة المبسطة كأداة لهيكلة المشروع</h2><p>المرونة في نظامها الأساس تساعد على صياغة علاقة تناسب المستثمر والطرف التشغيلي وطبيعة المشروع.</p></div><p class="structureLead">من أهم عناصرها إمكانية تحديد <strong>طريقة الإدارة، حدود الصلاحيات، أنواع وفئات الأسهم، الحقوق المرتبطة بها، وأحكام التنازل عن الأسهم</strong> داخل النظام الأساس.</p><div class="structureGrid"><article class="structureCard"><div class="ico">01</div><h3>الإدارة والصلاحيات</h3><p>يحدد النظام الأساس من يتولى الإدارة، طريقة تعيينه وعزله، حدود سلطاته، وكيف تصدر القرارات داخل الشركة.</p></article><article class="structureCard"><div class="ico">02</div><h3>أنواع وفئات الأسهم</h3><p>يمكن إصدار أسهم عادية وممتازة وقابلة للاسترداد، كما يمكن وجود فئات مختلفة ترتبط بحقوق والتزامات تناسب الهيكل الاستثماري.</p></article><article class="structureCard"><div class="ico">03</div><h3>انتقال الملكية</h3><p>يمكن تنظيم التنازل عن الأسهم والقيود والموافقات المرتبطة بحركتها داخل النظام الأساس.</p></article><article class="structureCard"><div class="ico">04</div><h3>قرارات المساهمين</h3><p>يحدد النظام الأساس اجتماعات المساهمين والنصاب المطلوب وطريقة إصدار القرارات بما يلائم هيكل المشروع.</p></article></div><details class="ownershipFold"><summary><span><small>من حلول هيكلة الملكية والحوكمة</small><strong>نوع السهم وفئة السهم</strong><em>كيف تختلف الحقوق وقوة التصويت عند دخول مستثمر؟</em></span></summary><div class="ownershipBody"><div class="ownershipLead"><h4>فئة السهم تصمم توزيع السلطة والعائد بين المساهمين</h4><p>عند تأسيس شركة مساهمة مبسطة أو دخول مستثمر، يبدأ التصميم من الهدف التجاري ثم تحدد أنواع الأسهم وفئاتها والحقوق المرتبطة بكل فئة.</p><p><strong>نوع السهم</strong> يحدد الإطار العام. <strong>فئة السهم</strong> تضبط التفاصيل داخل النوع نفسه، مثل قوة التصويت أو أولوية الأرباح أو شروط الاسترداد.</p><p class="ownershipScope">هذه الأمثلة تخص شركة المساهمة غير المدرجة وشركة المساهمة المبسطة وفق نظام الشركات واللوائح ذات الصلة.</p></div><div class="voteExample"><h5>مثال افتراضي على اختلاف قوة التصويت</h5><div class="voteRows"><div class="voteRow"><b>مساهم أ</b><span>100 سهم عادي، الفئة الأولى، 10 أصوات للسهم</span><strong>1,000 صوت</strong></div><div class="voteRow"><b>مساهم ب</b><span>100 سهم عادي، الفئة الثانية، صوت واحد للسهم</span><strong>100 صوت</strong></div></div><p style="margin-top:10px">نفس عدد الأسهم، مع اختلاف قوة التصويت بحسب الحقوق المرتبطة بكل فئة.</p></div><div class="shareTypeGrid"><article class="shareType"><small>نظام الشركات، المادة 108</small><h5>الأسهم العادية</h5><strong>ملكية في رأس المال</strong><p>تمثل حصة في الشركة، ويمكن أن توجد منها فئات متعددة ترتبط بحقوق مختلفة وفق النظام الأساس.</p><p class="use"><b>مثال استخدام</b> فئة للمؤسسين بحقوق تصويت أعلى، وفئة للمستثمرين بحقوق تصويت اعتيادية.</p></article><article class="shareType"><small>المادة 108 واللائحة التنفيذية</small><h5>الأسهم الممتازة</h5><strong>أولوية مالية</strong><p>يمكن أن تمنح أولوية في الأرباح أو مزايا مالية أخرى بحسب شروط الإصدار والنظام الأساس.</p><p class="use"><b>مثال استخدام</b> فئة مستثمرين لها أولوية في الأرباح وفق الشروط المتفق عليها.</p></article><article class="shareType"><small>المادة 108 واللائحة التنفيذية</small><h5>الأسهم القابلة للاسترداد</h5><strong>استرداد وفق شروط محددة</strong><p>تصدر بشروط تحدد وقت الاسترداد وطريقة حساب قيمته، وتمارس الشركة خيار الاسترداد وفق تلك الشروط.</p><div class="redeemFacts"><div><span>من يسترد؟</span><b>الشركة</b></div><div><span>ممن؟</span><b>من المساهم المالك لها</b></div><div><span>ما المقابل؟</span><b>قيمة الاسترداد المتفق عليها</b></div><div><span>متى؟</span><b>وفق شروط الإصدار</b></div></div></article></div><div class="shareCompare"><table><thead><tr><th>المحور</th><th>الأسهم العادية</th><th>الأسهم الممتازة</th><th>الأسهم القابلة للاسترداد</th></tr></thead><tbody><tr><td>الاستخدام الأقرب</td><td>الملكية والتصويت</td><td>الأولوية المالية</td><td>الاسترداد وفق شروط الإصدار</td></tr><tr><td>تعدد الفئات</td><td>متاح</td><td>متاح</td><td>متاح</td></tr><tr><td>الحقوق</td><td>بحسب الفئة والنظام الأساس</td><td>بحسب شروط الإصدار</td><td>بحسب شروط الإصدار</td></tr></tbody></table></div></div></details><div class="expertStrip"><h3>لمحة نظامية تظهر مرونة الشركة المساهمة المبسطة</h3><p>هذه التفاصيل تعطي مساحة كبيرة لتصميم المشروع، وتحتاج صياغة دقيقة حتى تعمل الحقوق والصلاحيات كما اتفق عليها الأطراف.</p><div class="expertFacts"><div class="expertFact"><b>طريقة الإدارة</b><span>يمكن أن يتولى الإدارة رئيس أو مدير أو أكثر أو مجلس إدارة أو غير ذلك حسب النظام الأساس.</span></div><div class="expertFact"><b>هيكل الأسهم</b><span>يمكن وجود أنواع وفئات متعددة من الأسهم، ولكل نوع أو فئة حقوق والتزامات مرتبطة بها.</span></div><div class="expertFact"><b>حركة الأسهم</b><span>يمكن تضمين النظام الأساس قيود وأحكام تتعلق بتداول الأسهم وانتقالها ضمن الحدود النظامية.</span></div></div></div><div class="legalNote"><strong>النتيجة:</strong> قوة شركة المشروع تأتي من ترجمة الاتفاق التجاري إلى نظام أساس ووثائق تنظم الإدارة والحقوق والملكية والتخارج بطريقة متوازنة ومتوافقة مع الأنظمة.</div></div></section>
 
-<section class="sec white reveal" id="scenario"><div class="c"><div class="head"><h2>مثال مقاهي: شركة لديها 30 فرع وترغب في التوسع بـ5 فروع جديدة</h2><p>المثال يربط بين الشركة المشغلة والمستثمر وشركة المشروع والفروع الجديدة.</p></div><div class="scenario"><div class="scenarioIntro"><div><h3>كيف تتحول فرصة التوسع إلى مشروع مشترك (JV)؟</h3><p>اضغط على كل مرحلة لرؤية ما يحدث فيها.</p></div></div><div class="scenarioFlow" aria-label="ملخص مثال المقاهي"><div class="scenarioFlowBox"><strong>شركة مقاهي</strong><span>30 فرع + علامة + خبرة تشغيلية</span></div><div class="scenarioFlowArrow">←</div><div class="scenarioFlowBox"><strong>مستثمر</strong><span>تمويل الفروع الجديدة بالكامل أو جزئيا</span></div><div class="scenarioFlowArrow">←</div><div class="scenarioFlowBox core"><strong>شركة المشروع المشترك (JV)</strong><span>تجمع التمويل والملكية والإدارة والحقوق</span></div><div class="scenarioFlowArrow">←</div><div class="scenarioFlowBox"><strong>5 فروع جديدة</strong><span>المشروع المستهدف بالتوسع</span></div></div><div class="scenarioTabs" role="tablist" aria-label="مراحل مثال المقاهي"><button class="scenarioBtn active" type="button" data-step="0" aria-selected="true"><small>01</small><b>الوضع القائم</b><span>شركة مقاهي تشغل 30 فرع وتملك خبرة تشغيلية وعلامة قائمة.</span></button><button class="scenarioBtn" type="button" data-step="1" aria-selected="false"><small>02</small><b>مشروع التوسع</b><span>تحديد 5 فروع جديدة كمشروع واحد يحتاج تمويل وتنفيذ.</span></button><button class="scenarioBtn" type="button" data-step="2" aria-selected="false"><small>03</small><b>دخول المستثمر</b><span>المستثمر يوجه تمويله إلى مشروع الفروع الخمسة حسب الاتفاق.</span></button><button class="scenarioBtn" type="button" data-step="3" aria-selected="false"><small>04</small><b>شركة المشروع (JV)</b><span>تأسيس شركة للمشروع وترتيب الملكية والإدارة والصلاحيات والحقوق.</span></button><button class="scenarioBtn" type="button" data-step="4" aria-selected="false"><small>05</small><b>التشغيل والنتائج</b><span>تشغيل الفروع الخمسة ومتابعة إيراداتها وربحيتها وخياراتها المستقبلية.</span></button></div><div class="scenarioPanel" id="scenarioPanel" aria-live="polite"><small>المرحلة 01</small><h4>شركة المقاهي تملك قاعدة تشغيلية جاهزة للتوسع</h4><p>الشركة لديها 30 فرع، علامة، فريق، خبرة في التشغيل وسلسلة إمداد. هذه القدرات تدخل في دراسة مشروع الفروع الخمسة الجديدة وتحدد الدور الذي ستتولاه الشركة في الشراكة.</p></div></div></div></section>
+<section class="sec white reveal" id="scenario"><div class="c"><div class="head"><h2>مثال مقاهي: شركة لديها <span class="countNum" data-count="30">30</span> فرع وترغب في التوسع بـ<span class="countNum" data-count="5">5</span> فروع جديدة</h2><p>المثال يربط بين الشركة المشغلة والمستثمر وشركة المشروع والفروع الجديدة.</p></div><div class="scenario"><div class="scenarioIntro"><div><h3>كيف تتحول فرصة التوسع إلى مشروع مشترك (JV)؟</h3><p>اضغط على كل مرحلة لرؤية ما يحدث فيها.</p></div></div><div class="scenarioFlow" aria-label="ملخص مثال المقاهي"><div class="scenarioFlowBox"><strong>شركة مقاهي</strong><span>30 فرع + علامة + خبرة تشغيلية</span></div><div class="scenarioFlowArrow">←</div><div class="scenarioFlowBox"><strong>مستثمر</strong><span>تمويل الفروع الجديدة بالكامل أو جزئيا</span></div><div class="scenarioFlowArrow">←</div><div class="scenarioFlowBox core"><strong>شركة المشروع المشترك (JV)</strong><span>تجمع التمويل والملكية والإدارة والحقوق</span></div><div class="scenarioFlowArrow">←</div><div class="scenarioFlowBox"><strong>5 فروع جديدة</strong><span>المشروع المستهدف بالتوسع</span></div></div><div class="scenarioTabs" role="tablist" aria-label="مراحل مثال المقاهي"><button class="scenarioBtn active" type="button" data-step="0" aria-selected="true"><small>01</small><b>الوضع القائم</b><span>شركة مقاهي تشغل 30 فرع وتملك خبرة تشغيلية وعلامة قائمة.</span></button><button class="scenarioBtn" type="button" data-step="1" aria-selected="false"><small>02</small><b>مشروع التوسع</b><span>تحديد 5 فروع جديدة كمشروع واحد يحتاج تمويل وتنفيذ.</span></button><button class="scenarioBtn" type="button" data-step="2" aria-selected="false"><small>03</small><b>دخول المستثمر</b><span>المستثمر يوجه تمويله إلى مشروع الفروع الخمسة حسب الاتفاق.</span></button><button class="scenarioBtn" type="button" data-step="3" aria-selected="false"><small>04</small><b>شركة المشروع (JV)</b><span>تأسيس شركة للمشروع وترتيب الملكية والإدارة والصلاحيات والحقوق.</span></button><button class="scenarioBtn" type="button" data-step="4" aria-selected="false"><small>05</small><b>التشغيل والنتائج</b><span>تشغيل الفروع الخمسة ومتابعة إيراداتها وربحيتها وخياراتها المستقبلية.</span></button></div><div class="scenarioPanel" id="scenarioPanel" aria-live="polite"><small>المرحلة 01</small><h4>شركة المقاهي تملك قاعدة تشغيلية جاهزة للتوسع</h4><p>الشركة لديها 30 فرع، علامة، فريق، خبرة في التشغيل وسلسلة إمداد. هذه القدرات تدخل في دراسة مشروع الفروع الخمسة الجديدة وتحدد الدور الذي ستتولاه الشركة في الشراكة.</p></div></div></div></section>
 
 <section class="sec soft reveal" id="exit"><div class="c"><div class="head"><h2>تصميم المشروع من البداية يساعد على النمو والتخارج</h2><p>سهولة التخارج (Exit) تتأثر بطريقة ترتيب الملكية والإدارة والحقوق وأحكام انتقال الأسهم منذ تأسيس شركة المشروع.</p></div><div class="roadmap"><div class="roadStep"><div class="roadNo">01</div><h3>فرصة نمو</h3><p>تحديد المشروع وحجمه واحتياجه للتمويل والشريك المناسب.</p></div><div class="roadStep"><div class="roadNo">02</div><h3>هيكلة المشروع المشترك (JV)</h3><p>تحديد الملكية والإدارة والصلاحيات والحقوق وأحكام انتقال الأسهم.</p></div><div class="roadStep"><div class="roadNo">03</div><h3>تشغيل وقياس</h3><p>متابعة المبيعات والربحية والنمو بشكل مستقل وقابل للقياس.</p></div><div class="roadStep"><div class="roadNo">04</div><h3>خيارات مستقبلية</h3><p>تهيئة أكثر من مسار للتعامل مع الملكية عند نضج المشروع.</p></div></div><div class="exitOptions"><h3>أمثلة على خيارات يمكن ترتيبها من البداية</h3><div class="exitGrid"><div class="exitBox"><b>بيع حصة</b><span>خروج مساهم من جزء أو كامل حصته وفق الأحكام المنظمة.</span></div><div class="exitBox"><b>دخول مستثمر جديد</b><span>إدخال رأس مال أو مساهم جديد عندما يخدم مرحلة النمو التالية.</span></div><div class="exitBox"><b>شراء حصة شريك</b><span>إعادة ترتيب الملكية بين الأطراف عند تغير أهداف المشروع.</span></div><div class="exitBox"><b>بيع المشروع</b><span>التعامل مع شركة المشروع كأصل استثماري مستقل عند وجود فرصة مناسبة.</span></div></div><div class="exitPunch"><strong>الفكرة:</strong> وجود أكثر من خيار للتخارج يعطي الأطراف مرونة أكبر مع تطور المشروع.</div></div></div></section>
 
@@ -120,7 +175,71 @@ const steps=[
 {k:'المرحلة 04',h:'تأسيس شركة للمشروع المشترك (JV)',p:'تكون الشركة مخصصة لمشروع التوسع، ويترجم الاتفاق إلى ملكية وأسهم وإدارة وصلاحيات وقرارات وأحكام انتقال ملكية بحسب ما يناسب الصفقة.'},
 {k:'المرحلة 05',h:'الفروع الخمسة تعمل ضمن شركة المشروع',p:'تتم متابعة مبيعات الفروع وتكاليفها وربحيتها وأداء المشروع من خلال شركة المشروع، ومع نمو النتائج تظهر خيارات توسع إضافية أو دخول مستثمر أو تخارج.'}
 ];
-const panel=$('#scenarioPanel'),btns=$$('.scenarioBtn');btns.forEach((b,i)=>b.addEventListener('click',()=>{btns.forEach(x=>{x.classList.remove('active');x.setAttribute('aria-selected','false')});b.classList.add('active');b.setAttribute('aria-selected','true');panel.innerHTML='<small>'+steps[i].k+'</small><h4>'+steps[i].h+'</h4><p>'+steps[i].p+'</p>'}));
+const panel=$('#scenarioPanel'),btns=$('.scenarioBtn');
+const flowBoxes=$('.scenarioFlowBox'),flowArrows=$('.scenarioFlowArrow');
+const flowMap=[0,3,1,2,3];
+function setFlow(i){
+  const target=flowMap[i];
+  flowBoxes.forEach((box,idx)=>{box.classList.toggle('flowActive',idx===target);box.classList.toggle('flowDim',idx!==target)});
+  flowArrows.forEach((arrow,idx)=>arrow.classList.toggle('flowActive',idx===Math.min(target,flowArrows.length-1)));
+}
+setFlow(0);
+btns.forEach((b,i)=>b.addEventListener('click',()=>{
+  btns.forEach(x=>{x.classList.remove('active');x.setAttribute('aria-selected','false')});
+  b.classList.add('active');b.setAttribute('aria-selected','true');setFlow(i);
+  panel.classList.add('switching');
+  setTimeout(()=>{panel.innerHTML='<small>'+steps[i].k+'</small><h4>'+steps[i].h+'</h4><p>'+steps[i].p+'</p>';panel.classList.remove('switching')},120);
+}));
+
+const cardSelectors=['.sourceCard','.fitCard','.structureCard','.scenarioFlowBox','.scenarioBtn','.exitBox','.valueCard','.shareType','.voteRow'];
+const motionCards=$(cardSelectors.join(','));
+motionCards.forEach(el=>el.classList.add('motion-card'));
+if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+  motionCards.forEach(el=>{
+    el.addEventListener('pointermove',e=>{
+      const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      el.style.setProperty('--ry',(x*3.2).toFixed(2)+'deg');
+      el.style.setProperty('--rx',(-y*2.6).toFixed(2)+'deg');
+    });
+    el.addEventListener('pointerleave',()=>{el.style.setProperty('--ry','0deg');el.style.setProperty('--rx','0deg')});
+  });
+}
+
+const staggerGroups=['.fitGrid','.structureGrid','.scenarioTabs','.exitGrid','.valueGrid','.shareTypeGrid','.voteRows'];
+staggerGroups.forEach(sel=>{
+  $(sel).forEach(group=>{
+    [...group.children].forEach((el,i)=>{el.classList.add('staggerItem');el.style.setProperty('--delay',(i*70)+'ms')});
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){[...group.children].forEach(el=>el.classList.add('staggerOn'));obs.disconnect()}}),{threshold:.12});
+    obs.observe(group);
+  });
+});
+
+const roadmap=$('.roadmap'),roadSteps=$('.roadStep');
+function updateRoadmap(){
+  if(!roadmap||innerWidth<=960)return;
+  const r=roadmap.getBoundingClientRect(),trigger=innerHeight*.62;
+  const start=28,end=Math.max(start+1,r.height-28);
+  const local=Math.max(0,Math.min(end,trigger-r.top));
+  const pct=Math.max(0,Math.min(75,(local/end)*75));
+  roadmap.style.setProperty('--road-progress',pct+'%');
+  roadSteps.forEach((step,i)=>{
+    const sr=step.getBoundingClientRect(),active=sr.top<trigger;
+    step.classList.toggle('roadActive',active&&sr.bottom>innerHeight*.34);
+    step.classList.toggle('roadPassed',active);
+  });
+}
+addEventListener('scroll',updateRoadmap,{passive:true});addEventListener('resize',updateRoadmap,{passive:true});updateRoadmap();
+
+const countEls=$('.countNum[data-count]');
+const countObs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target,target=Number(el.dataset.count)||0;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=target;el.classList.add('countDone');countObs.unobserve(el);return}
+  const start=performance.now(),dur=700;
+  function tick(t){const p=Math.min(1,(t-start)/dur),v=Math.round(target*(1-Math.pow(1-p,3)));el.textContent=v;if(p<1)requestAnimationFrame(tick);else el.classList.add('countDone')}
+  el.textContent='0';requestAnimationFrame(tick);countObs.unobserve(el);
+}),{threshold:.7});
+countEls.forEach(el=>countObs.observe(el));
 })();
 </script>
 </body>
