@@ -24,7 +24,61 @@
 .faq{display:grid;gap:10px}.faq details{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}.faq summary{list-style:none;cursor:pointer;padding:18px 20px;color:var(--navy);font-weight:800;font-size:15px;display:flex;justify-content:space-between;gap:15px}.faq summary::-webkit-details-marker{display:none}.faq summary:after{content:'+';font:800 20px Arial;color:var(--gold)}.faq details[open] summary:after{content:'–'}.faq p{margin:0;padding:0 20px 18px;color:var(--muted);font-size:13px}
 .footer{background:linear-gradient(135deg,var(--navy3),var(--navy));color:#fff;border-top:3px solid var(--gold)}.footin{padding:24px 0 15px;display:flex;justify-content:space-between;align-items:center}.naif{width:82px;height:38px;background:var(--gold);-webkit-mask:url('https://almohammdin.github.io/emtidad/assets/images/naif-logo.png') center/contain no-repeat;mask:url('https://almohammdin.github.io/emtidad/assets/images/naif-logo.png') center/contain no-repeat}.footBrand{display:flex;align-items:center;gap:10px}.footBrand p{font-size:10px;color:rgba(255,255,255,.68);margin:0}.footerRight{display:flex;align-items:center;gap:10px}.socials{display:flex;align-items:center;gap:7px}.socials a{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:var(--gold)}.socials svg{width:16px;height:16px;fill:currentColor}.handle{color:var(--gold);font:700 12px Arial;text-decoration:none}
 @media(max-width:960px){.links{display:none}.fitGrid{grid-template-columns:1fr 1fr}.sources,.structureGrid,.valueGrid{grid-template-columns:1fr}.expertFacts{grid-template-columns:1fr}.scenarioFlow{grid-template-columns:1fr}.scenarioFlowArrow{min-height:24px;transform:rotate(-90deg)}.scenarioTabs{grid-template-columns:1fr 1fr}.roadmap{grid-template-columns:1fr 1fr}.roadmap:before{display:none}.exitGrid{grid-template-columns:1fr 1fr}}
-@media(max-width:620px){.sec{padding:56px 0}.hero{padding:66px 0}.hero p,.head p{font-size:15px}.jvMap,.scenario{padding:18px}.fitGrid,.scenarioTabs,.roadmap,.exitGrid{grid-template-columns:1fr}.scenarioIntro{display:block}.scenarioBtn{min-height:auto}.footin{flex-direction:column;gap:14px}.footerRight{flex-wrap:wrap;justify-content:center}.next{padding:25px}}
+@media(max-width:760px){
+  .tableScroll{overflow:visible}
+  .compare{min-width:0;width:100%;display:block}
+  .compare thead{display:none}
+  .compare tbody{display:grid;gap:12px}
+  .compare tr{display:block;background:#fff;border:1px solid #E3DED6;border-radius:18px;overflow:hidden;box-shadow:0 8px 22px rgba(13,54,86,.05)}
+  .compare td{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:start;padding:13px 15px;border-bottom:1px solid #EEE7DF;font-size:15px;line-height:1.65;background:#fff}
+  .compare td:first-child{display:block;width:auto;padding:14px 15px;background:#F4EFE8;color:var(--navy);font-size:17px;font-weight:900;border-bottom:1px solid #E5DDD4}
+  .compare td:nth-child(2)::before{content:"التوسع الذاتي"}
+  .compare td:nth-child(3)::before{content:"الامتياز التجاري"}
+  .compare td:nth-child(4)::before{content:"المشروع المشترك (JV)"}
+  .compare td:not(:first-child)::before{color:var(--navy);font-size:12px;font-weight:800;line-height:1.5}
+  .compare td.jvCol{background:#F6FAFC}
+  .compare tr:last-child td{border-bottom:1px solid #EEE7DF}
+  .compare tr:last-child td:last-child,.compare tr td:last-child{border-bottom:0}
+}
+@media(max-width:620px){
+  body{font-size:16px;line-height:1.9}
+  .c{width:min(100% - 28px,1160px)}
+  .sec{padding:58px 0}
+  .hero{padding:68px 0}
+  .hero p{font-size:17px;line-height:1.85}
+  .head p{font-size:16px;line-height:1.85}
+  .jvMap,.scenario{padding:18px}
+  .sourceCard p,.projectCard p,.jvCore p{font-size:16px;line-height:1.8}
+  .sourceCard span,.jvCore span{font-size:15px;line-height:1.75}
+  .fitCard p{font-size:15px;line-height:1.75}
+  .structureLead{font-size:17px;line-height:1.8}
+  .structureCard p{font-size:15px;line-height:1.75}
+  .expertStrip p{font-size:15px;line-height:1.75}
+  .expertFact b{font-size:14px}.expertFact span{font-size:13px;line-height:1.65}
+  .legalNote{font-size:14px;line-height:1.75}
+  .ownershipFold summary{padding:17px 16px}.ownershipFold summary small{font-size:12px}.ownershipFold summary strong{font-size:20px}.ownershipFold summary em{font-size:14px;line-height:1.6}
+  .ownershipBody{padding:17px 16px}.ownershipBody p{font-size:15px;line-height:1.75}
+  .ownershipLead h4{font-size:21px}
+  .ownershipScope{font-size:13px!important}
+  .voteExample h5{font-size:17px}.voteRow b{font-size:15px}.voteRow span{font-size:14px;line-height:1.6}.voteRow strong{font-size:15px}
+  .shareType small{font-size:11px}.shareType h5{font-size:18px}.shareType>strong{font-size:14px}.shareType p{font-size:14px;line-height:1.65}
+  .redeemFacts span{font-size:11px}.redeemFacts b{font-size:13px;line-height:1.55}
+  .shareCompare th,.shareCompare td{font-size:13px;line-height:1.6}
+  .fitGrid,.scenarioTabs,.roadmap,.exitGrid{grid-template-columns:1fr}
+  .scenarioIntro{display:block}
+  .scenarioIntro p{font-size:15px}
+  .scenarioFlowBox strong{font-size:16px}.scenarioFlowBox span{font-size:13px;line-height:1.55}
+  .scenarioBtn{min-height:auto;padding:16px}.scenarioBtn small{font-size:12px}.scenarioBtn b{font-size:17px}.scenarioBtn span{font-size:13px;line-height:1.6}
+  .scenarioPanel small{font-size:12px}.scenarioPanel h4{font-size:21px}.scenarioPanel p{font-size:15px;line-height:1.75}
+  .roadStep h3{font-size:19px}.roadStep p{font-size:14px;line-height:1.65}
+  .exitOptions h3{font-size:22px}.exitBox b{font-size:16px}.exitBox span{font-size:13px;line-height:1.55}.exitPunch{font-size:14px;line-height:1.7}
+  .valueCard h3{font-size:22px}.valueCard p{font-size:15px;line-height:1.75}
+  .next{padding:25px}.next h2{font-size:29px}.next p{font-size:16px;line-height:1.8}
+  .faq summary{font-size:16px;line-height:1.6}.faq p{font-size:15px;line-height:1.75}
+  .footin{flex-direction:column;gap:14px}.footerRight{flex-wrap:wrap;justify-content:center}
+  .compare td{grid-template-columns:104px 1fr;font-size:15px}
+  .compare td:not(:first-child)::before{font-size:12px}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important}}
 </style>
 </head>
