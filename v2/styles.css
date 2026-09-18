@@ -204,10 +204,6 @@ html[lang="ar"] .contact-copy h2 {
   font-feature-settings: "salt" 1;
 }
 
-html[lang="ar"] .kashida-title {
-  font-feature-settings: "salt" 1, "swsh" 1;
-}
-
 html[lang="en"] h1,
 html[lang="en"] h2,
 html[lang="en"] h3,
