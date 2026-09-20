@@ -44,7 +44,92 @@
 .fbar.gold i{background:var(--gold)}
 .fbar strong{font-size:9.5px;color:var(--navy);direction:ltr;text-align:left}
 .editable{outline:none;border-radius:4px}body.edit .editable:hover,body.edit .editable:focus{background:#fff7e7;box-shadow:0 0 0 2px #b47a2d33}
+
+.cover-visual{
+  margin-top:7mm;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:linear-gradient(135deg,#f8fafc,#fffaf3);
+  padding:4.5mm;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  align-items:center;
+  gap:2mm;
+}
+.cv-node{
+  min-height:25mm;border-radius:14px;border:1px solid var(--line);
+  background:#fff;padding:3mm;text-align:center;display:grid;place-items:center;
+}
+.cv-node strong{display:block;color:var(--navy);font-size:10px}
+.cv-node span{display:block;color:var(--muted);font-size:8px;margin-top:.8mm;line-height:1.5}
+.cv-core{
+  min-height:30mm;border-radius:50%;aspect-ratio:1;
+  width:30mm;margin:auto;background:linear-gradient(145deg,var(--navy),#263d70);
+  color:#fff;display:grid;place-items:center;text-align:center;padding:3mm;
+  box-shadow:0 9px 20px rgba(6,31,86,.16);
+}
+.cv-core b{font-size:13px;line-height:1.35}
+.cv-arrow{height:2px;background:linear-gradient(90deg,var(--gold),var(--navy));position:relative}
+.cv-arrow:after{content:"";position:absolute;left:-1px;top:-3px;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:7px solid var(--navy)}
+
+.browser{
+  border:1px solid #d8dee8;border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 10px 28px rgba(16,24,40,.09);
+}
+.browser-top{
+  height:9mm;background:#f4f6f9;border-bottom:1px solid #e4e7ec;display:flex;align-items:center;gap:2mm;padding:0 3mm;
+}
+.browser-dot{width:2.2mm;height:2.2mm;border-radius:50%;background:#cfd5dd}
+.browser-address{
+  margin-right:2mm;flex:1;border-radius:999px;background:#fff;border:1px solid #e4e7ec;padding:1mm 3mm;
+  font:700 7.8px Arial;color:#667085;direction:ltr;text-align:left
+}
+.browser-body{
+  min-height:103mm;padding:5mm;background:
+    radial-gradient(circle at 15% 8%,rgba(180,122,45,.10),transparent 25%),
+    linear-gradient(135deg,#fbfcfe,#f5f7fb);
+}
+.mock-head{display:flex;justify-content:space-between;align-items:center;gap:4mm}
+.mock-logo{width:28mm;height:20mm;object-fit:contain}
+.mock-assoc{font-size:8.5px;color:var(--navy);font-weight:900}
+.mock-hero{
+  margin-top:5mm;border-radius:14px;background:linear-gradient(135deg,var(--navy),#233d72);color:#fff;padding:5mm;
+  display:grid;grid-template-columns:1.2fr .8fr;gap:4mm;align-items:center
+}
+.mock-hero h4{margin:0;font-size:15px;line-height:1.45}
+.mock-hero p{margin:1.5mm 0 0;color:#d8e2f3;font-size:8.3px;line-height:1.6}
+.mock-family{
+  height:32mm;border-radius:12px;border:1px solid #ffffff26;position:relative;background:#ffffff0b;overflow:hidden
+}
+.person{position:absolute;width:7mm;height:7mm;border-radius:50%;background:#e5b76e;top:5mm}
+.person:after{content:"";position:absolute;width:9mm;height:13mm;border-radius:5mm 5mm 2mm 2mm;background:#fff;top:6mm;left:-1mm;opacity:.95}
+.person.m:after{background:#f7f7f7}
+.person.f{background:#b47a2d}
+.person.f:after{background:#f1e7d6}
+.person.p1{right:7mm}.person.p2{right:20mm}.person.p3{right:33mm}.person.p4{right:46mm}
+.mock-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:2mm;margin-top:4mm}
+.mock-tool{border:1px solid #e1e7ef;border-radius:10px;background:#fff;padding:3mm;text-align:center}
+.mock-tool b{display:block;color:var(--navy);font-size:8.6px}.mock-tool span{display:block;color:#667085;font-size:7.2px;margin-top:.5mm}
+.mock-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:2mm;margin-top:4mm}
+.mock-strip div{border-radius:10px;padding:2.5mm;background:#fffaf0;border:1px solid #eadbad;color:#6b541f;font-size:7.5px;text-align:center;font-weight:800}
+
+.impact-map{
+  margin-top:5mm;border:1px solid var(--line);border-radius:16px;padding:4mm;background:linear-gradient(135deg,#f8fafc,#fff);
+  display:grid;grid-template-columns:1fr 10mm 1fr 10mm 1fr;align-items:center;gap:2mm
+}
+.impact-box{min-height:23mm;border-radius:12px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;text-align:center;padding:2mm}
+.impact-box b{color:var(--navy);font-size:9.5px}.impact-box span{color:var(--muted);font-size:7.7px;display:block;margin-top:.5mm}
+.impact-arrow{height:2px;background:var(--gold);position:relative}.impact-arrow:after{content:"";position:absolute;left:-1px;top:-3px;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:7px solid var(--gold)}
+
+.decision-flow{
+  margin-top:5mm;display:grid;grid-template-columns:repeat(3,1fr);gap:3mm
+}
+.df-card{border:1px solid var(--line);border-radius:14px;background:#fff;padding:3.5mm;min-height:25mm}
+.df-card b{display:block;color:var(--gold);font-size:8px}
+.df-card strong{display:block;color:var(--navy);font-size:10px;margin-top:1mm}
+.df-card span{display:block;color:var(--muted);font-size:7.8px;line-height:1.55;margin-top:1mm}
+
 @media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
 @media(max-width:900px){.paper{transform:scale(.72);transform-origin:top center;margin-bottom:-82mm}}@media(max-width:620px){.paper{transform:scale(.46);margin-bottom:-158mm}.toolbar{justify-content:flex-start;overflow:auto}}
 @media print{html,body{background:#fff}.toolbar{display:none}.doc{padding:0}.paper{width:210mm;min-height:297mm;margin:0;border:0;box-shadow:none;transform:none;page-break-after:always;break-after:page}.paper:last-child{page-break-after:auto;break-after:auto}@page{size:A4;margin:0}}
 </style>
@@ -85,6 +170,13 @@
     <div class="value"><b class="editable">تمويل موجه للمشروع</b><span class="editable">يقدم المشروع للمانحين بنطاق ومخرجات ومؤشرات وميزانية محددة.</span></div>
     <div class="value"><b class="editable">امتداد لأهداف الجمعية</b><span class="editable">الاستدامة والحوكمة والجيل القادم تتحول إلى خدمة رقمية مستمرة.</span></div>
     <div class="value"><b class="editable">فرصة للتميز المؤسسي</b><span class="editable">مشروع قابل لبناء شراكات وتقارير أثر وترشيحات للجوائز بعد التشغيل.</span></div>
+  </div>
+  <div class="cover-visual">
+    <div class="cv-node"><div><strong>أهداف الجمعية</strong><span>استدامة، حوكمة، جيل قادم</span></div></div>
+    <div class="cv-arrow"></div>
+    <div class="cv-core"><b>امتداد<br>منصة تنموية</b></div>
+    <div class="cv-arrow"></div>
+    <div class="cv-node"><div><strong>أثر قابل للقياس</strong><span>استخدام، نتائج، شراكات، وتمويل</span></div></div>
   </div>
   <div class="footer"><span>حتى لحلول الأعمال | مشروع امتداد</span><span class="page-no">1 / 4</span></div>
 </section>
@@ -131,7 +223,39 @@
         <li class="editable">الكود والوثائق الفنية وتسليم المنصة للجمعية</li>
       </ul>
     </div>
-    <div class="preview"><img src="https://almohammdin.github.io/emtidad/assets/images/emtidad-preview.png" alt="نموذج منصة امتداد"><small>http://emtidad.tharaa.org.sa/</small></div>
+    <div class="preview">
+  <div class="browser">
+    <div class="browser-top">
+      <span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span>
+      <div class="browser-address">http://emtidad.tharaa.org.sa/</div>
+    </div>
+    <div class="browser-body">
+      <div class="mock-head">
+        <img class="mock-logo" src="https://almohammdin.github.io/emtidad/assets/images/emtidad-logo.png" alt="امتداد">
+        <div class="mock-assoc">جمعية الشركات العائلية ثراء</div>
+      </div>
+      <div class="mock-hero">
+        <div>
+          <h4>استدامة الشركات العائلية تبدأ بخطوة عملية</h4>
+          <p>تشخيص، ميثاق عائلي، أدوات، معرفة، وتعاقب في منصة واحدة تخدم العائلة والمنشأة عبر الأجيال.</p>
+        </div>
+        <div class="mock-family">
+          <span class="person m p1"></span><span class="person f p2"></span><span class="person m p3"></span><span class="person f p4"></span>
+        </div>
+      </div>
+      <div class="mock-tools">
+        <div class="mock-tool"><b>التشخيص</b><span>قياس الجاهزية</span></div>
+        <div class="mock-tool"><b>الميثاق</b><span>منشئ تفاعلي</span></div>
+        <div class="mock-tool"><b>المعرفة</b><span>مراجع وأدلة</span></div>
+        <div class="mock-tool"><b>التعاقب</b><span>الجيل القادم</span></div>
+      </div>
+      <div class="mock-strip">
+        <div>أدوات ونماذج</div><div>شجرة العائلة</div><div>قياس الأثر</div>
+      </div>
+    </div>
+  </div>
+  <small>http://emtidad.tharaa.org.sa/</small>
+</div>
   </div>
   <div class="metric-strip">
     <div class="metric"><b>1</b><span>منصة رقمية باسم الجمعية</span></div>
@@ -145,6 +269,13 @@
     <div class="value"><b class="editable">تحويل المعرفة إلى تطبيق</b><span class="editable">الأدلة والحوكمة والتعاقب تصبح أدوات يستخدمها المستفيد مباشرة.</span></div>
     <div class="value"><b class="editable">بيانات للبرامج المستقبلية</b><span class="editable">مؤشرات الاحتياج والاستخدام تساعد الجمعية في تطوير برامجها وشراكاتها.</span></div>
     <div class="value"><b class="editable">قياس أثر قابل للتقرير</b><span class="editable">مخرجات رقمية تساعد في تقارير الممولين وإبراز أثر الجمعية.</span></div>
+  </div>
+  <div class="impact-map">
+    <div class="impact-box"><div><b>أداة رقمية</b><span>تجربة مستفيد عملية</span></div></div>
+    <div class="impact-arrow"></div>
+    <div class="impact-box"><div><b>استخدام فعلي</b><span>تشخيص ووثائق ومسارات</span></div></div>
+    <div class="impact-arrow"></div>
+    <div class="impact-box"><div><b>أثر للجمعية</b><span>بيانات، تقارير، وتمويل</span></div></div>
   </div>
   <div class="footer"><span>منصة امتداد</span><span class="page-no">3 / 4</span></div>
 </section>
@@ -179,6 +310,11 @@
   </div>
   <div class="decision" style="margin-top:5mm"><b>ما المطلوب من مجلس الإدارة الآن؟</b><p class="editable">اعتماد مبدئي لمشروع امتداد ومسار التقديم للجهات المانحة، وتفويض الإدارة التنفيذية بالتنسيق مع حتى لحلول الأعمال لإعداد ملف التمويل. يبدأ التعاقد التنفيذي بعد اعتماد التمويل وفق النطاق والميزانية المعتمدة.</p></div>
   <div class="ask"><b>الخطوة التالية بعد اعتماد الفكرة</b><p class="editable">اختيار فرصة التمويل الأنسب، تجهيز ملف المشروع باسم الجمعية، ثم رفع الطلب ومتابعته حتى قرار الجهة المانحة.</p></div>
+  <div class="decision-flow">
+    <div class="df-card"><b>01</b><strong>اعتماد الفكرة</strong><span>موافقة المجلس على تبني امتداد ومسار التمويل.</span></div>
+    <div class="df-card"><b>02</b><strong>إعداد ورفع الملف</strong><span>تجهيز ملف المانح باسم الجمعية ومتابعة الطلب.</span></div>
+    <div class="df-card"><b>03</b><strong>بدء التنفيذ</strong><span>عند اعتماد التمويل يبدأ التعاقد والتنفيذ لمدة 60 يوم عمل.</span></div>
+  </div>
   <div class="footer"><span>حتى لحلول الأعمال</span><span class="page-no">4 / 4</span></div>
 </section>
 </main>
