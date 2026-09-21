@@ -35,7 +35,16 @@
 .paper>*{flex-shrink:0}
 .paper .footer{position:relative;inset:auto;margin-top:auto;padding-top:3mm}
 .approval{margin-bottom:5mm;break-inside:avoid}
-.money-grid.with-success{grid-template-columns:.85fr 1.15fr 1fr;align-items:stretch}
+.money-grid.with-success{grid-template-columns:.9fr 1.1fr;align-items:stretch}
+.money-grid.with-success .price-card{order:1;padding:3mm}
+.money-grid.with-success .price-card .big{line-height:1.3}
+.money-grid.with-success .payment{order:2}
+.money-grid.with-success .success-card{order:3;grid-column:1/-1;display:grid;grid-template-columns:26mm 1fr;column-gap:4mm;align-items:center;padding:2mm 3mm}
+.money-grid.with-success .success-card h3{grid-column:1;grid-row:1;text-align:center;margin:0}
+.money-grid.with-success .success-rate{grid-column:1;grid-row:2/4;text-align:center;font-size:30px;line-height:1.1}
+.money-grid.with-success .success-basis{grid-column:2;grid-row:1;font-size:12px}
+.money-grid.with-success .success-terms{grid-column:2;grid-row:2;margin-top:1mm;font-size:10px;line-height:1.45}
+.money-grid.with-success .success-note{grid-column:2;grid-row:3;margin-top:.5mm}
 .success-card{border:2px solid var(--gold);border-radius:16px;background:#fffaf0;padding:3mm;color:var(--navy);break-inside:avoid}
 .success-card h3{font-size:12px;margin:0}
 .success-rate{font-size:30px;font-weight:800;line-height:1.25;direction:ltr;text-align:right}
