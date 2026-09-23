@@ -304,9 +304,11 @@ function revealOverlay(o){
 function addTextOverlay(type,text){
   const pageNumber=getTargetPage(),page=state.pages[pageNumber-1];if(!page)return;
   pushHistory();const pxW=Math.min(type==='date'?390:300,Math.max(type==='date'?180:120,text.length*12));
-  const nw=clamp(pxW/page.width,type==='date'?.24:.16,type==='date'?.62:.48),nh=clamp(42/page.height,.035,.085);
+  const initialHeight=type==='date'?34:30;
+  const nw=clamp(pxW/page.width,type==='date'?.24:.16,type==='date'?.62:.48),nh=clamp(initialHeight/page.height,.012,.085);
   const fontKey=type==='text'?getTextFont():'modern';
-  const o={id:newId('o'),type,page:pageNumber,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,text,fontKey};
+  const aspect=(nw*page.width)/Math.max(1,nh*page.height);
+  const o={id:newId('o'),type,page:pageNumber,nx:(1-nw)/2,ny:(1-nh)/2,nw,nh,aspect,text,fontKey};
   state.overlays.push(o);renderOverlay(o,true);selectOverlay(o.id);showPlacementHint('itemAdded');revealOverlay(o);
 }
 function renderOverlay(o,animate=false){
@@ -315,6 +317,7 @@ function renderOverlay(o,animate=false){
   if(o.type==='signature'||o.type==='stamp')el.innerHTML=`<img src="${o.src}" alt="${o.type==='stamp'?'ختم':'توقيع'}"><button class="overlay-delete" type="button" aria-label="حذف">×</button><i class="overlay-handle"></i>`;
   else{
     el.innerHTML=`<div class="overlay-text">${escapeHtml(o.text)}</div><button class="overlay-delete" type="button" aria-label="حذف">×</button><i class="overlay-handle"></i>`;
+    el.style.minWidth='28px';el.style.minHeight='10px';
     el.querySelector('.overlay-text').style.fontFamily=fontStack(o.fontKey);
   }
   page.layer.appendChild(el);o.el=el;applyOverlay(o);wireOverlay(o,el);
@@ -324,6 +327,13 @@ function applyOverlay(o){
   if(!o.el)return;const page=state.pages[o.page-1];if(!page)return;
   o.el.style.left=(o.nx*page.width)+'px';o.el.style.top=(o.ny*page.height)+'px';
   o.el.style.width=(o.nw*page.width)+'px';o.el.style.height=(o.nh*page.height)+'px';
+  if(o.type!=='signature'&&o.type!=='stamp'){
+    const textEl=o.el.querySelector('.overlay-text'),heightPx=o.nh*page.height;
+    if(textEl){
+      textEl.style.fontSize=clamp(heightPx*.48,5,96)+'px';
+      textEl.style.padding=`${Math.min(2,Math.max(.5,heightPx*.05))}px ${Math.min(6,Math.max(1,heightPx*.14))}px`;
+    }
+  }
 }
 function wireOverlay(o,el){
   el.addEventListener('pointerdown',e=>{
@@ -350,10 +360,22 @@ function wireOverlay(o,el){
     el.classList.add('is-resizing');handle.setPointerCapture(e.pointerId);
     const move=ev=>{
       const maxW=page.width-o.nx*page.width,maxH=page.height-o.ny*page.height;
-      const isImage=o.type==='signature'||o.type==='stamp',minW=isImage?22:70;
-      let nwPx=clamp(ow+(ev.clientX-sx),minW,maxW),nhPx;
-      if(isImage){nhPx=nwPx/(o.aspect||2.5);if(nhPx>maxH){nhPx=maxH;nwPx=nhPx*(o.aspect||2.5)}}
-      else nhPx=clamp(oh+(ev.clientY-sy),30,maxH);
+      const isImage=o.type==='signature'||o.type==='stamp';
+      let nwPx,nhPx;
+      if(isImage){
+        nwPx=clamp(ow+(ev.clientX-sx),22,maxW);
+        nhPx=nwPx/(o.aspect||2.5);
+        if(nhPx>maxH){nhPx=maxH;nwPx=nhPx*(o.aspect||2.5)}
+      }else{
+        const aspect=o.aspect||ow/Math.max(1,oh),dx=ev.clientX-sx,dy=ev.clientY-sy;
+        o.aspect=aspect;
+        const diagonal=Math.max(1,ow*ow+oh*oh);
+        const rawScale=1+(dx*ow+dy*oh)/diagonal;
+        const minScale=Math.max(28/Math.max(1,ow),10/Math.max(1,oh));
+        const maxScale=Math.max(.01,Math.min(maxW/Math.max(1,ow),maxH/Math.max(1,oh)));
+        const scale=clamp(rawScale,Math.min(minScale,maxScale),maxScale);
+        nwPx=ow*scale;nhPx=oh*scale;
+      }
       o.nw=nwPx/page.width;o.nh=nhPx/page.height;applyOverlay(o);
     };
     const up=()=>{handle.removeEventListener('pointermove',move);handle.removeEventListener('pointerup',up);handle.removeEventListener('pointercancel',up);el.classList.remove('is-resizing')};
@@ -463,7 +485,7 @@ $('#deleteSavedStamp').addEventListener('click',()=>{
 });
 
 async function textToPng(text,width,height,fontKey='craft'){
-  await document.fonts.ready;const scale=2,c=document.createElement('canvas');c.width=Math.ceil(width*scale);c.height=Math.ceil(height*scale);const ctx=c.getContext('2d');ctx.scale(scale,scale);ctx.clearRect(0,0,width,height);ctx.fillStyle='#172A38';ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=document.documentElement.dir==='ltr'?'ltr':'rtl';ctx.font=`600 ${Math.max(13,Math.min(24,height*.48))}px ${fontStack(fontKey)}`;ctx.fillText(text,width/2,height/2,width-8);return c.toDataURL('image/png');
+  await document.fonts.ready;const scale=2,c=document.createElement('canvas');c.width=Math.ceil(width*scale);c.height=Math.ceil(height*scale);const ctx=c.getContext('2d');ctx.scale(scale,scale);ctx.clearRect(0,0,width,height);ctx.fillStyle='#172A38';ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=document.documentElement.dir==='ltr'?'ltr':'rtl';ctx.font=`600 ${clamp(height*.48,5,96)}px ${fontStack(fontKey)}`;ctx.fillText(text,width/2,height/2,Math.max(1,width-Math.min(8,width*.08)));return c.toDataURL('image/png');
 }
 function drawOverlayOnPage(pdfPage,img,o,meta){
   const vp=meta.viewport;
