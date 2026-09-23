@@ -36,10 +36,36 @@
 .footer{background:linear-gradient(135deg,var(--n3),var(--n));color:#fff;border-top:3px solid var(--g)}.footin{padding:24px 0 15px;display:flex;justify-content:space-between;align-items:center;gap:16px}.footBrand{display:flex;align-items:center;gap:10px}.naifLogo{display:block;width:82px;height:38px;object-fit:contain;object-position:center}.footBrand p{font-size:12px;color:rgba(255,255,255,.7);margin:0}.footerRight{display:flex;align-items:center;gap:9px}.socials{display:flex;align-items:center;gap:6px}.socials a{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:var(--g);transition:transform 150ms var(--ease),background 150ms ease}.socials a:active{transform:scale(.96)}.socials svg{width:16px;height:16px;fill:currentColor}.handle{color:var(--g);font:700 12px Arial;text-decoration:none}
 button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgba(201,133,60,.38);outline-offset:3px}
 @media(hover:hover) and (pointer:fine){.card,.node,.path,.status,.why,.step,.src{transition:transform 180ms var(--ease),box-shadow 180ms ease,border-color 180ms ease}.card:hover,.node:hover,.path:hover,.status:hover,.why:hover,.step:hover,.src:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:#D5C4AF}}
-@media(max-width:980px){.heroGrid,.grid2,.compare{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.statusGrid,.whySJSC{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.step:not(:last-child):after,body.en-mode .step:not(:last-child):after{content:"↓";left:50%;right:auto;top:auto;bottom:-16px;transform:translateX(-50%)}.links{max-width:52vw}.flow{grid-template-columns:1fr}.flowArrow{min-height:36px}.flowArrow .ar,.flowArrow .en{font-size:0}.flowArrow .ar:after,.flowArrow .en:after{content:"↓";font-size:22px}.node{min-height:150px}}
-@media(max-width:680px){body{font-size:17px}.c{width:min(100% - 20px,1180px)}.hero{padding:62px 0 56px}.sec{padding:54px 0}.brandText{display:none}.links{display:none}.hero h1{font-size:38px}.grid3,.grid4,.srcs{grid-template-columns:1fr}.flowWrap{padding:18px 14px}.flowTitle{display:block}.flowTitle span{display:block;margin-top:5px}.questionCard{padding:20px}.footin{flex-direction:column;gap:13px}.footerRight{flex-wrap:wrap;justify-content:center}.navRight{margin-inline-start:auto}}
+@media(max-width:980px){.routeCompare{grid-template-columns:1fr}.companyNode{grid-template-columns:76px 1fr}.companyNode .legalState{grid-column:1/-1}.heroGrid{grid-template-columns:1fr}.questionCard,body.en-mode .questionCard{border:0;border-top:1px solid rgba(255,255,255,.18);padding:22px 0 0;margin-top:4px}.heroGrid,.grid2,.compare{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.statusGrid,.whySJSC{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.step:not(:last-child):after,body.en-mode .step:not(:last-child):after{content:"↓";left:50%;right:auto;top:auto;bottom:-16px;transform:translateX(-50%)}.links{max-width:52vw}.flow{grid-template-columns:1fr}.flowArrow{min-height:36px}.flowArrow .ar,.flowArrow .en{font-size:0}.flowArrow .ar:after,.flowArrow .en:after{content:"↓";font-size:22px}.node{min-height:150px}}
+@media(max-width:680px){.companyNode{grid-template-columns:64px 1fr;padding:16px;gap:12px}.companyLetter{width:58px;height:58px;font-size:27px}.ownerNode,.propertyNode{padding:15px}.ownershipLink{min-height:76px}.routeDiagram{padding:18px 14px}.routeConclusion{margin:0 14px 16px}.routeTitle{padding:17px 16px}body{font-size:17px}.c{width:min(100% - 20px,1180px)}.hero{padding:62px 0 56px}.sec{padding:54px 0}.brandText{display:none}.links{display:none}.hero h1{font-size:38px}.grid3,.grid4,.srcs{grid-template-columns:1fr}.flowWrap{padding:18px 14px}.flowTitle{display:block}.flowTitle span{display:block;margin-top:5px}.questionCard{padding:20px}.footin{flex-direction:column;gap:13px}.footerRight{flex-wrap:wrap;justify-content:center}.navRight{margin-inline-start:auto}}
 @media print{.nav,.langBtn{display:none!important}.hero{padding:45px 0}.sec{padding:38px 0}.card,.flowWrap,.path{box-shadow:none;break-inside:avoid}.footer{break-before:avoid}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.node,.path,.status,.why,.step,.src,.langBtn,.socials a{transition:none!important;transform:none!important}}
+
+.heroGrid{grid-template-columns:minmax(0,1fr) minmax(330px,.72fr)}
+.questionCard{background:transparent;border:0;border-right:1px solid rgba(255,255,255,.18);border-radius:0;box-shadow:none;backdrop-filter:none;padding:4px 28px 4px 0}
+body.en-mode .questionCard{border-right:0;border-left:1px solid rgba(255,255,255,.18);padding:4px 0 4px 28px}
+.ownershipMap{position:relative;max-width:860px;margin:0 auto;padding:10px 0 0;display:flex;flex-direction:column;align-items:center}
+.ownerNode,.companyNode,.propertyNode{width:min(100%,720px);position:relative}
+.ownerNode{display:flex;align-items:center;gap:16px;padding:17px 20px;background:#fff;border:1px solid var(--line);border-radius:19px}
+.ownerIcon{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--n);color:#fff;font:900 13px Arial,sans-serif;flex:0 0 auto}
+.ownerText strong,.ownerText span,.companyInfo strong,.companyInfo span,.propertyNode strong,.propertyNode span,.legalState b,.legalState span,.uboTrace b,.uboTrace span{display:block}
+.ownerText strong,.companyInfo strong,.propertyNode strong{color:var(--n);font-size:17px}.ownerText span,.companyInfo span,.propertyNode span{color:var(--muted);font-size:13px;margin-top:3px}
+.ownershipLink{position:relative;min-height:88px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#66717A;font-size:12px;font-weight:800;text-align:center}
+.ownershipLink:before{content:"";position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(var(--g),#DCCDBA);left:50%;transform:translateX(-50%);z-index:0}
+.ownershipLink:after{content:"↓";position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);color:var(--g);font:900 19px Arial,sans-serif;background:var(--soft);padding:0 5px;z-index:1}
+.white .ownershipLink:after{background:var(--paper)}.ownershipLink>*{position:relative;z-index:2;background:var(--soft);padding:2px 8px}.ownershipLink .pct{font:900 17px Arial,sans-serif;color:var(--n);border-radius:999px;border:1px solid #E2D6C7;background:#fff}.ownershipLink.assetLink{min-height:76px}.ownershipLink.assetLink:after{background:var(--soft)}
+.companyNode{display:grid;grid-template-columns:90px 1fr minmax(220px,.72fr);gap:18px;align-items:center;padding:20px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:0 12px 34px rgba(13,54,86,.07)}
+.companyLetter{width:76px;height:76px;border-radius:18px;display:grid;place-items:center;background:var(--n);color:#fff;font:900 34px Arial,sans-serif;letter-spacing:-.04em}
+.companyB{border:2px solid #BFD1DC}.companyB .companyLetter{background:linear-gradient(145deg,var(--n),var(--n2))}
+.legalState{padding:13px 15px;border-radius:15px}.legalState b{font-size:13px}.legalState span{font-size:12px;margin-top:4px;line-height:1.55}
+.legalState.applies{background:#FFF4E7;color:#76532D}.legalState.applies b{color:#8A5A27}.legalState.question{background:#EAF2F6;color:#355B6E}.legalState.question b{color:var(--n)}
+.propertyNode{display:flex;align-items:center;gap:16px;padding:19px 22px;border-radius:20px;background:#EDF6F1;border:1px solid #CFE1D5}.propertyIcon{width:56px;height:56px;border-radius:15px;display:grid;place-items:center;background:var(--green);color:#fff;font-size:25px;flex:0 0 auto}
+.uboTrace{width:min(100%,720px);display:grid;grid-template-columns:4px 1fr;gap:14px;margin-top:22px;padding:17px 19px;background:#FBF8F3;border:1px solid #E6DDD2;border-radius:18px}.uboTraceLine{background:var(--g);border-radius:99px}.uboTrace b{color:var(--n);font-size:14px}.uboTrace span{color:var(--muted);font-size:13px;margin-top:4px}
+.routeCompare{display:grid;grid-template-columns:1fr 1fr;gap:18px}.route{border:1px solid var(--line);border-radius:24px;background:#fff;overflow:hidden;box-shadow:var(--shadow)}.routeTitle{display:flex;gap:12px;align-items:center;padding:20px 22px;border-bottom:1px solid var(--line)}.routeNo{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#F0E4D6;color:#8A5A27;font:900 14px Arial,sans-serif}.routeTitle b,.routeTitle small{display:block}.routeTitle b{color:var(--n);font-size:17px}.routeTitle small{color:var(--muted);font-size:12px;margin-top:2px}.routeDiagram{padding:24px;display:flex;flex-direction:column;align-items:center}.routeActor,.routeCompany,.routeProperty{width:100%;max-width:390px}.routeActor{padding:13px 16px;text-align:center;background:#F8F4EE;border:1px solid #E6DDD2;border-radius:15px;color:var(--n)}
+.routeConnector{position:relative;min-height:65px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--muted);font-weight:800;text-align:center}.routeConnector:before{content:"";position:absolute;top:0;bottom:0;width:2px;background:#D2B58F;left:50%;transform:translateX(-50%)}.routeConnector:after{content:"↓";position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);color:var(--g);background:#fff;padding:0 4px;font:900 17px Arial}.routeConnector b,.routeConnector span{position:relative;z-index:1;background:#fff;padding:1px 6px}.routeConnector b{font:900 14px Arial;color:var(--n)}
+.routeCompany{display:grid;grid-template-columns:58px 1fr;gap:13px;align-items:center;padding:14px 16px;border:1px solid #D7E0E5;border-radius:17px;background:#FBFDFE}.routeCompany.focus{border:2px solid #9EBBCB;background:#F5FAFC}.routeLetter{width:52px;height:52px;border-radius:13px;display:grid;place-items:center;background:var(--n);color:#fff;font:900 25px Arial}.routeCompany strong,.routeCompany small{display:block}.routeCompany strong{font-size:14px;color:var(--n)}.routeCompany small{font-size:11px;color:var(--muted);margin-top:2px}.routeProperty{padding:13px 16px;border-radius:15px;text-align:center;background:#EDF6F1;border:1px solid #CFE1D5;color:var(--green)}
+.routeConclusion{margin:0 22px 22px;padding:16px 17px;border-radius:16px}.routeConclusion b,.routeConclusion span{display:block}.routeConclusion b{font-size:13px;margin-bottom:4px}.routeConclusion span{font-size:13px;line-height:1.7}.routeConclusion.restricted{background:#FFF4E7;color:#76532D}.routeConclusion.restricted b{color:#8A5A27}.routeConclusion.openQuestion{background:#EAF2F6;color:#355B6E}.routeConclusion.openQuestion b{color:var(--n)}
+
 </style>
 </head>
 <body class="ar-mode">
@@ -74,21 +100,14 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgb
       <h1 class="en">Using an SJSC for Real Estate Ownership</h1>
       <p class="ar">دراسة نظامية لهيكل تملك غير مباشر يركز تحديدا على العقارات الواقعة <strong>خارج النطاق الجغرافي</strong> المشار إليه في المادة الثانية من نظام تملك غير السعوديين للعقار.</p>
       <p class="en">A legal-structuring study focused specifically on real estate located <strong>outside the designated geographic scope</strong> under Article 2 of the Non-Saudi Real Estate Ownership Law.</p>
-      <div class="heroTags">
-        <span class="ar">خارج النطاق الجغرافي</span><span class="en">Outside geographic scope</span>
-        <span class="ar">ملكية غير مباشرة</span><span class="en">Indirect ownership</span>
-        <span class="ar">مستفيد حقيقي مفصح عنه</span><span class="en">Disclosed beneficial owner</span>
-        <span class="ar">قراءة نصية + هيكل شركات</span><span class="en">Textual reading + corporate structure</span>
-      </div>
-    </div>
+</div>
     <aside class="questionCard">
       <small class="ar">السؤال المركزي</small><small class="en">Core question</small>
-      <h2 class="ar">هل تدخل شركة باء في قيود المادة 3 إذا كان مساهمها المباشر شركة سعودية الجنسية، بينما مالك الشركة السعودية النهائي غير سعودي؟</h2>
+      <h2 class="ar">هل تدخل شركة B في قيود المادة 3 إذا كان مساهمها المباشر شركة سعودية الجنسية، بينما مالك الشركة السعودية النهائي غير سعودي؟</h2>
       <h2 class="en">Does Company B fall within Article 3 restrictions when its direct shareholder is a Saudi company, while the ultimate owner of that Saudi company is non-Saudi?</h2>
       <p class="ar">هذه الصفحة تفصل بين المساهم المباشر، والمستفيد الحقيقي، والأثر النظامي لجنسية الشركة السعودية.</p>
       <p class="en">This study separates direct shareholding, beneficial ownership, and the legal effect of Saudi corporate nationality.</p>
-      <span class="questionBadge ar">فرضية قانونية محل الدراسة</span><span class="questionBadge en">Legal structuring hypothesis</span>
-    </aside>
+</aside>
   </div>
 </header>
 
@@ -105,103 +124,146 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgb
     <div class="grid2">
       <article class="card scopeLead">
         <span class="pill gold ar">موضوع الدراسة: خارج النطاق</span><span class="pill gold en">Study focus: outside the scope</span>
-        <h3 class="ar">شركة ألف لا تملك خارج النطاق كاستثمار عقاري عام لمجرد كونها شركة سعودية.</h3>
+        <h3 class="ar">شركة A لا تملك خارج النطاق كاستثمار عقاري عام لمجرد كونها شركة سعودية.</h3>
         <h3 class="en">Company A does not gain unrestricted outside-scope investment ownership merely because it is Saudi-incorporated.</h3>
-        <p class="ar">إذا كان غير السعودي يشارك مباشرة في رأس مال ألف، فإن المادة 3/2 والمادة 8 من اللائحة تربطان التملك خارج النطاق باحتياج النشاط أو سكن العاملين، مع موافقة وزارة الاستثمار مسبقا.</p>
+        <p class="ar">إذا كان غير السعودي يشارك مباشرة في رأس مال A، فإن المادة 3/2 والمادة 8 من اللائحة تربطان التملك خارج النطاق باحتياج النشاط أو سكن العاملين، مع موافقة وزارة الاستثمار مسبقا.</p>
         <p class="en">If a non-Saudi directly participates in Company A's capital, Article 3(2) and Article 8 of the regulations tie outside-scope ownership to business needs or employee housing, with prior Ministry of Investment approval.</p>
       </article>
       <div class="facts">
         <div class="fact"><i>01</i><div><b class="ar">داخل النطاق</b><b class="en">Inside the scope</b><span class="ar">المادة 3/1 تمنح الشركة السعودية ذات المشاركة الأجنبية طريقا للتملك داخل النطاق.</span><span class="en">Article 3(1) provides an ownership route for the Saudi company with non-Saudi capital participation.</span></div></div>
         <div class="fact"><i>02</i><div><b class="ar">خارج النطاق</b><b class="en">Outside the scope</b><span class="ar">المادة 3/2 تقصر المسار على ما يلزم لمزاولة النشاط أو سكن العاملين.</span><span class="en">Article 3(2) limits the route to business needs or employee housing.</span></div></div>
         <div class="fact"><i>03</i><div><b class="ar">الموافقة</b><b class="en">Approval</b><span class="ar">المادة 8 من اللائحة تشترط موافقة وزارة الاستثمار مسبقا خارج النطاق.</span><span class="en">Article 8 of the regulations requires prior Ministry of Investment approval outside the scope.</span></div></div>
-        <div class="fact"><i>04</i><div><b class="ar">نقطة البحث</b><b class="en">Research point</b><span class="ar">هل باء تعتبر أصلا من «الشركة المشار إليها» في المادة 3 إذا كان مساهمها المباشر ألف السعودية؟</span><span class="en">Is Company B an Article 3 company at all when its direct shareholder is Saudi Company A?</span></div></div>
+        <div class="fact"><i>04</i><div><b class="ar">نقطة البحث</b><b class="en">Research point</b><span class="ar">هل B تعتبر أصلا من «الشركة المشار إليها» في المادة 3 إذا كان مساهمها المباشر شركة A السعودية؟</span><span class="en">Is Company B an Article 3 company at all when its direct shareholder is Saudi Company A?</span></div></div>
       </div>
     </div>
   </div>
 </section>
+
 
 <section class="sec soft" id="example">
   <div class="c">
     <div class="head">
       <span class="k ar">02 المثال التوضيحي</span><span class="k en">02 Worked example</span>
-      <h2 class="ar">تسلسل الملكية المقترح</h2><h2 class="en">Proposed ownership chain</h2>
-      <p class="ar">الفصل بين المستثمر النهائي ومالك رأس مال الشركة العقارية هو جوهر الفرضية.</p>
-      <p class="en">The separation between the ultimate investor and the direct shareholder of the property company is the core of the hypothesis.</p>
+      <h2 class="ar">من يملك من؟ وأين تتغير الصفة النظامية؟</h2><h2 class="en">Who owns whom, and where does the legal characterization change?</h2>
+      <p class="ar">المثال يفترض ملكية 100% لتوضيح الفكرة. الفرق الحاسم ليس في المستفيد النهائي، بل في هوية المساهم المباشر في الشركة التي ستملك العقار.</p>
+      <p class="en">The example assumes 100% ownership for clarity. The decisive distinction is not the ultimate owner, but the identity of the direct shareholder in the company that will own the property.</p>
     </div>
-    <div class="flowWrap">
-      <div class="flowTitle">
-        <h3 class="ar">مثال: المستثمر الأجنبي ← ألف ← باء ← العقار</h3>
-        <h3 class="en">Example: Foreign investor → A → B → Property</h3>
-        <span class="ar">المثال يفترض ملكية 100% للتبسيط</span><span class="en">100% ownership assumed for illustration</span>
-      </div>
-      <div class="flow">
-        <div class="node primary">
-          <i>UBO</i>
-          <b class="ar">المستثمر الأجنبي</b><b class="en">Foreign investor</b>
-          <span class="ar">شخص طبيعي أو اعتباري غير سعودي</span><span class="en">Non-Saudi natural or legal person</span>
-          <em class="ar">المالك النهائي</em><em class="en">Ultimate owner</em>
-        </div>
-        <div class="flowArrow"><span class="ar">←</span><span class="en">→</span></div>
-        <div class="node">
-          <i>A</i>
-          <b class="ar">شركة ألف</b><b class="en">Company A</b>
-          <span class="ar">شركة مساهمة مبسطة مؤسسة في السعودية</span><span class="en">Saudi-incorporated SJSC</span>
-          <em class="ar">سعودية الجنسية نظاما</em><em class="en">Saudi nationality by law</em>
-        </div>
-        <div class="flowArrow"><span class="ar">←</span><span class="en">→</span></div>
-        <div class="node">
-          <i>B</i>
-          <b class="ar">شركة باء</b><b class="en">Company B</b>
-          <span class="ar">شركة مساهمة مبسطة مملوكة 100% لألف</span><span class="en">SJSC 100% owned by Company A</span>
-          <em class="ar">المساهم المباشر: ألف</em><em class="en">Direct shareholder: A</em>
-        </div>
-        <div class="flowArrow"><span class="ar">←</span><span class="en">→</span></div>
-        <div class="node final">
-          <i>RE</i>
-          <b class="ar">العقار خارج النطاق</b><b class="en">Outside-scope property</b>
-          <span class="ar">عقار استثماري تملكه باء مباشرة</span><span class="en">Investment property directly owned by B</span>
-          <em class="ar">محل الدراسة</em><em class="en">Study target</em>
+
+    <div class="ownershipMap">
+      <div class="ownerNode foreign">
+        <div class="ownerIcon">UBO</div>
+        <div class="ownerText">
+          <strong class="ar">المستثمر الأجنبي</strong><strong class="en">Foreign investor</strong>
+          <span class="ar">المستفيد الحقيقي النهائي</span><span class="en">Ultimate beneficial owner</span>
         </div>
       </div>
-      <div class="uboBand">
-        <span class="ar"><b>الإفصاح لا يختفي:</b> المستثمر الأجنبي قد يظل مستفيدا حقيقيا في باء عبر الملكية غير المباشرة. السؤال هنا ليس إخفاءه، بل هل صفة «المستفيد الحقيقي» تجعله مساهمًا في رأس مال باء لأغراض المادة 3؟</span>
-        <span class="en"><b>Disclosure remains:</b> the foreign investor may still be the beneficial owner of Company B through indirect ownership. The question is not concealment; it is whether beneficial-owner status makes that person a shareholder in B's capital for Article 3 purposes.</span>
+
+      <div class="ownershipLink">
+        <span class="pct">100%</span>
+        <span class="ar">ملكية مباشرة في رأس المال</span><span class="en">Direct capital ownership</span>
+      </div>
+
+      <div class="companyNode companyA">
+        <div class="companyLetter">A</div>
+        <div class="companyInfo">
+          <strong class="ar">شركة الاستثمار السعودية</strong><strong class="en">Saudi Investment Company</strong>
+          <span class="ar">شركة مساهمة مبسطة سعودية الجنسية</span><span class="en">Saudi-national Simplified Joint Stock Company</span>
+        </div>
+        <div class="legalState applies">
+          <b class="ar">المادة 3 تنطبق هنا</b><b class="en">Article 3 applies here</b>
+          <span class="ar">لأن غير السعودي يشارك مباشرة في رأس مال شركة A</span><span class="en">Because the non-Saudi directly participates in Company A's capital</span>
+        </div>
+      </div>
+
+      <div class="ownershipLink">
+        <span class="pct">100%</span>
+        <span class="ar">شركة A تملك رأس مال شركة B مباشرة</span><span class="en">Company A directly owns Company B's capital</span>
+      </div>
+
+      <div class="companyNode companyB">
+        <div class="companyLetter">B</div>
+        <div class="companyInfo">
+          <strong class="ar">شركة العقار السعودية</strong><strong class="en">Saudi Property Company</strong>
+          <span class="ar">شركة مساهمة مبسطة مملوكة لشركة A</span><span class="en">Simplified Joint Stock Company owned by Company A</span>
+        </div>
+        <div class="legalState question">
+          <b class="ar">هنا نقطة الاختبار</b><b class="en">This is the legal test point</b>
+          <span class="ar">المساهم المباشر في رأس مال شركة B هو شركة A السعودية، وليس المستثمر الأجنبي</span><span class="en">Company B's direct shareholder is Saudi Company A, not the foreign investor</span>
+        </div>
+      </div>
+
+      <div class="ownershipLink assetLink">
+        <span class="ar">شركة B تشتري وتملك العقار مباشرة</span><span class="en">Company B directly acquires and owns the property</span>
+      </div>
+
+      <div class="propertyNode">
+        <div class="propertyIcon">⌂</div>
+        <div>
+          <strong class="ar">عقار استثماري خارج النطاق الجغرافي</strong><strong class="en">Investment property outside the geographic scope</strong>
+          <span class="ar">العقار مسجل باسم شركة B</span><span class="en">The property is registered in Company B's name</span>
+        </div>
+      </div>
+
+      <div class="uboTrace">
+        <div class="uboTraceLine"></div>
+        <div>
+          <b class="ar">المستفيد الحقيقي لا يختفي</b><b class="en">The beneficial owner does not disappear</b>
+          <span class="ar">المستثمر الأجنبي يبقى مستفيدا حقيقيا بصورة غير مباشرة. محل الدراسة هو: هل هذه الملكية غير المباشرة تكفي وحدها لإدخال شركة B في المادة 3 رغم أن مساهمها المباشر شركة سعودية؟</span>
+          <span class="en">The foreign investor remains an indirect beneficial owner. The issue is whether that indirect ownership alone brings Company B within Article 3 despite its direct shareholder being a Saudi company.</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+
 <section class="sec white">
   <div class="c">
     <div class="head">
       <span class="k ar">03 أين يظهر الفرق؟</span><span class="k en">03 Where the distinction matters</span>
-      <h2 class="ar">المسار المباشر مقابل المسار عبر شركة باء</h2><h2 class="en">Direct route vs. Company B route</h2>
+      <h2 class="ar">نفس المستثمر، لكن المساهم المباشر يختلف</h2><h2 class="en">Same investor, different direct shareholder</h2>
+      <p class="ar">المقارنة التالية توضح لماذا لا نبحث عن استثناء لشركة B، بل نبحث هل تدخل شركة B أصلا في وصف المادة 3.</p>
+      <p class="en">The comparison shows why the question is not whether Company B qualifies for an exception, but whether Company B falls within Article 3 at all.</p>
     </div>
-    <div class="compare">
-      <article class="path direct">
-        <div class="pathHead">
-          <span class="pill gold ar">المسار المباشر</span><span class="pill gold en">Direct route</span>
-          <h3 class="ar">الأجنبي ← ألف ← العقار</h3><h3 class="en">Foreign investor → A → Property</h3>
-          <p class="ar">غير السعودي يشارك مباشرة في رأس مال الشركة التي ستملك العقار.</p><p class="en">The non-Saudi directly participates in the capital of the property-owning company.</p>
+
+    <div class="routeCompare">
+      <article class="route directRoute">
+        <div class="routeTitle">
+          <span class="routeNo">1</span>
+          <div><b class="ar">التملك عبر شركة A مباشرة</b><b class="en">Ownership directly through Company A</b><small class="ar">الوضع النظامي الواضح</small><small class="en">Clear legal position</small></div>
         </div>
-        <div class="miniFlow"><span class="miniNode ar">مستثمر أجنبي</span><span class="miniNode en">Foreign investor</span><span class="miniArrow">→</span><span class="miniNode ar">ألف السعودية</span><span class="miniNode en">Saudi A</span><span class="miniArrow">→</span><span class="miniNode ar">عقار خارج النطاق</span><span class="miniNode en">Outside-scope property</span></div>
-        <div class="pathBody">
-          <ul class="ar"><li>ألف داخلة بوضوح في وصف المادة 3.</li><li>خارج النطاق: الغرض يجب أن يرتبط بالنشاط أو سكن العاملين.</li><li>موافقة وزارة الاستثمار مطلوبة وفق المادة 8 من اللائحة.</li></ul>
-          <ul class="en"><li>Company A clearly falls within Article 3.</li><li>Outside the scope, purpose must relate to business operations or employee housing.</li><li>Ministry of Investment approval is required under Article 8 of the regulations.</li></ul>
-          <div class="resultBox ar">الحكم النظامي هنا واضح نسبيا: القيود الخاصة بالمادة 3/2 تنطبق.</div><div class="resultBox en">The legal position is relatively clear here: Article 3(2) restrictions apply.</div>
+        <div class="routeDiagram">
+          <div class="routeActor foreignActor"><strong class="ar">المستثمر الأجنبي</strong><strong class="en">Foreign investor</strong></div>
+          <div class="routeConnector"><b>100%</b><span class="ar">مساهم مباشر</span><span class="en">Direct shareholder</span></div>
+          <div class="routeCompany"><div class="routeLetter">A</div><div><strong class="ar">شركة الاستثمار السعودية</strong><strong class="en">Saudi Investment Company</strong><small class="ar">هي نفسها مالك العقار</small><small class="en">Also owns the property</small></div></div>
+          <div class="routeConnector property"><span class="ar">تملك مباشر</span><span class="en">Direct ownership</span></div>
+          <div class="routeProperty"><strong class="ar">عقار خارج النطاق</strong><strong class="en">Outside-scope property</strong></div>
+        </div>
+        <div class="routeConclusion restricted">
+          <b class="ar">النتيجة</b><b class="en">Result</b>
+          <span class="ar">شركة A داخلة في المادة 3. خارج النطاق ينحصر التملك فيما يلزم النشاط أو سكن العاملين، مع موافقة وزارة الاستثمار وفقا للائحة.</span>
+          <span class="en">Company A falls within Article 3. Outside the scope, ownership is limited to business needs or employee housing, with Ministry of Investment approval under the regulations.</span>
         </div>
       </article>
-      <article class="path study">
-        <div class="pathHead">
-          <span class="pill ar">المسار محل الدراسة</span><span class="pill en">Route under study</span>
-          <h3 class="ar">الأجنبي ← ألف ← باء ← العقار</h3><h3 class="en">Foreign investor → A → B → Property</h3>
-          <p class="ar">المساهم المباشر في باء شركة ألف السعودية، وليس المستثمر الأجنبي.</p><p class="en">Company B's direct shareholder is Saudi Company A, not the foreign investor.</p>
+
+      <article class="route studyRoute">
+        <div class="routeTitle">
+          <span class="routeNo">2</span>
+          <div><b class="ar">التملك عبر شركة B</b><b class="en">Ownership through Company B</b><small class="ar">محل الدراسة</small><small class="en">Issue under study</small></div>
         </div>
-        <div class="miniFlow"><span class="miniNode ar">أجنبي</span><span class="miniNode en">Foreign</span><span class="miniArrow">→</span><span class="miniNode ar">ألف السعودية</span><span class="miniNode en">Saudi A</span><span class="miniArrow">→</span><span class="miniNode ar">باء السعودية</span><span class="miniNode en">Saudi B</span><span class="miniArrow">→</span><span class="miniNode ar">العقار</span><span class="miniNode en">Property</span></div>
-        <div class="pathBody">
-          <ul class="ar"><li>نظام الشركات يمنح ألف الجنسية السعودية.</li><li>النص يربط المادة 3 بمن «يشترك في ملكية رأس مال» الشركة.</li><li>مالك رأس مال باء المباشر هو ألف السعودية.</li></ul>
-          <ul class="en"><li>Companies Law grants Company A Saudi nationality.</li><li>Article 3 is tied to who “participates in the ownership of the company's capital”.</li><li>Company B's direct capital owner is Saudi Company A.</li></ul>
-          <div class="resultBox ar">هنا يولد السؤال: هل تنظر المادة 3 للمساهم المباشر فقط، أم تمتد للملكية غير المباشرة رغم عدم النص عليها؟</div><div class="resultBox en">This creates the key question: does Article 3 look only to the direct shareholder, or also to indirect ownership despite not saying so?</div>
+        <div class="routeDiagram">
+          <div class="routeActor foreignActor"><strong class="ar">المستثمر الأجنبي</strong><strong class="en">Foreign investor</strong></div>
+          <div class="routeConnector"><b>100%</b><span class="ar">يملك A</span><span class="en">Owns A</span></div>
+          <div class="routeCompany compact"><div class="routeLetter">A</div><div><strong class="ar">شركة الاستثمار السعودية</strong><strong class="en">Saudi Investment Company</strong></div></div>
+          <div class="routeConnector"><b>100%</b><span class="ar">المساهم المباشر في B</span><span class="en">Direct shareholder in B</span></div>
+          <div class="routeCompany focus"><div class="routeLetter">B</div><div><strong class="ar">شركة العقار السعودية</strong><strong class="en">Saudi Property Company</strong><small class="ar">مالك العقار</small><small class="en">Property owner</small></div></div>
+          <div class="routeConnector property"><span class="ar">تملك مباشر</span><span class="en">Direct ownership</span></div>
+          <div class="routeProperty"><strong class="ar">عقار خارج النطاق</strong><strong class="en">Outside-scope property</strong></div>
+        </div>
+        <div class="routeConclusion openQuestion">
+          <b class="ar">السؤال النظامي</b><b class="en">Legal question</b>
+          <span class="ar">هل تعتبر شركة B شركة يشارك غير السعودي في رأس مالها، مع أن المساهم المسجل والمباشر فيها هو شركة A السعودية الجنسية؟ النص المنشور لا يذكر الملكية غير المباشرة في هذا الموضع.</span>
+          <span class="en">Is Company B treated as having non-Saudi participation in its capital when its registered direct shareholder is Saudi-national Company A? The published provision does not expressly refer to indirect ownership here.</span>
         </div>
       </article>
     </div>
@@ -212,13 +274,13 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgb
   <div class="c">
     <div class="head">
       <span class="k ar">04 القراءة النظامية</span><span class="k en">04 Legal reading</span>
-      <h2 class="ar">قرائن تدعم استقلال شركة باء عن وصف المادة 3</h2><h2 class="en">Indicators supporting Company B's separation from Article 3 status</h2>
+      <h2 class="ar">قرائن تدعم استقلال شركة B عن وصف المادة 3</h2><h2 class="en">Indicators supporting Company B's separation from Article 3 status</h2>
       <p class="ar">هذه القرائن متراكمة؛ كل واحدة بمفردها لا تحسم المسألة، لكن اجتماعها يصنع أساسا تفسيريا جديا.</p>
       <p class="en">These indicators are cumulative. No single point alone resolves the issue, but together they form a serious interpretive basis.</p>
     </div>
     <div class="grid4">
-      <article class="card signal"><div class="num">01</div><b class="ar">جنسية الشركة</b><b class="en">Corporate nationality</b><p class="ar">المادة 3 من نظام الشركات تقرر أن الشركة المؤسسة وفق النظام سعودية الجنسية. لذلك ألف شخص اعتباري سعودي من حيث الجنسية النظامية.</p><p class="en">Article 3 of the Companies Law states that a company incorporated under the law is Saudi. Company A is therefore a Saudi legal person by statutory nationality.</p></article>
-      <article class="card signal"><div class="num">02</div><b class="ar">صياغة المادة 3</b><b class="en">Article 3 wording</b><p class="ar">نظام تملك غير السعوديين يصف الشركة التي «يشترك في ملكية رأس مالها» شخص لا يتمتع بالجنسية السعودية. في باء، المساهم المباشر هو ألف السعودية.</p><p class="en">The Real Estate Ownership Law refers to a company whose capital ownership includes a person without Saudi nationality. In B, the direct shareholder is Saudi Company A.</p></article>
+      <article class="card signal"><div class="num">01</div><b class="ar">جنسية الشركة</b><b class="en">Corporate nationality</b><p class="ar">المادة 3 من نظام الشركات تقرر أن الشركة المؤسسة وفق النظام سعودية الجنسية. لذلك A شخص اعتباري سعودي من حيث الجنسية النظامية.</p><p class="en">Article 3 of the Companies Law states that a company incorporated under the law is Saudi. Company A is therefore a Saudi legal person by statutory nationality.</p></article>
+      <article class="card signal"><div class="num">02</div><b class="ar">صياغة المادة 3</b><b class="en">Article 3 wording</b><p class="ar">نظام تملك غير السعوديين يصف الشركة التي «يشترك في ملكية رأس مالها» شخص لا يتمتع بالجنسية السعودية. في B، المساهم المباشر هو شركة A السعودية.</p><p class="en">The Real Estate Ownership Law refers to a company whose capital ownership includes a person without Saudi nationality. In B, the direct shareholder is Saudi Company A.</p></article>
       <article class="card signal"><div class="num">03</div><b class="ar">المنظم ذكر غير المباشر عندما أراده</b><b class="en">Indirect ownership is expressly used elsewhere</b><p class="ar">اللائحة تلزم الشركة غير السعودية بالإفصاح عن ملاكها المباشرين وغير المباشرين، وتستخدم عبارة «بشكل مباشر أو غير مباشر» في موضع آخر. غياب العبارة من المادة 3 قرينة تفسيرية مهمة.</p><p class="en">The regulations expressly require disclosure of direct and indirect owners for foreign companies and use “directly or indirectly” elsewhere. Its absence from Article 3 is a relevant interpretive indicator.</p></article>
       <article class="card signal"><div class="num">04</div><b class="ar">المستفيد الحقيقي مفهوم مستقل</b><b class="en">Beneficial ownership is a separate concept</b><p class="ar">قواعد المستفيد الحقيقي تتبع الملكية غير المباشرة إلى الشخص الطبيعي. هذا يثبت إمكان وجود مستفيد أجنبي مع بقاء المساهم المباشر شخصا اعتباريا سعوديا.</p><p class="en">Beneficial-owner rules trace indirect ownership to the natural person. This shows that a foreign UBO can coexist with a Saudi legal person as the direct shareholder.</p></article>
     </div>
@@ -237,7 +299,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgb
       <h2 class="ar">وعاء مناسب للفصل القانوني بين شركة الاستثمار وشركة العقار</h2><h2 class="en">A practical vehicle to separate the investment company from the property company</h2>
     </div>
     <div class="whySJSC">
-      <div class="why"><small class="ar">المادة 150</small><small class="en">Article 150</small><b class="ar">يمكن أن تكون من شخص واحد</b><b class="en">Single-shareholder structure</b><p class="ar">يمكن أن تملك ألف جميع أسهم باء، فتكون سلسلة الملكية واضحة بدون شركاء صوريين.</p><p class="en">Company A may own all shares in Company B, producing a clean chain without nominee shareholders.</p></div>
+      <div class="why"><small class="ar">المادة 150</small><small class="en">Article 150</small><b class="ar">يمكن أن تكون من شخص واحد</b><b class="en">Single-shareholder structure</b><p class="ar">يمكن أن تملك شركة A جميع أسهم شركة B، فتكون سلسلة الملكية واضحة بدون شركاء صوريين.</p><p class="en">Company A may own all shares in Company B, producing a clean chain without nominee shareholders.</p></div>
       <div class="why"><small class="ar">المادة 138</small><small class="en">Article 138</small><b class="ar">مرونة عالية في الهيكلة والإدارة</b><b class="en">High governance flexibility</b><p class="ar">يسمح النظام للمساهمين بتنظيم هيكلة الشركة وطريقة عملها في النظام الأساس.</p><p class="en">The law allows shareholders to structure the company and its governance through its bylaws.</p></div>
       <div class="why"><small class="ar">المادة 139</small><small class="en">Article 139</small><b class="ar">لا يسري حد رأس مال المساهمة التقليدية</b><b class="en">No traditional JSC minimum capital rule</b><p class="ar">تصلح لتأسيس شركة مشروع عقاري مستقلة برأس مال وهيكل يتناسبان مع الصفقة.</p><p class="en">This supports a ring-fenced property SPV with capital and governance tailored to the transaction.</p></div>
     </div>
@@ -251,13 +313,13 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgb
       <h2 class="ar">قوة النص لا تعني أن التطبيق الإداري محسوم</h2><h2 class="en">A strong textual case does not settle administrative application</h2>
     </div>
     <div class="statusGrid">
-      <div class="status ok"><i class="ar">نقطة قوة</i><i class="en">Strength</i><b class="ar">الملكية المباشرة واضحة</b><b class="en">Direct ownership is clear</b><span class="ar">سجل مساهمي باء يظهر ألف كشركة سعودية مالكة للأسهم.</span><span class="en">Company B's share register shows Saudi Company A as the shareholder.</span></div>
+      <div class="status ok"><i class="ar">نقطة قوة</i><i class="en">Strength</i><b class="ar">الملكية المباشرة واضحة</b><b class="en">Direct ownership is clear</b><span class="ar">سجل مساهمي شركة B يظهر شركة A السعودية بوصفها المساهم المباشر.</span><span class="en">Company B's share register shows Saudi Company A as the shareholder.</span></div>
       <div class="status mid"><i class="ar">سؤال تفسيري</i><i class="en">Interpretive issue</i><b class="ar">النظر إلى المالك النهائي</b><b class="en">Look-through to the UBO</b><span class="ar">قد تتبنى الجهة المختصة قراءة تجعل المشاركة غير المباشرة داخلة في المادة 3؛ لا يوجد في النص المنشور حتى الآن تعبير صريح يحسم ذلك.</span><span class="en">The competent authority may adopt a look-through interpretation. The published text does not expressly resolve that point.</span></div>
       <div class="status risk"><i class="ar">قاعدة تنفيذ</i><i class="en">Execution rule</i><b class="ar">الإفصاح الكامل</b><b class="en">Full disclosure</b><span class="ar">المستفيد الحقيقي وسلسلة الملكية يجب أن تبقيا ظاهرتين حيث يطلب النظام الإفصاح. قوة الهيكل هنا في تفسير النص، لا في إخفاء الملكية.</span><span class="en">The UBO and ownership chain should remain fully disclosed wherever required. The structure relies on legal interpretation, not concealment.</span></div>
     </div>
     <div class="quote" style="margin-top:16px">
       <span class="quoteMark ar">الخلاصة المبدئية</span><span class="quoteMark en">Preliminary conclusion</span>
-      <div class="ar">القراءة الحرفية تمنح أساسا معتبرا للقول إن <strong>شركة باء لا تدخل تلقائيا في وصف المادة 3</strong> لأن المساهم المباشر في رأس مالها شركة ألف السعودية الجنسية. النقطة التي تحتاج تثبيتا تطبيقيا هي ما إذا كانت الهيئة ستتجاوز المساهم المباشر إلى الملكية غير المباشرة لأغراض هذه المادة تحديدا.</div>
+      <div class="ar">القراءة الحرفية تمنح أساسا معتبرا للقول إن <strong>شركة B لا تدخل تلقائيا في وصف المادة 3</strong> لأن المساهم المباشر في رأس مالها هو شركة A السعودية الجنسية. النقطة التي تحتاج تثبيتا تطبيقيا هي ما إذا كانت الهيئة ستتجاوز المساهم المباشر إلى الملكية غير المباشرة لأغراض هذه المادة تحديدا.</div>
       <div class="en">A textual reading provides a substantial basis for arguing that <strong>Company B does not automatically fall within Article 3</strong> because its direct shareholder is Saudi-national Company A. The remaining application question is whether the authority will look through the direct shareholder to indirect ownership specifically for Article 3.</div>
     </div>
   </div>
@@ -270,16 +332,16 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid rgb
       <h2 class="ar">هيكلة نظيفة ثم تثبيت السؤال النظامي قبل الصفقة</h2><h2 class="en">Clean structuring, then resolve the legal question before the transaction</h2>
     </div>
     <div class="steps">
-      <div class="step"><i>01</i><b class="ar">تأسيس ألف</b><b class="en">Incorporate A</b><span class="ar">شركة سعودية مساهمة مبسطة بمسار استثماري نظامي وإفصاح كامل عن المالك.</span><span class="en">Saudi SJSC with a compliant investment route and full ownership disclosure.</span></div>
-      <div class="step"><i>02</i><b class="ar">تأسيس باء</b><b class="en">Incorporate B</b><span class="ar">شركة مساهمة مبسطة مملوكة 100% لألف، بغرض عقاري مناسب للصفقة.</span><span class="en">SJSC 100% owned by A, with real-estate objects aligned to the transaction.</span></div>
-      <div class="step"><i>03</i><b class="ar">استقلال فعلي</b><b class="en">Real separation</b><span class="ar">حسابات وقرارات وسجلات وقوائم مالية مستقلة لباء.</span><span class="en">Separate accounts, decisions, registers, and financial statements for B.</span></div>
+      <div class="step"><i>01</i><b class="ar">تأسيس شركة A</b><b class="en">Incorporate A</b><span class="ar">شركة سعودية مساهمة مبسطة بمسار استثماري نظامي وإفصاح كامل عن المالك.</span><span class="en">Saudi SJSC with a compliant investment route and full ownership disclosure.</span></div>
+      <div class="step"><i>02</i><b class="ar">تأسيس شركة B</b><b class="en">Incorporate B</b><span class="ar">شركة مساهمة مبسطة مملوكة 100% لشركة A، بغرض عقاري مناسب للصفقة.</span><span class="en">SJSC 100% owned by A, with real-estate objects aligned to the transaction.</span></div>
+      <div class="step"><i>03</i><b class="ar">استقلال فعلي</b><b class="en">Real separation</b><span class="ar">حسابات وقرارات وسجلات وقوائم مالية مستقلة لB.</span><span class="en">Separate accounts, decisions, registers, and financial statements for B.</span></div>
       <div class="step"><i>04</i><b class="ar">إفصاح المستفيد الحقيقي</b><b class="en">UBO disclosure</b><span class="ar">إظهار المالك النهائي حسب قواعد المستفيد الحقيقي وأي متطلبات للجهات المختصة.</span><span class="en">Disclose the ultimate owner under beneficial-owner rules and relevant authority requirements.</span></div>
       <div class="step"><i>05</i><b class="ar">إفادة مكتوبة</b><b class="en">Written clarification</b><span class="ar">توجيه سؤال محدد للهيئة أو الجهة المختصة قبل إتمام أول تملك خارج النطاق.</span><span class="en">Seek a targeted written clarification before the first outside-scope acquisition.</span></div>
     </div>
     <div class="questionDraft">
       <small class="ar">السؤال المقترح للجهة المختصة</small><small class="en">Suggested question to the competent authority</small>
       <h3 class="ar">سؤال واحد، بدون توصيف مسبق بأنه تحايل أو ثغرة</h3><h3 class="en">One precise question, without framing it as avoidance or a loophole</h3>
-      <div class="q ar">شركة سعودية غير مدرجة (باء) مؤسسة وفق نظام الشركات، مملوكة بالكامل لشركة سعودية أخرى (ألف)، فيما يملك شخص غير سعودي أسهم شركة ألف. هل تعد شركة باء من الشركات المشار إليها في المادة الثالثة من نظام تملك غير السعوديين للعقار لأغراض تملك عقار خارج النطاق الجغرافي؟</div>
+      <div class="q ar">شركة سعودية غير مدرجة (شركة B) مؤسسة وفق نظام الشركات، مملوكة بالكامل لشركة سعودية أخرى (شركة A)، فيما يملك شخص غير سعودي أسهم شركة A. هل تعد شركة B من الشركات المشار إليها في المادة الثالثة من نظام تملك غير السعوديين للعقار لأغراض تملك عقار خارج النطاق الجغرافي؟</div>
       <div class="q en">A non-listed Saudi company (Company B), incorporated under the Companies Law, is wholly owned by another Saudi company (Company A), while a non-Saudi person owns the shares of Company A. Is Company B considered a company referred to in Article 3 of the Non-Saudi Real Estate Ownership Law for purposes of acquiring real estate outside the designated geographic scope?</div>
     </div>
   </div>
