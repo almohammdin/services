@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="دراسة تفسيرية للملكية غير المباشرة للعقار في ضوء المادة 3 من نظام تملك غير السعوديين للعقار، من خلال هيكل شركة A وشركة B.">
+<meta name="description" content="دراسة تفسيرية لهيكل ملكية غير مباشرة عبر شركة A وشركة B لتملك عقار في مكة المكرمة أو المدينة المنورة خارج النطاق الجغرافي، في ضوء المادة 3 واللائحة التنفيذية.">
 <meta name="theme-color" content="#0D3656">
 <link rel="canonical" href="https://almohammdin.github.io/services/sjsc-real-estate/">
-<meta property="og:title" content="الملكية غير المباشرة للعقار في ضوء المادة 3">
-<meta property="og:description" content="دراسة تفسيرية لهيكل الملكية غير المباشرة عبر شركة A وشركة B في ضوء المادة 3.">
+<meta property="og:title" content="الملكية غير المباشرة للعقار في مكة والمدينة خارج النطاق">
+<meta property="og:description" content="دراسة المادة 3 وهيكل شركة A وشركة B لتملك عقار في مكة أو المدينة خارج النطاق الجغرافي.">
 <meta property="og:url" content="https://almohammdin.github.io/services/sjsc-real-estate/">
 <meta property="og:type" content="website">
-<title>الملكية غير المباشرة للعقار في ضوء المادة 3</title>
+<title>الملكية غير المباشرة للعقار في مكة والمدينة خارج النطاق</title>
 <link rel="icon" type="image/svg+xml" href="https://almohammdin.github.io/mudaraba-to-sjsc/assets/site-icon.svg">
 <link rel="apple-touch-icon" href="https://almohammdin.github.io/mudaraba-to-sjsc/assets/site-icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,6 +110,35 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
 .riskGrid{grid-template-columns:repeat(2,1fr)}.riskGrid .status:last-child{grid-column:1/-1}
 @media(max-width:760px){.riskGrid{grid-template-columns:1fr}.riskGrid .status:last-child{grid-column:auto}.scopeNoticeIn{align-items:flex-start}}
 
+
+/* Multi-shareholder scenario */
+.networkPath.saudiPath{stroke:#7A8C98;stroke-dasharray:5 10}
+.saudiLabel{border-color:#D6DEE3}.saudiLabel b{color:#526875}
+.saudiNode{left:44%;top:80%}.saudiOrb{background:#F1F4F6!important;border-color:#CBD6DC!important}
+.saudiOrb svg{stroke:#526875!important}
+.multiStage .investorNode{left:10%;top:42%}.multiStage .companyANode{left:32%;top:25%}.multiStage .companyBNode{left:65%;top:43%}.multiStage .propertyMapNode{left:90%;top:43%}
+.controlSwitch{width:100%;margin-top:18px;display:flex;align-items:center;gap:12px;text-align:start;border:1px solid #D8DDE0;background:#F8FAFB;border-radius:16px;padding:13px 14px;font-family:inherit;cursor:pointer}
+.controlSwitch .switchTrack{width:48px;height:27px;border-radius:999px;background:#D8DEE2;position:relative;flex:0 0 auto;transition:background 180ms ease}
+.controlSwitch .switchTrack i{position:absolute;width:21px;height:21px;border-radius:50%;background:#fff;top:3px;right:3px;box-shadow:0 2px 7px rgba(13,54,86,.18);transition:transform 180ms var(--ease)}
+body.en-mode .controlSwitch .switchTrack i{right:auto;left:3px}
+.controlSwitch[aria-pressed="true"]{border-color:#D8B98F;background:#FFF8EF}
+.controlSwitch[aria-pressed="true"] .switchTrack{background:var(--g)}
+.controlSwitch[aria-pressed="true"] .switchTrack i{transform:translateX(-21px)}
+body.en-mode .controlSwitch[aria-pressed="true"] .switchTrack i{transform:translateX(21px)}
+.controlSwitch b,.controlSwitch small{display:block}.controlSwitch b{font-size:13px;color:var(--n)}.controlSwitch small{font-size:11px;color:var(--muted);margin-top:2px}
+.routeTabs{grid-template-columns:repeat(3,1fr)}
+.routeCanvas[data-route="minority"],.routeCanvas[data-route="control"]{grid-template-columns:repeat(4,1fr)}
+.routeCanvas[data-route="control"] .aCircle>span,.routeCanvas[data-route="control"] .bCircle>span{box-shadow:0 0 0 8px rgba(201,133,60,.12),0 12px 30px rgba(13,54,86,.12);border-color:var(--g)}
+@media(max-width:980px){.multiStage{min-height:680px}.multiStage .investorNode{left:22%;top:16%}.multiStage .companyANode{left:74%;top:24%}.multiStage .saudiNode{left:22%;top:62%}.multiStage .companyBNode{left:72%;top:58%}.multiStage .propertyMapNode{left:48%;top:88%}}
+@media(max-width:680px){.routeTabs{display:grid;grid-template-columns:1fr}.multiStage{min-height:760px}.multiStage .investorNode{left:25%;top:13%}.multiStage .companyANode{left:72%;top:29%}.multiStage .saudiNode{left:24%;top:58%}.multiStage .companyBNode{left:73%;top:62%}.multiStage .propertyMapNode{left:50%;top:88%}}
+
+
+.routeCanvas[data-route="direct"]{grid-template-columns:repeat(3,1fr)}
+.routeCanvas[data-route="direct"] .aCircle{display:none}
+.routeCanvas[data-route="direct"] .bCircle{display:block}
+.routeCanvas[data-route="minority"] .aCircle,.routeCanvas[data-route="minority"] .bCircle,
+.routeCanvas[data-route="control"] .aCircle,.routeCanvas[data-route="control"] .bCircle{display:block}
+
 </style>
 </head>
 <body class="ar-mode">
@@ -119,7 +148,7 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
       <img src="https://almohammdin.github.io/mudaraba-to-sjsc/assets/site-icon.svg" alt="">
       <span class="brandText">
         <small class="ar">دراسة هيكلية</small><small class="en">Structuring study</small>
-        <b class="ar">الملكية غير المباشرة للعقار</b><b class="en">Indirect real estate ownership</b>
+        <b class="ar">تملك العقار في مكة والمدينة</b><b class="en">Makkah & Madinah real estate ownership</b>
       </span>
     </a>
     <div class="navRight">
@@ -140,17 +169,17 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
     <div>
       <span class="ey ar">المادة 3 والملكية غير المباشرة</span>
       <span class="ey en">Article 3 and Indirect Ownership</span>
-      <h1 class="ar">الملكية غير المباشرة للعقار في ضوء المادة 3</h1>
-      <h1 class="en">Indirect Real Estate Ownership under Article 3</h1>
-      <p class="heroSub ar">دراسة هيكل شركة A وشركة B</p>
-      <p class="heroSub en">A Study of the Company A / Company B Structure</p>
+      <h1 class="ar">الملكية غير المباشرة للعقار في مكة والمدينة خارج النطاق</h1>
+      <h1 class="en">Indirect Real Estate Ownership in Makkah and Madinah Outside the Geographic Scope</h1>
+      <p class="heroSub ar">دراسة المادة 3 وهيكل شركة A وشركة B</p>
+      <p class="heroSub en">Article 3 Study of the Company A / Company B Structure</p>
       
       
 </div>
     <aside class="questionCard">
       <small class="ar">السؤال المركزي</small><small class="en">Core question</small>
-      <h2 class="ar">هل تدخل شركة B في قيود المادة 3 إذا كان مساهمها المباشر شركة سعودية الجنسية، بينما مالك الشركة السعودية النهائي غير سعودي؟</h2>
-      <h2 class="en">Does Company B fall within Article 3 restrictions when its direct shareholder is a Saudi company, while the ultimate owner of that Saudi company is non-Saudi?</h2>
+      <h2 class="ar">هل تعتبر شركة B من شركات المادة 3 عندما يكون جميع مساهميها المباشرين سعوديين، ومن بينهم شركة A المملوكة لمستثمر أجنبي، وما أثر نسبة ملكية A أو سيطرتها على B؟</h2>
+      <h2 class="en">Is Company B an Article 3 company when all of its direct shareholders are Saudi, including Company A owned by a foreign investor, and what is the effect of A’s ownership percentage or control over B?</h2>
       
       
 </aside>
@@ -161,9 +190,9 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
   <div class="c scopeNoticeIn">
     <div class="scopeNoticeIcon">i</div>
     <div>
-      <b class="ar">نطاق الدراسة</b><b class="en">Study scope</b>
-      <span class="ar">تحليل تفسيري يسبق أي تنفيذ، ويختص بالعقارات خارج النطاق الجغرافي مع استبعاد مدينتي مكة المكرمة والمدينة المنورة من هذا المسار.</span>
-      <span class="en">An interpretive analysis intended to precede implementation, focused on property outside the geographic scope and excluding the cities of Makkah and Madinah from this route.</span>
+      <b class="ar">محور الدراسة</b><b class="en">Study focus</b>
+      <span class="ar">عقار داخل مكة المكرمة أو المدينة المنورة وخارج النطاق الجغرافي المسموح. المادة 8 تستثني شركة المادة 3 من هذا المسار، ولذلك يسبق السؤال كل شيء: هل شركة B تدخل أصلا في وصف المادة 3؟</span>
+      <span class="en">Property located in Makkah or Madinah but outside the permitted geographic scope. Article 8 excludes an Article 3 company from this route, so the threshold question is whether Company B falls within Article 3 at all.</span>
     </div>
   </div>
 </div>
@@ -173,97 +202,97 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
   <div class="c">
     <div class="head">
       <span class="k ar">01 تحديد المسألة</span><span class="k en">01 Defining the issue</span>
-      <h2 class="ar">المادة 3 تعالج الشركة السعودية ذات المشاركة الأجنبية المباشرة</h2>
-      <h2 class="en">Article 3 addresses a Saudi company with non-Saudi participation in its capital</h2>
-      <p class="ar">داخل النطاق الجغرافي توجد صلاحية تملك مقررة بالنظام. خارج النطاق، يتجه الحكم للشركة المشار إليها في المادة 3 إلى العقار اللازم للنشاط أو سكن العاملين وفق اللائحة. وتبقى مكة المكرمة والمدينة المنورة خارج نطاق هذه الدراسة.</p>
-      <p class="en">Within the designated scope, the law grants an ownership route. Outside that scope, the Article 3 company is directed to property required for its activities or employee housing under the regulations. Makkah and Madinah remain outside the scope of this study.</p>
+      <h2 class="ar">شركة A حكمها واضح، والسؤال الحقيقي يبدأ عند شركة B</h2>
+      <h2 class="en">Company A is the clear case; the real question begins with Company B</h2>
+      <p class="ar">شركة A يشارك غير السعودي مباشرة في رأس مالها، ولذلك تدخل في المادة 3. وعند التملك خارج النطاق في مكة أو المدينة، تأتي المادة 8 من اللائحة وتستثني هذا المسار. الدراسة تبحث ما إذا كانت شركة B، التي يملك أسهمها مباشرة مساهمون سعوديون ومن بينهم شركة A، تحمل الحكم نفسه.</p>
+      <p class="en">Company A has direct non-Saudi participation in its capital and therefore falls within Article 3. For ownership outside the geographic scope in Makkah or Madinah, Article 8 of the regulations excludes that route. The study asks whether Company B, directly owned by Saudi shareholders including Company A, carries the same treatment.</p>
     </div>
     <div class="grid2">
       <article class="card scopeLead">
-<h3 class="ar">خارج النطاق، يقتصر تملك شركة A على العقار اللازم لممارسة النشاط أو سكن العاملين وفق الضوابط النظامية.</h3>
-        <h3 class="en">Outside the geographic scope, Company A ownership is limited to property required for its business activities or employee housing under the applicable rules.</h3>
-        <p class="ar">إذا كان غير السعودي يشارك مباشرة في رأس مال A، فإن المادة 3/2 والمادة 8 من اللائحة تربطان التملك خارج النطاق باحتياج النشاط أو سكن العاملين، مع موافقة وزارة الاستثمار مسبقا.</p>
-        <p class="en">If a non-Saudi directly participates in Company A's capital, Article 3(2) and Article 8 of the regulations tie outside-scope ownership to business needs or employee housing, with prior Ministry of Investment approval.</p>
+        <h3 class="ar">شركة A داخل المادة 3، والمادة 8 تقفل عليها التملك خارج النطاق في مكة والمدينة.</h3>
+        <h3 class="en">Company A falls within Article 3, and Article 8 closes the outside-scope route for it in Makkah and Madinah.</h3>
+        <p class="ar">لهذا يكون إنشاء طبقة شركة B ذا معنى فقط إذا كانت B تعامل بحسب مساهميها المباشرين السعوديين ولا يمتد إليها وصف المادة 3 بالملكية غير المباشرة.</p>
+        <p class="en">This is why the Company B layer matters only if B is characterized by its Saudi direct shareholders and Article 3 is not extended through indirect ownership.</p>
       </article>
       <div class="facts">
-        <div class="fact"><i>01</i><div><b class="ar">داخل النطاق</b><b class="en">Inside the scope</b><span class="ar">المادة 3/1 تمنح الشركة السعودية ذات المشاركة الأجنبية طريقا للتملك داخل النطاق.</span><span class="en">Article 3(1) provides an ownership route for the Saudi company with non-Saudi capital participation.</span></div></div>
-        <div class="fact"><i>02</i><div><b class="ar">خارج النطاق</b><b class="en">Outside the scope</b><span class="ar">المادة 3/2 تقصر المسار على ما يلزم لمزاولة النشاط أو سكن العاملين.</span><span class="en">Article 3(2) limits the route to business needs or employee housing.</span></div></div>
-        <div class="fact"><i>03</i><div><b class="ar">الموافقة</b><b class="en">Approval</b><span class="ar">المادة 8 من اللائحة تشترط موافقة وزارة الاستثمار مسبقا خارج النطاق.</span><span class="en">Article 8 of the regulations requires prior Ministry of Investment approval outside the scope.</span></div></div>
-        <div class="fact"><i>04</i><div><b class="ar">نقطة البحث</b><b class="en">Research point</b><span class="ar">هل شركة B تعتبر أصلا من «الشركة المشار إليها» في المادة 3 إذا كان مساهمها المباشر شركة A السعودية؟</span><span class="en">Is Company B an Article 3 company at all when its direct shareholder is Saudi Company A?</span></div></div>
+        <div class="fact"><i>A</i><div><b class="ar">شركة A</b><b class="en">Company A</b><span class="ar">مشاركة أجنبية مباشرة في رأس المال، فتدخل في المادة 3.</span><span class="en">Direct foreign participation in capital brings A within Article 3.</span></div></div>
+        <div class="fact"><i>8</i><div><b class="ar">مكة والمدينة خارج النطاق</b><b class="en">Makkah and Madinah outside scope</b><span class="ar">المادة 8 من اللائحة تستثني هذا المسار للشركة المشار إليها في المادة 3.</span><span class="en">Article 8 excludes this route for the company referred to in Article 3.</span></div></div>
+        <div class="fact"><i>B</i><div><b class="ar">شركة B</b><b class="en">Company B</b><span class="ar">مساهموها المباشرون سعوديون، ومن بينهم شركة A السعودية الجنسية.</span><span class="en">Its direct shareholders are Saudi, including Saudi-national Company A.</span></div></div>
+        <div class="fact"><i>?</i><div><b class="ar">نقطة الحسم</b><b class="en">Decision point</b><span class="ar">هل تمتد المادة 3 إلى الملكية أو السيطرة غير المباشرة رغم صياغة النص حول ملكية رأس المال؟</span><span class="en">Does Article 3 extend to indirect ownership or control despite its wording around capital ownership?</span></div></div>
       </div>
     </div>
   </div>
 </section>
 
 
-
 <section class="sec soft" id="example">
   <div class="c">
     <div class="head">
       <span class="k ar">02 هيكل الملكية التفاعلي</span><span class="k en">02 Interactive ownership structure</span>
-      <h2 class="ar">غيّر النسب وشاهد كيف تتغير الملكية والنتيجة النظامية</h2>
-      <h2 class="en">Change the percentages and watch the ownership and legal indicators update</h2>
-      <p class="ar">اضغط على أي طرف في الرسم لمعرفة صفته. المحاكي يفصل بين المساهم المباشر، والملكية غير المباشرة، والمستفيد الحقيقي.</p>
-      <p class="en">Select any party in the diagram to see its role. The simulator separates direct shareholding, indirect ownership, and beneficial ownership.</p>
+      <h2 class="ar">شركة B متعددة المساهمين، والسيطرة متغير مستقل</h2>
+      <h2 class="en">Company B has multiple shareholders, with control treated as a separate variable</h2>
+      <p class="ar">المثال الافتراضي يبدأ بملكية المستثمر الأجنبي 100% من شركة A، وملكية شركة A نسبة 40% من شركة B، بينما يملك مساهمون سعوديون آخرون 60% من شركة B.</p>
+      <p class="en">The example starts with the foreign investor owning 100% of Company A, Company A owning 40% of Company B, and other Saudi shareholders owning the remaining 60% of Company B.</p>
     </div>
 
     <div class="interactiveShell">
-      <div class="networkStage" id="networkStage" aria-label="خريطة الملكية التفاعلية">
+      <div class="networkStage multiStage" id="networkStage" aria-label="خريطة الملكية التفاعلية">
         <svg class="networkLines" id="networkLines" aria-hidden="true">
           <path id="edgeInvestorA" class="networkPath activePath"></path>
           <path id="edgeAB" class="networkPath activePath"></path>
+          <path id="edgeSaudiB" class="networkPath saudiPath"></path>
           <path id="edgeBProperty" class="networkPath propertyPath"></path>
         </svg>
 
         <div class="edgeLabel" id="labelInvestorA"><b id="edgePctA">100%</b><span class="ar">ملكية مباشرة</span><span class="en">Direct ownership</span></div>
-        <div class="edgeLabel" id="labelAB"><b id="edgePctB">100%</b><span class="ar">ملكية مباشرة</span><span class="en">Direct ownership</span></div>
+        <div class="edgeLabel" id="labelAB"><b id="edgePctB">40%</b><span class="ar">مساهمة A في B</span><span class="en">A ownership in B</span></div>
+        <div class="edgeLabel saudiLabel" id="labelSaudiB"><b id="edgePctSaudi">60%</b><span class="ar">مساهمون سعوديون آخرون</span><span class="en">Other Saudi shareholders</span></div>
         <div class="edgeLabel asset" id="labelBProperty"><span class="ar">المالك المسجل</span><span class="en">Registered owner</span></div>
 
         <button class="networkNode investorNode isSelected" id="nodeInvestor" type="button" data-node="investor">
-          <span class="nodeOrb">
-            <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="20" r="10"></circle><path d="M14 52c2-13 10-19 18-19s16 6 18 19"></path></svg>
-          </span>
+          <span class="nodeOrb"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="20" r="10"></circle><path d="M14 52c2-13 10-19 18-19s16 6 18 19"></path></svg></span>
           <b class="ar">المستثمر الأجنبي</b><b class="en">Foreign investor</b>
-          <small class="ar">المستفيد النهائي</small><small class="en">Ultimate owner</small>
+          <small class="ar">مالك شركة A</small><small class="en">Owner of Company A</small>
         </button>
 
         <button class="networkNode companyANode" id="nodeA" type="button" data-node="a">
           <span class="nodeOrb letterOrb">A</span>
           <b class="ar">شركة الاستثمار السعودية</b><b class="en">Saudi Investment Company</b>
-          <small class="ar">شركة مساهمة مبسطة</small><small class="en">Simplified Joint Stock Company</small>
+          <small class="ar">مساهم في شركة B</small><small class="en">Shareholder in Company B</small>
+        </button>
+
+        <button class="networkNode saudiNode" id="nodeSaudi" type="button" data-node="saudi">
+          <span class="nodeOrb saudiOrb"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="23" cy="22" r="8"></circle><circle cx="43" cy="22" r="8"></circle><path d="M9 49c2-11 8-16 14-16s12 5 14 16M29 49c2-11 8-16 14-16s12 5 14 16"></path></svg></span>
+          <b class="ar">مساهمون سعوديون آخرون</b><b class="en">Other Saudi shareholders</b>
+          <small class="ar">النسبة المتبقية في B</small><small class="en">Remaining ownership in B</small>
         </button>
 
         <button class="networkNode companyBNode" id="nodeB" type="button" data-node="b">
           <span class="nodeOrb letterOrb">B</span>
           <b class="ar">شركة العقار السعودية</b><b class="en">Saudi Property Company</b>
-          <small class="ar">مالك العقار</small><small class="en">Property owner</small>
+          <small class="ar">متعددة المساهمين</small><small class="en">Multiple shareholders</small>
         </button>
 
         <button class="networkNode propertyMapNode" id="nodeProperty" type="button" data-node="property">
-          <span class="nodeOrb propertyOrb">
-            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 52V24l20-12 20 12v28"></path><path d="M22 52V34h20v18M27 26h10"></path></svg>
-          </span>
-          <b class="ar">العقار خارج النطاق</b><b class="en">Outside-scope property</b>
-          <small class="ar">مسجل باسم شركة B</small><small class="en">Registered to Company B</small>
+          <span class="nodeOrb propertyOrb"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 52V24l20-12 20 12v28"></path><path d="M22 52V34h20v18M27 26h10"></path></svg></span>
+          <b class="ar">عقار في مكة أو المدينة</b><b class="en">Property in Makkah or Madinah</b>
+          <small class="ar">خارج النطاق الجغرافي</small><small class="en">Outside the geographic scope</small>
         </button>
       </div>
 
       <div class="networkDetail" id="networkDetail">
         <div class="detailEyebrow ar">المستثمر الأجنبي</div><div class="detailEyebrow en">Foreign investor</div>
-        <h3 class="ar">المستفيد الحقيقي النهائي في المثال</h3><h3 class="en">Ultimate beneficial owner in the example</h3>
-        <p class="ar">يملك بصورة مباشرة نسبة من شركة A، وتنتقل مصلحته الاقتصادية إلى شركة B بصورة غير مباشرة بحسب نسبة ملكية A فيها.</p>
-        <p class="en">Directly owns a percentage of Company A, creating an indirect economic interest in Company B according to A's ownership percentage in B.</p>
+        <h3 class="ar">ملكية مباشرة في A وملكية غير مباشرة في B</h3><h3 class="en">Direct ownership in A and indirect ownership in B</h3>
+        <p class="ar">عند ملكية 100% من A وملكية A نسبة 40% من B، تصبح الملكية الأجنبية غير المباشرة في B مساوية 40%.</p>
+        <p class="en">With 100% ownership of A and A owning 40% of B, the foreign investor’s indirect ownership in B equals 40%.</p>
       </div>
     </div>
 
     <div class="simulator">
       <div class="simControls">
         <div class="simHead">
-          <div>
-            <span class="ar">محاكي الملكية</span><span class="en">Ownership simulator</span>
-            <h3 class="ar">حرّك النسب</h3><h3 class="en">Adjust the percentages</h3>
-          </div>
-          <button class="resetSim" id="resetSim" type="button"><span class="ar">إعادة 100%</span><span class="en">Reset to 100%</span></button>
+          <div><span class="ar">محاكي الملكية والسيطرة</span><span class="en">Ownership and control simulator</span><h3 class="ar">غيّر الفرضيات</h3><h3 class="en">Adjust the assumptions</h3></div>
+          <button class="resetSim" id="resetSim" type="button"><span class="ar">إعادة المثال</span><span class="en">Reset example</span></button>
         </div>
 
         <label class="rangeField">
@@ -273,37 +302,34 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
         </label>
 
         <label class="rangeField">
-          <span class="rangeTitle"><b class="ar">ملكية شركة A في شركة B</b><b class="en">Company A ownership in Company B</b><output id="aInBOut">100%</output></span>
-          <input id="aInB" type="range" min="1" max="100" step="1" value="100">
+          <span class="rangeTitle"><b class="ar">ملكية شركة A في شركة B</b><b class="en">Company A ownership in Company B</b><output id="aInBOut">40%</output></span>
+          <input id="aInB" type="range" min="1" max="100" step="1" value="40">
           <span class="rangeScale"><i>1%</i><i>25%</i><i>50%</i><i>75%</i><i>100%</i></span>
         </label>
 
-        <p class="simAssumption ar">يفترض المحاكي أن النسبة المتبقية في A وB مملوكة لمساهمين سعوديين، وأن تحليل السيطرة يقتصر على نسب الملكية المعروضة في المثال.</p>
-        <p class="simAssumption en">The simulator assumes any remaining shares in A and B are held by Saudi shareholders, with control analysis limited to the ownership percentages shown in the example.</p>
+        <button class="controlSwitch" id="controlToggle" type="button" aria-pressed="false">
+          <span class="switchTrack"><i></i></span>
+          <span><b class="ar">هل تسيطر شركة A على شركة B؟</b><b class="en">Does Company A control Company B?</b><small id="controlLabelAr" class="ar">سلطات مساهم عادية</small><small id="controlLabelEn" class="en">Ordinary shareholder rights</small></span>
+        </button>
+
+        <p class="simAssumption ar">النسبة المتبقية في شركة B تعامل في هذا المثال كملكية سعودية مباشرة. اختبار السيطرة منفصل عن نسبة الملكية ويستخدم لقياس مخاطر التفسير والإفصاح.</p>
+        <p class="simAssumption en">The remaining ownership in Company B is treated as directly Saudi-owned in this example. Control is analyzed separately from ownership percentage for interpretation and disclosure risk.</p>
       </div>
 
       <div class="liveResults" aria-live="polite">
         <div class="resultHero">
           <small class="ar">الملكية الأجنبية غير المباشرة في شركة B</small><small class="en">Indirect foreign ownership in Company B</small>
-          <strong id="indirectPct">100%</strong>
-          <div class="ownershipMeter"><span id="ownershipMeterFill"></span><i class="thresholdMark" title="25%"></i></div>
-          <span class="thresholdCaption ar">علامة 25% تخص قواعد المستفيد الحقيقي فقط. المادة 3 من نظام التملك تستخدم اختبارا مستقلا يقوم على وجود مشاركة غير سعودية في رأس المال بأي نسبة.</span>
-          <span class="thresholdCaption en">The 25% marker belongs only to the beneficial-owner rules. Article 3 applies a separate test based on the presence of non-Saudi participation in capital at any percentage.</span>
+          <strong id="indirectPct">40%</strong>
+          <div class="ownershipMeter"><span id="ownershipMeterFill" style="width:40%"></span><i class="thresholdMark" title="25%"></i></div>
+          <span class="thresholdCaption ar">25% معيار مستقل لقواعد المستفيد الحقيقي. المادة 3 تستخدم اختبار وجود مشاركة غير سعودية في رأس المال.</span>
+          <span class="thresholdCaption en">25% is a separate beneficial-owner threshold. Article 3 uses the presence of non-Saudi participation in capital as its test.</span>
         </div>
 
         <div class="resultRows">
-          <div class="liveRow" id="uboResult">
-            <span class="liveIcon">UBO</span>
-            <div><b class="ar">المستفيد الحقيقي</b><b class="en">Beneficial owner</b><p id="uboTextAr" class="ar"></p><p id="uboTextEn" class="en"></p></div>
-          </div>
-          <div class="liveRow" id="articleAResult">
-            <span class="liveIcon">A</span>
-            <div><b class="ar">اختبار المادة 3 مستقل عن 25%</b><b class="en">Article 3 test is separate from 25%</b><p id="articleATextAr" class="ar"></p><p id="articleATextEn" class="en"></p></div>
-          </div>
-          <div class="liveRow study" id="articleBResult">
-            <span class="liveIcon">B</span>
-            <div><b class="ar">شركة B والمادة 3</b><b class="en">Company B and Article 3</b><p class="ar">المساهم المباشر في B هو شركة A السعودية. امتداد المادة 3 إلى الملكية غير المباشرة هو نقطة الدراسة والتفسير.</p><p class="en">B's direct shareholder is Saudi Company A. Whether Article 3 extends to indirect ownership is the interpretive issue under study.</p></div>
-          </div>
+          <div class="liveRow alert" id="uboResult"><span class="liveIcon">UBO</span><div><b class="ar">اختبار المستفيد الحقيقي</b><b class="en">Beneficial-owner test</b><p id="uboTextAr" class="ar"></p><p id="uboTextEn" class="en"></p></div></div>
+          <div class="liveRow alert" id="articleAResult"><span class="liveIcon">A</span><div><b class="ar">اختبار المادة 3 لشركة A</b><b class="en">Article 3 test for Company A</b><p id="articleATextAr" class="ar"></p><p id="articleATextEn" class="en"></p></div></div>
+          <div class="liveRow study" id="articleBResult"><span class="liveIcon">B</span><div><b class="ar">اختبار المادة 3 لشركة B</b><b class="en">Article 3 test for Company B</b><p id="articleBTextAr" class="ar"></p><p id="articleBTextEn" class="en"></p></div></div>
+          <div class="liveRow" id="controlResult"><span class="liveIcon">C</span><div><b class="ar">أثر السيطرة</b><b class="en">Effect of control</b><p id="controlTextAr" class="ar"></p><p id="controlTextEn" class="en"></p></div></div>
         </div>
       </div>
     </div>
@@ -313,38 +339,38 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
 <section class="sec white" id="route-compare">
   <div class="c">
     <div class="head">
-      <span class="k ar">03 مقارنة المسارين</span><span class="k en">03 Route comparison</span>
-      <h2 class="ar">بدّل بين المسارين وشاهد أين يتغير الحكم</h2><h2 class="en">Switch routes and see where the legal position changes</h2>
-      <p class="ar">نفس المستثمر ونفس العقار. الاختلاف في الشركة التي تملك العقار وفي هوية مساهمها المباشر.</p>
-      <p class="en">Same investor and same property. The difference is the property-owning company and the identity of its direct shareholder.</p>
+      <span class="k ar">03 مقارنة السيناريوهات</span><span class="k en">03 Scenario comparison</span>
+      <h2 class="ar">ثلاث حالات تكشف أثر الملكية والسيطرة</h2><h2 class="en">Three cases isolate the effect of ownership and control</h2>
     </div>
 
     <div class="routeSwitcher">
       <div class="routeTabs" role="tablist">
-        <button class="routeTab active" id="routeDirectBtn" type="button" data-route="direct"><span class="ar">عبر شركة A مباشرة</span><span class="en">Directly through Company A</span></button>
-        <button class="routeTab" id="routeBBtn" type="button" data-route="structured"><span class="ar">عبر شركة B</span><span class="en">Through Company B</span></button>
+        <button class="routeTab active" type="button" data-route="direct"><span class="ar">أجنبي مساهم مباشرة في B</span><span class="en">Foreign direct shareholder in B</span></button>
+        <button class="routeTab" type="button" data-route="minority"><span class="ar">A مساهم أقلية في B</span><span class="en">A as minority shareholder in B</span></button>
+        <button class="routeTab" type="button" data-route="control"><span class="ar">A تسيطر على B</span><span class="en">A controls B</span></button>
       </div>
 
       <div class="routeCanvas" id="routeCanvas" data-route="direct">
         <div class="routeRail"></div>
         <div class="routeCircle investorCircle"><span>1</span><b class="ar">المستثمر الأجنبي</b><b class="en">Foreign investor</b></div>
-        <div class="routeCircle aCircle"><span>A</span><b class="ar">شركة الاستثمار</b><b class="en">Investment Co.</b></div>
-        <div class="routeCircle bCircle"><span>B</span><b class="ar">شركة العقار</b><b class="en">Property Co.</b></div>
-        <div class="routeCircle propertyCircle"><span>⌂</span><b class="ar">العقار</b><b class="en">Property</b></div>
+        <div class="routeCircle aCircle"><span>A</span><b class="ar">شركة A</b><b class="en">Company A</b></div>
+        <div class="routeCircle bCircle"><span>B</span><b class="ar">شركة B</b><b class="en">Company B</b></div>
+        <div class="routeCircle propertyCircle"><span>⌂</span><b class="ar">عقار مكة أو المدينة</b><b class="en">Makkah or Madinah property</b></div>
       </div>
 
       <div class="routeExplanation">
         <div class="routeRule" id="routeRule">
-          <span class="ruleState restricted" id="routeState"><span class="ar">المادة 3 تنطبق على مالك العقار</span><span class="en">Article 3 applies to the property owner</span></span>
-          <h3 id="routeTitleAr" class="ar">شركة A هي المساهم فيها الأجنبي مباشرة وهي نفسها مالك العقار</h3>
-          <h3 id="routeTitleEn" class="en">Company A has the direct foreign shareholder and is itself the property owner</h3>
-          <p id="routeTextAr" class="ar">خارج النطاق، تخضع شركة A للمادة 3/2 والمادة 8 من اللائحة: التملك لما يلزم النشاط أو سكن العاملين، مع موافقة وزارة الاستثمار مسبقا.</p>
-          <p id="routeTextEn" class="en">Outside the scope, Company A is subject to Article 3(2) and Article 8 of the regulations: ownership for business needs or employee housing, with prior Ministry of Investment approval.</p>
+          <span class="ruleState restricted" id="routeState"><span class="ar">المادة 3 تنطبق بوضوح</span><span class="en">Article 3 clearly applies</span></span>
+          <h3 id="routeTitleAr" class="ar">غير السعودي مساهم مباشر في الشركة المالكة للعقار</h3>
+          <h3 id="routeTitleEn" class="en">The non-Saudi is a direct shareholder in the property-owning company</h3>
+          <p id="routeTextAr" class="ar">هذه الحالة تقع مباشرة في صياغة المادة 3، ويظهر أثر المادة 8 عند محاولة التملك خارج النطاق في مكة أو المدينة.</p>
+          <p id="routeTextEn" class="en">This case falls directly within Article 3, with Article 8 becoming relevant for outside-scope ownership in Makkah or Madinah.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 <section class="sec soft" id="analysis">
   <div class="c">
     <div class="head">
@@ -400,7 +426,7 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
 
       <div class="status risk"><i class="ar">الإفصاح والعقوبات</i><i class="en">Disclosure and penalties</i><b class="ar">المعلومات الصحيحة عنصر جوهري</b><b class="en">Accurate information is critical</b><span class="ar">المادة 12 تقرر عند تقديم معلومات غير صحيحة أو مضللة عمدا غرامة تصل إلى 5% من قيمة الحق وبحد أقصى SAR 10,000,000، مع بيع الحق العيني واختصاص النيابة العامة بالتحقيق والادعاء.</span><span class="en">Article 12 provides, for intentionally false or misleading information, a fine up to 5% of the right's value capped at SAR 10,000,000, sale of the real right, and Public Prosecution jurisdiction for investigation and prosecution.</span></div>
 
-      <div class="status risk"><i class="ar">النطاق المكاني</i><i class="en">Geographic scope</i><b class="ar">مكة والمدينة خارج هذه الدراسة</b><b class="en">Makkah and Madinah are outside this study</b><span class="ar">المادة 2/4 واللائحة تضعان أحكاما خاصة لمدينتي مكة المكرمة والمدينة المنورة، لذلك يقتصر هذا التحليل على العقارات الأخرى خارج النطاق الجغرافي.</span><span class="en">Article 2(4) and the regulations establish special rules for Makkah and Madinah, so this analysis is confined to other property outside the geographic scope.</span></div>
+      <div class="status risk"><i class="ar">جوهر الدراسة</i><i class="en">Core focus</i><b class="ar">مكة والمدينة خارج النطاق</b><b class="en">Makkah and Madinah outside the scope</b><span class="ar">المادة 8 هي سبب أهمية الهيكل: الشركة الداخلة في المادة 3 تستثنى من التملك خارج النطاق في مكة والمدينة، ولذلك تصبح صفة شركة B هي نقطة الحسم.</span><span class="en">Article 8 is why the structure matters: a company within Article 3 is excluded from outside-scope ownership in Makkah and Madinah, making Company B’s characterization decisive.</span></div>
     </div>
     <div class="quote" style="margin-top:16px">
       <span class="quoteMark ar">الخلاصة المبدئية</span><span class="quoteMark en">Preliminary conclusion</span>
@@ -417,8 +443,8 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
       <h2 class="ar">التثبيت النظامي يسبق التأسيس والصفقة</h2><h2 class="en">Regulatory confirmation precedes incorporation and the transaction</h2>
     </div>
     <div class="steps">
-      <div class="step"><i>01</i><b class="ar">إفادة مكتوبة</b><b class="en">Written clarification</b><span class="ar">طرح السؤال افتراضيا على الهيئة والجهة المختصة حول معاملة شركة B قبل تحمل تكاليف التأسيس أو الارتباط بصفقة.</span><span class="en">Submit the hypothetical structure to the competent authority before incurring incorporation costs or committing to a transaction.</span></div>
-      <div class="step"><i>02</i><b class="ar">فحص وزارة الاستثمار</b><b class="en">MISA classification check</b><span class="ar">تحديد كيفية معاملة شركة B في السجل والاستثمار عند كون شركة A مملوكة لمستثمر غير سعودي.</span><span class="en">Confirm how Company B is treated in investment registration when Company A is owned by a non-Saudi investor.</span></div>
+      <div class="step"><i>01</i><b class="ar">إفادة مكتوبة</b><b class="en">Written clarification</b><span class="ar">طرح السؤالين أعلاه على الهيئة والجهة المختصة لتثبيت معاملة شركة B وأثر السيطرة قبل تحمل تكاليف التأسيس أو الارتباط بعقار في مكة أو المدينة.</span><span class="en">Submit the two questions above to the competent authority to confirm Company B’s treatment and the effect of control before incurring incorporation costs or committing to a Makkah or Madinah property.</span></div>
+      <div class="step"><i>02</i><b class="ar">فحص وزارة الاستثمار</b><b class="en">MISA classification check</b><span class="ar">تحديد كيفية معاملة شركة B لدى وزارة الاستثمار عندما تكون شركة A أحد مساهميها ويملك المستثمر غير السعودي شركة A.</span><span class="en">Confirm how Company B is treated by the Ministry of Investment when Company A is one of its shareholders and Company A is owned by a non-Saudi investor.</span></div>
       <div class="step"><i>03</i><b class="ar">تأسيس شركة A</b><b class="en">Incorporate A</b><span class="ar">شركة سعودية بمسار استثماري نظامي وإفصاح كامل عن المالك والمستفيد الحقيقي.</span><span class="en">Saudi company with a compliant investment route and full disclosure of ownership and beneficial ownership.</span></div>
       <div class="step"><i>04</i><b class="ar">تأسيس شركة B</b><b class="en">Incorporate B</b><span class="ar">شركة سعودية مستقلة مملوكة لشركة A، بسجلات وحسابات وقرارات وقوائم مالية مستقلة.</span><span class="en">A separate Saudi company owned by A, with its own registers, accounts, decisions, and financial statements.</span></div>
       <div class="step"><i>05</i><b class="ar">تنفيذ مشروط</b><b class="en">Conditional execution</b><span class="ar">ربط أول صفقة عقارية بسلامة قابلية التسجيل والتملك وفق الإفادة المكتوبة ونتيجة فحص الجهات المختصة.</span><span class="en">Condition the first property transaction on registrability and ownership eligibility under the written clarification and authority checks.</span></div>
@@ -426,8 +452,8 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
     <div class="questionDraft">
       <small class="ar">السؤال المقترح للجهة المختصة</small><small class="en">Suggested question to the competent authority</small>
       <h3 class="ar">سؤال محدد ومحايد</h3><h3 class="en">A precise and neutral question</h3>
-      <div class="q ar">شركة سعودية غير مدرجة (شركة B) مؤسسة وفق نظام الشركات، مملوكة بالكامل لشركة سعودية أخرى (شركة A)، فيما يملك شخص غير سعودي أسهم شركة A. هل تعد شركة B من الشركات المشار إليها في المادة الثالثة من نظام تملك غير السعوديين للعقار لأغراض تملك عقار خارج النطاق الجغرافي، باستثناء مدينتي مكة المكرمة والمدينة المنورة؟</div>
-      <div class="q en">A non-listed Saudi company (Company B), incorporated under the Companies Law, is wholly owned by another Saudi company (Company A), while a non-Saudi person owns the shares of Company A. Is Company B considered a company referred to in Article 3 of the Non-Saudi Real Estate Ownership Law for purposes of acquiring property outside the designated geographic scope, excluding the cities of Makkah and Madinah?</div>
+      <div class="q ar"><b>السؤال الأول:</b> شركة B شركة سعودية غير مدرجة يملك أسهمها عدة مساهمين سعوديين، من ضمنهم شركة A السعودية التي يملك أسهمها مستثمر غير سعودي. هل تعد شركة B من الشركات المشار إليها في المادة الثالثة؟ وهل تختلف المعاملة باختلاف نسبة ملكية شركة A أو ممارستها للسيطرة على شركة B؟<br><br><b>السؤال الثاني:</b> إذا كانت شركة B خارج وصف المادة الثالثة، فما أثر ذلك على تملكها عقارا يقع في مكة المكرمة أو المدينة المنورة خارج النطاق الجغرافي المشار إليه في المادة الثانية؟</div>
+      <div class="q en"><b>Question 1:</b> Company B is a non-listed Saudi company with several Saudi direct shareholders, including Saudi Company A whose shares are owned by a non-Saudi investor. Is Company B considered a company referred to in Article 3, and does the answer change with Company A’s ownership percentage or control over Company B?<br><br><b>Question 2:</b> If Company B falls outside Article 3, what is the effect on its acquisition of property in Makkah or Madinah outside the geographic scope referred to in Article 2?</div>
     </div>
   </div>
 </section>
@@ -481,27 +507,34 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
   window.addEventListener('scroll',nav,{passive:true});nav();
 
   const qs=id=>document.getElementById(id);
-  const foreignA=qs('foreignA'),aInB=qs('aInB');
+  const foreignA=qs('foreignA'),aInB=qs('aInB'),controlToggle=qs('controlToggle');
   const foreignAOut=qs('foreignAOut'),aInBOut=qs('aInBOut'),indirectPct=qs('indirectPct'),meterFill=qs('ownershipMeterFill');
-  const edgePctA=qs('edgePctA'),edgePctB=qs('edgePctB');
+  const edgePctA=qs('edgePctA'),edgePctB=qs('edgePctB'),edgePctSaudi=qs('edgePctSaudi');
+  let hasControl=false;
+
   const nodeData={
     investor:{
-      ar:['المستثمر الأجنبي','المستفيد الحقيقي النهائي في المثال','يملك بصورة مباشرة نسبة من شركة A، وتنتقل مصلحته الاقتصادية إلى شركة B بصورة غير مباشرة بحسب نسبة ملكية A فيها.'],
-      en:['Foreign investor','Ultimate beneficial owner in the example','Directly owns a percentage of Company A, creating an indirect economic interest in Company B according to A\'s ownership percentage in B.']
+      ar:['المستثمر الأجنبي','مالك شركة A','ملكيته المباشرة في A تتحول إلى ملكية غير مباشرة في B بحسب نسبة ملكية A في B.'],
+      en:['Foreign investor','Owner of Company A','Its direct ownership in A becomes indirect ownership in B according to A’s ownership percentage in B.']
     },
     a:{
-      ar:['شركة A','شركة الاستثمار السعودية','شركة مساهمة مبسطة سعودية الجنسية. مشاركة غير السعودي مباشرة في رأس مالها هي سبب دخولها في وصف المادة 3.'],
-      en:['Company A','Saudi Investment Company','A Saudi-national SJSC. Direct non-Saudi participation in its capital is why it falls within Article 3.']
+      ar:['شركة A','شركة الاستثمار السعودية','شركة سعودية الجنسية، ويشارك غير السعودي مباشرة في رأس مالها. لذلك اختبار المادة 3 واضح بالنسبة إلى A.'],
+      en:['Company A','Saudi Investment Company','A Saudi-national company with direct non-Saudi participation in its capital. Article 3 therefore clearly applies to A.']
+    },
+    saudi:{
+      ar:['المساهمون الآخرون','مساهمون سعوديون مباشرون في B','يمثلون النسبة المتبقية من رأس مال B في المثال، ويظهرون أن B شركة متعددة المساهمين وليست مملوكة بالكامل لشركة A.'],
+      en:['Other shareholders','Direct Saudi shareholders in B','They hold the remaining ownership in B, showing that B is a multi-shareholder company rather than wholly owned by A.']
     },
     b:{
-      ar:['شركة B','شركة العقار السعودية','مساهمها المباشر في هذا المثال هو شركة A السعودية. هنا تظهر مسألة ما إذا كانت المادة 3 تمتد إلى الملكية الأجنبية غير المباشرة.'],
-      en:['Company B','Saudi Property Company','Its direct shareholder in this example is Saudi Company A. This is where the question of extending Article 3 to indirect foreign ownership arises.']
+      ar:['شركة B','شركة العقار السعودية','مساهموها المباشرون سعوديون في المثال. السؤال هو مدى امتداد المادة 3 إلى ملكية A غير المباشرة أو سيطرتها.'],
+      en:['Company B','Saudi Property Company','Its direct shareholders are Saudi in the example. The question is whether Article 3 extends through A’s indirect foreign ownership or control.']
     },
     property:{
-      ar:['العقار','عقار استثماري خارج النطاق الجغرافي','العقار في المسار محل الدراسة مسجل باسم شركة B، لذلك صفة شركة B هي النقطة الحاسمة في التحليل.'],
-      en:['Property','Investment property outside the geographic scope','In the studied route, the property is registered to Company B, making B\'s legal characterization the critical issue.']
+      ar:['العقار','عقار في مكة أو المدينة خارج النطاق','هذه هي الحالة المستهدفة بالدراسة. أثر المادة 8 يتوقف على ما إذا كانت شركة B تعتبر من شركات المادة 3.'],
+      en:['Property','Property in Makkah or Madinah outside the scope','This is the target case. Article 8’s effect depends on whether Company B is treated as an Article 3 company.']
     }
   };
+
   function setNodeDetail(key){
     document.querySelectorAll('.networkNode').forEach(n=>n.classList.toggle('isSelected',n.dataset.node===key));
     const d=nodeData[key],detail=qs('networkDetail');
@@ -520,39 +553,80 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
     label.style.left=((x1+x2)/2)+'px';label.style.top=((y1+y2)/2+bend*.22)+'px';
   }
   function drawNetwork(){
-    drawEdge('edgeInvestorA','labelInvestorA','nodeInvestor','nodeA',-24);
-    drawEdge('edgeAB','labelAB','nodeA','nodeB',22);
-    drawEdge('edgeBProperty','labelBProperty','nodeB','nodeProperty',-18);
+    drawEdge('edgeInvestorA','labelInvestorA','nodeInvestor','nodeA',-22);
+    drawEdge('edgeAB','labelAB','nodeA','nodeB',-8);
+    drawEdge('edgeSaudiB','labelSaudiB','nodeSaudi','nodeB',22);
+    drawEdge('edgeBProperty','labelBProperty','nodeB','nodeProperty',-10);
   }
 
+  function pct(v){return Math.round(v*100)/100}
   function updateSimulator(){
-    const fa=Number(foreignA.value),ab=Number(aInB.value),ind=(fa*ab/100);
-    foreignAOut.textContent=fa+'%';aInBOut.textContent=ab+'%';edgePctA.textContent=fa+'%';edgePctB.textContent=ab+'%';
-    indirectPct.textContent=(Math.round(ind*100)/100).toFixed(ind%1?2:0)+'%';meterFill.style.width=Math.max(0,Math.min(100,ind))+'%';
+    const fa=Number(foreignA.value),ab=Number(aInB.value),saudi=Math.max(0,100-ab),ind=fa*ab/100;
+    foreignAOut.textContent=fa+'%';aInBOut.textContent=ab+'%';
+    edgePctA.textContent=fa+'%';edgePctB.textContent=ab+'%';edgePctSaudi.textContent=saudi+'%';
+    indirectPct.textContent=pct(ind)+'%';meterFill.style.width=Math.max(0,Math.min(100,ind))+'%';
+
     const ubo=qs('uboResult'),uboAr=qs('uboTextAr'),uboEn=qs('uboTextEn');
-    if(ind>=25){
+    if(ind>=25 || hasControl){
       ubo.className='liveRow alert';
-      uboAr.textContent='الملكية غير المباشرة تبلغ '+(Math.round(ind*100)/100)+'%. تتحقق عتبة 25% الخاصة بقواعد المستفيد الحقيقي، فينبغي الإفصاح وفقا لهذا المعيار. هذا الاختبار مستقل عن المادة 3.';
-      uboEn.textContent='Indirect ownership is '+(Math.round(ind*100)/100)+'%. The 25% beneficial-owner threshold is met, so disclosure is required under this criterion. This test is separate from Article 3.';
+      if(ind>=25){
+        uboAr.textContent='الملكية غير المباشرة تبلغ '+pct(ind)+'%. تتحقق عتبة 25% الخاصة بقواعد المستفيد الحقيقي، ويضاف فحص السيطرة بصورة مستقلة.';
+        uboEn.textContent='Indirect ownership is '+pct(ind)+'%. The 25% beneficial-owner threshold is met, with control assessed separately.';
+      }else{
+        uboAr.textContent='الملكية غير المباشرة تبلغ '+pct(ind)+'%، ومع تفعيل السيطرة ينتقل تحديد المستفيد الحقيقي إلى معيار السيطرة حتى مع نسبة ملكية أدنى.';
+        uboEn.textContent='Indirect ownership is '+pct(ind)+'%, and with control enabled the beneficial-owner analysis moves to the control criterion even at a lower ownership percentage.';
+      }
     }else{
       ubo.className='liveRow ok';
-      uboAr.textContent='الملكية غير المباشرة تبلغ '+(Math.round(ind*100)/100)+'%. تقع النسبة تحت عتبة 25% الخاصة بقواعد المستفيد الحقيقي، وينتقل الفحص إلى معيار السيطرة والمعايير الأخرى. هذا الاختبار مستقل عن المادة 3.';
-      uboEn.textContent='Indirect ownership is '+(Math.round(ind*100)/100)+'%. The percentage is below the 25% beneficial-owner threshold, so the review moves to control and the other criteria. This test is separate from Article 3.';
+      uboAr.textContent='الملكية غير المباشرة تبلغ '+pct(ind)+'%. تقع تحت عتبة 25%، وتظهر في المثال سلطات مساهم عادية، فيبقى فحص بقية معايير المستفيد الحقيقي بحسب الوقائع.';
+      uboEn.textContent='Indirect ownership is '+pct(ind)+'%. It is below the 25% threshold and the example uses ordinary shareholder rights, leaving the other beneficial-owner criteria to the specific facts.';
     }
+
     const aRow=qs('articleAResult'),aAr=qs('articleATextAr'),aEn=qs('articleATextEn');
     if(fa>0){
       aRow.className='liveRow alert';
-      aAr.textContent='غير السعودي يشارك مباشرة بنسبة '+fa+'% في رأس مال شركة A، لذلك تدخل A في وصف المادة 3.';
-      aEn.textContent='The non-Saudi directly participates in '+fa+'% of Company A\'s capital, so A falls within Article 3.';
+      aAr.textContent='المستثمر الأجنبي يشارك مباشرة بنسبة '+fa+'% في رأس مال شركة A، لذلك تدخل شركة A في المادة 3.';
+      aEn.textContent='The foreign investor directly participates in '+fa+'% of Company A’s capital, so Company A falls within Article 3.';
     }else{
       aRow.className='liveRow ok';
       aAr.textContent='ملكية المستثمر الأجنبي المباشرة في شركة A تبلغ 0% في هذا السيناريو.';
-      aEn.textContent='The foreign investor\'s direct ownership in Company A is 0% in this scenario.';
+      aEn.textContent='The foreign investor’s direct ownership in Company A is 0% in this scenario.';
+    }
+
+    const bRow=qs('articleBResult'),bAr=qs('articleBTextAr'),bEn=qs('articleBTextEn');
+    bRow.className=hasControl?'liveRow alert':'liveRow study';
+    bAr.textContent='شركة A تملك '+ab+'% من شركة B، والنسبة المتبقية '+saudi+'% لمساهمين سعوديين مباشرين. المساهمون المباشرون في B سعوديون، بينما الملكية الأجنبية تظهر بصورة غير مباشرة عبر A.';
+    bEn.textContent='Company A owns '+ab+'% of Company B, with the remaining '+saudi+'% held by direct Saudi shareholders. B’s direct shareholders are Saudi, while foreign ownership appears indirectly through A.';
+
+    const cRow=qs('controlResult'),cAr=qs('controlTextAr'),cEn=qs('controlTextEn');
+    if(hasControl){
+      cRow.className='liveRow alert';
+      cAr.textContent='شركة A تمارس السيطرة على شركة B في هذا السيناريو. السيطرة ترفع مخاطر تبني تفسير ينظر خلف المساهم المباشر، وتدخل كذلك في اختبار المستفيد الحقيقي.';
+      cEn.textContent='Company A controls Company B in this scenario. Control increases look-through interpretation risk and also enters the beneficial-owner analysis.';
+    }else{
+      cRow.className='liveRow ok';
+      cAr.textContent='شركة A تمارس سلطات مساهم عادية في هذا السيناريو. يبقى محور المادة 3 منصبا على هوية المساهمين المباشرين، مع بقاء الملكية غير المباشرة معلومة ومفصحا عنها.';
+      cEn.textContent='Company A exercises ordinary shareholder rights in this scenario. The Article 3 question remains focused on the identity of direct shareholders, with indirect ownership fully disclosed.';
     }
     drawNetwork();
   }
-  foreignA.addEventListener('input',updateSimulator);aInB.addEventListener('input',updateSimulator);
-  qs('resetSim').addEventListener('click',()=>{foreignA.value=100;aInB.value=100;updateSimulator()});
+
+  foreignA.addEventListener('input',updateSimulator);
+  aInB.addEventListener('input',updateSimulator);
+  controlToggle.addEventListener('click',()=>{
+    hasControl=!hasControl;
+    controlToggle.setAttribute('aria-pressed',hasControl?'true':'false');
+    qs('controlLabelAr').textContent=hasControl?'سيطرة على القرارات الجوهرية':'سلطات مساهم عادية';
+    qs('controlLabelEn').textContent=hasControl?'Control over key decisions':'Ordinary shareholder rights';
+    updateSimulator();
+  });
+  qs('resetSim').addEventListener('click',()=>{
+    foreignA.value=100;aInB.value=40;hasControl=false;
+    controlToggle.setAttribute('aria-pressed','false');
+    qs('controlLabelAr').textContent='سلطات مساهم عادية';
+    qs('controlLabelEn').textContent='Ordinary shareholder rights';
+    updateSimulator();
+  });
   window.addEventListener('resize',drawNetwork,{passive:true});
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawNetwork);
   setTimeout(drawNetwork,120);
@@ -560,19 +634,27 @@ linear-gradient(180deg,#FFFEFC,#F8F5EF);overflow:hidden;box-shadow:var(--shadow)
 
   const routeCopy={
     direct:{
-      stateAr:'المادة 3 تنطبق على مالك العقار',stateEn:'Article 3 applies to the property owner',
-      titleAr:'شركة A هي الشركة ذات المشاركة الأجنبية المباشرة وهي نفسها مالك العقار',
-      titleEn:'Company A has the direct foreign participation and is itself the property owner',
-      textAr:'خارج النطاق، تخضع شركة A للمادة 3/2 والمادة 8 من اللائحة: التملك لما يلزم النشاط أو سكن العاملين، مع موافقة وزارة الاستثمار مسبقا.',
-      textEn:'Outside the scope, Company A is subject to Article 3(2) and Article 8 of the regulations: ownership for business needs or employee housing, with prior Ministry of Investment approval.',
+      stateAr:'المادة 3 تنطبق بوضوح',stateEn:'Article 3 clearly applies',
+      titleAr:'غير السعودي مساهم مباشر في الشركة المالكة للعقار',
+      titleEn:'The non-Saudi is a direct shareholder in the property-owning company',
+      textAr:'هذه الحالة تقع مباشرة في صياغة المادة 3، ويظهر أثر المادة 8 عند محاولة التملك خارج النطاق في مكة أو المدينة.',
+      textEn:'This case falls directly within Article 3, with Article 8 becoming relevant for outside-scope ownership in Makkah or Madinah.',
       cls:'restricted'
     },
-    structured:{
-      stateAr:'صفة شركة B هي نقطة الدراسة',stateEn:'Company B status is the issue under study',
-      titleAr:'شركة B تملك العقار، بينما مساهمها المباشر هو شركة A السعودية',
-      titleEn:'Company B owns the property while its direct shareholder is Saudi Company A',
-      textAr:'المستثمر الأجنبي يبقى مالكا غير مباشر ومستفيدا حقيقيا بحسب النسب. صياغة المادة 3 في هذا الموضع تركز على المشاركة في ملكية رأس المال، بينما ترد الملكية غير المباشرة صراحة في مواضع أخرى. هذه هي نقطة التفسير التي تحتاج تثبيتا تطبيقيا.',
-      textEn:'The foreign investor remains an indirect owner and beneficial owner according to the percentages. Article 3 here focuses on participation in capital ownership, while indirect ownership is expressly referenced elsewhere. This is the interpretive point requiring application-level confirmation.',
+    minority:{
+      stateAr:'المساهمون المباشرون في B سعوديون',stateEn:'B’s direct shareholders are Saudi',
+      titleAr:'شركة A مساهم أقلية في B بسلطات مساهم عادية',
+      titleEn:'Company A is a minority shareholder in B with ordinary shareholder rights',
+      textAr:'الملكية الأجنبية تظهر في B بصورة غير مباشرة عبر شركة A. هذه الحالة تقدم أقوى صورة للقراءة الحرفية التي تفصل بين المساهم المباشر والمستفيد الحقيقي.',
+      textEn:'Foreign ownership appears in B indirectly through Company A. This case presents the strongest form of the textual distinction between the direct shareholder and the beneficial owner.',
+      cls:'study'
+    },
+    control:{
+      stateAr:'السيطرة ترفع مخاطر التفسير',stateEn:'Control increases interpretation risk',
+      titleAr:'شركة A تسيطر على B رغم بقاء المساهمين المباشرين سعوديين',
+      titleEn:'Company A controls B while the direct shareholders remain Saudi',
+      textAr:'السيطرة ليست معيارا مذكورا صراحة في المادة 3، لكنها تقوي احتمال تفسير ينظر إلى الملكية والسيطرة غير المباشرة، كما تؤثر مباشرة في قواعد المستفيد الحقيقي.',
+      textEn:'Control is not expressly stated as an Article 3 criterion, but it strengthens the possibility of a look-through interpretation and directly affects beneficial-owner rules.',
       cls:'study'
     }
   };
