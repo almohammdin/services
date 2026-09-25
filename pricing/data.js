@@ -20,6 +20,8 @@ export const clientKey=name=>String(name||'').trim().replace(/\s+/g,' ').toLocal
 export const quoteKey=quote=>String(quote?.id||quote?.quoteNo||'');
 export const quoteSeriesKey=quote=>String(quote?.seriesId||quoteKey(quote));
 export const quoteVersion=quote=>Math.max(1,Number(quote?.version)||1);
+const serviceNames={liquidation_pre:'خدمات ما قبل التصفية',governance_session:'جلسة استشارية في الحوكمة',diagnosis:'تشخيص الوضع المؤسسي',authority_matrix:'مصفوفة الصلاحيات',partners:'تنظيم علاقة الشركاء',restructuring:'إعادة الهيكلة',monthly:'متابعة شهرية',custom:'خدمة مخصصة'};
+export const serviceLabel=quote=>quote?.serviceName||serviceNames[quote?.service]||quote?.service||'عرض سعر';
 const localKey='pricing_clients_v1';
 function localClients(){
   try{
