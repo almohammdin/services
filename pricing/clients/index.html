@@ -26,7 +26,7 @@ function render(){
  const map=new Map(clients.map(c=>[clientKey(c.name),{...c,count:0,value:0}]));
  for(const q of quotes){const key=clientKey(q.client);if(!key)continue;const c=map.get(key)||{name:q.client,count:0,value:0};c.count++;c.value+=Number(q.amount)||0;map.set(key,c)}
  const rows=[...map.values()].sort((a,b)=>a.name.localeCompare(b.name,'ar'));
- $('clients').innerHTML=rows.map(c=>'<div class="client"><div><b>'+esc(c.name)+'</b><small>'+esc(c.person||'—')+' · '+fmt.format(c.count||0)+' عروض</small><small>'+esc(c.notes||'')+'</small></div><div>'+fmt.format(c.value||0)+' ر.س</div></div>').join('')||'<div class="empty">لا يوجد عملاء بعد.</div>';
+ $('clients').innerHTML=rows.map(c=>'<div class="client"><div><b>'+esc(c.name)+'</b><small>'+(c.person?esc(c.person)+' · ':'')+fmt.format(c.count||0)+' '+((c.count||0)===1?'عرض':'عروض')+'</small><small>'+esc(c.notes||'')+'</small></div><div>'+fmt.format(c.value||0)+' ر.س</div></div>').join('')||'<div class="empty">لا يوجد عملاء بعد.</div>';
 }
 $('addBtn').onclick=async()=>{
  if(!user){message('سجل دخولك قبل حفظ العميل.',true);return}
