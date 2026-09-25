@@ -14,7 +14,7 @@
 <section class="card"><div class="toolbar"><div class="stats"><span>إجمالي العروض: <b id="total">0</b></span><span>المعتمدة: <b id="won">0</b></span></div><input id="search" type="search" placeholder="ابحث باسم العميل أو رقم العرض"></div><p id="message" class="notice">جارٍ تحميل العروض…</p><div class="scroll"><table class="table"><thead><tr><th>العميل والنسخة</th><th>رقم العرض</th><th>الخدمة</th><th>القيمة</th><th>الحالة</th><th>الإرسال والمتابعة</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,deleteQuoteVersion,quoteKey,quoteSeriesKey,quoteVersion} from '../data.js';
+import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,deleteQuoteVersion,quoteKey,quoteSeriesKey,quoteVersion} from '../data.js?v=20260925a';
 const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
 const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 let quotes=[],user=null;
