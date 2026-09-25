@@ -20,7 +20,7 @@
 <section class="grid"><div class="card"><h2 id="formTitle">إضافة عميل</h2><div class="field"><label for="cName">اسم العميل</label><input id="cName" autocomplete="organization"></div><div class="field"><label for="cPerson">الشخص المسؤول</label><input id="cPerson"></div><div class="field"><label for="cNotes">ملاحظات</label><textarea id="cNotes"></textarea></div><div class="form-actions"><button class="btn dark" id="addBtn">حفظ العميل</button><button class="btn" id="cancelBtn" type="button" hidden>إلغاء التعديل</button></div></div><div class="card"><h2>قائمة العملاء</h2><div id="clients" class="list"></div></div></section>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,saveClient,updateClient,clientKey,quoteKey,quoteSeriesKey,quoteVersion} from '../data.js';
+import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,saveClient,updateClient,clientKey,quoteKey,quoteSeriesKey,quoteVersion} from '../data.js?v=20260925a';
 const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
 const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 let user=null,clients=[],quotes=[],editingName=null;
