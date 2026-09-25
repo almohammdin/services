@@ -10,30 +10,44 @@
 :root{--navy:#101828;--gold:#b59a55;--muted:#667085;--line:#d8dee8}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f6f8fb,#edf2f7);font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;color:var(--navy);line-height:1.7}a{text-decoration:none;color:inherit}button,input,textarea{font:inherit}.shell{max-width:1120px;margin:auto;padding:20px}.top{background:linear-gradient(135deg,#101828,#263349);color:#fff;border-radius:28px;padding:22px;display:flex;justify-content:space-between;gap:12px;align-items:center}h1{margin:0;font-size:28px}.top p{margin:6px 0 0;color:rgba(255,255,255,.74);font-size:13px}.btn{border:0;border-radius:14px;min-height:42px;padding:9px 14px;font-weight:900;background:#edf1f7;color:#101828;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.btn.gold{background:var(--gold)}.btn.dark{background:var(--navy);color:#fff}.grid{display:grid;grid-template-columns:340px 1fr;gap:14px;margin-top:14px}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 12px 35px rgba(16,24,40,.06)}.field{margin-bottom:10px}.field label{display:block;font-size:12px;font-weight:900;color:#344054;margin-bottom:5px}input,textarea{width:100%;border:1px solid #cfd6e0;border-radius:13px;padding:10px 12px}textarea{min-height:100px}.list{display:grid;gap:10px}.client{border:1px solid #edf0f5;background:#fbfcfe;border-radius:18px;padding:14px;display:flex;justify-content:space-between;gap:12px}.client b{color:var(--navy)}.client small{display:block;color:var(--muted);margin-top:4px}.empty{border:1px dashed #cfd6e0;border-radius:18px;padding:18px;text-align:center;color:var(--muted);background:#fff}.notice{margin:14px 0;color:#475467;font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:850px){.top,.grid{display:block}.top .actions{margin-top:12px}.card{margin-top:12px}}
 </style>
+<style>
+[hidden]{display:none!important}.client{display:block}.client-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.client-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.client-actions .btn,.offer-link{font-size:12px;min-height:34px;padding:5px 10px}.client-offers{display:grid;gap:8px;margin-top:12px}.offer-line{display:flex;justify-content:space-between;gap:8px;align-items:center;border-top:1px solid #e8edf4;padding-top:8px}.offer-line span{font-size:12px;color:#475467}.offer-links{display:flex;gap:6px;flex-wrap:wrap}.offer-link{background:#eaf0f8;border-radius:10px;font-weight:700}.form-actions{display:flex;gap:8px}.form-actions .btn{flex:1}@media(max-width:600px){.client-head,.offer-line{display:block}.client-actions,.offer-links{margin-top:8px}}
+</style>
 </head>
 <body><main class="shell">
 <section class="top"><div><h1>العملاء</h1><p>لوحة التحكم ← العملاء · بيانات العملاء والعروض مرتبطة بحسابك.</p></div><div class="actions"><a class="btn gold" href="/services/pricing/tool/">عرض جديد</a><a class="btn" href="/services/pricing/offers/">العروض السابقة</a><a class="btn" href="/services/pricing/">لوحة التحكم</a></div></section>
 <p id="message" class="notice">جارٍ تحميل بيانات الحساب…</p>
-<section class="grid"><div class="card"><h2>إضافة عميل</h2><div class="field"><label for="cName">اسم العميل</label><input id="cName" autocomplete="organization"></div><div class="field"><label for="cPerson">الشخص المسؤول</label><input id="cPerson"></div><div class="field"><label for="cNotes">ملاحظات</label><textarea id="cNotes"></textarea></div><button class="btn dark" id="addBtn" style="width:100%">حفظ العميل</button></div><div class="card"><h2>قائمة العملاء</h2><div id="clients" class="list"></div></div></section>
+<section class="grid"><div class="card"><h2 id="formTitle">إضافة عميل</h2><div class="field"><label for="cName">اسم العميل</label><input id="cName" autocomplete="organization"></div><div class="field"><label for="cPerson">الشخص المسؤول</label><input id="cPerson"></div><div class="field"><label for="cNotes">ملاحظات</label><textarea id="cNotes"></textarea></div><div class="form-actions"><button class="btn dark" id="addBtn">حفظ العميل</button><button class="btn" id="cancelBtn" type="button" hidden>إلغاء التعديل</button></div></div><div class="card"><h2>قائمة العملاء</h2><div id="clients" class="list"></div></div></section>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,saveClient,clientKey} from '../data.js';
+import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,saveClient,updateClient,clientKey,quoteKey,quoteSeriesKey,quoteVersion} from '../data.js';
 const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
 const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
-let user=null,clients=[],quotes=[];
+let user=null,clients=[],quotes=[],editingName=null;
 function message(text,login=false){$('message').innerHTML=esc(text)+(login?' <button class="btn gold" id="loginBtn">الدخول بحساب Google</button>':'');if(login)$('loginBtn').onclick=()=>signIn().catch(()=>message('تعذر تسجيل الدخول. تحقق من الحساب المصرح له.',true))}
+function resetForm(){editingName=null;$('formTitle').textContent='إضافة عميل';$('addBtn').textContent='حفظ العميل';$('cancelBtn').hidden=true;$('cName').value='';$('cPerson').value='';$('cNotes').value=''}
 function render(){
- const map=new Map(clients.map(c=>[clientKey(c.name),{...c,count:0,value:0}]));
- for(const q of quotes){const key=clientKey(q.client);if(!key)continue;const c=map.get(key)||{name:q.client,count:0,value:0};c.count++;c.value+=Number(q.amount)||0;map.set(key,c)}
+ const map=new Map(clients.map(c=>[clientKey(c.name),{...c,offers:[]}]));
+ for(const q of quotes){const key=clientKey(q.client);if(!key)continue;const c=map.get(key)||{name:q.client,offers:[]};c.offers.push(q);map.set(key,c)}
  const rows=[...map.values()].sort((a,b)=>a.name.localeCompare(b.name,'ar'));
- $('clients').innerHTML=rows.map(c=>'<div class="client"><div><b>'+esc(c.name)+'</b><small>'+(c.person?esc(c.person)+' · ':'')+fmt.format(c.count||0)+' '+((c.count||0)===1?'عرض':'عروض')+'</small><small>'+esc(c.notes||'')+'</small></div><div>'+fmt.format(c.value||0)+' ر.س</div></div>').join('')||'<div class="empty">لا يوجد عملاء بعد.</div>';
+ $('clients').innerHTML=rows.map(c=>{
+  const groups=new Map();for(const q of c.offers){const key=quoteSeriesKey(q);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(q)}
+  const series=[...groups.values()].map(versions=>versions.sort((a,b)=>quoteVersion(b)-quoteVersion(a)||String(b.updatedAtIso||'').localeCompare(String(a.updatedAtIso||''))));
+  const value=series.reduce((sum,versions)=>sum+(Number(versions[0]?.amount)||0),0);
+  const summary=fmt.format(series.length)+' '+(series.length===1?'عرض':'عروض')+(c.offers.length>series.length?' · '+fmt.format(c.offers.length)+' نسخ':'');
+  const offerLines=series.map(versions=>'<div class="offer-line"><span>'+esc(versions[0].serviceName||versions[0].service||versions[0].quoteNo||'عرض سعر')+'</span><div class="offer-links">'+versions.map(q=>'<a class="offer-link" href="/services/pricing/tool/?quote='+encodeURIComponent(quoteKey(q))+'">فتح '+(versions.length>1?'النسخة '+fmt.format(quoteVersion(q)):'العرض')+'</a>').join('')+'</div></div>').join('');
+  return '<article class="client"><div class="client-head"><div><b>'+esc(c.name)+'</b><small>'+(c.person?esc(c.person)+' · ':'')+summary+'</small><small>'+esc(c.notes||'')+'</small></div><div class="client-actions"><span>'+fmt.format(value)+' ر.س</span><button class="btn" type="button" data-edit-client="'+esc(c.name)+'">تعديل البيانات</button></div></div>'+(offerLines?'<div class="client-offers">'+offerLines+'</div>':'')+'</article>';
+ }).join('')||'<div class="empty">لا يوجد عملاء بعد.</div>';
 }
+$('clients').onclick=e=>{const btn=e.target.closest('[data-edit-client]');if(!btn)return;const c=clients.find(x=>clientKey(x.name)===clientKey(btn.dataset.editClient));if(!c)return;editingName=c.name;$('formTitle').textContent='تعديل بيانات العميل';$('addBtn').textContent='حفظ التعديلات';$('cancelBtn').hidden=false;$('cName').value=c.name;$('cPerson').value=c.person||'';$('cNotes').value=c.notes||'';$('cName').focus();window.scrollTo({top:0,behavior:'smooth'})};
+$('cancelBtn').onclick=resetForm;
 $('addBtn').onclick=async()=>{
  if(!user){message('سجل دخولك قبل حفظ العميل.',true);return}
  const name=$('cName').value.trim();if(!name){$('cName').focus();return}
+ if(!editingName&&clients.some(c=>clientKey(c.name)===clientKey(name))){message('هذا العميل موجود بالفعل؛ استخدم زر «تعديل البيانات» في بطاقته.');return}
  $('addBtn').disabled=true;
- try{clients=await saveClient(user,{name,person:$('cPerson').value.trim(),notes:$('cNotes').value.trim()},clients);$('cName').value='';$('cPerson').value='';$('cNotes').value='';message('تم حفظ العميل، وسيظهر في أداة التسعير.');render()}
- catch(e){console.error(e);message('تعذر حفظ العميل سحابيًا. لم تُفقد البيانات المدخلة.')}
+ try{const payload={name,person:$('cPerson').value.trim(),notes:$('cNotes').value.trim()};if(editingName){const result=await updateClient(user,editingName,payload);clients=result.clients;quotes=result.quotes;message('تم تحديث بيانات العميل وربط عروضه بالاسم الجديد.')}else{clients=await saveClient(user,payload,clients);message('تم حفظ العميل، وسيظهر في أداة التسعير.')}resetForm();render()}
+ catch(e){console.error(e);message(e.message==='يوجد عميل بهذا الاسم بالفعل'?e.message:'تعذر حفظ العميل سحابيًا. لم تُفقد البيانات المدخلة.')}
  finally{$('addBtn').disabled=false}
 };
 await authReady.catch(console.error);
