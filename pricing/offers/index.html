@@ -8,27 +8,44 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#101828;--gold:#b59a55;--line:#d8dee8;--muted:#667085}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f6f8fb,#edf2f7);font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;color:var(--navy);line-height:1.7}a{text-decoration:none;color:inherit}button,input{font:inherit}.shell{max-width:1180px;margin:auto;padding:20px}.hero{background:linear-gradient(135deg,#101828,#263349);color:#fff;border-radius:28px;padding:22px;display:flex;justify-content:space-between;align-items:center;gap:14px}h1{margin:0;font-size:28px}.hero p{margin:5px 0;color:#cbd5e1;font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 14px;border:0;border-radius:13px;background:#edf1f7;color:#101828;font-weight:900;min-height:40px;cursor:pointer}.btn.gold{background:var(--gold)}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;margin-top:14px;box-shadow:0 12px 35px rgba(16,24,40,.06)}.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center}.toolbar input{width:min(360px,100%);border:1px solid #cfd6e0;border-radius:13px;padding:9px 12px}.stats{display:flex;gap:16px;color:var(--muted);font-size:13px}.stats b{color:var(--navy);font-size:17px}.scroll{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:680px;font-size:13px}.table th,.table td{padding:10px;border-bottom:1px solid #edf0f5;text-align:right}.table th{background:#f8fafc;color:#475467}.empty{padding:25px;text-align:center;color:var(--muted)}.notice{font-size:13px;color:var(--muted)}@media(max-width:750px){.hero,.toolbar{display:block}.actions,.toolbar input{margin-top:12px}.stats{margin-top:12px}}
-</style></head>
+</style><style>.group-row td{background:#eaf0f8;border-top:2px solid #d8dee8;font-weight:800}.group-row small{color:var(--muted);font-weight:500;margin-inline-start:10px}.version-label{display:block;color:var(--muted);font-size:11px}.row-actions{display:flex;gap:6px;flex-wrap:wrap}.btn.danger{background:#fff1f2;color:#9f1239}.btn:disabled{opacity:.55;cursor:wait}@media(max-width:750px){.row-actions{min-width:145px}}</style></head>
 <body><main class="shell">
 <header class="hero"><div><h1>العروض السابقة</h1><p>لوحة التحكم ← العروض السابقة · افتح أي عرض لاستكماله في أداة التسعير.</p></div><nav class="actions"><a class="btn gold" href="/services/pricing/tool/">عرض جديد</a><a class="btn" href="/services/pricing/clients/">العملاء</a><a class="btn" href="/services/pricing/">لوحة التحكم</a></nav></header>
-<section class="card"><div class="toolbar"><div class="stats"><span>إجمالي العروض: <b id="total">0</b></span><span>المعتمدة: <b id="won">0</b></span></div><input id="search" type="search" placeholder="ابحث باسم العميل أو رقم العرض"></div><p id="message" class="notice">جارٍ تحميل العروض…</p><div class="scroll"><table class="table"><thead><tr><th>العميل</th><th>رقم العرض</th><th>الخدمة</th><th>القيمة</th><th>الحالة</th><th>آخر تحديث</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section class="card"><div class="toolbar"><div class="stats"><span>إجمالي العروض: <b id="total">0</b></span><span>المعتمدة: <b id="won">0</b></span></div><input id="search" type="search" placeholder="ابحث باسم العميل أو رقم العرض"></div><p id="message" class="notice">جارٍ تحميل العروض…</p><div class="scroll"><table class="table"><thead><tr><th>العميل والنسخة</th><th>رقم العرض</th><th>الخدمة</th><th>القيمة</th><th>الحالة</th><th>الإرسال والمتابعة</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace} from '../data.js';
+import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,deleteQuoteVersion,quoteKey,quoteSeriesKey,quoteVersion} from '../data.js';
 const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
 const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
-let quotes=[];
+let quotes=[],user=null;
 function render(){
  const query=$('search').value.trim().toLocaleLowerCase('ar');
- const filtered=quotes.filter(q=>(String(q.client||'')+' '+String(q.quoteNo||'')).toLocaleLowerCase('ar').includes(query));
- $('total').textContent=fmt.format(quotes.length);$('won').textContent=fmt.format(quotes.filter(q=>q.status==='مقبول').length);
- $('rows').innerHTML=filtered.map(q=>'<tr><td><b>'+esc(q.client||'—')+'</b></td><td dir="ltr">'+esc(q.quoteNo||'—')+'</td><td>'+esc(q.serviceName||q.service||'—')+'</td><td>'+fmt.format(Number(q.amount)||0)+' ر.س</td><td>'+esc(q.status||'مسودة')+'</td><td>'+esc(String(q.updatedAtIso||'').slice(0,10)||'—')+'</td><td><a class="btn gold" href="/services/pricing/tool/?quote='+encodeURIComponent(q.id||q.quoteNo||'')+'">فتح</a></td></tr>').join('')||'<tr><td colspan="7" class="empty">لا توجد عروض مطابقة.</td></tr>';
+ const map=new Map();for(const q of quotes){const key=quoteSeriesKey(q);if(!map.has(key))map.set(key,[]);map.get(key).push(q)}
+ const groups=[...map.values()].map(versions=>versions.sort((a,b)=>quoteVersion(b)-quoteVersion(a)||String(b.updatedAtIso||'').localeCompare(String(a.updatedAtIso||'')))).sort((a,b)=>String(b[0].updatedAtIso||'').localeCompare(String(a[0].updatedAtIso||'')));
+ const filtered=groups.filter(versions=>versions.some(q=>(String(q.client||'')+' '+String(q.quoteNo||'')+' '+String(q.serviceName||q.service||'')).toLocaleLowerCase('ar').includes(query)));
+ $('total').textContent=fmt.format(groups.length);$('won').textContent=fmt.format(groups.filter(versions=>versions.some(q=>q.status==='مقبول')).length);
+ $('rows').innerHTML=filtered.map(versions=>{
+  const latest=versions[0];
+  const head='<tr class="group-row"><td colspan="7">'+esc(latest.client||'—')+' · '+esc(latest.serviceName||latest.service||'عرض سعر')+' <small>'+fmt.format(versions.length)+' '+(versions.length===1?'نسخة':'نسخ')+'</small></td></tr>';
+  const items=versions.map(q=>'<tr><td><span class="version-label">النسخة '+fmt.format(quoteVersion(q))+'</span>'+esc(q.client||'—')+'</td><td dir="ltr">'+esc(q.quoteNo||'—')+'</td><td>'+esc(q.serviceName||q.service||'—')+'</td><td>'+fmt.format(Number(q.amount)||0)+' ر.س</td><td>'+esc(q.status||'مسودة')+(q.sentVia?'<span class="version-label">أُرسل عبر '+esc(q.sentVia)+'</span>':'')+'</td><td>'+esc(q.sentAt||String(q.updatedAtIso||'').slice(0,10)||'—')+(q.nextDate?'<span class="version-label">متابعة: '+esc(q.nextDate)+'</span>':'')+'</td><td><div class="row-actions"><a class="btn gold" href="/services/pricing/tool/?quote='+encodeURIComponent(quoteKey(q))+'">فتح</a><button class="btn danger" type="button" data-delete-quote="'+esc(quoteKey(q))+'">حذف</button></div></td></tr>').join('');
+  return head+items;
+ }).join('')||'<tr><td colspan="7" class="empty">لا توجد عروض مطابقة.</td></tr>';
 }
 $('search').oninput=render;
+$('rows').onclick=async e=>{
+ const button=e.target.closest('[data-delete-quote]');if(!button||!user)return;
+ const id=button.dataset.deleteQuote,q=quotes.find(row=>quoteKey(row)===id);if(!q)return;
+ if(!confirm('هل تريد حذف النسخة '+quoteVersion(q)+' من عرض «'+(q.client||'العميل')+'»؟ لا يمكن استعادتها بعد الحذف.'))return;
+ button.disabled=true;
+ try{quotes=await deleteQuoteVersion(user,id);render();$('message').textContent='حُذفت النسخة المحددة فقط، وبقيت النسخ الأخرى محفوظة.'}
+ catch(error){console.error(error);button.disabled=false;$('message').textContent='تعذر حذف النسخة. حدّث الصفحة وحاول مجددًا.'}
+};
+const requestedClient=new URLSearchParams(location.search).get('client');if(requestedClient)$('search').value=requestedClient;
 await authReady.catch(console.error);
-onAuthStateChanged(auth,async user=>{
- if(!user){quotes=[];render();$('message').innerHTML='سجّل الدخول بحساب Google لعرض عروضك. <button class="btn gold" id="loginBtn">تسجيل الدخول</button>';$('loginBtn').onclick=()=>signIn().catch(()=>{$('message').textContent='تعذر تسجيل الدخول. تحقق من الحساب المصرح له.'});return}
- try{quotes=(await loadWorkspace(user)).quotes.sort((a,b)=>String(b.updatedAtIso||'').localeCompare(String(a.updatedAtIso||'')));render();$('message').textContent='العروض المعروضة محفوظة في حسابك السحابي.'}
+onAuthStateChanged(auth,async account=>{
+ user=account;
+ if(!account){quotes=[];render();$('message').innerHTML='سجّل الدخول بحساب Google لعرض عروضك. <button class="btn gold" id="loginBtn">تسجيل الدخول</button>';$('loginBtn').onclick=()=>signIn().catch(()=>{$('message').textContent='تعذر تسجيل الدخول. تحقق من الحساب المصرح له.'});return}
+ try{quotes=(await loadWorkspace(account)).quotes;render();$('message').textContent='كل عرض ونسخه محفوظة في حسابك السحابي.'}
  catch(e){console.error(e);$('message').textContent='تعذر تحميل العروض. حاول تحديث الصفحة.'}
 });
 </script></body></html>
