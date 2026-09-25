@@ -14,7 +14,7 @@
 <section class="card"><div class="toolbar"><div class="stats"><span>إجمالي العروض: <b id="total">0</b></span><span>المعتمدة: <b id="won">0</b></span></div><input id="search" type="search" placeholder="ابحث باسم العميل أو رقم العرض"></div><p id="message" class="notice">جارٍ تحميل العروض…</p><div class="scroll"><table class="table"><thead><tr><th>العميل والنسخة</th><th>رقم العرض</th><th>الخدمة</th><th>القيمة</th><th>الحالة</th><th>الإرسال والمتابعة</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,deleteQuoteVersion,quoteKey,quoteSeriesKey,quoteVersion} from '../data.js?v=20260925a';
+import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,deleteQuoteVersion,quoteKey,quoteSeriesKey,quoteVersion,serviceLabel} from '../data.js?v=20260925b';
 const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
 const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 let quotes=[],user=null;
@@ -22,12 +22,12 @@ function render(){
  const query=$('search').value.trim().toLocaleLowerCase('ar');
  const map=new Map();for(const q of quotes){const key=quoteSeriesKey(q);if(!map.has(key))map.set(key,[]);map.get(key).push(q)}
  const groups=[...map.values()].map(versions=>versions.sort((a,b)=>quoteVersion(b)-quoteVersion(a)||String(b.updatedAtIso||'').localeCompare(String(a.updatedAtIso||'')))).sort((a,b)=>String(b[0].updatedAtIso||'').localeCompare(String(a[0].updatedAtIso||'')));
- const filtered=groups.filter(versions=>versions.some(q=>(String(q.client||'')+' '+String(q.quoteNo||'')+' '+String(q.serviceName||q.service||'')).toLocaleLowerCase('ar').includes(query)));
+ const filtered=groups.filter(versions=>versions.some(q=>(String(q.client||'')+' '+String(q.quoteNo||'')+' '+serviceLabel(q)).toLocaleLowerCase('ar').includes(query)));
  $('total').textContent=fmt.format(groups.length);$('won').textContent=fmt.format(groups.filter(versions=>versions.some(q=>q.status==='مقبول')).length);
  $('rows').innerHTML=filtered.map(versions=>{
   const latest=versions[0];
-  const head='<tr class="group-row"><td colspan="7">'+esc(latest.client||'—')+' · '+esc(latest.serviceName||latest.service||'عرض سعر')+' <small>'+fmt.format(versions.length)+' '+(versions.length===1?'نسخة':'نسخ')+'</small></td></tr>';
-  const items=versions.map(q=>'<tr><td><span class="version-label">النسخة '+fmt.format(quoteVersion(q))+'</span>'+esc(q.client||'—')+'</td><td dir="ltr">'+esc(q.quoteNo||'—')+'</td><td>'+esc(q.serviceName||q.service||'—')+'</td><td>'+fmt.format(Number(q.amount)||0)+' ر.س</td><td>'+esc(q.status||'مسودة')+(q.sentVia?'<span class="version-label">أُرسل عبر '+esc(q.sentVia)+'</span>':'')+'</td><td>'+esc(q.sentAt||String(q.updatedAtIso||'').slice(0,10)||'—')+(q.nextDate?'<span class="version-label">متابعة: '+esc(q.nextDate)+'</span>':'')+'</td><td><div class="row-actions"><a class="btn gold" href="/services/pricing/tool/?quote='+encodeURIComponent(quoteKey(q))+'">فتح</a><button class="btn danger" type="button" data-delete-quote="'+esc(quoteKey(q))+'">حذف</button></div></td></tr>').join('');
+  const head='<tr class="group-row"><td colspan="7">'+esc(latest.client||'—')+' · '+esc(serviceLabel(latest))+' <small>'+fmt.format(versions.length)+' '+(versions.length===1?'نسخة':'نسخ')+'</small></td></tr>';
+  const items=versions.map(q=>'<tr><td><span class="version-label">النسخة '+fmt.format(quoteVersion(q))+'</span>'+esc(q.client||'—')+'</td><td dir="ltr">'+esc(q.quoteNo||'—')+'</td><td>'+esc(serviceLabel(q))+'</td><td>'+fmt.format(Number(q.amount)||0)+' ر.س</td><td>'+esc(q.status||'مسودة')+(q.sentVia?'<span class="version-label">أُرسل عبر '+esc(q.sentVia)+'</span>':'')+'</td><td>'+esc(q.sentAt||String(q.updatedAtIso||'').slice(0,10)||'—')+(q.nextDate?'<span class="version-label">متابعة: '+esc(q.nextDate)+'</span>':'')+'</td><td><div class="row-actions"><a class="btn gold" href="/services/pricing/tool/?quote='+encodeURIComponent(quoteKey(q))+'">فتح</a><button class="btn danger" type="button" data-delete-quote="'+esc(quoteKey(q))+'">حذف</button></div></td></tr>').join('');
   return head+items;
  }).join('')||'<tr><td colspan="7" class="empty">لا توجد عروض مطابقة.</td></tr>';
 }
