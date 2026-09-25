@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>الكتابة الأكاديمية بمساعدة الذكاء الاصطناعي</title>
+  <meta name="description" content="عرض تقديمي عن الكتابة الأكاديمية بمساعدة الذكاء الاصطناعي وتوصيات الاستخدام الأخلاقي." />
+  <style>
+    :root{
+      --ink:#172033;
+      --muted:#6e7890;
+      --bg:#0f172a;
+      --paper:#fffaf0;
+      --paper-2:#f7efe1;
+      --gold:#d7ad4f;
+      --gold-2:#f1d489;
+      --teal:#2fb9b2;
+      --rose:#c95d5d;
+      --amber:#d99837;
+      --green:#4f9f78;
+      --blue:#667eea;
+      --line:rgba(23,32,51,.12);
+      --shadow:0 30px 80px rgba(0,0,0,.28);
+      --radius:36px;
+      --font: "IBM Plex Sans Arabic", "SF Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+      --latin: "IBM Plex Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);font-family:var(--font);color:var(--ink);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+    body:before{content:"";position:fixed;inset:-18vmax;background:
+      radial-gradient(circle at 10% 15%, rgba(215,173,79,.36), transparent 24%),
+      radial-gradient(circle at 82% 18%, rgba(47,185,178,.28), transparent 24%),
+      radial-gradient(circle at 55% 92%, rgba(102,126,234,.28), transparent 28%),
+      linear-gradient(140deg,#0a1022 0%,#111b31 54%,#171123 100%);z-index:-3}
+    body:after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.28;background-image:
+      linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);background-size:48px 48px;mask-image:radial-gradient(circle at center, #000 0 58%, transparent 88%);z-index:-2}
+    .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .viewport{position:fixed;inset:0;overflow:hidden;perspective:1800px;touch-action:pan-y}
+    .world{position:absolute;inset:0;transform-origin:0 0;transition:transform 950ms cubic-bezier(.22,1,.36,1);will-change:transform}
+    .slide{position:absolute;left:var(--x);top:var(--y);width:min(1120px,calc(100vw - 56px));height:min(630px,calc(100vh - 116px));transform:translate(-50%,-50%) rotate(var(--r)) scale(var(--s));transform-origin:center;border-radius:var(--radius);background:
+      linear-gradient(135deg,rgba(255,255,255,.88),rgba(255,250,240,.97) 42%,rgba(247,239,225,.96));box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.46);overflow:hidden;padding:54px 62px;display:grid;grid-template-rows:auto 1fr;gap:28px;isolation:isolate}
+    .slide:before{content:"";position:absolute;inset:0;background:
+      radial-gradient(circle at 12% 18%,rgba(215,173,79,.17),transparent 25%),
+      radial-gradient(circle at 90% 12%,rgba(47,185,178,.12),transparent 22%),
+      linear-gradient(180deg,rgba(255,255,255,.52),transparent 34%);z-index:-2}
+    .slide:after{content:"";position:absolute;inset:20px;border:1px solid rgba(23,32,51,.08);border-radius:calc(var(--radius) - 14px);pointer-events:none;z-index:-1}
+    .slide.is-active{box-shadow:0 40px 110px rgba(0,0,0,.38)}
+    .slide.is-active .reveal{animation:rise .72s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i,0)*90ms)}
+    @keyframes rise{from{opacity:0;transform:translateY(28px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;width:max-content;max-width:100%;font-size:17px;font-weight:800;color:#6e541f;background:rgba(215,173,79,.16);border:1px solid rgba(215,173,79,.28);border-radius:999px;padding:8px 16px}
+    .eyebrow:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 8px rgba(215,173,79,.14)}
+    h1,h2,h3,p{margin:0;text-wrap:balance}
+    h1{font-size:clamp(38px,5.2vw,70px);line-height:1.13;letter-spacing:-.04em;font-weight:900;color:#121a2b}
+    h2{font-size:clamp(32px,4vw,52px);line-height:1.14;letter-spacing:-.035em;font-weight:900;color:#141e31}
+    h3{font-size:clamp(23px,2.4vw,32px);line-height:1.25;font-weight:900;color:#18243a}
+    .latin{font-family:var(--latin);direction:ltr;unicode-bidi:embed;letter-spacing:0}
+    .subtitle{font-size:clamp(20px,2.1vw,28px);line-height:1.55;color:#38455f;font-weight:700}
+    .meta{color:#67718a;font-size:clamp(17px,1.55vw,22px);line-height:1.7;font-weight:700}
+    .big{font-size:clamp(42px,7vw,96px);font-weight:950;letter-spacing:-.07em;line-height:.95;color:#121a2b}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+    .stack{display:grid;gap:18px;align-content:center}
+    .bullets{display:grid;gap:16px;align-content:center;margin:0;padding:0;list-style:none}
+    .bullets li,.point{position:relative;background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:24px;padding:18px 24px 18px 20px;font-size:clamp(20px,2.15vw,28px);line-height:1.45;font-weight:800;color:#25314a;box-shadow:0 14px 34px rgba(23,32,51,.07)}
+    .bullets li:before{content:"";position:absolute;right:0;top:22px;width:7px;height:32px;border-radius:999px;background:var(--gold);transform:translateX(50%)}
+    .mini{font-size:clamp(16px,1.5vw,20px);line-height:1.65;font-weight:700;color:#5b657d}
+    .card{position:relative;background:rgba(255,255,255,.56);border:1px solid var(--line);border-radius:28px;padding:26px 28px;box-shadow:0 18px 44px rgba(23,32,51,.08);overflow:hidden}
+    .card strong{font-size:clamp(23px,2.5vw,34px);line-height:1.25;display:block;color:#172033}
+    .card p{font-size:clamp(18px,1.75vw,23px);line-height:1.55;font-weight:800;color:#3f4c67;margin-top:12px}
+    .number-tag{font-family:var(--latin);direction:ltr;position:absolute;left:22px;top:18px;font-size:72px;line-height:1;font-weight:900;color:rgba(23,32,51,.08);letter-spacing:-.08em}
+    .kicker-line{position:absolute;inset-inline:60px;bottom:34px;height:5px;border-radius:999px;background:linear-gradient(90deg,transparent,var(--gold),var(--teal),transparent);opacity:.55}
+    .title-layout{grid-template-rows:1fr auto;gap:22px;align-items:center}
+    .title-mark{position:absolute;width:390px;height:390px;border-radius:50%;left:-95px;bottom:-115px;border:1px solid rgba(215,173,79,.34);background:radial-gradient(circle,rgba(215,173,79,.2),transparent 62%)}
+    .title-mark:before,.title-mark:after{content:"";position:absolute;border-radius:50%;inset:44px;border:1px dashed rgba(23,32,51,.18)}
+    .title-mark:after{inset:98px;border-style:solid;background:radial-gradient(circle,rgba(47,185,178,.16),transparent 67%)}
+    .hero-title{display:grid;gap:22px;max-width:840px;z-index:1}
+    .hero-title .paper{display:inline-block;color:#816126;font-weight:900;background:rgba(215,173,79,.16);border:1px solid rgba(215,173,79,.25);padding:8px 14px;border-radius:16px;width:max-content;max-width:100%}
+    .footer-meta{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;border-top:1px solid rgba(23,32,51,.1);padding-top:20px;color:#58627a;font-size:clamp(16px,1.45vw,21px);font-weight:800}
+    .orbit{position:absolute;left:72px;top:82px;width:190px;height:190px;border-radius:50%;border:1px solid rgba(23,32,51,.1);opacity:.95}
+    .orbit span{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 12px rgba(215,173,79,.14)}
+    .orbit span:nth-child(1){right:25px;top:3px}.orbit span:nth-child(2){left:12px;top:92px;background:var(--teal);box-shadow:0 0 0 12px rgba(47,185,178,.13)}.orbit span:nth-child(3){right:52px;bottom:0;background:var(--blue);box-shadow:0 0 0 12px rgba(102,126,234,.13)}
+    .reason-flow{height:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;align-items:center}
+    .reason{min-height:250px;display:flex;flex-direction:column;justify-content:flex-end}
+    .reason .num{font-family:var(--latin);font-size:68px;font-weight:950;color:rgba(23,32,51,.1);direction:ltr;line-height:1;margin-bottom:20px}
+    .split-visual{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:24px;height:100%;align-items:center}
+    .machine{position:relative;border-radius:34px;background:linear-gradient(145deg,#18243a,#0f172a);height:330px;padding:34px;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),0 24px 60px rgba(15,23,42,.26);overflow:hidden}
+    .machine:before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle,rgba(47,185,178,.26),transparent 42%);animation:pulse 5s ease-in-out infinite}
+    @keyframes pulse{50%{transform:scale(1.12) rotate(8deg);opacity:.8}}
+    .machine .lines{position:relative;display:grid;gap:12px;margin-top:58px}
+    .machine .lines i{display:block;height:13px;border-radius:999px;background:rgba(255,255,255,.2)}
+    .machine .lines i:nth-child(2){width:82%}.machine .lines i:nth-child(3){width:65%}.machine .lines i:nth-child(4){width:74%}
+    .challenge{display:grid;gap:18px;align-content:center}
+    .challenge .stamp{font-size:clamp(22px,2.6vw,34px);line-height:1.3;font-weight:950;color:#fff;background:linear-gradient(135deg,var(--rose),#9f3d55);border-radius:26px;padding:22px 26px;box-shadow:0 20px 52px rgba(201,93,93,.26)}
+    .risk-layout{display:grid;grid-template-columns:.95fr 1.35fr;gap:28px;align-items:center;height:100%}
+    .stat-box{height:100%;min-height:380px;border-radius:34px;background:linear-gradient(150deg,#151f34,#2b2140);color:white;padding:36px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:0 28px 70px rgba(15,23,42,.25);position:relative;overflow:hidden}
+    .stat-box:before{content:"";position:absolute;inset:auto -30% -42% -30%;height:78%;background:radial-gradient(circle,rgba(215,173,79,.38),transparent 65%)}
+    .stat-box .percent{font-family:var(--latin);direction:ltr;font-size:clamp(90px,12vw,170px);font-weight:950;line-height:.86;color:#f5d982;letter-spacing:-.09em;position:relative}
+    .stat-box .caption{font-size:clamp(20px,2.1vw,28px);line-height:1.45;font-weight:900;position:relative;margin-top:22px;color:#fff6d8}
+    .risk-list{display:grid;gap:17px}
+    .risk{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:25px;padding:22px 24px;font-size:clamp(21px,2.1vw,29px);font-weight:900;line-height:1.35;color:#1e2a43;box-shadow:0 16px 38px rgba(23,32,51,.07)}
+    .risk .dot{width:48px;height:48px;border-radius:17px;background:rgba(201,93,93,.13);display:grid;place-items:center;color:var(--rose);font-family:var(--latin);font-weight:950;direction:ltr}
+    .question-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;height:100%;align-items:stretch}
+    .q-card{position:relative;border-radius:34px;padding:34px;background:rgba(255,255,255,.62);border:1px solid var(--line);box-shadow:0 18px 50px rgba(23,32,51,.08);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+    .q-card:before{content:"؟";position:absolute;left:24px;top:-28px;font-size:190px;font-weight:950;color:rgba(23,32,51,.055);line-height:1}
+    .q-card p{font-size:clamp(29px,3.4vw,46px);line-height:1.28;font-weight:950;color:#19243a;position:relative}
+    .q-card .tag{font-family:var(--latin);direction:ltr;font-size:82px;font-weight:950;line-height:1;color:rgba(215,173,79,.45)}
+    .framework{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:center;height:100%}
+    .criteria{display:grid;gap:18px}
+    .criterion{padding:24px 26px;border-radius:28px;background:rgba(255,255,255,.62);border:1px solid var(--line);box-shadow:0 16px 42px rgba(23,32,51,.07)}
+    .criterion strong{font-size:clamp(21px,2.15vw,30px);line-height:1.4;color:#172033}
+    .criterion .no{display:inline-flex;margin-top:12px;border-radius:999px;padding:6px 14px;font-weight:950;color:#fff;background:var(--rose);font-size:20px}
+    .levels{height:390px;display:grid;align-content:center;gap:14px;position:relative}
+    .level{height:94px;border-radius:28px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-size:clamp(22px,2.5vw,34px);font-weight:950;box-shadow:0 18px 44px rgba(23,32,51,.14)}
+    .level:nth-child(1){background:linear-gradient(135deg,var(--green),#327d69)}.level:nth-child(2){background:linear-gradient(135deg,var(--amber),#b57524)}.level:nth-child(3){background:linear-gradient(135deg,var(--rose),#9f3d55)}
+    .ethical-layout{display:grid;grid-template-columns:.88fr 1.12fr;gap:28px;height:100%;align-items:center}
+    .level-badge{height:100%;min-height:360px;border-radius:34px;color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:34px;box-shadow:0 26px 66px rgba(23,32,51,.18);position:relative;overflow:hidden}
+    .level-badge:before{content:"";position:absolute;inset:-45%;background:radial-gradient(circle,rgba(255,255,255,.3),transparent 54%);transform:translate(-10%,25%)}
+    .level-badge .level-word{font-size:clamp(32px,5.2vw,64px);line-height:1.12;font-weight:950;position:relative}
+    .level-badge .level-small{font-size:clamp(18px,1.7vw,23px);font-weight:900;opacity:.9;margin-top:16px;position:relative}
+    .ok{background:linear-gradient(145deg,#4f9f78,#277263)}.warn{background:linear-gradient(145deg,#d99837,#a86c21)}.danger{background:linear-gradient(145deg,#c95d5d,#973b54)}
+    .fineprint{font-size:clamp(18px,1.6vw,22px);line-height:1.65;font-weight:800;color:#59647c;background:rgba(255,255,255,.55);border:1px solid rgba(23,32,51,.09);border-radius:22px;padding:16px 20px}
+    .checklist{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:center;height:100%}
+    .check{position:relative;min-height:150px;border-radius:30px;background:rgba(255,255,255,.62);border:1px solid var(--line);padding:26px 32px 26px 26px;display:flex;align-items:center;gap:18px;box-shadow:0 18px 44px rgba(23,32,51,.08);font-size:clamp(22px,2.25vw,31px);line-height:1.38;font-weight:950;color:#1c2941}
+    .check:before{content:"";width:38px;height:38px;flex:0 0 auto;border-radius:12px;border:3px solid var(--gold);background:rgba(215,173,79,.1);box-shadow:inset 0 0 0 7px rgba(255,255,255,.55)}
+    .thanks{display:grid;place-items:center;text-align:center;height:100%;gap:34px}
+    .thanks .thanks-main{font-size:clamp(48px,7vw,90px);line-height:1.05;font-weight:950;color:#121a2b;letter-spacing:-.05em}
+    .thanks .name{font-size:clamp(26px,3vw,40px);font-weight:900;color:#25314a}
+    .thanks .id{font-family:var(--latin);direction:ltr;font-size:clamp(21px,2.2vw,30px);font-weight:900;color:#6d758b;background:rgba(215,173,79,.14);border:1px solid rgba(215,173,79,.25);border-radius:999px;padding:10px 20px}
+    .controls{position:fixed;left:18px;right:18px;bottom:18px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:14px;z-index:20;color:white;pointer-events:none}
+    .control-group{display:flex;align-items:center;gap:10px;pointer-events:auto;background:rgba(10,16,34,.58);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px;box-shadow:0 18px 44px rgba(0,0,0,.18)}
+    button{font-family:inherit;border:0;background:transparent;color:inherit;cursor:pointer}
+    .icon-btn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:22px;font-weight:900;transition:transform 150ms ease,background 180ms ease;line-height:1}
+    .icon-btn:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
+    .count{direction:ltr;font-family:var(--latin);font-size:14px;font-weight:900;color:rgba(255,255,255,.8);min-width:58px;text-align:center}
+    .dots{display:flex;align-items:center;gap:7px;pointer-events:auto;background:rgba(10,16,34,.58);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:14px 16px;box-shadow:0 18px 44px rgba(0,0,0,.18)}
+    .dot-btn{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.36);padding:0;transition:width 250ms ease,background 250ms ease,transform 180ms ease}
+    .dot-btn.is-active{width:34px;background:linear-gradient(90deg,var(--gold),var(--gold-2))}.dot-btn:hover{transform:scale(1.2)}
+    .progress{position:fixed;left:0;right:0;top:0;height:5px;background:rgba(255,255,255,.08);z-index:30}.progress i{display:block;height:100%;width:var(--p,0%);background:linear-gradient(90deg,var(--gold),var(--teal));transition:width 550ms cubic-bezier(.22,1,.36,1)}
+    .hint{position:fixed;right:24px;top:24px;color:rgba(255,255,255,.62);font-family:var(--latin);direction:ltr;font-size:13px;font-weight:800;letter-spacing:.02em;z-index:18;background:rgba(10,16,34,.32);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:8px 12px}
+    @media(max-width:860px){
+      .slide{padding:34px 28px;border-radius:28px;gap:18px;height:calc(100vh - 106px);width:calc(100vw - 26px)}
+      .slide:after{inset:12px;border-radius:20px}
+      .grid-2,.grid-3,.reason-flow,.split-visual,.risk-layout,.question-grid,.framework,.ethical-layout,.checklist{grid-template-columns:1fr;gap:14px}
+      .reason-flow{align-content:center}.reason{min-height:auto}.reason .num{font-size:40px;margin-bottom:8px}
+      .machine,.stat-box,.level-badge{min-height:210px;height:auto}.machine{display:none}
+      .risk-layout,.ethical-layout{align-items:stretch}.stat-box .percent{font-size:92px}.stat-box{padding:24px}.q-card{min-height:210px}.q-card .tag{font-size:46px}
+      .framework .levels{height:auto}.level{height:74px}.bullets{gap:10px}.bullets li,.point{font-size:20px;padding:14px 18px}.check{min-height:auto;font-size:20px;padding:18px 20px}.check:before{width:28px;height:28px;border-radius:10px}
+      .footer-meta{display:grid;gap:6px}.orbit,.title-mark,.hint{display:none}.dots{display:none}.controls{bottom:12px;left:12px;right:12px}.control-group{margin-inline:auto}.count{min-width:52px}
+    }
+    @media(max-height:620px){.slide{padding-top:28px;padding-bottom:28px;gap:14px}.bullets li,.point,.risk,.check{font-size:18px}.card{padding:18px 20px}.stat-box,.level-badge,.machine{min-height:220px}.h1,h1{font-size:38px}.thanks .thanks-main{font-size:48px}}
+    @media(prefers-reduced-motion:reduce){.world,.progress i,.dot-btn,.icon-btn{transition:none!important}.slide.is-active .reveal{animation:none!important}.machine:before{animation:none!important}}
+    @media print{html,body{overflow:visible;background:white}.viewport,.world{position:static;transform:none!important}.slide{position:relative;left:auto!important;top:auto!important;transform:none!important;width:297mm;height:167mm;margin:0 auto 8mm;page-break-after:always;box-shadow:none}.controls,.progress,.hint{display:none}}
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><i></i></div>
+  <div class="hint" aria-hidden="true">← → / Space</div>
+
+  <main class="viewport" id="deck" aria-live="polite">
+    <div class="world" id="world">
+      <section class="slide title-layout" data-x="0" data-y="0" data-r="0" data-s="1" aria-label="الشريحة 1">
+        <div class="title-mark" aria-hidden="true"></div>
+        <div class="orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="hero-title">
+          <div class="eyebrow reveal" style="--i:0">توصيات للاستخدام الأخلاقي</div>
+          <h1 class="reveal" style="--i:1">الكتابة الأكاديمية بمساعدة الذكاء الاصطناعي</h1>
+          <p class="subtitle reveal" style="--i:2"><span class="paper latin">Cheng, Calhoun &amp; Reedy (2025)</span></p>
+        </div>
+        <div class="footer-meta reveal" style="--i:3">
+          <span>إعداد: نوره أمين المحمدي</span>
+          <span>مقرر تقنيات وتطبيقات التعليم</span>
+        </div>
+      </section>
+
+      <section class="slide" data-x="1320" data-y="-140" data-r="-7" data-s="1" aria-label="الشريحة 2">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 2</div><h2 class="reveal" style="--i:1">مبررات اختيار الورقة</h2></header>
+        <div class="reason-flow">
+          <article class="card reason reveal" style="--i:2"><div class="num">01</div><strong>مرحلة إعداد خط البحث والتحضير لرسالة الماجستير</strong></article>
+          <article class="card reason reveal" style="--i:3"><div class="num">02</div><strong>توقع الاستعانة بأدوات الذكاء الاصطناعي التوليدي أثناء الكتابة</strong></article>
+          <article class="card reason reveal" style="--i:4"><div class="num">03</div><strong>الحاجة إلى فهم الأطر الأخلاقية قبل الاستخدام لا بعده</strong></article>
+        </div>
+      </section>
+
+      <section class="slide" data-x="2520" data-y="260" data-r="6" data-s=".96" aria-label="الشريحة 3">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 3</div><h2 class="reveal" style="--i:1">طبيعة الإشكالية</h2></header>
+        <div class="split-visual">
+          <div class="machine reveal" style="--i:2" aria-hidden="true"><div class="lines"><i></i><i></i><i></i><i></i></div></div>
+          <div class="challenge">
+            <p class="point reveal" style="--i:3">أدوات الذكاء الاصطناعي التوليدي لم تعد أداة مساعدة فحسب</p>
+            <p class="point reveal" style="--i:4">أصبحت قادرة على إنتاج محتوى مكتوب جديد بمفردها</p>
+            <p class="stamp reveal" style="--i:5">تحد مباشر لمفاهيم النزاهة الأكاديمية التقليدية</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-x="3660" data-y="-160" data-r="-3" data-s="1.03" aria-label="الشريحة 4">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 4</div><h2 class="reveal" style="--i:1">ثلاث مشكلات رئيسية</h2></header>
+        <div class="risk-layout">
+          <aside class="stat-box reveal" style="--i:2">
+            <div class="percent">7%</div>
+            <div class="caption">نسبة الدقة الكاملة للمراجع المولدة لم تتجاوز في إحدى الدراسات</div>
+          </aside>
+          <div class="risk-list">
+            <div class="risk reveal" style="--i:3"><span class="dot">1</span><span>الانتحال العلمي <span class="latin">(Plagiarism)</span></span></div>
+            <div class="risk reveal" style="--i:4"><span class="dot">2</span><span>هلوسة الذكاء الاصطناعي: محتوى مفبرك</span></div>
+            <div class="risk reveal" style="--i:5"><span class="dot">3</span><span>مراجع غير دقيقة أو مختلقة بالكامل</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-x="4750" data-y="460" data-r="8" data-s=".95" aria-label="الشريحة 5">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 5</div><h2 class="reveal" style="--i:1">سؤالان توجيهيان</h2></header>
+        <div class="question-grid">
+          <article class="q-card reveal" style="--i:2"><div class="tag">01</div><p>هل الأداة مصممة أصلاً للتحقق من الحقائق؟</p></article>
+          <article class="q-card reveal" style="--i:3"><div class="tag">02</div><p>هل يؤثر استخدامها على تطوري كباحثة في التفكير النقدي؟</p></article>
+        </div>
+      </section>
+
+      <section class="slide" data-x="5890" data-y="0" data-r="-6" data-s="1" aria-label="الشريحة 6">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 6</div><h2 class="reveal" style="--i:1">إطار التصنيف: السؤالان الموجهان</h2></header>
+        <div class="framework">
+          <div class="criteria">
+            <article class="criterion reveal" style="--i:2"><strong>المعيار الأول: هل الأداة قادرة فعلياً على التحقق من الحقائق؟</strong><span class="no">لا</span></article>
+            <article class="criterion reveal" style="--i:3"><strong>المعيار الثاني: هل يؤثر الاستخدام سلباً على التفكير النقدي وتطور الباحث؟</strong></article>
+            <p class="fineprint reveal" style="--i:4">على أساس هذين السؤالين صنفت الاستخدامات إلى ثلاثة مستويات أخلاقية</p>
+          </div>
+          <div class="levels reveal" style="--i:5" aria-hidden="true">
+            <div class="level">مقبول أخلاقياً</div>
+            <div class="level">مشروط أخلاقياً</div>
+            <div class="level">مشبوه أخلاقياً</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-x="7040" data-y="-360" data-r="5" data-s="1" aria-label="الشريحة 7">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 7</div><h2 class="reveal" style="--i:1">المستوى الأول: مقبول أخلاقياً</h2></header>
+        <div class="ethical-layout">
+          <aside class="level-badge ok reveal" style="--i:2"><div class="level-word">مقبول أخلاقياً</div><div class="level-small">مع مراجعة بشرية دائمة</div></aside>
+          <div class="stack">
+            <ul class="bullets">
+              <li class="reveal" style="--i:3">إعادة هيكلة نص أو أفكار موجودة مسبقاً دون توليد محتوى جديد</li>
+              <li class="reveal" style="--i:4">التدقيق النحوي والإملائي وتحسين سهولة القراءة</li>
+              <li class="reveal" style="--i:5">الترجمة اللغوية إلى لغة مكافئة دلالياً</li>
+            </ul>
+            <p class="fineprint reveal" style="--i:6">الشرط: مراجعة بشرية دائمة تعكس صوت الباحث الخاص</p>
+            <p class="fineprint reveal" style="--i:7">في الترجمة: يوصى بمراجعة متحدث أصلي للغة المستهدفة</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-x="8190" data-y="240" data-r="-8" data-s=".97" aria-label="الشريحة 8">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 8</div><h2 class="reveal" style="--i:1">المستوى الثاني: مشروط أخلاقياً</h2></header>
+        <div class="ethical-layout">
+          <aside class="level-badge warn reveal" style="--i:2"><div class="level-word">مشروط أخلاقياً</div><div class="level-small">دون تغيير المعنى الجوهري</div></aside>
+          <div class="stack">
+            <ul class="bullets">
+              <li class="reveal" style="--i:3">إنشاء مخطط تفصيلي <span class="latin">(Outline)</span> من محتوى موجود مسبقاً</li>
+              <li class="reveal" style="--i:4">تلخيص محتوى، أو تحسين وضوح نص مصاغ سلفاً</li>
+              <li class="reveal" style="--i:5">العصف الذهني للأفكار انطلاقاً من محتوى أصلي يقدمه الباحث</li>
+              <li class="reveal" style="--i:6">المخاطرة: توليد نص جديد نسبياً يرفع احتمال التحيز أو الهلوسة أو الانتحال</li>
+            </ul>
+            <p class="fineprint reveal" style="--i:7">الشرط: التأكد من أن الناتج يعكس أفكار الباحث دون تغيير المعنى الجوهري</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-x="9360" data-y="-240" data-r="4" data-s="1.02" aria-label="الشريحة 9">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 9</div><h2 class="reveal" style="--i:1">المستوى الثالث: مشبوه أخلاقياً</h2></header>
+        <div class="ethical-layout">
+          <aside class="level-badge danger reveal" style="--i:2"><div class="level-word">غير موصى به</div><div class="level-small">الأداة غير موثوقة في المراجع</div></aside>
+          <div class="stack">
+            <ul class="bullets">
+              <li class="reveal" style="--i:3">صياغة نص جديد بالكامل <span class="latin">(de novo)</span> دون تقديم محتوى أصلي في الموجه</li>
+              <li class="reveal" style="--i:4">تطوير مفاهيم بحثية جديدة من الصفر</li>
+              <li class="reveal" style="--i:5">تفسير بيانات الدراسة وتحليلها الأولي</li>
+              <li class="reveal" style="--i:6">مراجعة الأدبيات والتحقق من الامتثال الأخلاقي وكشف الانتحال</li>
+            </ul>
+            <p class="fineprint reveal" style="--i:7">المبرر: يحرم الباحث من التفاعل العميق مع مادته البحثية، والأداة غير موثوقة في المراجع</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-x="10480" data-y="420" data-r="-5" data-s=".98" aria-label="الشريحة 10">
+        <header><div class="eyebrow reveal" style="--i:0">الشريحة 10</div><h2 class="reveal" style="--i:1">قائمة المراجعة الأخلاقية</h2></header>
+        <div class="checklist">
+          <div class="check reveal" style="--i:2">هل الأفكار الجوهرية من إنتاجي الخاص؟</div>
+          <div class="check reveal" style="--i:3">هل حافظت على كفاءتي البحثية؟</div>
+          <div class="check reveal" style="--i:4">هل تحققت من دقة المحتوى والمراجع؟</div>
+          <div class="check reveal" style="--i:5">هل أفصحت بوضوح عن طريقة الاستخدام؟</div>
+        </div>
+      </section>
+
+      <section class="slide" data-x="11660" data-y="0" data-r="0" data-s="1" aria-label="الشريحة 11">
+        <div class="thanks">
+          <div class="reveal" style="--i:0"><div class="eyebrow" style="margin:auto">الشريحة 11</div></div>
+          <div class="thanks-main reveal" style="--i:1">شكراً لحسن استماعكن</div>
+          <div class="name reveal" style="--i:2">نوره أمين المحمدي</div>
+          <div class="id reveal" style="--i:3">الرقم الجامعي: 2500487</div>
+        </div>
+        <div class="kicker-line" aria-hidden="true"></div>
+      </section>
+    </div>
+  </main>
+
+  <nav class="controls" aria-label="التنقل بين الشرائح">
+    <div class="control-group">
+      <button class="icon-btn" id="prev" aria-label="السابق">›</button>
+      <span class="count" id="count">1 / 11</span>
+      <button class="icon-btn" id="next" aria-label="التالي">‹</button>
+      <button class="icon-btn" id="full" aria-label="ملء الشاشة">⛶</button>
+    </div>
+    <div class="dots" id="dots" aria-label="اختيار شريحة"></div>
+  </nav>
+
+  <script>
+    (() => {
+      const world = document.getElementById('world');
+      const slides = [...document.querySelectorAll('.slide')];
+      const dots = document.getElementById('dots');
+      const count = document.getElementById('count');
+      const progress = document.querySelector('.progress i');
+      const prevBtn = document.getElementById('prev');
+      const nextBtn = document.getElementById('next');
+      const fullBtn = document.getElementById('full');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let current = 0;
+      let wheelLock = false;
+      const state = slides.map((slide, idx) => {
+        const x = Number(slide.dataset.x || 0);
+        const y = Number(slide.dataset.y || 0);
+        const r = Number(slide.dataset.r || 0);
+        const s = Number(slide.dataset.s || 1);
+        slide.style.setProperty('--x', `${x}px`);
+        slide.style.setProperty('--y', `${y}px`);
+        slide.style.setProperty('--r', `${r}deg`);
+        slide.style.setProperty('--s', s);
+        const b = document.createElement('button');
+        b.className = 'dot-btn';
+        b.type = 'button';
+        b.setAttribute('aria-label', `الشريحة ${idx + 1}`);
+        b.addEventListener('click', () => go(idx));
+        dots.appendChild(b);
+        return {x,y,r,s,dot:b};
+      });
+      const clamp = (n,min,max) => Math.max(min, Math.min(max, n));
+      function cameraScale(slide, s){
+        const w = slide.offsetWidth * s;
+        const h = slide.offsetHeight * s;
+        const fit = Math.min((innerWidth * .89) / w, (innerHeight * .80) / h);
+        return clamp(fit, .34, 1.12);
+      }
+      function apply(){
+        const item = state[current];
+        const slide = slides[current];
+        const scale = cameraScale(slide, item.s);
+        if (reduceMotion) world.style.transitionDuration = '0ms';
+        world.style.transform = `translate(${innerWidth/2}px, ${innerHeight/2}px) scale(${scale}) rotate(${-item.r}deg) translate(${-item.x}px, ${-item.y}px)`;
+        slides.forEach((s,i) => {
+          s.classList.toggle('is-active', i === current);
+          s.setAttribute('aria-hidden', i === current ? 'false' : 'true');
+        });
+        state.forEach((s,i) => s.dot.classList.toggle('is-active', i === current));
+        count.textContent = `${current + 1} / ${slides.length}`;
+        progress.style.setProperty('--p', `${((current + 1) / slides.length) * 100}%`);
+        history.replaceState(null, '', `#${current + 1}`);
+      }
+      function go(index){current = clamp(index, 0, slides.length - 1); apply();}
+      function next(){go(current + 1)}
+      function prev(){go(current - 1)}
+      nextBtn.addEventListener('click', next);
+      prevBtn.addEventListener('click', prev);
+      fullBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
+      });
+      addEventListener('keydown', (e) => {
+        if (['ArrowLeft','PageDown',' '].includes(e.key)) { e.preventDefault(); next(); }
+        if (['ArrowRight','PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+        if (e.key === 'Home') go(0);
+        if (e.key === 'End') go(slides.length - 1);
+      });
+      addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaY) < 32 || wheelLock) return;
+        wheelLock = true;
+        e.deltaY > 0 ? next() : prev();
+        setTimeout(() => wheelLock = false, 820);
+      }, {passive:true});
+      let startX = 0, startY = 0;
+      addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }, {passive:true});
+      addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) dx < 0 ? next() : prev();
+      }, {passive:true});
+      addEventListener('resize', apply);
+      const start = Number(location.hash.replace('#',''));
+      if (start >= 1 && start <= slides.length) current = start - 1;
+      apply();
+    })();
+  </script>
+</body>
+</html>
