@@ -1,6 +1,6 @@
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js';
 import {getAuth,setPersistence,browserLocalPersistence,GoogleAuthProvider,signInWithPopup,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
-import {getFirestore,doc,getDoc,setDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js';
+import {getFirestore,doc,getDoc,setDoc,runTransaction,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js';
 
 const config={apiKey:'AIzaSyAAvC9y5jQ_7fAwmkCqBtgFDrBRF5t4uI0',authDomain:'mesraah-a2dfc.firebaseapp.com',projectId:'mesraah-a2dfc',storageBucket:'mesraah-a2dfc.firebasestorage.app',messagingSenderId:'986043593957',appId:'1:986043593957:web:b848313ef8cf83a5f3500c'};
 const app=initializeApp(config);
@@ -17,6 +17,9 @@ export async function signIn(){
 }
 
 export const clientKey=name=>String(name||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('ar');
+export const quoteKey=quote=>String(quote?.id||quote?.quoteNo||'');
+export const quoteSeriesKey=quote=>String(quote?.seriesId||quoteKey(quote));
+export const quoteVersion=quote=>Math.max(1,Number(quote?.version)||1);
 const localKey='pricing_clients_v1';
 function localClients(){
   try{
@@ -37,9 +40,10 @@ function distinctClients(rows){
 export async function loadWorkspace(user){
   const snap=await getDoc(doc(db,'users',user.uid));
   const data=snap.exists()?snap.data():{};
-  const quotes=Array.isArray(data.pricingTool_v1?.quotes)?data.pricingTool_v1.quotes:[];
+  const deleted=new Set(data.pricingTool_v1?.deletedQuoteIds||[]);
+  const quotes=(Array.isArray(data.pricingTool_v1?.quotes)?data.pricingTool_v1.quotes:[]).filter(q=>!deleted.has(quoteKey(q)));
   const stored=Array.isArray(data.pricingClients_v1?.clients)?data.pricingClients_v1.clients:[];
-  const clients=distinctClients([...quotes.map(q=>({name:q.client})),...localClients(),...stored]);
+  const clients=distinctClients([...quotes.map(q=>({name:q.client})),...(stored.length?[]:localClients()),...stored]);
   if(clients.length!==stored.length||clients.some(c=>!stored.some(s=>clientKey(s.name)===clientKey(c.name)))){
     await setDoc(doc(db,'users',user.uid),{pricingClients_v1:{clients,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
   }
@@ -54,4 +58,53 @@ export async function saveClient(user,client,knownClients=[]){
   const clients=distinctClients([...current.filter(c=>clientKey(c.name)!==key),{...old,...client,name}]);
   await setDoc(doc(db,'users',user.uid),{pricingClients_v1:{clients,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
   return clients;
+}
+
+export async function updateClient(user,originalName,changes){
+  const oldKey=clientKey(originalName);
+  const name=String(changes.name||'').trim().replace(/\s+/g,' ');
+  if(!oldKey||!name)throw new Error('اسم العميل مطلوب');
+  const newKey=clientKey(name);
+  const result=await runTransaction(db,async tx=>{
+    const ref=doc(db,'users',user.uid),snap=await tx.get(ref),data=snap.data()||{};
+    const box=data.pricingTool_v1||{};
+    const deleted=new Set(box.deletedQuoteIds||[]);
+    const quotes=(Array.isArray(box.quotes)?box.quotes:[]).filter(q=>!deleted.has(quoteKey(q)));
+    const stored=Array.isArray(data.pricingClients_v1?.clients)?data.pricingClients_v1.clients:[];
+    const clients=distinctClients([...quotes.map(q=>({name:q.client})),...stored]);
+    if(newKey!==oldKey&&clients.some(c=>clientKey(c.name)===newKey))throw new Error('يوجد عميل بهذا الاسم بالفعل');
+    const existing=clients.find(c=>clientKey(c.name)===oldKey);
+    if(!existing)throw new Error('لم يعد العميل موجودًا. حدّث الصفحة وحاول مجددًا');
+    const nextClients=distinctClients([...clients.filter(c=>clientKey(c.name)!==oldKey),{
+      ...existing,name,person:String(changes.person||'').trim(),notes:String(changes.notes||'').trim()
+    }]);
+    const nextQuotes=quotes.map(q=>clientKey(q.client)===oldKey?{...q,client:name}:q);
+    tx.set(ref,{
+      pricingClients_v1:{clients:nextClients,updatedAtIso:new Date().toISOString()},
+      pricingTool_v1:{...box,quotes:nextQuotes,updatedAtIso:new Date().toISOString()},
+      updatedAt:serverTimestamp()
+    },{merge:true});
+    return {clients:nextClients,quotes:nextQuotes};
+  });
+  if(newKey!==oldKey){
+    try{const local=localClients().map(c=>clientKey(c.name)===oldKey?{...c,name}:c);localStorage.setItem(localKey,JSON.stringify(local))}
+    catch(error){console.warn('local client cache skipped',error)}
+  }
+  return result;
+}
+
+export async function deleteQuoteVersion(user,id){
+  const key=String(id||'');
+  if(!key)throw new Error('معرّف النسخة غير صالح');
+  return runTransaction(db,async tx=>{
+    const ref=doc(db,'users',user.uid),snap=await tx.get(ref),data=snap.data()||{};
+    const box=data.pricingTool_v1||{};
+    const quotes=Array.isArray(box.quotes)?box.quotes:[];
+    if(!quotes.some(q=>quoteKey(q)===key))throw new Error('النسخة غير موجودة؛ حدّث الصفحة');
+    const nextQuotes=quotes.filter(q=>quoteKey(q)!==key);
+    const deletedQuoteIds=[...new Set([...(box.deletedQuoteIds||[]),key])];
+    const currentQuoteId=box.currentQuoteId===key?(quoteKey(nextQuotes[0])||null):box.currentQuoteId||null;
+    tx.set(ref,{pricingTool_v1:{...box,quotes:nextQuotes,deletedQuoteIds,currentQuoteId,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
+    return nextQuotes;
+  });
 }
