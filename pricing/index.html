@@ -26,20 +26,27 @@
   <div class="actions"><a class="action main" href="/services/pricing/tool/"><div><b>الدخول إلى أداة التسعير</b><span>إنشاء عرض جديد أو تعديل العرض الجاري.</span></div><div class="arrow">←</div></a><a class="action" href="/services/pricing/clients/"><div><b>العملاء</b><span>عملاؤك مرتبطون مباشرة بأداة التسعير.</span></div><div class="arrow">←</div></a><a class="action" href="/services/pricing/offers/"><div><b>العروض السابقة</b><span>استعراض العروض المحفوظة وفتحها.</span></div><div class="arrow">←</div></a><a class="action" href="/services/pricing/settings/"><div><b>الإعدادات</b><span>الهويات والسداد والقوالب للشركات الأخرى.</span></div><div class="arrow">←</div></a></div>
 </section>
 <section class="grid"><div class="card metric"><small>إجمالي العروض</small><strong id="mTotal">0</strong></div><div class="card metric"><small>عروض مفتوحة</small><strong id="mOpen">0</strong></div><div class="card metric"><small>معتمدة</small><strong id="mWon">0</strong></div><div class="card metric"><small>قيمة مفتوحة</small><strong id="mValue">0</strong></div></section>
-<section class="section"><div class="card"><h2>آخر العروض</h2><table class="table"><thead><tr><th>العميل</th><th>الخدمة</th><th>القيمة</th><th>الحالة</th></tr></thead><tbody id="recent"></tbody></table></div><div class="card"><h2>ترابط الصفحات</h2><div class="empty">تظهر العروض والعملاء هنا من الحساب السحابي نفسه المستخدم في أداة التسعير.</div></div></section>
+<section class="grid" aria-label="ملخص العقود المعتمدة"><div class="card metric"><small>قيمة العقود المعتمدة</small><strong id="mContracts">0</strong></div><div class="card metric"><small>أتعاب الشركاء المحددة</small><strong id="mPartners">0</strong></div><div class="card metric"><small>المتبقي لك قبل المصاريف</small><strong id="mOwn">0</strong></div><div class="card metric"><small>المحصّل من العملاء</small><strong id="mCollected">0</strong></div></section>
+<section class="section"><div class="card"><h2>آخر العروض</h2><table class="table"><thead><tr><th>العميل</th><th>الخدمة</th><th>قيمة العرض</th><th>الحالة</th></tr></thead><tbody id="recent"></tbody></table></div><div class="card"><h2>القراءة المالية</h2><div class="empty" id="financeNote">تظهر قيمة العقد منفصلة عن أتعاب الشركاء والمتبقي لك. لا تُحسب العروض غير المعتمدة دخلًا، ولا تعني حالة التنفيذ اكتمال التحصيل.</div></div></section>
 <div class="note">لوحة التحكم هي الصفحة الرئيسية، وأداة التسعير والعملاء والعروض صفحات تابعة لها.</div>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace} from './data.js';
+import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,latestQuotes,quoteFinances} from './data.js?v=20260926a';
 const fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0}),$=id=>document.getElementById(id);
 const names={governance_session:'جلسة حوكمة',liquidation_pre:'خدمات ما قبل التصفية',diagnosis:'تشخيص حوكمي',authority_matrix:'مصفوفة الصلاحيات',partners:'تنظيم الشركاء',restructuring:'إعادة الهيكلة',monthly:'متابعة شهرية',custom:'خدمة مخصصة'};
 const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
-function render(rows=[]){
- const open=rows.filter(x=>!['مقبول','مرفوض'].includes(x.status));
+function render(allRows=[]){
+ const rows=latestQuotes(allRows),open=rows.filter(x=>!['مقبول','مرفوض'].includes(x.status)),accepted=rows.filter(x=>x.status==='مقبول'),known=accepted.map(quoteFinances).filter(x=>x.partnerCost!==null);
  $('mTotal').textContent=fmt.format(rows.length);$('mOpen').textContent=fmt.format(open.length);
- $('mWon').textContent=fmt.format(rows.filter(x=>x.status==='مقبول').length);
+ $('mWon').textContent=fmt.format(accepted.length);
  $('mValue').textContent=fmt.format(open.reduce((sum,x)=>sum+(Number(x.amount)||0),0));
- $('recent').innerHTML=rows.slice(0,6).map(x=>'<tr><td><b>'+esc(x.client||'—')+'</b></td><td>'+esc(x.serviceName||names[x.service]||x.service||'—')+'</td><td>'+fmt.format(Number(x.amount)||0)+'</td><td>'+esc(x.status||'مسودة')+'</td></tr>').join('')||'<tr><td colspan="4"><div class="empty">لا توجد عروض محفوظة بعد.</div></td></tr>';
+ $('mContracts').textContent=fmt.format(accepted.reduce((sum,x)=>sum+quoteFinances(x).amount,0));
+ $('mPartners').textContent=fmt.format(known.reduce((sum,x)=>sum+x.partnerCost,0));
+ $('mOwn').textContent=fmt.format(known.reduce((sum,x)=>sum+x.ownShare,0));
+ $('mCollected').textContent=fmt.format(accepted.reduce((sum,x)=>sum+quoteFinances(x).collected,0));
+ const missing=accepted.length-known.length;
+ $('financeNote').textContent=missing?'هناك '+fmt.format(missing)+' عقد معتمد لم تُحدد أتعاب شركائه بعد؛ لذلك لا يدخل في إجمالي «المتبقي لك». أدخل صفرًا للمشروع المنفرد.':'قيمة العقود وأتعاب الشركاء والمتبقي لك مبالغ إدارية قبل المصاريف الأخرى والضريبة، وليست قيودًا محاسبية تلقائية.';
+ $('recent').innerHTML=rows.slice(0,6).map(x=>'<tr><td><b>'+esc(x.client||'—')+'</b></td><td>'+esc(x.serviceName||names[x.service]||x.service||'—')+'</td><td>'+fmt.format(Number(x.amount)||0)+'</td><td>'+esc(x.status||'مسودة')+(x.status==='مقبول'?'<br><small>'+esc(x.executionStatus||'بانتظار المتطلبات')+'</small>':'')+'</td></tr>').join('')||'<tr><td colspan="4"><div class="empty">لا توجد عروض محفوظة بعد.</div></td></tr>';
 }
 function promptLogin(message){
  $('recent').innerHTML='<tr><td colspan="4"><div class="empty">'+esc(message)+' <button class="login" id="loginBtn">الدخول بحساب Google</button></div></td></tr>';
