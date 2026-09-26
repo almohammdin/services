@@ -4,9 +4,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>العروض | مسار</title>
-<link rel="apple-touch-icon" sizes="180x180" href="/services/masar/assets/masar-icon-180.png?v=1">
-<link rel="icon" type="image/png" sizes="32x32" href="/services/masar/assets/masar-icon-32.png?v=1">
-<link rel="manifest" href="/services/masar/manifest.webmanifest?v=1">
+<link rel="apple-touch-icon" sizes="180x180" href="/services/masar/assets/masar-icon-180.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="/services/masar/assets/masar-icon-32.png?v=2">
+<link rel="manifest" href="/services/masar/manifest.webmanifest?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -15,7 +15,7 @@
 <style>body:not(.ready) .shell{display:none}.ready .auth{display:none}.auth{min-height:100vh;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,#101828,#263349)}.auth-card{width:min(410px,100%);padding:28px;border-radius:26px;background:#fff;text-align:center;box-shadow:0 26px 65px rgba(0,0,0,.22)}.auth-card h1{font-size:24px}.auth-card p{font-size:13px;color:var(--muted)}.auth-card .btn{width:100%;margin-top:12px}.auth-message{min-height:24px;color:#b42318;font-size:12px}</style>
 <style>html{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button,.btn{transition:transform 140ms cubic-bezier(.23,1,.32,1)}button:active,.btn:active{transform:scale(.98)}@media(pointer:coarse){input{font-size:16px}}@media(prefers-reduced-motion:reduce){button,.btn{transition:none}}</style></head>
 <body><section class="auth"><div class="auth-card"><h1>العروض</h1><p>جارٍ فتح العروض…</p></div></section><main class="shell">
-<header class="hero"><div><h1>مسار · العروض</h1></div><nav class="actions" aria-label="أقسام مسار"><a class="btn" href="/services/masar/">الرئيسية</a><a class="btn gold" href="/services/masar/tool/">إعداد عرض</a><a class="btn" href="/services/masar/clients/">العملاء</a></nav></header>
+<header class="hero"><div><img src="/services/masar/assets/masar-wordmark.jpg" alt="مسار" style="display:block;width:120px;max-width:100%;border-radius:8px;margin-bottom:8px"><h1>العروض</h1></div><nav class="actions" aria-label="أقسام مسار"><a class="btn" href="/services/masar/">الرئيسية</a><a class="btn gold" href="/services/masar/tool/">إعداد عرض</a><a class="btn" href="/services/masar/clients/">العملاء</a></nav></header>
 <section class="card"><div class="toolbar"><div class="stats"><span>إجمالي العروض: <b id="total">0</b></span><span>المعتمدة: <b id="won">0</b></span></div><input id="search" type="search" placeholder="ابحث باسم العميل أو رقم العرض"></div><p id="message" class="notice">جارٍ تحميل العروض…</p><div class="scroll"><table class="table"><thead><tr><th>العميل والنسخة</th><th>رقم العرض</th><th>الخدمة</th><th>القيمة</th><th>الحالة</th><th>الإرسال والمتابعة</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
 </main>
 <script type="module">
@@ -47,6 +47,7 @@ $('rows').onclick=async e=>{
 };
 const requestedClient=new URLSearchParams(location.search).get('client');if(requestedClient)$('search').value=requestedClient;
 await authReady.catch(console.error);
+await auth.authStateReady();
 onAuthStateChanged(auth,async account=>{
  user=account;document.body.classList.toggle('ready',Boolean(account));
  if(!account){location.replace('/services/masar/?next='+encodeURIComponent(location.pathname+location.search));return}

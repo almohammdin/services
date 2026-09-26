@@ -4,9 +4,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>العملاء | مسار</title>
-<link rel="apple-touch-icon" sizes="180x180" href="/services/masar/assets/masar-icon-180.png?v=1">
-<link rel="icon" type="image/png" sizes="32x32" href="/services/masar/assets/masar-icon-32.png?v=1">
-<link rel="manifest" href="/services/masar/manifest.webmanifest?v=1">
+<link rel="apple-touch-icon" sizes="180x180" href="/services/masar/assets/masar-icon-180.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="/services/masar/assets/masar-icon-32.png?v=2">
+<link rel="manifest" href="/services/masar/manifest.webmanifest?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -21,7 +21,7 @@
 <style>html{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button,.btn{transition:transform 140ms cubic-bezier(.23,1,.32,1)}button:active,.btn:active{transform:scale(.98)}@media(pointer:coarse){input,textarea{font-size:16px}}@media(prefers-reduced-motion:reduce){button,.btn{transition:none}}</style>
 </head>
 <body><section class="auth"><div class="auth-card"><h1>العملاء</h1><p>جارٍ فتح بيانات العملاء…</p></div></section><main class="shell">
-<section class="top"><div><h1>مسار · العملاء</h1></div><nav class="actions" aria-label="أقسام مسار"><a class="btn" href="/services/masar/">الرئيسية</a><a class="btn gold" href="/services/masar/tool/">إعداد عرض</a><a class="btn" href="/services/masar/offers/">العروض</a></nav></section>
+<section class="top"><div><img src="/services/masar/assets/masar-wordmark.jpg" alt="مسار" style="display:block;width:120px;max-width:100%;border-radius:8px;margin-bottom:8px"><h1>العملاء</h1></div><nav class="actions" aria-label="أقسام مسار"><a class="btn" href="/services/masar/">الرئيسية</a><a class="btn gold" href="/services/masar/tool/">إعداد عرض</a><a class="btn" href="/services/masar/offers/">العروض</a></nav></section>
 <p id="message" class="notice">جارٍ تحميل بيانات الحساب…</p>
 <section class="grid"><div class="card"><h2 id="formTitle">إضافة عميل</h2><div class="field"><label for="cName">اسم العميل</label><input id="cName" autocomplete="organization"></div><div class="field"><label for="cPerson">الشخص المسؤول</label><input id="cPerson"></div><div class="field"><label for="cEmail">البريد الإلكتروني</label><input id="cEmail" type="email" inputmode="email" autocomplete="email" dir="ltr"></div><div class="field"><label for="cMobile">الجوال</label><input id="cMobile" type="tel" inputmode="tel" autocomplete="tel" dir="ltr"></div><div class="field"><label for="cWhatsapp">رقم واتساب</label><input id="cWhatsapp" type="tel" inputmode="tel" dir="ltr" placeholder="05xxxxxxxx"></div><div class="field"><label for="cNotes">ملاحظات</label><textarea id="cNotes"></textarea></div><div class="form-actions"><button class="btn dark" id="addBtn">حفظ العميل</button><button class="btn" id="cancelBtn" type="button" hidden>إلغاء التعديل</button></div></div><div class="card"><h2>قائمة العملاء</h2><div id="clients" class="list"></div></div></section>
 </main>
@@ -63,6 +63,7 @@ $('addBtn').onclick=async()=>{
  finally{$('addBtn').disabled=false}
 };
 await authReady.catch(console.error);
+await auth.authStateReady();
 onAuthStateChanged(auth,async u=>{
  user=u;document.body.classList.toggle('ready',Boolean(u));
  if(!u){location.replace('/services/masar/?next='+encodeURIComponent(location.pathname+location.search));return}
