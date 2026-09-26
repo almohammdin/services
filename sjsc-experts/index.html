@@ -14,7 +14,7 @@
   --ink:#101828;--muted:#667085;--line:#d8dee8;--paper:#fff;--bg:#f5f7fa;
   --navy:#101828;--navy2:#263349;--gold:#b59a55;--gold2:#d9c27a;
   --ok:#067647;--warn:#b54708;--bad:#b42318;--blue:#175cd3;--violet:#6941c6;
-  --shadow:0 18px 50px rgba(16,24,40,.08);--ease:cubic-bezier(.23,1,.32,1)
+  --shadow:0 18px 50px rgba(16,24,40,.08);--ease-out:cubic-bezier(.23,1,.32,1);--ease-in-out:cubic-bezier(.77,0,.175,1)
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -37,7 +37,8 @@ button,input,select,textarea{font:inherit}
 .brand span{display:block;color:#d8c37f;font-size:11.5px;font-weight:700}
 .back{
   color:#fff;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
-  padding:8px 12px;border-radius:12px;font-size:12px;font-weight:800
+  padding:8px 12px;border-radius:12px;font-size:12px;font-weight:800;
+  transition:transform 160ms var(--ease-out),background-color 180ms ease,border-color 180ms ease
 }
 .hero{
   position:relative;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--navy2));
@@ -87,9 +88,9 @@ tr:last-child td{border-bottom:0}
 .linkset{display:flex;gap:6px;flex-wrap:wrap}
 .mini-btn,.src-link{
   display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#fff;
-  border-radius:9px;padding:6px 8px;font-size:10.5px;font-weight:800;cursor:pointer;transition:.15s var(--ease)
+  border-radius:9px;padding:6px 8px;font-size:10.5px;font-weight:800;cursor:pointer;
+  transition:transform 160ms var(--ease-out),border-color 180ms ease,background-color 180ms ease,box-shadow 180ms ease
 }
-.mini-btn:hover,.src-link:hover{transform:translateY(-1px);border-color:var(--gold)}
 .mini-btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
 .mini-btn.gold{background:#f8f1d7;color:#6f5716;border-color:#e7d79d}
 .priority{font-weight:900}
@@ -101,16 +102,18 @@ tr:last-child td{border-bottom:0}
 input[type="date"]{direction:ltr;text-align:right}
 .note-input{width:100%;min-width:210px;border:1px solid var(--line);border-radius:10px;padding:8px 9px;resize:vertical;min-height:38px}
 .track-actions{display:flex;gap:8px;flex-wrap:wrap}
-.action-btn{border:0;border-radius:11px;padding:9px 12px;font-weight:900;font-size:11px;cursor:pointer}
+.action-btn{border:0;border-radius:11px;padding:9px 12px;font-weight:900;font-size:11px;cursor:pointer;transition:transform 160ms var(--ease-out),background-color 180ms ease,border-color 180ms ease}
 .action-btn.dark{background:var(--navy);color:#fff}
 .action-btn.soft{background:#f2f4f7;color:#344054;border:1px solid var(--line)}
 .save-hint{color:var(--muted);font-size:11px;margin-top:8px}
-dialog{border:0;padding:0;border-radius:24px;width:min(760px,calc(100% - 26px));box-shadow:0 30px 90px rgba(16,24,40,.28);color:var(--ink)}
-dialog::backdrop{background:rgba(16,24,40,.68);backdrop-filter:blur(3px)}
+dialog{border:0;padding:0;border-radius:24px;width:min(760px,calc(100% - 26px));box-shadow:0 30px 90px rgba(16,24,40,.28);color:var(--ink);opacity:0;transform:scale(.97);transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out)}
+dialog[open]{opacity:1;transform:scale(1)}
+dialog::backdrop{background:rgba(16,24,40,.68);backdrop-filter:blur(3px);opacity:1;transition:opacity 180ms var(--ease-out)}
+@starting-style{dialog[open]{opacity:0;transform:scale(.97)}dialog[open]::backdrop{opacity:0}}
 .modal{padding:22px}
 .modal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
 .modal h3{margin:0;font-size:22px}.modal-sub{color:var(--muted);font-size:12px;margin-top:4px}
-.close{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:20px}
+.close{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:20px;transition:transform 160ms var(--ease-out),background-color 180ms ease,border-color 180ms ease}
 .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
 .detail-box{background:#f8fafc;border:1px solid var(--line);border-radius:15px;padding:13px}
 .detail-box small{display:block;color:var(--muted);font-weight:900;font-size:10.5px;margin-bottom:4px}
@@ -119,12 +122,21 @@ dialog::backdrop{background:rgba(16,24,40,.68);backdrop-filter:blur(3px)}
 .message-box b{display:block;color:#e5cd7a;margin-bottom:6px;font-size:12px}
 .message-text{white-space:pre-wrap;color:rgba(255,255,255,.88);font-size:12px;line-height:1.85}
 .message-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.message-actions button,.message-actions a{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;font-size:11px;cursor:pointer}
+.message-actions button,.message-actions a{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;font-size:11px;cursor:pointer;transition:transform 160ms var(--ease-out),background-color 180ms ease,border-color 180ms ease}
+.message-actions .sent-action{background:#f8f1d7;color:#5f4b16;border-color:#e7d79d}
 .sources{margin-top:12px}
 .sources b{font-size:12px}.sources-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
 .footer{margin-top:14px;text-align:center;color:#667085;font-size:11px}
-.toast{position:fixed;left:18px;bottom:18px;z-index:60;background:#101828;color:#fff;border:1px solid rgba(181,154,85,.45);border-radius:12px;padding:10px 13px;font-size:11px;font-weight:800;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}
+.toast{position:fixed;left:18px;bottom:18px;z-index:60;background:#101828;color:#fff;border:1px solid rgba(181,154,85,.45);border-radius:12px;padding:10px 13px;font-size:11px;font-weight:800;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out)}
 .toast.show{opacity:1;transform:none}
+@media (hover:hover) and (pointer:fine){
+  .mini-btn:hover,.src-link:hover,.back:hover{transform:translateY(-1px);border-color:var(--gold)}
+  .action-btn:hover,.close:hover,.message-actions button:hover,.message-actions a:hover{transform:translateY(-1px)}
+  tbody tr{transition:background-color 140ms ease}
+  tbody tr:hover{background:#fbfcfe}
+}
+.mini-btn:active,.src-link:active,.action-btn:active,.close:active,.back:active,.message-actions button:active,.message-actions a:active{transform:scale(.97)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(181,154,85,.34);outline-offset:2px}
 @media(max-width:900px){
   .metrics{grid-template-columns:repeat(2,1fr)}
   .toolbar{grid-template-columns:1fr 1fr}
@@ -141,7 +153,13 @@ dialog::backdrop{background:rgba(16,24,40,.68);backdrop-filter:blur(3px)}
   .head p{margin-top:4px}
   .modal{padding:16px}
 }
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .mini-btn,.src-link,.action-btn,.close,.back,.message-actions button,.message-actions a{transition:background-color 100ms ease,border-color 100ms ease,opacity 100ms ease}
+  .mini-btn:active,.src-link:active,.action-btn:active,.close:active,.back:active,.message-actions button:active,.message-actions a:active{transform:none}
+  dialog{transform:none!important;transition:opacity 100ms ease}
+  .toast{transform:none!important;transition:opacity 100ms ease}
+}
 </style>
 </head>
 <body>
@@ -158,7 +176,7 @@ dialog::backdrop{background:rgba(16,24,40,.68);backdrop-filter:blur(3px)}
     <h1>شبكة الخبراء والممارسين</h1>
     <p>الهدف ليس البحث عن من يشرح النظام السعودي، بل الوصول إلى من درس أو مارس كيف تُستغل مرونة الشركة المساهمة المبسطة في هندسة الملكية والحوكمة وحقوق المساهمين والدخول والخروج والاستثمار.</p>
     <div class="hero-note">
-      <span>أولوية الرحلة: سوريا</span><span>ثم الإمارات</span><span>ثم مصر</span><span>سوريا: 29 سبتمبر – 3 أكتوبر 2026</span>
+      <span>🇸🇾 أولوية الرحلة: سوريا</span><span>🇦🇪 ثم الإمارات</span><span>🇪🇬 ثم مصر</span><span>🇸🇾 سوريا: 29 سبتمبر – 3 أكتوبر 2026</span>
     </div>
   </section>
 
@@ -175,7 +193,7 @@ dialog::backdrop{background:rgba(16,24,40,.68);backdrop-filter:blur(3px)}
     </div>
     <div class="toolbar">
       <div class="field"><label>بحث</label><input id="search" type="search" placeholder="اسم، دولة، بحث، تخصص…"></div>
-      <div class="field"><label>الدولة</label><select id="country"><option value="">الكل</option><option>سوريا</option><option>الإمارات</option><option>مصر</option><option>عمان</option><option>الأردن</option></select></div>
+      <div class="field"><label>الدولة</label><select id="country"><option value="">🌍 الكل</option><option value="سوريا">🇸🇾 سوريا</option><option value="الإمارات">🇦🇪 الإمارات</option><option value="مصر">🇪🇬 مصر</option><option value="عمان">🇴🇲 عمان</option><option value="الأردن">🇯🇴 الأردن</option></select></div>
       <div class="field"><label>النوع</label><select id="type"><option value="">الكل</option><option value="بحث مباشر">بحث مباشر</option><option value="ممارسة صفقات">ممارسة صفقات</option><option value="هجين">هجين</option></select></div>
       <div class="field"><label>الترتيب</label><select id="sort"><option value="priority">الأولوية</option><option value="fit">قوة التطابق</option><option value="country">الدولة</option><option value="name">الاسم</option></select></div>
     </div>
@@ -225,6 +243,7 @@ dialog::backdrop{background:rgba(16,24,40,.68);backdrop-filter:blur(3px)}
       <div class="message-text" id="dMessage"></div>
       <div class="message-actions">
         <button type="button" id="copyMessage">نسخ الرسالة</button>
+        <button class="sent-action" type="button" id="markSent">✓ تم الإرسال</button>
         <a id="emailLink" href="#" hidden>فتح البريد</a>
         <a id="waLink" href="#" target="_blank" rel="noopener" hidden>واتساب</a>
       </div>
@@ -401,6 +420,9 @@ function countryClass(c){
   if(c==="مصر") return "country-eg";
   return "country-other";
 }
+function countryFlag(c){
+  return ({"سوريا":"🇸🇾","الإمارات":"🇦🇪","مصر":"🇪🇬","عمان":"🇴🇲","الأردن":"🇯🇴"})[c]||"🌍";
+}
 function typeClass(t){
   if(t==="بحث مباشر") return "type-research";
   if(t==="ممارسة صفقات") return "type-practice";
@@ -427,7 +449,7 @@ function renderExperts(){
     <tr>
       <td><div class="rank">${i+1}</div></td>
       <td><div class="person"><b>${esc(x.name)}</b><span>${esc(x.city)}</span></div></td>
-      <td><span class="badge ${countryClass(x.country)}">${esc(x.country)}</span></td>
+      <td><span class="badge ${countryClass(x.country)}">${countryFlag(x.country)} ${esc(x.country)}</span></td>
       <td><span class="badge ${typeClass(x.type)}">${esc(x.type)}</span></td>
       <td>${esc(x.why)}</td>
       <td><div class="fit"><div class="bar"><i style="width:${x.fit}%"></i></div><b>${x.fit}</b></div></td>
@@ -446,7 +468,7 @@ function renderFollow(){
   $("followBody").innerHTML=rows.map(x=>{
     const s=follow[x.id]||{};
     return `<tr>
-      <td><div class="person"><b>${esc(x.name)}</b><span>${esc(x.country)} · ${priorityLabel(x.priority)}</span></div></td>
+      <td><div class="person"><b>${esc(x.name)}</b><span>${countryFlag(x.country)} ${esc(x.country)} · ${priorityLabel(x.priority)}</span></div></td>
       <td><select class="follow-input status-select" data-track="${x.id}" data-field="status">
         ${["لم أتواصل","أرسلت","رد","تم التنسيق","تم اللقاء","لاحقًا"].map(o=>`<option ${s.status===o?"selected":""}>${o}</option>`).join("")}
       </select></td>
@@ -468,7 +490,7 @@ function trackChange(e){
 function openExpert(id){
   const x=experts.find(e=>e.id===id); if(!x)return;
   $("dName").textContent=x.name;
-  $("dMeta").textContent=`${x.country} · ${x.city} · ${x.type} · تطابق ${x.fit}/100`;
+  $("dMeta").textContent=`${countryFlag(x.country)} ${x.country} · ${x.city} · ${x.type} · تطابق ${x.fit}/100`;
   $("dWhy").textContent=x.why;
   $("dGoal").textContent=x.goal;
   $("dEvidence").textContent=x.evidence;
@@ -479,7 +501,15 @@ function openExpert(id){
   email.hidden=!x.email; if(x.email) email.href="mailto:"+x.email+"?subject="+encodeURIComponent("لقاء حول الشركات المساهمة المبسطة");
   wa.hidden=!x.whatsapp; if(x.whatsapp) wa.href="https://wa.me/"+x.whatsapp+"?text="+encodeURIComponent(x.message);
   $("copyMessage").onclick=()=>copyText(x.message);
+  $("markSent").onclick=()=>markAsSent(x.id);
   $("expertDialog").showModal();
+}
+function markAsSent(id){
+  const d=new Date(),local=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  follow[id]=follow[id]||{};
+  follow[id].status="أرسلت";
+  follow[id].last=local;
+  saveFollow();renderFollow();toast("تم تسجيل الإرسال والمتابعة");
 }
 function copyText(text){
   navigator.clipboard.writeText(text).then(()=>toast("تم نسخ الرسالة")).catch(()=>{
