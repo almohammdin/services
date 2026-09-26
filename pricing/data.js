@@ -33,9 +33,11 @@ export function quoteFinances(row){
   const partnerCost=row?.partnerCost===''||row?.partnerCost==null?null:Number(row.partnerCost);
   const validCost=partnerCost!==null&&Number.isFinite(partnerCost)&&partnerCost>=0&&partnerCost<=amount;
   const ownShare=validCost?amount-partnerCost:null;
-  const collected=Math.min(amount,Math.max(0,Number(row?.collectedAmount)||0));
-  const partnerPaid=Math.min(validCost?partnerCost:0,Math.max(0,Number(row?.partnerPaid)||0));
-  return {amount,partnerCost:validCost?partnerCost:null,ownShare,collected,partnerPaid,remainingClient:amount-collected,remainingPartner:validCost?partnerCost-partnerPaid:null};
+  const hasCollected=row?.collectedAmount!==null&&row?.collectedAmount!==undefined&&row?.collectedAmount!=='';
+  const hasPartnerPaid=row?.partnerPaid!==null&&row?.partnerPaid!==undefined&&row?.partnerPaid!=='';
+  const collected=hasCollected?Math.min(amount,Math.max(0,Number(row.collectedAmount)||0)):null;
+  const partnerPaid=hasPartnerPaid?Math.min(validCost?partnerCost:0,Math.max(0,Number(row.partnerPaid)||0)):null;
+  return {amount,partnerCost:validCost?partnerCost:null,ownShare,collected,partnerPaid,remainingClient:collected===null?null:amount-collected,remainingPartner:validCost&&partnerPaid!==null?partnerCost-partnerPaid:null};
 }
 const serviceNames={liquidation_pre:'خدمات ما قبل التصفية',governance_session:'جلسة استشارية في الحوكمة',diagnosis:'تشخيص الوضع المؤسسي',authority_matrix:'مصفوفة الصلاحيات',partners:'تنظيم علاقة الشركاء',restructuring:'إعادة الهيكلة',monthly:'متابعة شهرية',custom:'خدمة مخصصة'};
 export const serviceLabel=quote=>quote?.serviceName||serviceNames[quote?.service]||quote?.service||'عرض سعر';
