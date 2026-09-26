@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>خبراء الشركة المساهمة المبسطة | شبكة البحث والمتابعة</title>
+<meta name="theme-color" content="#101828">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#101828;--muted:#667085;--line:#d8dee8;--paper:#fff;--bg:#f5f7fa;
+  --navy:#101828;--navy2:#263349;--gold:#b59a55;--gold2:#d9c27a;
+  --ok:#067647;--warn:#b54708;--bad:#b42318;--blue:#175cd3;--violet:#6941c6;
+  --shadow:0 18px 50px rgba(16,24,40,.08);--ease:cubic-bezier(.23,1,.32,1)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:
+  radial-gradient(circle at 12% 0,rgba(181,154,85,.16),transparent 26%),
+  linear-gradient(180deg,#f7f9fc,#f2f5f8);
+  color:var(--ink);font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;line-height:1.75
+}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+.shell{width:min(1180px,calc(100% - 28px));margin:auto;padding:18px 0 48px}
+.topbar{
+  position:sticky;top:0;z-index:30;background:rgba(16,24,40,.96);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(181,154,85,.35);box-shadow:0 10px 30px rgba(16,24,40,.15)
+}
+.topin{width:min(1180px,calc(100% - 28px));margin:auto;display:flex;align-items:center;gap:12px;padding:10px 0}
+.brand{flex:1;min-width:0}
+.brand b{display:block;color:#fff;font-size:15px}
+.brand span{display:block;color:#d8c37f;font-size:11.5px;font-weight:700}
+.back{
+  color:#fff;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
+  padding:8px 12px;border-radius:12px;font-size:12px;font-weight:800
+}
+.hero{
+  position:relative;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;border-radius:30px;padding:30px;margin-top:12px;box-shadow:var(--shadow)
+}
+.hero:after{content:"";position:absolute;left:-80px;bottom:-110px;width:270px;height:270px;border-radius:50%;border:34px solid rgba(255,255,255,.045)}
+.kicker{display:inline-flex;padding:6px 12px;border-radius:999px;background:rgba(181,154,85,.15);border:1px solid rgba(181,154,85,.35);color:#e8d59a;font-size:12px;font-weight:900}
+.hero h1{position:relative;z-index:1;margin:12px 0 7px;font-size:clamp(28px,4vw,42px);line-height:1.35}
+.hero p{position:relative;z-index:1;margin:0;color:rgba(255,255,255,.78);max-width:820px;font-size:15px}
+.hero-note{position:relative;z-index:1;margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.hero-note span{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);font-size:11.5px;font-weight:800}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.metric{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:0 10px 28px rgba(16,24,40,.05)}
+.metric small{display:block;color:var(--muted);font-size:11.5px;font-weight:800}
+.metric strong{display:block;margin-top:6px;font-size:26px;line-height:1;color:var(--navy)}
+.section{margin-top:14px;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:14px}
+.head h2{margin:0;font-size:20px;color:var(--navy)}
+.head p{margin:2px 0 0;color:var(--muted);font-size:12.5px}
+.toolbar{display:grid;grid-template-columns:1.5fr repeat(3,.8fr);gap:9px;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:10.5px;font-weight:900;color:#475467}
+.field input,.field select,.follow-input{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 11px;color:var(--ink);outline:none
+}
+.field input:focus,.field select:focus,.follow-input:focus,.note-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(181,154,85,.13)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}
+table{width:100%;border-collapse:collapse;min-width:980px;font-size:12.5px}
+th,td{padding:11px 10px;border-bottom:1px solid #edf0f5;text-align:right;vertical-align:top}
+th{position:sticky;top:0;background:#f8fafc;color:#475467;font-size:11px;z-index:2}
+tr:last-child td{border-bottom:0}
+.rank{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#f6f1df;color:#80681e;font-weight:900;border:1px solid #e9ddb4}
+.person b{display:block;color:var(--navy);font-size:13.5px}
+.person span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;font-size:10.5px;font-weight:900;white-space:nowrap;border:1px solid}
+.country-sy{color:#8a3b12;background:#fff7ed;border-color:#fed7aa}
+.country-ae{color:#0e6245;background:#ecfdf3;border-color:#abefc6}
+.country-eg{color:#175cd3;background:#eff8ff;border-color:#b2ddff}
+.country-other{color:#6941c6;background:#f4f3ff;border-color:#d9d6fe}
+.type-research{color:#6941c6;background:#f4f3ff;border-color:#d9d6fe}
+.type-practice{color:#175cd3;background:#eff8ff;border-color:#b2ddff}
+.type-hybrid{color:#067647;background:#ecfdf3;border-color:#abefc6}
+.fit{display:flex;align-items:center;gap:7px}
+.bar{width:84px;height:7px;border-radius:999px;background:#edf0f5;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#d8c174);border-radius:999px}
+.fit b{font-size:11px}
+.linkset{display:flex;gap:6px;flex-wrap:wrap}
+.mini-btn,.src-link{
+  display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#fff;
+  border-radius:9px;padding:6px 8px;font-size:10.5px;font-weight:800;cursor:pointer;transition:.15s var(--ease)
+}
+.mini-btn:hover,.src-link:hover{transform:translateY(-1px);border-color:var(--gold)}
+.mini-btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mini-btn.gold{background:#f8f1d7;color:#6f5716;border-color:#e7d79d}
+.priority{font-weight:900}
+.priority.p1{color:#067647}.priority.p2{color:#b54708}.priority.p3{color:#667085}
+.empty{padding:32px;text-align:center;color:var(--muted)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:11px}
+.follow-table td{vertical-align:middle}
+.status-select{min-width:135px}
+input[type="date"]{direction:ltr;text-align:right}
+.note-input{width:100%;min-width:210px;border:1px solid var(--line);border-radius:10px;padding:8px 9px;resize:vertical;min-height:38px}
+.track-actions{display:flex;gap:8px;flex-wrap:wrap}
+.action-btn{border:0;border-radius:11px;padding:9px 12px;font-weight:900;font-size:11px;cursor:pointer}
+.action-btn.dark{background:var(--navy);color:#fff}
+.action-btn.soft{background:#f2f4f7;color:#344054;border:1px solid var(--line)}
+.save-hint{color:var(--muted);font-size:11px;margin-top:8px}
+dialog{border:0;padding:0;border-radius:24px;width:min(760px,calc(100% - 26px));box-shadow:0 30px 90px rgba(16,24,40,.28);color:var(--ink)}
+dialog::backdrop{background:rgba(16,24,40,.68);backdrop-filter:blur(3px)}
+.modal{padding:22px}
+.modal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.modal h3{margin:0;font-size:22px}.modal-sub{color:var(--muted);font-size:12px;margin-top:4px}
+.close{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:20px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.detail-box{background:#f8fafc;border:1px solid var(--line);border-radius:15px;padding:13px}
+.detail-box small{display:block;color:var(--muted);font-weight:900;font-size:10.5px;margin-bottom:4px}
+.detail-box p{margin:0;font-size:12.5px}
+.message-box{margin-top:12px;background:linear-gradient(135deg,#101828,#263349);color:#fff;border-radius:17px;padding:14px}
+.message-box b{display:block;color:#e5cd7a;margin-bottom:6px;font-size:12px}
+.message-text{white-space:pre-wrap;color:rgba(255,255,255,.88);font-size:12px;line-height:1.85}
+.message-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.message-actions button,.message-actions a{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800;font-size:11px;cursor:pointer}
+.sources{margin-top:12px}
+.sources b{font-size:12px}.sources-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.footer{margin-top:14px;text-align:center;color:#667085;font-size:11px}
+.toast{position:fixed;left:18px;bottom:18px;z-index:60;background:#101828;color:#fff;border:1px solid rgba(181,154,85,.45);border-radius:12px;padding:10px 13px;font-size:11px;font-weight:800;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:none}
+@media(max-width:900px){
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .toolbar{grid-template-columns:1fr 1fr}
+  .detail-grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .shell,.topin{width:min(100% - 18px,1180px)}
+  .hero{border-radius:22px;padding:22px 17px}
+  .metrics{grid-template-columns:1fr 1fr}
+  .metric strong{font-size:22px}
+  .section{padding:13px;border-radius:18px}
+  .toolbar{grid-template-columns:1fr}
+  .head{display:block}
+  .head p{margin-top:4px}
+  .modal{padding:16px}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topin">
+    <div class="brand"><b>خبراء الشركة المساهمة المبسطة</b><span>بحث · ترتيب · تواصل · متابعة</span></div>
+    <a class="back" href="/services/">العودة إلى الخدمات</a>
+  </div>
+</header>
+
+<main class="shell">
+  <section class="hero">
+    <span class="kicker">ملف عمل خاص</span>
+    <h1>شبكة الخبراء والممارسين</h1>
+    <p>الهدف ليس البحث عن من يشرح النظام السعودي، بل الوصول إلى من درس أو مارس كيف تُستغل مرونة الشركة المساهمة المبسطة في هندسة الملكية والحوكمة وحقوق المساهمين والدخول والخروج والاستثمار.</p>
+    <div class="hero-note">
+      <span>أولوية الرحلة: سوريا</span><span>ثم الإمارات</span><span>ثم مصر</span><span>سوريا: 29 سبتمبر – 3 أكتوبر 2026</span>
+    </div>
+  </section>
+
+  <section class="metrics" aria-label="ملخص">
+    <div class="metric"><small>إجمالي الأسماء</small><strong id="mTotal">0</strong></div>
+    <div class="metric"><small>أولوية P1</small><strong id="mP1">0</strong></div>
+    <div class="metric"><small>بحث مباشر في SAS / SJSC</small><strong id="mDirect">0</strong></div>
+    <div class="metric"><small>تواصل مباشر موثق</small><strong id="mContact">0</strong></div>
+  </section>
+
+  <section class="section">
+    <div class="head">
+      <div><h2>قائمة الاستهداف</h2><p>ابحث، صفِّ، ورتب حسب الأولوية أو قوة التطابق.</p></div>
+    </div>
+    <div class="toolbar">
+      <div class="field"><label>بحث</label><input id="search" type="search" placeholder="اسم، دولة، بحث، تخصص…"></div>
+      <div class="field"><label>الدولة</label><select id="country"><option value="">الكل</option><option>سوريا</option><option>الإمارات</option><option>مصر</option><option>عمان</option><option>الأردن</option></select></div>
+      <div class="field"><label>النوع</label><select id="type"><option value="">الكل</option><option value="بحث مباشر">بحث مباشر</option><option value="ممارسة صفقات">ممارسة صفقات</option><option value="هجين">هجين</option></select></div>
+      <div class="field"><label>الترتيب</label><select id="sort"><option value="priority">الأولوية</option><option value="fit">قوة التطابق</option><option value="country">الدولة</option><option value="name">الاسم</option></select></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>الخبير</th><th>الدولة</th><th>النوع</th><th>لماذا مهم</th><th>التطابق</th><th>الأولوية</th><th>روابط</th><th></th></tr></thead>
+        <tbody id="expertsBody"></tbody>
+      </table>
+    </div>
+    <div class="legend"><span>التطابق = مدى قرب خبرته من هدف هندسة الشركة المساهمة المبسطة.</span><span>الأولوية = التطابق + ملاءمة مسار الرحلة + سهولة الوصول.</span></div>
+  </section>
+
+  <section class="section">
+    <div class="head">
+      <div><h2>جدول المتابعة</h2><p>الحالة والمواعيد والملاحظات تحفظ على هذا الجهاز.</p></div>
+      <div class="track-actions">
+        <button class="action-btn dark" id="exportBtn" type="button">تصدير CSV</button>
+        <button class="action-btn soft" id="resetBtn" type="button">مسح المتابعة</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="follow-table">
+        <thead><tr><th>الخبير</th><th>الحالة</th><th>آخر تواصل</th><th>المتابعة القادمة</th><th>ملاحظة</th></tr></thead>
+        <tbody id="followBody"></tbody>
+      </table>
+    </div>
+    <div class="save-hint">الحفظ تلقائي داخل المتصفح باستخدام Local Storage.</div>
+  </section>
+
+  <div class="footer">صفحة عمل داخلية · آخر تحديث 26 سبتمبر 2026</div>
+</main>
+
+<dialog id="expertDialog">
+  <div class="modal">
+    <div class="modal-top">
+      <div><h3 id="dName"></h3><div class="modal-sub" id="dMeta"></div></div>
+      <button class="close" type="button" id="closeDialog" aria-label="إغلاق">×</button>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-box"><small>سبب الاستهداف</small><p id="dWhy"></p></div>
+      <div class="detail-box"><small>هدف اللقاء المقترح</small><p id="dGoal"></p></div>
+      <div class="detail-box"><small>الدليل العملي / البحثي</small><p id="dEvidence"></p></div>
+      <div class="detail-box"><small>الوصول والتواصل</small><p id="dContact"></p></div>
+    </div>
+    <div class="message-box">
+      <b>رسالة مقترحة</b>
+      <div class="message-text" id="dMessage"></div>
+      <div class="message-actions">
+        <button type="button" id="copyMessage">نسخ الرسالة</button>
+        <a id="emailLink" href="#" hidden>فتح البريد</a>
+        <a id="waLink" href="#" target="_blank" rel="noopener" hidden>واتساب</a>
+      </div>
+    </div>
+    <div class="sources"><b>المصادر والروابط</b><div class="sources-list" id="dSources"></div></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast">تم النسخ</div>
+
+<script>
+const experts = [
+  {
+    id:"nabil-hammami",name:"نبيل صلاح الحمامي",country:"سوريا",city:"دمشق / يحتاج تأكيد الإقامة الحالية",
+    type:"بحث مباشر",fit:98,priority:1,direct:true,
+    why:"أقوى تطابق بحثي في سوريا: شارك في بحث محكم مخصص للشركة المساهمة المبسطة وقارن نجاح النموذج في فرنسا والمغرب وكولومبيا.",
+    evidence:"بحث محكم 2024 بعنوان «الشركة المساهمة المبسطة من الوجهة القانونية» في مجلة جامعة دمشق للعلوم القانونية، مع ميسون المصري.",
+    goal:"مناقشة أين تكمن القيمة الحقيقية للحرية التعاقدية في SAS، وما البنود التي تصنع فارقًا فعليًا في الملكية والإدارة وحماية المستثمر.",
+    contact:"لم يظهر تواصل شخصي موثق حتى الآن. الوصول الأفضل عبر جامعة دمشق / مجلة العلوم القانونية أو شبكة الباحثين.",
+    email:"",
+    whatsapp:"",
+    sources:[
+      ["البحث المحكم","https://search.mandumah.com/Record/1534804/Details"],
+      ["فهرسة معرفة","https://search.emarefa.net/ar/search?append=SOURCE_s%3A%22%D9%85%D8%AC%D9%84%D8%A9+%D8%AC%D8%A7%D9%85%D8%B9%D8%A9+%D8%AF%D9%85%D8%B4%D9%82+%D9%84%D9%84%D8%B9%D9%84%D9%88%D9%85+%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A%D8%A9%22"]
+    ],
+    message:"السلام عليكم ورحمة الله وبركاته أستاذ نبيل،\n\nأنا نايف المحمدي من المملكة العربية السعودية، مستشار في الحوكمة وتطوير الأعمال. اطلعت باهتمام على بحثكم «الشركة المساهمة المبسطة من الوجهة القانونية»، ولفتني خصوصا تناوله للتجارب المقارنة.\n\nأعمل حاليا على نماذج تطبيقية للشركة المساهمة المبسطة، وأهتم بكيفية تحويل المرونة التي يوفرها هذا الشكل القانوني إلى هياكل عملية للملكية والحوكمة وحقوق المساهمين.\n\nسأكون في سوريا خلال الفترة 29 سبتمبر إلى 3 أكتوبر 2026، ويسعدني جدا أن ألتقي بكم في دمشق لجلسة نقاش وتبادل خبرات، وأتوقع أن بين مجالات عملنا مساحة جيدة للتعاون مستقبلا.\n\nمع خالص التقدير،\nنايف المحمدي"
+  },
+  {
+    id:"jihad-faroun",name:"جهاد فرعون",country:"سوريا",city:"دمشق",
+    type:"ممارسة صفقات",fit:94,priority:1,direct:false,
+    why:"أقوى مرشح تطبيقي في دمشق لتحويل الأفكار إلى هيكلة فعلية: ملكية، اتفاقات شركاء، حوكمة، استثمار أجنبي، استحواذ وإعادة هيكلة.",
+    evidence:"ممارس قانون أعمال منذ أكثر من 20 عاما، ويعرض صراحة خدمات هيكلة الملكية واتفاقات الشركاء والحوكمة والاستثمار.",
+    goal:"اختبار بنود نموذجك أمام واقع الصفقات: السيطرة، نقل الأسهم، دخول المستثمر، الخروج، حقوق الأقلية، وتعطل القرار.",
+    contact:"البريد: law@syrianlaw.net · واتساب: +963 945 229 199 · المكتب في دمشق – الصالحية.",
+    email:"law@syrianlaw.net",
+    whatsapp:"963945229199",
+    sources:[["الموقع المهني","https://syrianlaw.net/ar/"]],
+    message:"السلام عليكم ورحمة الله وبركاته أستاذ جهاد،\n\nأنا نايف المحمدي من المملكة العربية السعودية، مستشار في الحوكمة وتطوير الأعمال. لفتني تركيزكم العملي على هيكلة الملكية واتفاقات المساهمين والحوكمة وعمليات الاستحواذ وإعادة الهيكلة.\n\nأعمل حاليا على نماذج للشركات المساهمة المبسطة تستفيد من مرونتها في هندسة علاقات المساهمين منذ التأسيس، وليس فقط في الجوانب الإجرائية.\n\nسأكون في سوريا خلال الفترة 29 سبتمبر إلى 3 أكتوبر 2026، ويشرفني أن ألتقي بكم في دمشق لجلسة نقاش عملية حول أفضل الممارسات في هذا النوع من الهياكل، وأرى إمكانية تعاون جيدة مستقبلا.\n\nمع خالص التقدير،\nنايف المحمدي"
+  },
+  {
+    id:"amer-kharboutli",name:"د. عامر خربوطلي",country:"سوريا",city:"دمشق",
+    type:"هجين",fit:90,priority:1,direct:false,
+    why:"زاويته مختلفة ومهمة: تحويل المنشأة إلى كيان قابل للنمو والاستثمار والاستمرار، مع خبرة في ريادة الأعمال والتمويل ودراسات الجدوى.",
+    evidence:"مدير عام غرفة تجارة دمشق، دكتوراه في دعم وتطوير المشروعات، ومؤلف في ريادة الأعمال وإدارة المشروعات الصغيرة والمتوسطة.",
+    goal:"مناقشة استخدام المساهمة المبسطة كأداة لنمو المنشآت العائلية، استقبال المستثمر، واستمرارية الملكية لا كقالب قانوني فقط.",
+    contact:"غرفة تجارة دمشق: info@dcc.sy · +963 11 9935. لديه دورة حضورية في الغرفة خلال 27–29 سبتمبر و1 أكتوبر 2026.",
+    email:"info@dcc.sy",
+    whatsapp:"",
+    sources:[
+      ["غرفة تجارة دمشق","https://news.dcc.sy/"],
+      ["الدورة المعلنة","https://www.schoolandcollegelistings.com/SY/Damascus/191857628359984/%D9%85%D8%B1%D9%83%D8%B2-%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8-%D8%BA%D8%B1%D9%81%D8%A9-%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9-%D8%AF%D9%85%D8%B4%D9%82---Damascus-Chamber-of-Commerce-Training-Center"]
+    ],
+    message:"السلام عليكم ورحمة الله وبركاته د. عامر،\n\nأنا نايف المحمدي من المملكة العربية السعودية، مستشار في الحوكمة وتطوير الأعمال. تابعت طرحكم حول تطوير المشروعات وانتقال المنشآت إلى نماذج مؤسسية أكثر استدامة.\n\nأعمل حاليا بشكل مكثف على نماذج الشركات المساهمة المبسطة، وبالأخص كيفية استخدامها لبناء شركات أكثر قابلية للاستثمار والنمو وانتقال الملكية.\n\nسأكون في سوريا خلال الفترة 29 سبتمبر إلى 3 أكتوبر 2026، ويسعدني جدا أن ألتقي بكم في دمشق لجلسة نقاش وتبادل خبرات، وأرى أن بين مجالات عملنا مساحة جيدة للتعاون مستقبلا.\n\nمع خالص التقدير،\nنايف المحمدي"
+  },
+  {
+    id:"basel-harki",name:"د. باسل الحركي",country:"سوريا",city:"الموقع الحالي يحتاج تأكيد",
+    type:"بحث مباشر",fit:84,priority:2,direct:false,
+    why:"مفيد تحديدا في مسائل التحول وآثار الانتقال بين الأشكال القانونية على الأسهم والأوراق والحقوق.",
+    evidence:"بحث محكم عن آثار تحول الشركة المساهمة الخاصة على أوراقها المالية، بمقارنة التشريع السوري والإماراتي.",
+    goal:"فهم المخاطر والآثار القانونية عند نقل شركة قائمة إلى هيكل جديد، وما الذي يجب تثبيته قبل وبعد التحول.",
+    contact:"لم يظهر تواصل مباشر موثق حتى الآن.",
+    email:"",whatsapp:"",
+    sources:[["البحث المحكم","https://political-encyclopedia.org/index.php/library/8521"]],
+    message:"السلام عليكم ورحمة الله وبركاته د. باسل،\n\nأنا نايف المحمدي من المملكة العربية السعودية، مستشار في الحوكمة وتطوير الأعمال. اطلعت على بحثكم المتعلق بآثار تحول الشركة المساهمة الخاصة على أوراقها المالية، وأعمل حاليا على نماذج عملية لتحول الشركات إلى شركة مساهمة مبسطة.\n\nسأكون في سوريا خلال الفترة 29 سبتمبر إلى 3 أكتوبر 2026، ويسعدني أن ألتقي بكم لمناقشة الجوانب العملية للتحول وآثاره على حقوق المساهمين والأوراق والالتزامات.\n\nمع خالص التقدير،\nنايف المحمدي"
+  },
+  {
+    id:"bertrand-dumon",name:"Bertrand Dumon",country:"الإمارات",city:"دبي / أبوظبي",
+    type:"ممارسة صفقات",fit:96,priority:1,direct:false,
+    why:"مهم بسبب الخلفية الفرنسية العملية مع خبرة طويلة في الإمارات؛ يجمع أصل فلسفة SAS مع هيكلة الصفقات والاستحواذات والمشاريع المشتركة وإعادة الهيكلة.",
+    evidence:"شريك ومؤسس Dumon Partners، كان رئيس فريق الشركات في مكتب دولي بباريس، ومقيم في الإمارات لأكثر من عقد.",
+    goal:"مناقشة كيف تُستخدم الحرية التعاقدية عمليا في النماذج الفرنسية والصفقات الدولية، وما يصلح نقله إلى النموذج السعودي.",
+    contact:"البريد المباشر: bdumon@dumon-partners.com.",
+    email:"bdumon@dumon-partners.com",whatsapp:"",
+    sources:[["الملف المهني","https://www.dumon-partners.com/team/bertrand-dumon"]],
+    message:"Dear Mr. Dumon,\n\nMy name is Naif Al-Mohammdi from Saudi Arabia. I advise businesses on governance and business development, and I am currently working intensively on practical structures for Simplified Joint Stock Companies.\n\nMy focus is not on explaining the Saudi statute itself, but on how broad contractual flexibility can be translated into robust shareholder, governance, investment and exit mechanisms. Your French corporate background and transaction work in the UAE make your perspective particularly relevant.\n\nI may be in Dubai shortly after my Syria visit in early October, and I would be glad to meet for a focused discussion and explore potential future collaboration.\n\nBest regards,\nNaif Al-Mohammdi"
+  },
+  {
+    id:"farid-haroun",name:"Farid (Fred) Haroun",country:"الإمارات",city:"دبي",
+    type:"ممارسة صفقات",fit:91,priority:2,direct:false,
+    why:"ممارس صفقات قوي يجمع السعودية والإمارات ويمارس M&A وJV والتحالفات وإعادة الهيكلة عبر دورة الاستثمار كاملة.",
+    evidence:"شريك Corporate & Securities في Mayer Brown بدبي، مع سجل صفقات في السعودية والإمارات ومشاريع مشتركة واتفاقات مساهمين.",
+    goal:"اختبار هندسة المساهمين والاستثمار أمام صفقات حقيقية: الأغلبية، الحماية، التخارج، الـJV، والتوسع.",
+    contact:"البريد: fharoun@mayerbrown.com · المكتب: +971 4 375 7165.",
+    email:"fharoun@mayerbrown.com",whatsapp:"",
+    sources:[["Mayer Brown","https://www.mayerbrown.com/en/people/h/haroun-farid-fred"]],
+    message:"Dear Mr. Haroun,\n\nMy name is Naif Al-Mohammdi from Saudi Arabia, and I work in governance and business development. I am currently developing practical structures for Simplified Joint Stock Companies, with particular focus on shareholder rights, control, investment entry, exit and governance design.\n\nYour transactional work across Saudi Arabia and the UAE in M&A, joint ventures and corporate reorganizations is closely aligned with the practical side I want to test.\n\nI may be in Dubai in early October and would value a focused meeting to exchange views and explore potential collaboration.\n\nBest regards,\nNaif Al-Mohammdi"
+  },
+  {
+    id:"omar-rashid",name:"Omar Rashid",country:"الإمارات",city:"دبي",
+    type:"ممارسة صفقات",fit:83,priority:3,direct:false,
+    why:"ثقيل في أسواق رأس المال والاستحواذات والمشاريع المشتركة، لكنه أقل مباشرة في SAS من Bertrand وFarid.",
+    evidence:"شريك في Clifford Chance، يقود ممارسات أسواق رأس المال في الإمارات وله خبرة واسعة في M&A وJV واستثمارات الملكية بالسعودية والإمارات.",
+    goal:"مناقشة قابلية نمو الهيكل من شركة خاصة مرنة إلى استثمارات مؤسسية وصفقات ملكية أكبر.",
+    contact:"البريد: omar.rashid@cliffordchance.com · دبي.",
+    email:"omar.rashid@cliffordchance.com",whatsapp:"",
+    sources:[["Clifford Chance","https://www.cliffordchance.com/people_and_places/people/partners/sa/omar-rashid.html"]],
+    message:"Dear Mr. Rashid,\n\nMy name is Naif Al-Mohammdi from Saudi Arabia. I advise businesses on governance and business development and am currently developing practical Simplified Joint Stock Company structures.\n\nI am particularly interested in how flexible private-company governance and shareholder arrangements can be designed from day one to remain investable and scalable for future equity transactions.\n\nI may be in Dubai in early October and would be pleased to meet for a focused discussion.\n\nBest regards,\nNaif Al-Mohammdi"
+  },
+  {
+    id:"fatma-rizk",name:"د. فاطمة رزق رزق مصطفى",country:"مصر",city:"الموقع الحالي يحتاج تأكيد",
+    type:"بحث مباشر",fit:93,priority:2,direct:true,
+    why:"بحثها في النموذج الفرنسي قريب جدا من هدفك: الحرية التعاقدية داخل شركة الأسهم المبسطة وتقليل القوالب الآمرة.",
+    evidence:"بحث «النظام القانوني لشركة الأسهم المبسطة: دراسة في القانون الفرنسي» 2022، ولها مؤلف عن النظام القانوني لتجمع الشركات.",
+    goal:"استخراج أفضل الممارسات من الأصل الفرنسي: أين تترك الحرية للنظام الأساسي، وأين يلزم وضع صمامات حماية للمساهمين.",
+    contact:"مكان الإقامة والتواصل المباشر يحتاجان تحقق قبل ترتيب لقاء.",
+    email:"",whatsapp:"",
+    sources:[["بحث الشركة المبسطة","https://search.mandumah.com/Record/1318313"]],
+    message:"السلام عليكم ورحمة الله وبركاته د. فاطمة،\n\nأنا نايف المحمدي من المملكة العربية السعودية، مستشار في الحوكمة وتطوير الأعمال. لفتني بحثكم حول النظام القانوني لشركة الأسهم المبسطة في القانون الفرنسي، وبالأخص مساحة الحرية التعاقدية في تنظيم الشركة.\n\nأعمل حاليا على نماذج تطبيقية للشركة المساهمة المبسطة، وأبحث عن أفضل الممارسات التي يمكن الاستفادة منها في تصميم الملكية والحوكمة وحقوق المساهمين.\n\nيسعدني التواصل معكم لجلسة نقاش متخصصة، سواء حضوريا عند تيسر ذلك أو عن بعد، وأتوقع وجود مساحة جيدة للتعاون البحثي والعملي.\n\nمع خالص التقدير،\nنايف المحمدي"
+  },
+  {
+    id:"mohamed-sallam",name:"د. محمد أحمد عبدالخالق سلام",country:"مصر",city:"مكان الإقامة الحالي يحتاج تأكيد",
+    type:"بحث مباشر",fit:92,priority:2,direct:true,
+    why:"بحث مقارن مباشر بين النظام السعودي والقانون الفرنسي؛ مناسب جدا لتحديد الفجوات والفرص بين النص السعودي والأصل المقارن.",
+    evidence:"بحث محكم 2023 بعنوان «الإطار القانوني لشركة المساهمة المبسطة: دراسة مقارنة بين النظام السعودي والقانون الفرنسي».",
+    goal:"مناقشة ما الذي يمكن للنظام الأساسي السعودي أن يستوعبه من الممارسة الفرنسية دون الوقوع في نسخ شكلي للنموذج.",
+    contact:"التواصل الشخصي ومكان الإقامة الحالي يحتاجان تحقق.",
+    email:"",whatsapp:"",
+    sources:[["البحث المحكم","https://search.mandumah.com/Record/1465759/Details"]],
+    message:"السلام عليكم ورحمة الله وبركاته د. محمد،\n\nأنا نايف المحمدي من المملكة العربية السعودية، مستشار في الحوكمة وتطوير الأعمال. اطلعت على بحثكم المقارن حول الإطار القانوني للشركة المساهمة المبسطة بين النظام السعودي والقانون الفرنسي.\n\nأعمل حاليا على الجانب التطبيقي للنموذج، وبالتحديد كيف نستفيد من المساحة التي تركها النظام السعودي لإرادة المساهمين في تصميم الملكية والحوكمة وآليات الدخول والخروج.\n\nيسعدني أن ألتقي بكم أو أن نرتب جلسة متخصصة عن بعد لمناقشة هذه الزاوية وإمكانية التعاون مستقبلا.\n\nمع خالص التقدير،\nنايف المحمدي"
+  },
+  {
+    id:"marwa-esawy",name:"د. مروة محمد عبدالحميد العيسوي",country:"مصر",city:"الارتباط البحثي بمصر والسعودية؛ الموقع الحالي يحتاج تأكيد",
+    type:"بحث مباشر",fit:88,priority:3,direct:true,
+    why:"لها دراسة مقارنة حديثة 2024 في النظام السعودي الجديد، إضافة إلى إنتاج سابق في حوكمة الشركات ومسؤولية مجالس الإدارة.",
+    evidence:"بحث «النظام القانوني لشركة المساهمة المبسطة في إطار النظام السعودي الجديد للشركات 1443: دراسة مقارنة».",
+    goal:"مناقشة حدود المرونة في الإدارة وصلاحيات المساهمين وكيف تبنى الحوكمة حول هذه المرونة.",
+    contact:"التواصل المباشر يحتاج تحقق.",
+    email:"",whatsapp:"",
+    sources:[
+      ["البحث المحكم","https://search.mandumah.com/Record/1539097"],
+      ["سجل المؤلفة","https://search.mandumah.com/Author/Home?author=%D8%A7%D9%84%D8%B9%D9%8A%D8%B3%D9%88%D9%8A%D8%8C+%D9%85%D8%B1%D9%88%D8%A9+%D9%85%D8%AD%D9%85%D8%AF+%D9%85%D8%AD%D9%85%D8%AF+%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%AD%D9%85%D9%8A%D8%AF"]
+    ],
+    message:"السلام عليكم ورحمة الله وبركاته د. مروة،\n\nأنا نايف المحمدي من المملكة العربية السعودية، مستشار في الحوكمة وتطوير الأعمال. اطلعت على دراستكم المقارنة حول النظام القانوني للشركة المساهمة المبسطة في النظام السعودي الجديد.\n\nأعمل حاليا على تحويل المرونة النظامية إلى نماذج عملية للحوكمة والملكية وحقوق المساهمين، وأرغب في مناقشة بعض الممارسات المقارنة وإمكانية التعاون مستقبلا.\n\nيسعدني التنسيق معكم لجلسة متخصصة في الوقت المناسب.\n\nمع خالص التقدير،\nنايف المحمدي"
+  },
+  {
+    id:"maisoon-masri",name:"د. ميسون عبدالوهاب المصري",country:"عمان",city:"صحار",
+    type:"هجين",fit:97,priority:2,direct:true,
+    why:"قيمة عالية جدا رغم أنها خارج مسار الرحلة: شاركت نبيل الحمامي في بحث SAS ولها خلفية قوية في قانون الشركات والأسواق والاستحواذ ورسملة الديون.",
+    evidence:"أستاذة قانون تجاري سابقة بجامعة دمشق، وعضو سابق في مجلس مفوضي هيئة الأوراق والأسواق المالية السورية، وحاليا بجامعة صحار.",
+    goal:"جلسة عميقة تجمع SAS مع رأس المال والسيطرة والاستحواذ ورسملة الديون؛ ممتازة لتطوير النموذج بعد الرحلة.",
+    contact:"البريد المباشر: MMasri@su.edu.om · جامعة صحار.",
+    email:"MMasri@su.edu.om",whatsapp:"",
+    sources:[
+      ["جامعة صحار","https://www.su.edu.om/dr-maisoon-al-masri/"],
+      ["بحث SAS المشترك","https://search.mandumah.com/Record/1534804/Details"],
+      ["سجل الأبحاث","https://search.mandumah.com/Author/Home?author=%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A%D8%8C+%D9%85%D9%8A%D8%B3%D9%88%D9%86+%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%88%D9%87%D8%A7%D8%A8"]
+    ],
+    message:"السلام عليكم ورحمة الله وبركاته د. ميسون،\n\nأنا نايف المحمدي من المملكة العربية السعودية، مستشار في الحوكمة وتطوير الأعمال. اطلعت باهتمام على بحثكم المشترك حول الشركة المساهمة المبسطة، كما لفتني امتداد أعمالكم إلى رسملة الديون والاستحواذ والأسواق المالية.\n\nأعمل حاليا على نماذج تطبيقية تستفيد من مرونة الشركة المساهمة المبسطة في تصميم الملكية والحوكمة والاستثمار، وأرى أن خبرتكم تجمع بين الجانب النظري والتطبيقي بصورة مهمة جدا لهذا المشروع.\n\nيسعدني أن نرتب جلسة متخصصة عن بعد أو حضوريا عند تيسر ذلك، وأتوقع وجود مساحة جيدة للتعاون مستقبلا.\n\nمع خالص التقدير،\nنايف المحمدي"
+  },
+  {
+    id:"zaid-dannoun",name:"Dr. Zaid Dannoun",country:"الأردن",city:"عمان – بحسب نتائج البحث العامة، يحتاج تحقق مباشر",
+    type:"بحث مباشر",fit:90,priority:3,direct:true,
+    why:"حالة نادرة: لديه كتاب كامل منشور في 2025 بعنوان Governance of Simplified Joint Stock Company.",
+    evidence:"الكتاب يتناول الأدوار والصلاحيات ورأس المال والأرباح وقرارات المساهمين وتداول الأسهم وتعديل النظام الأساسي، مع خلفية مهنية في البنوك والشركات.",
+    goal:"مراجعة نموذج الحوكمة المقترح لديك بندا بندا مقابل إطار حوكمة مخصص للشركة المساهمة المبسطة.",
+    contact:"لم يظهر بريد مباشر موثق. المؤلف يظهر في نتائج عامة مرتبطة بعمان – الأردن، ويلزم التحقق قبل التواصل.",
+    email:"",whatsapp:"",
+    sources:[
+      ["الكتاب – جرير","https://www.jarir.com/governance-of-simplified-joint-stock-company-9783659840142.html"],
+      ["Scholars' Press","https://my.scholars-press.com/catalog/index?page=36"]
+    ],
+    message:"Dear Dr. Dannoun,\n\nMy name is Naif Al-Mohammdi from Saudi Arabia. I advise businesses on governance and business development and am currently developing practical governance structures for Simplified Joint Stock Companies.\n\nYour book Governance of Simplified Joint Stock Company is directly aligned with the work I am doing, particularly around shareholder powers, management roles, capital, share transfers and governance design.\n\nI would be very interested in arranging a focused discussion with you and exploring possible future collaboration.\n\nBest regards,\nNaif Al-Mohammdi"
+  }
+];
+
+const $ = id => document.getElementById(id);
+const stateKey = "sjscExpertsTrackingV1";
+const follow = JSON.parse(localStorage.getItem(stateKey) || "{}");
+const esc = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+
+function countryClass(c){
+  if(c==="سوريا") return "country-sy";
+  if(c==="الإمارات") return "country-ae";
+  if(c==="مصر") return "country-eg";
+  return "country-other";
+}
+function typeClass(t){
+  if(t==="بحث مباشر") return "type-research";
+  if(t==="ممارسة صفقات") return "type-practice";
+  return "type-hybrid";
+}
+function priorityLabel(p){ return p===1?"P1":p===2?"P2":"P3"; }
+
+function renderExperts(){
+  const q=$("search").value.trim().toLowerCase();
+  const country=$("country").value;
+  const type=$("type").value;
+  const sort=$("sort").value;
+  let rows=experts.filter(x=>{
+    const hay=[x.name,x.country,x.city,x.type,x.why,x.evidence,x.goal].join(" ").toLowerCase();
+    return (!q||hay.includes(q))&&(!country||x.country===country)&&(!type||x.type===type);
+  });
+  rows.sort((a,b)=>{
+    if(sort==="fit") return b.fit-a.fit;
+    if(sort==="country") return a.country.localeCompare(b.country,"ar") || b.fit-a.fit;
+    if(sort==="name") return a.name.localeCompare(b.name,"ar");
+    return a.priority-b.priority || b.fit-a.fit;
+  });
+  $("expertsBody").innerHTML=rows.length?rows.map((x,i)=>`
+    <tr>
+      <td><div class="rank">${i+1}</div></td>
+      <td><div class="person"><b>${esc(x.name)}</b><span>${esc(x.city)}</span></div></td>
+      <td><span class="badge ${countryClass(x.country)}">${esc(x.country)}</span></td>
+      <td><span class="badge ${typeClass(x.type)}">${esc(x.type)}</span></td>
+      <td>${esc(x.why)}</td>
+      <td><div class="fit"><div class="bar"><i style="width:${x.fit}%"></i></div><b>${x.fit}</b></div></td>
+      <td><span class="priority p${x.priority}">${priorityLabel(x.priority)}</span></td>
+      <td><div class="linkset">${x.sources.slice(0,2).map(s=>`<a class="src-link" href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join("")}</div></td>
+      <td><button class="mini-btn primary" type="button" data-open="${x.id}">التفاصيل والتواصل</button></td>
+    </tr>
+  `).join(""):`<tr><td colspan="9"><div class="empty">لا توجد نتائج بهذه الفلاتر.</div></td></tr>`;
+  document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openExpert(b.dataset.open));
+}
+
+function saveFollow(){ localStorage.setItem(stateKey,JSON.stringify(follow)); }
+
+function renderFollow(){
+  const rows=[...experts].sort((a,b)=>a.priority-b.priority||b.fit-a.fit);
+  $("followBody").innerHTML=rows.map(x=>{
+    const s=follow[x.id]||{};
+    return `<tr>
+      <td><div class="person"><b>${esc(x.name)}</b><span>${esc(x.country)} · ${priorityLabel(x.priority)}</span></div></td>
+      <td><select class="follow-input status-select" data-track="${x.id}" data-field="status">
+        ${["لم أتواصل","أرسلت","رد","تم التنسيق","تم اللقاء","لاحقًا"].map(o=>`<option ${s.status===o?"selected":""}>${o}</option>`).join("")}
+      </select></td>
+      <td><input class="follow-input" type="date" data-track="${x.id}" data-field="last" value="${esc(s.last||"")}"></td>
+      <td><input class="follow-input" type="date" data-track="${x.id}" data-field="next" value="${esc(s.next||"")}"></td>
+      <td><textarea class="note-input" data-track="${x.id}" data-field="note" placeholder="ملاحظة مختصرة…">${esc(s.note||"")}</textarea></td>
+    </tr>`;
+  }).join("");
+  document.querySelectorAll("[data-track]").forEach(el=>{
+    el.addEventListener("change",trackChange);el.addEventListener("input",trackChange);
+  });
+}
+function trackChange(e){
+  const id=e.target.dataset.track,field=e.target.dataset.field;
+  follow[id]=follow[id]||{};
+  follow[id][field]=e.target.value;
+  saveFollow();
+}
+function openExpert(id){
+  const x=experts.find(e=>e.id===id); if(!x)return;
+  $("dName").textContent=x.name;
+  $("dMeta").textContent=`${x.country} · ${x.city} · ${x.type} · تطابق ${x.fit}/100`;
+  $("dWhy").textContent=x.why;
+  $("dGoal").textContent=x.goal;
+  $("dEvidence").textContent=x.evidence;
+  $("dContact").textContent=x.contact;
+  $("dMessage").textContent=x.message;
+  $("dSources").innerHTML=x.sources.map(s=>`<a class="src-link" href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join("");
+  const email=$("emailLink"),wa=$("waLink");
+  email.hidden=!x.email; if(x.email) email.href="mailto:"+x.email+"?subject="+encodeURIComponent("لقاء حول الشركات المساهمة المبسطة");
+  wa.hidden=!x.whatsapp; if(x.whatsapp) wa.href="https://wa.me/"+x.whatsapp+"?text="+encodeURIComponent(x.message);
+  $("copyMessage").onclick=()=>copyText(x.message);
+  $("expertDialog").showModal();
+}
+function copyText(text){
+  navigator.clipboard.writeText(text).then(()=>toast("تم نسخ الرسالة")).catch(()=>{
+    const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();toast("تم نسخ الرسالة");
+  });
+}
+let toastTimer;
+function toast(msg){$("toast").textContent=msg;$("toast").classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").classList.remove("show"),1500)}
+
+$("closeDialog").onclick=()=>$("expertDialog").close();
+$("expertDialog").addEventListener("click",e=>{if(e.target===$("expertDialog"))$("expertDialog").close()});
+["search","country","type","sort"].forEach(id=>$(id).addEventListener(id==="search"?"input":"change",renderExperts));
+
+$("exportBtn").onclick=()=>{
+  const lines=[["الخبير","الدولة","الأولوية","الحالة","آخر تواصل","المتابعة القادمة","ملاحظة"]];
+  [...experts].sort((a,b)=>a.priority-b.priority||b.fit-a.fit).forEach(x=>{
+    const s=follow[x.id]||{};
+    lines.push([x.name,x.country,priorityLabel(x.priority),s.status||"لم أتواصل",s.last||"",s.next||"",s.note||""]);
+  });
+  const csv="\uFEFF"+lines.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download="متابعة-خبراء-المساهمة-المبسطة.csv";a.click();URL.revokeObjectURL(a.href);
+};
+$("resetBtn").onclick=()=>{
+  if(!confirm("مسح جميع حالات وملاحظات المتابعة من هذا الجهاز؟"))return;
+  Object.keys(follow).forEach(k=>delete follow[k]);saveFollow();renderFollow();toast("تم مسح المتابعة");
+};
+
+$("mTotal").textContent=experts.length;
+$("mP1").textContent=experts.filter(x=>x.priority===1).length;
+$("mDirect").textContent=experts.filter(x=>x.direct).length;
+$("mContact").textContent=experts.filter(x=>x.email||x.whatsapp).length;
+renderExperts();renderFollow();
+</script>
+</body>
+</html>
