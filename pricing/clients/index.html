@@ -13,9 +13,10 @@
 <style>
 [hidden]{display:none!important}.client{display:block}.client-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.client-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.client-actions .btn,.offer-link{font-size:12px;min-height:34px;padding:5px 10px}.client-offers{display:grid;gap:8px;margin-top:12px}.offer-line{display:flex;justify-content:space-between;gap:8px;align-items:center;border-top:1px solid #e8edf4;padding-top:8px}.offer-line span{font-size:12px;color:#475467}.offer-links{display:flex;gap:6px;flex-wrap:wrap}.offer-link{background:#eaf0f8;border-radius:10px;font-weight:700}.form-actions{display:flex;gap:8px}.form-actions .btn{flex:1}@media(max-width:600px){.client-head,.offer-line{display:block}.client-actions,.offer-links{margin-top:8px}}
 </style>
+<style>body:not(.ready) .shell{display:none}.ready .auth{display:none}.auth{min-height:100vh;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,#101828,#263349)}.auth-card{width:min(410px,100%);padding:28px;border-radius:26px;background:#fff;text-align:center;box-shadow:0 26px 65px rgba(0,0,0,.22)}.auth-card h1{font-size:24px}.auth-card p{font-size:13px;color:var(--muted)}.auth-card .btn{width:100%;margin-top:12px}.auth-message{min-height:24px;color:#b42318;font-size:12px}</style>
 </head>
-<body><main class="shell">
-<section class="top"><div><h1>العملاء</h1><p>لوحة التحكم ← العملاء · بيانات العملاء والعروض مرتبطة بحسابك.</p></div><div class="actions"><a class="btn gold" href="/services/pricing/tool/">عرض جديد</a><a class="btn" href="/services/pricing/offers/">العروض السابقة</a><a class="btn" href="/services/pricing/">لوحة التحكم</a></div></section>
+<body><section class="auth"><div class="auth-card"><h1>العملاء</h1><p>سجّل الدخول للوصول إلى بيانات عملائك.</p><button class="btn gold" id="authLoginBtn" type="button">الدخول بحساب Google</button><div class="auth-message" id="authMessage" role="status"></div><a class="btn" href="/services/pricing/">لوحة التحكم</a></div></section><main class="shell">
+<section class="top"><div><h1>العملاء</h1></div><nav class="actions" aria-label="أقسام التسعير"><a class="btn" href="/services/pricing/">لوحة التحكم</a><a class="btn gold" href="/services/pricing/tool/">عرض جديد</a><a class="btn" href="/services/pricing/offers/">العروض</a></nav></section>
 <p id="message" class="notice">جارٍ تحميل بيانات الحساب…</p>
 <section class="grid"><div class="card"><h2 id="formTitle">إضافة عميل</h2><div class="field"><label for="cName">اسم العميل</label><input id="cName" autocomplete="organization"></div><div class="field"><label for="cPerson">الشخص المسؤول</label><input id="cPerson"></div><div class="field"><label for="cNotes">ملاحظات</label><textarea id="cNotes"></textarea></div><div class="form-actions"><button class="btn dark" id="addBtn">حفظ العميل</button><button class="btn" id="cancelBtn" type="button" hidden>إلغاء التعديل</button></div></div><div class="card"><h2>قائمة العملاء</h2><div id="clients" class="list"></div></div></section>
 </main>
@@ -24,6 +25,7 @@ import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,saveClient,update
 const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
 const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 let user=null,clients=[],quotes=[],editingName=null;
+$('authLoginBtn').onclick=async()=>{try{$('authMessage').textContent='';await signIn()}catch(e){console.error(e);$('authMessage').textContent='تعذر تسجيل الدخول. حاول مرة أخرى.'}};
 function message(text,login=false){$('message').innerHTML=esc(text)+(login?' <button class="btn gold" id="loginBtn">الدخول بحساب Google</button>':'');if(login)$('loginBtn').onclick=()=>signIn().catch(()=>message('تعذر تسجيل الدخول. تحقق من الحساب المصرح له.',true))}
 function resetForm(){editingName=null;$('formTitle').textContent='إضافة عميل';$('addBtn').textContent='حفظ العميل';$('cancelBtn').hidden=true;$('cName').value='';$('cPerson').value='';$('cNotes').value=''}
 function render(){
@@ -52,9 +54,9 @@ $('addBtn').onclick=async()=>{
 };
 await authReady.catch(console.error);
 onAuthStateChanged(auth,async u=>{
- user=u;
- if(!u){clients=[];quotes=[];render();message('سجّل دخولك بحساب Google لعرض عملائك.',true);return}
- try{const workspace=await loadWorkspace(u);clients=workspace.clients;quotes=workspace.quotes;render();message('العملاء والعروض محدثة من حسابك السحابي.')}
+ user=u;document.body.classList.toggle('ready',Boolean(u));
+ if(!u){clients=[];quotes=[];render();message('');return}
+ try{const workspace=await loadWorkspace(u);clients=workspace.clients;quotes=workspace.quotes;render();message('')}
  catch(e){console.error(e);message('تعذر تحميل بيانات الحساب. حاول تحديث الصفحة.')}
 });
 </script></body></html>
