@@ -109,7 +109,8 @@ function refreshProjectFields(){
  if(accepted&&!val('executionStatus'))$('executionStatus').value='بانتظار المتطلبات';
  const amount=Math.max(0,Number(val('amount'))||0),raw=val('partnerCost'),cost=raw===''?null:Number(raw),collected=Number(val('collectedAmount'))||0,paid=Number(val('partnerPaid'))||0;
  $('ownShareDisplay').textContent=cost===null?'لم تُحدد أتعاب الشركاء':cost<0||cost>amount?'أتعاب الشركاء تتجاوز قيمة العرض':fmt.format(amount-cost)+' ر.س';
- $('financeSummary').textContent='المحصّل من العميل: '+fmt.format(collected)+' ر.س · المتبقي على العميل: '+fmt.format(Math.max(0,amount-collected))+' ر.س · المدفوع للشركاء: '+fmt.format(paid)+' ر.س';
+ const paymentState=collected<=0?'لم يُحصّل':collected>=amount?'محصّل بالكامل':'محصّل جزئيًا';
+ $('financeSummary').textContent='التحصيل: '+paymentState+' · المحصّل من العميل: '+fmt.format(collected)+' ر.س · المتبقي على العميل: '+fmt.format(Math.max(0,amount-collected))+' ر.س · المدفوع للشركاء: '+fmt.format(paid)+' ر.س'+(cost===null?'':' · المتبقي للشركاء: '+fmt.format(Math.max(0,cost-paid))+' ر.س');
 }
 function renderVersionInfo(){
  $('versionInfo').textContent='النسخة '+fmt.format(version)+' · '+(recordLocked?'مرسلة ومحفوظة':'قيد التحرير');
@@ -128,7 +129,7 @@ function forkVersion(){
  renderSendBox();renderVersionInfo();$('qNo').textContent=val('quoteNo')+' · النسخة '+fmt.format(version);$('outRef').textContent='OUT-'+val('quoteNo')+' · النسخة '+fmt.format(version);notice('أنشئت النسخة '+fmt.format(version)+'؛ النسخة السابقة محفوظة.');
 }
 capture=function(){const row=baseCapture();return {...row,seriesId:seriesId||row.id,version,sentVia:val('sentVia'),sentAt:val('sentAt'),executionStatus:row.status==='مقبول'?val('executionStatus'):'',partnerCost:val('partnerCost')===''?null:Number(val('partnerCost')),collectedAmount:Number(val('collectedAmount'))||0,partnerPaid:Number(val('partnerPaid'))||0}};
-fill=function(row={}){recordLocked=false;baseFill(row);seriesId=quoteSeriesKey(row);version=quoteVersion(row);$('sentVia').value=row.sentVia||'';$('sentAt').value=row.sentAt||'';$('executionStatus').value=row.executionStatus||'بانتظار المتطلبات';$('partnerCost').value=row.partnerCost==null?'':row.partnerCost;$('collectedAmount').value=row.collectedAmount||0;$('partnerPaid').value=row.partnerPaid||0;recordLocked=Boolean(row.sentAt)||row.status==='تم إرسال العرض';update(false)};
+fill=function(row={}){recordLocked=false;baseFill(row);seriesId=quoteSeriesKey(row);version=quoteVersion(row);$('sentVia').value=row.sentVia||'';$('sentAt').value=row.sentAt||'';$('executionStatus').value=row.executionStatus||'بانتظار المتطلبات';$('partnerCost').value=row.partnerCost==null?'':row.partnerCost;$('collectedAmount').value=row.collectedAmount||0;$('partnerPaid').value=row.partnerPaid||0;recordLocked=Boolean(row.sentAt)||['تم إرسال العرض','مقبول'].includes(row.status);update(false)};
 update=function(save=true){
  const field=document.activeElement?.id||'';
  if(save&&user&&recordLocked&&!['crmStatus','sentVia','sentAt','nextDate','executionStatus','partnerCost','collectedAmount','partnerPaid'].includes(field))forkVersion();
@@ -163,7 +164,7 @@ saveCloud=async function(registerClient=false){
    tx.set(ref,{pricingTool_v1:{...box,quotes,currentQuoteId:quoteKey(current),deletedQuoteIds:[...deleted],updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
    return {quotes,deletedQuoteIds:[...deleted]};
   });
-  cloud.quotes=saved.quotes;cloud.deletedQuoteIds=saved.deletedQuoteIds;version=quoteVersion(current);recordLocked=recordLocked||Boolean(current.sentAt)||current.status==='تم إرسال العرض';update(false);
+   cloud.quotes=saved.quotes;cloud.deletedQuoteIds=saved.deletedQuoteIds;version=quoteVersion(current);recordLocked=recordLocked||Boolean(current.sentAt)||['تم إرسال العرض','مقبول'].includes(current.status);update(false);
   if(registerClient)await ensureClient(current.client);
   return true;
  }catch(error){console.warn('cloud save failed',error);if(registerClient)notice(error.message||'تعذر الحفظ السحابي');return false}
