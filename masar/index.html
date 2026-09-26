@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>لوحة التحكم | التسعير</title>
-<link rel="apple-touch-icon" href="/services/pricing/apple-touch-icon.png?v=20260913">
-<link rel="icon" type="image/png" sizes="32x32" href="/services/pricing/icons/favicon-32x32.png?v=20260913">
-<link rel="manifest" href="/services/pricing/manifest.webmanifest?v=20260913">
+<title>مسار | الرئيسية</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/services/masar/assets/masar-icon-180.png?v=1">
+<link rel="icon" type="image/png" sizes="32x32" href="/services/masar/assets/masar-icon-32.png?v=1">
+<link rel="icon" type="image/png" sizes="16x16" href="/services/masar/assets/masar-icon-16.png?v=1">
+<link rel="manifest" href="/services/masar/manifest.webmanifest?v=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="تسعير نايف">
-<meta name="application-name" content="تسعير نايف">
+<meta name="apple-mobile-web-app-title" content="مسار">
+<meta name="application-name" content="مسار">
 <meta name="theme-color" content="#101828">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -20,21 +21,24 @@
 </style>
 <style>
 body:not(.ready) .shell{display:none}.ready .auth{display:none}
+.auth [hidden]{display:none!important}
 .auth{min-height:100vh;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,#101828,#263349)}
 .auth-card{width:min(410px,100%);padding:28px;border-radius:26px;background:#fff;box-shadow:0 26px 65px rgba(0,0,0,.22);text-align:center}
 .auth-card .icon-letter{margin:0 auto 14px}.auth-card h1{font-size:24px}.auth-card p{margin:8px 0 20px;color:var(--muted);font-size:13px}.auth-card .login{width:100%;min-height:46px}
 .auth-message{min-height:24px;margin-top:10px;color:#b42318;font-size:12px}.logout{border:1px solid rgba(255,255,255,.35);border-radius:12px;padding:8px 14px;background:transparent;color:#fff;font:inherit;font-weight:800;cursor:pointer}
+.auth-logo{display:block;width:min(270px,100%);height:auto;margin:0 auto 14px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.brand .icon{box-shadow:none;border-radius:13px}
 .actions{grid-template-columns:1.2fr 1fr 1fr}.section{display:block}.notice{margin-top:14px;padding:10px 14px;border:1px solid #eadbad;border-radius:14px;background:#fffaf0;color:#694b13;font-size:12px}.notice[hidden]{display:none}
 .money-amount{display:inline-flex;align-items:center;gap:.24em;direction:ltr;unicode-bidi:isolate;white-space:nowrap}.sar-symbol svg{width:.82em;height:.82em;display:block;fill:currentColor}.metric strong .sar-symbol svg{width:.7em;height:.7em}
 @media(max-width:900px){.actions{grid-template-columns:1fr}}
 </style>
+<style>html{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button,.action{transition:transform 140ms cubic-bezier(.23,1,.32,1)}button:active,.action:active{transform:scale(.98)}@media(hover:none){.action:hover{transform:none}}@media(prefers-reduced-motion:reduce){button,.action{transition:none}}</style>
 </head>
 <body>
-<section class="auth" id="authScreen"><div class="auth-card"><span class="icon icon-letter" aria-hidden="true">ن</span><h1>لوحة التسعير</h1><p>سجّل الدخول للوصول إلى عروضك وعملائك.</p><button class="login" id="loginBtn" type="button">الدخول بحساب Google</button><div class="auth-message" id="authMessage" role="status"></div></div></section>
+<section class="auth" id="authScreen"><div class="auth-card"><img class="auth-logo" src="/services/masar/assets/masar-wordmark.jpg" alt="مسار"><h1 class="sr-only">مسار</h1><p id="authDescription">جارٍ فتح حسابك…</p><button class="login" id="loginBtn" type="button" hidden>الدخول بحساب Google</button><div class="auth-message" id="authMessage" role="status"></div></div></section>
 <main class="shell">
 <section class="hero">
-  <div class="top"><div class="brand"><span class="icon icon-letter" aria-hidden="true">ن</span><div><h1>لوحة التحكم</h1><p>العروض والعملاء والمالية</p></div></div><button class="logout" id="logoutBtn" type="button">تسجيل الخروج</button></div>
-  <nav class="actions" aria-label="أقسام التسعير"><a class="action main" href="/services/pricing/tool/"><div><b>عرض جديد</b><span>أداة التسعير وإصدار العروض</span></div><div class="arrow">←</div></a><a class="action" href="/services/pricing/offers/"><div><b>العروض</b><span>النسخ والحالات والمتابعة</span></div><div class="arrow">←</div></a><a class="action" href="/services/pricing/clients/"><div><b>العملاء</b><span>بيانات العملاء وعروضهم</span></div><div class="arrow">←</div></a></nav>
+  <div class="top"><div class="brand"><img class="icon" src="/services/masar/assets/masar-icon-192.png" alt=""><div><h1>مسار</h1><p>الرئيسية · العروض والعملاء والمالية</p></div></div><button class="logout" id="logoutBtn" type="button">تسجيل الخروج</button></div>
+  <nav class="actions" aria-label="أقسام مسار"><a class="action main" href="/services/masar/tool/"><div><b>إعداد عرض</b><span>إنشاء عرض جديد</span></div><div class="arrow">←</div></a><a class="action" href="/services/masar/offers/"><div><b>العروض</b><span>النسخ والحالات والمتابعة</span></div><div class="arrow">←</div></a><a class="action" href="/services/masar/clients/"><div><b>العملاء</b><span>بيانات العملاء وعروضهم</span></div><div class="arrow">←</div></a></nav>
 </section>
 <section class="grid"><div class="card metric"><small>إجمالي العروض</small><strong id="mTotal">0</strong></div><div class="card metric"><small>عروض مفتوحة</small><strong id="mOpen">0</strong></div><div class="card metric"><small>معتمدة</small><strong id="mWon">0</strong></div><div class="card metric"><small>قيمة مفتوحة</small><strong id="mValue">0</strong></div></section>
 <section class="grid" aria-label="ملخص العقود المعتمدة"><div class="card metric"><small>قيمة العقود المعتمدة</small><strong id="mContracts">0</strong></div><div class="card metric"><small>أتعاب الشركاء المحددة</small><strong id="mPartners">0</strong></div><div class="card metric"><small>المتبقي لك قبل المصاريف</small><strong id="mOwn">0</strong></div><div class="card metric"><small>المحصّل المسجّل من العملاء</small><strong id="mCollected">0</strong></div></section>
@@ -68,8 +72,10 @@ $('loginBtn').onclick=async()=>{try{$('authMessage').textContent='';await signIn
 $('logoutBtn').onclick=()=>signOut(auth);
 await authReady.catch(console.error);
 onAuthStateChanged(auth,async user=>{
+ const requested=new URLSearchParams(location.search).get('next');
+ if(user&&requested){try{const target=new URL(requested,location.origin);if(target.origin===location.origin&&/^\/services\/masar\/(tool|offers|clients)\/?$/.test(target.pathname)){location.replace(target.pathname+target.search+target.hash);return}}catch(error){console.warn('Invalid return path',error)}}
  document.body.classList.toggle('ready',Boolean(user));
- if(!user){render();return}
+ if(!user){$('authDescription').textContent='سجّل الدخول للوصول إلى عروضك وعملائك.';$('loginBtn').hidden=false;render();return}
  try{const data=await loadWorkspace(user);render(data.quotes)}
  catch(e){console.error(e);$('recent').innerHTML='<tr><td colspan="4"><div class="empty">تعذر تحميل البيانات. حدّث الصفحة للمحاولة مرة أخرى.</div></td></tr>'}
 });

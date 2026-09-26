@@ -54,7 +54,7 @@ function distinctClients(rows){
     const name=String(row?.name||'').trim().replace(/\s+/g,' ');
     if(!name)continue;
     const key=clientKey(name),old=map.get(key)||{};
-    map.set(key,{...old,...row,name,person:row.person||old.person||'',notes:row.notes||old.notes||''});
+    map.set(key,{...old,...row,name,person:row.person??old.person??'',notes:row.notes??old.notes??'',email:row.email??old.email??'',mobile:row.mobile??old.mobile??'',whatsapp:row.whatsapp??old.whatsapp??''});
   }
   return [...map.values()];
 }
@@ -97,7 +97,7 @@ export async function updateClient(user,originalName,changes){
     const existing=clients.find(c=>clientKey(c.name)===oldKey);
     if(!existing)throw new Error('لم يعد العميل موجودًا. حدّث الصفحة وحاول مجددًا');
     const nextClients=distinctClients([...clients.filter(c=>clientKey(c.name)!==oldKey),{
-      ...existing,name,person:String(changes.person||'').trim(),notes:String(changes.notes||'').trim()
+      ...existing,name,person:String(changes.person||'').trim(),notes:String(changes.notes||'').trim(),email:String(changes.email||'').trim(),mobile:String(changes.mobile||'').trim(),whatsapp:String(changes.whatsapp||'').trim()
     }]);
     const nextQuotes=quotes.map(q=>clientKey(q.client)===oldKey?{...q,client:name}:q);
     tx.set(ref,{
