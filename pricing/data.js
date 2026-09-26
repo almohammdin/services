@@ -20,6 +20,23 @@ export const clientKey=name=>String(name||'').trim().replace(/\s+/g,' ').toLocal
 export const quoteKey=quote=>String(quote?.id||quote?.quoteNo||'');
 export const quoteSeriesKey=quote=>String(quote?.seriesId||quoteKey(quote));
 export const quoteVersion=quote=>Math.max(1,Number(quote?.version)||1);
+export function latestQuotes(rows=[]){
+  const groups=new Map();
+  for(const row of rows){
+    const key=quoteSeriesKey(row),old=groups.get(key);
+    if(!old||quoteVersion(row)>quoteVersion(old)||(quoteVersion(row)===quoteVersion(old)&&String(row.updatedAtIso||'')>String(old.updatedAtIso||'')))groups.set(key,row);
+  }
+  return [...groups.values()].sort((a,b)=>String(b.updatedAtIso||'').localeCompare(String(a.updatedAtIso||'')));
+}
+export function quoteFinances(row){
+  const amount=Math.max(0,Number(row?.amount)||0);
+  const partnerCost=row?.partnerCost===''||row?.partnerCost==null?null:Number(row.partnerCost);
+  const validCost=partnerCost!==null&&Number.isFinite(partnerCost)&&partnerCost>=0&&partnerCost<=amount;
+  const ownShare=validCost?amount-partnerCost:null;
+  const collected=Math.min(amount,Math.max(0,Number(row?.collectedAmount)||0));
+  const partnerPaid=Math.min(validCost?partnerCost:0,Math.max(0,Number(row?.partnerPaid)||0));
+  return {amount,partnerCost:validCost?partnerCost:null,ownShare,collected,partnerPaid,remainingClient:amount-collected,remainingPartner:validCost?partnerCost-partnerPaid:null};
+}
 const serviceNames={liquidation_pre:'خدمات ما قبل التصفية',governance_session:'جلسة استشارية في الحوكمة',diagnosis:'تشخيص الوضع المؤسسي',authority_matrix:'مصفوفة الصلاحيات',partners:'تنظيم علاقة الشركاء',restructuring:'إعادة الهيكلة',monthly:'متابعة شهرية',custom:'خدمة مخصصة'};
 export const serviceLabel=quote=>quote?.serviceName||serviceNames[quote?.service]||quote?.service||'عرض سعر';
 const localKey='pricing_clients_v1';
