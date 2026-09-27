@@ -10,7 +10,7 @@
   :lang(en),[dir="ltr"],bdi{font-family:"IBM Plex Sans",Arial,sans-serif;line-height:1.6}
   h1,h2,h3{text-wrap:balance;letter-spacing:0}p,li{text-wrap:pretty}
   .btn,.chip,.advisory-link,.model-open,.case-study-link{transition:transform 160ms var(--ease-out),box-shadow 200ms var(--ease-out),background 200ms var(--ease-out),border-color 200ms var(--ease-out)}
-  .btn:active,.chip:active,.advisory-link:active,.model-open:active,.case-study-link:active{transform:scale(.97)}
+  .btn:active,.chip:active,.advisory-link:active,.model-open,.case-study-link:active{transform:scale(.97)}
   .pricing-entry-btn{position:relative;isolation:isolate;overflow:hidden}
   .pricing-entry-btn:after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.38),transparent);transform:translateX(120%);transition:transform 480ms var(--ease-out);z-index:-1}
   .pricing-entry-btn:hover:after{transform:translateX(-120%)}
@@ -21,5 +21,5 @@
 </style>
 </head>
 {% endcapture %}
-{% capture hero_actions_with_pricing %}<div class="hero-actions"><a class="btn gold pricing-entry-btn" href="/services/masar/">مسار — العملاء والعروض</a>{% endcapture %}
+{% capture hero_actions_with_pricing %}<div class="hero-actions"><a class="btn gold pricing-entry-btn" href="/services/masar/">مسار — العملاء والعروض</a><a class="btn pricing-entry-btn" href="/services/mukhaalafat-workshop/">عرض ورشة المخالفات</a>{% endcapture %}
 {{ page_source | replace: '</head>', pricing_head | replace: '<div class="hero-actions">', hero_actions_with_pricing }}
