@@ -51,8 +51,31 @@
 .success-basis{font-size:11px;font-weight:700;line-height:1.4}
 .success-terms{font-size:10px;line-height:1.55;margin-top:2mm}
 .success-note{font-size:9px;color:var(--muted);margin-top:1mm}
-.money-grid.with-success .payment{font-size:10.7px}
-@media print{.paper{height:auto;min-height:296mm;overflow:visible;print-color-adjust:exact;-webkit-print-color-adjust:exact}.qsection,.approval,.footer{break-inside:avoid}}
+.money-grid.with-success .payment{font-size:10.7px}@media print{
+  .paper{
+    height:297mm;
+    min-height:297mm;
+    overflow:hidden;
+    padding:6mm 10mm 5mm;
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+  .brand-top{margin:-1mm 0 1.5mm}
+  .brand-logo.hatta-logo{max-height:26mm}
+  .quote-head{padding:3mm 0 2mm}
+  .client-band{margin-top:2.5mm}
+  .qbox{min-height:16mm;padding:2.5mm 3mm}
+  .qsection{margin-top:2.5mm}
+  .qsection h3{margin-bottom:1.3mm}
+  .scope,.terms,.freebox{padding:2mm 2.5mm;line-height:1.5}
+  .price-card{padding:3mm}
+  .payment{padding:2.5mm;line-height:1.55}
+  .extra-line{padding:1.2mm 2mm;margin-bottom:1mm}
+  .approval{margin:3mm 0 0;padding:2.5mm}
+  .sign-field{min-height:12mm}
+  .paper .footer{margin-top:auto;padding-top:2mm}
+  .qsection,.approval,.footer{break-inside:avoid}
+}
 .send-box{border:1px solid #eadbad;background:#fffaf0;border-radius:14px;padding:10px;margin:9px 0}.send-box .field:last-child{margin-bottom:0}.version-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}.version-actions .btn{flex:1}.version-note{color:#475467;font-size:12px;font-weight:800}
 </style>
 <style>html{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button,.btn,.chip,.mini,.tab{transition:transform 140ms cubic-bezier(.23,1,.32,1)}button:active,.btn:active,.chip:active,.mini:active,.tab:active{transform:scale(.98)}@media(pointer:coarse){input,select,textarea{font-size:16px}}@media(prefers-reduced-motion:reduce){button,.btn,.chip,.mini,.tab,.toast{transition:none}}</style>
