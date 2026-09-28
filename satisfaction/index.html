@@ -174,11 +174,10 @@ td{color:#4F5E68}
 <main>
 <section class="publicPage" id="publicView">
   <div class="surveyShell">
-    <div class="clientLogoWrap" id="clientLogoWrap">
-      <div class="clientFallback" id="clientFallback">KA</div>
-      <img class="clientLogo" id="clientLogo" alt="" hidden>
+    <div class="clientLogoWrap" id="clientLogoWrap" hidden>
+      <img class="clientLogo" id="clientLogo" alt="شعار الجهة" hidden>
     </div>
-    <h2 class="orgName" id="orgName">مطار الملك عبدالعزيز الدولي</h2>
+    <h2 class="orgName" id="orgName">شركة السعادة</h2>
     <p class="locationName" id="locationName">نقطة قياس تجريبية</p>
 
     <div class="surveyCard">
@@ -314,8 +313,8 @@ td{color:#4F5E68}
         <section class="panel sectionGap">
           <div class="panelTitle"><div><h2>إعدادات الجهة</h2><p>اسم الجهة والشعار والسؤال والرابط.</p></div></div>
           <div class="settingsGrid">
-            <label class="field full"><span>اسم الجهة</span><input id="setOrg" value="مطار الملك عبدالعزيز الدولي"></label>
-            <label class="field"><span>اسم المستخدم</span><input id="setUser" dir="ltr" value="kaia"></label>
+            <label class="field full"><span>اسم الجهة</span><input id="setOrg" value="شركة السعادة"></label>
+            <label class="field"><span>اسم المستخدم</span><input id="setUser" dir="ltr" value="alsaadah"></label>
             <label class="field"><span>البريد الإداري</span><input id="setEmail" dir="ltr" type="email" value="admin@example.sa"></label>
             <label class="field full"><span>نقطة القياس</span><input id="setLocation" value="نقطة قياس تجريبية"></label>
             <label class="field full"><span>سؤال التقييم</span><input id="setQuestion" value="كيف كانت تجربتك اليوم؟"></label>
@@ -358,7 +357,7 @@ td{color:#4F5E68}
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const defaults={
-  org:"مطار الملك عبدالعزيز الدولي",user:"kaia",email:"admin@example.sa",
+  org:"شركة السعادة",user:"alsaadah",email:"admin@example.sa",
   location:"نقطة قياس تجريبية",question:"كيف كانت تجربتك اليوم؟",logo:""
 };
 const demoVotes=[
@@ -375,12 +374,21 @@ const seedCounts={1:18,2:29,3:61,4:184,5:427};
 const seedDaily=[78,91,84,103,112,119,132];
 let currentVote=null;
 let settings=loadSettings();
-function loadSettings(){try{return {...defaults,...JSON.parse(localStorage.getItem("csat_settings")||"{}")}}catch{return {...defaults}}}
+function loadSettings(){
+  try{
+    const saved=JSON.parse(localStorage.getItem("csat_settings")||"{}");
+    const merged={...defaults,...saved};
+    if(merged.org==="مطار الملك عبدالعزيز الدولي"){
+      merged.org=defaults.org;
+      if(!saved.user||saved.user==="kaia")merged.user=defaults.user;
+    }
+    return merged
+  }catch{return {...defaults}}
+}
 function saveSettings(){localStorage.setItem("csat_settings",JSON.stringify(settings))}
 function loadVotes(){try{return JSON.parse(localStorage.getItem("csat_votes")||"[]")}catch{return []}}
 function saveVotes(v){localStorage.setItem("csat_votes",JSON.stringify(v))}
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1500)}
-function initials(name){return (name||"جهة").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase()}
 function publicLink(){
   const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("u",settings.user||"demo");return u.toString()
 }
@@ -389,9 +397,20 @@ function applySettings(){
   $("#locationName").textContent=settings.location;
   $("#surveyQuestion").textContent=settings.question;
   $("#setOrg").value=settings.org;$("#setUser").value=settings.user;$("#setEmail").value=settings.email;$("#setLocation").value=settings.location;$("#setQuestion").value=settings.question;
-  $("#clientFallback").textContent=initials(settings.org);
-  if(settings.logo){$("#clientLogo").src=settings.logo;$("#clientLogo").hidden=false;$("#clientFallback").hidden=true;$("#settingsLogo").src=settings.logo;$("#settingsLogo").hidden=false;$("#settingsLogoFallback").hidden=true}
-  else{$("#clientLogo").hidden=true;$("#clientFallback").hidden=false;$("#settingsLogo").hidden=true;$("#settingsLogoFallback").hidden=false}
+  if(settings.logo){
+    $("#clientLogo").src=settings.logo;
+    $("#clientLogo").hidden=false;
+    $("#clientLogoWrap").hidden=false;
+    $("#settingsLogo").src=settings.logo;
+    $("#settingsLogo").hidden=false;
+    $("#settingsLogoFallback").hidden=true
+  }else{
+    $("#clientLogo").removeAttribute("src");
+    $("#clientLogo").hidden=true;
+    $("#clientLogoWrap").hidden=true;
+    $("#settingsLogo").hidden=true;
+    $("#settingsLogoFallback").hidden=false
+  }
   renderQR()
 }
 function renderQR(){
