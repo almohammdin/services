@@ -42,6 +42,7 @@ let users=[];
 let selectedCompanyId='';
 let companyLogoDraft='';
 let unsubscribeResponses=null;
+let dashboardEntry=null;
 
 function toast(message){
   const el=$('#toast');
@@ -150,8 +151,8 @@ $('#newVoteBtn').addEventListener('click',()=>{
   $('#publicStatus').textContent='';
 });
 
-function openAuth(){
-  $('#authMessage').textContent='';
+function openAuth(message=''){
+  $('#authMessage').textContent=message;
   $('#authOverlay').hidden=false;
   setTimeout(()=>$('#loginEmail')?.focus(),40);
 }
@@ -170,7 +171,9 @@ $('#googleLoginBtn').addEventListener('click',async()=>{
   $('#authMessage').textContent='';
   try{
     const provider=new GoogleAuthProvider();
-    await signInWithPopup(auth,provider);
+    provider.setCustomParameters({prompt:'select_account'});
+    const credential=await signInWithPopup(auth,provider);
+    await enterDashboard(credential.user);
   }catch(error){
     console.error(error);
     $('#authMessage').textContent=authError(error);
@@ -184,7 +187,8 @@ $('#loginForm').addEventListener('submit',async e=>{
   const email=$('#loginEmail').value.trim();
   const password=$('#loginPassword').value;
   try{
-    await signInWithEmailAndPassword(auth,email,password);
+    const credential=await signInWithEmailAndPassword(auth,email,password);
+    await enterDashboard(credential.user);
   }catch(error){
     console.error(error);
     $('#authMessage').textContent=authError(error);
@@ -196,6 +200,10 @@ function authError(error){
   if(code.includes('invalid-credential')||code.includes('wrong-password')||code.includes('user-not-found')) return 'بيانات الدخول غير صحيحة.';
   if(code.includes('too-many-requests')) return 'محاولات كثيرة. جرّب بعد قليل.';
   if(code.includes('popup-closed')) return 'تم إغلاق نافذة الدخول.';
+  if(code.includes('popup-blocked')) return 'المتصفح منع نافذة الدخول. اسمح بالنوافذ المنبثقة لهذا الموقع ثم حاول مجددًا.';
+  if(code.includes('unauthorized-domain')) return 'عنوان المنصة غير مضاف إلى النطاقات المعتمدة لتسجيل الدخول. تواصل مع إدارة المنصة.';
+  if(code.includes('network-request-failed')) return 'تعذر الاتصال بخدمة الدخول. تحقق من اتصال الإنترنت ثم حاول مجددًا.';
+  if(code.includes('user-disabled')) return 'هذا الحساب موقوف. تواصل مع إدارة المنصة.';
   if(code.includes('operation-not-allowed')) return 'طريقة الدخول غير مفعلة في Firebase.';
   if(code.includes('permission-denied')) return 'الصلاحية غير متاحة لهذا الحساب.';
   return 'تعذر تسجيل الدخول.';
@@ -230,7 +238,13 @@ async function ensureDemoCompany(){
   }
 }
 
-async function enterDashboard(user){
+function enterDashboard(user){
+  if(dashboardEntry) return dashboardEntry;
+  dashboardEntry=loadAuthenticatedDashboard(user).finally(()=>{dashboardEntry=null});
+  return dashboardEntry;
+}
+
+async function loadAuthenticatedDashboard(user){
   try{
     currentUser=user;
     currentProfile=await resolveProfile(user);
@@ -240,15 +254,22 @@ async function enterDashboard(user){
     closeAuth();
   }catch(error){
     console.error(error);
+    currentProfile=null;
     const code=String(error?.code||error?.message||'');
     if(code.includes('permission-denied')){
-      $('#authMessage').textContent='تم تسجيل الدخول، لكن صلاحيات تخزين Firebase الحالية تمنع بيانات منصة الرضا.';
-      openAuth();
+      openAuth('تم التحقق من حسابك، لكن إعدادات صلاحيات قاعدة البيانات تمنع فتح لوحة المنصة. يلزم أن يراجع المسؤول صلاحيات منصة الرضا.');
       return;
     }
-    await signOut(auth).catch(()=>{});
-    $('#authMessage').textContent='هذا الحساب غير مضاف ضمن مستخدمي المنصة.';
-    openAuth();
+    if(code==='company-missing'){
+      openAuth('تم التحقق من حسابك، لكن الشركة المرتبطة به غير موجودة. تواصل مع إدارة المنصة.');
+      return;
+    }
+    if(code==='not-authorized'){
+      await signOut(auth).catch(()=>{});
+      openAuth('هذا الحساب غير مضاف ضمن مستخدمي المنصة أو تم إيقافه. اختر الحساب الصحيح أو تواصل مع الإدارة.');
+      return;
+    }
+    openAuth('تعذر تحميل لوحة المنصة. تحقق من اتصال الإنترنت ثم حاول الدخول مجددًا.');
   }
 }
 
@@ -586,3 +607,4 @@ if(dashboardRequested){
 }
 
 loadPublicCompany();
+
