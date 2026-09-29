@@ -10,7 +10,8 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:#f6f9fa;color:var(--ink);font-family:Craft,Tahoma,Arial,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+body{margin:0;min-height:100vh;min-height:100dvh;background:#f6f9fa;color:var(--ink);font-family:Craft,Tahoma,Arial,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+main{flex:1 0 auto;display:flex;flex-direction:column;min-height:0}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 a{color:inherit}
@@ -21,7 +22,7 @@ a{color:inherit}
 .platform-brand{width:min(1180px,calc(100% - 34px));min-height:76px;margin:auto;display:flex;align-items:center;text-decoration:none}
 .platform-brand img{display:block;width:208px;height:64px;object-fit:contain;object-position:right center}
 
-.public-view{min-height:calc(100vh - 76px);display:grid;place-items:center;padding:44px 0 72px;background:
+.public-view{flex:1 0 auto;min-height:0;display:grid;place-items:center;padding:24px 0;background:
 radial-gradient(circle at 10% 0,rgba(7,142,232,.09),transparent 26%),
 radial-gradient(circle at 88% 92%,rgba(16,184,97,.08),transparent 28%),#f6f9fa}
 .survey-shell{width:min(900px,calc(100% - 28px));text-align:center}
@@ -162,7 +163,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:680px){
   .c,.dash-shell{width:min(100% - 20px,1180px)}
   .platform-brand{width:min(100% - 20px,1180px);min-height:64px}.platform-brand img{width:170px;height:56px}
-  .public-view{min-height:calc(100vh - 64px);padding:28px 0 54px}.survey-card{padding:27px 12px 22px;border-radius:24px}
+  .public-view{min-height:0;padding:18px 0}.survey-card{padding:24px 12px 20px;border-radius:24px}
   .faces{gap:5px;margin-top:24px}.face-btn{min-height:110px;border-radius:17px;padding:9px 2px;gap:5px}.face-icon{width:52px;height:52px}.face-btn b{font-size:10px}
   .client-logo-wrap{width:86px;height:86px;border-radius:21px}.org-name{font-size:20px}
   .dash-head{padding:14px}.dash-identity img{width:46px;height:46px}.dash-identity strong{font-size:15px}
@@ -179,3 +180,32 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    The cropped mark is reserved for the browser tab favicon only. */
 .dash-identity .dash-full-logo{width:158px;height:58px;max-width:36vw;border-radius:0;background:transparent;padding:0;object-fit:contain;object-position:right center}
 @media(max-width:680px){.dash-identity .dash-full-logo{width:128px;height:50px;max-width:42vw}}
+
+/* Keep the short public survey within the viewport together with header and footer. */
+.platform-head,.footer{flex:0 0 auto}
+.public-view .survey-shell{margin:auto}
+@media(min-width:681px) and (max-height:760px){
+  .platform-brand{min-height:64px}
+  .platform-brand img{height:54px;width:188px}
+  .public-view{padding:14px 0}
+  .survey-card{margin-top:16px;padding:24px 24px 20px}
+  .faces{margin-top:20px}
+  .face-btn{min-height:126px}
+  .face-icon{width:66px;height:66px}
+  .footin{padding-top:16px;padding-bottom:12px}
+}
+@media(max-width:680px) and (max-height:760px){
+  .platform-brand{min-height:56px}
+  .platform-brand img{height:48px;width:152px}
+  .public-view{padding:10px 0}
+  .survey-card{margin-top:14px;padding-top:18px;padding-bottom:16px}
+  .survey-card h2{font-size:clamp(26px,8vw,34px)}
+  .survey-lead{margin-top:4px;font-size:13px}
+  .faces{margin-top:17px}
+  .face-btn{min-height:92px}
+  .face-icon{width:43px;height:43px}
+  .footin{padding-top:13px;padding-bottom:10px;gap:8px}
+  .naifLogo{height:32px}
+  .footBrand p{font-size:10px}
+  .socials a,.admin-access{width:32px;height:32px}
+}
