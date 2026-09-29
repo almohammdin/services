@@ -1,0 +1,61 @@
+// Satisfaction Platform — Firestore rules snippet
+// يدمج داخل: match /databases/{database}/documents { ... }
+// لا يستبدل قواعد مسراح الحالية بالكامل.
+
+function satisfactionAdmin() {
+  return request.auth != null
+    && request.auth.token.email == 'almohammdin@gmail.com';
+}
+
+function satisfactionProfile() {
+  return get(/databases/$(database)/documents/satisfactionUsers/$(request.auth.uid));
+}
+
+function satisfactionCompanyMember(companyId) {
+  return request.auth != null
+    && exists(/databases/$(database)/documents/satisfactionUsers/$(request.auth.uid))
+    && satisfactionProfile().data.active == true
+    && satisfactionProfile().data.role == 'company'
+    && satisfactionProfile().data.companyId == companyId;
+}
+
+match /satisfactionUsers/{uid} {
+  allow read: if satisfactionAdmin()
+    || (request.auth != null && request.auth.uid == uid);
+
+  allow create, update, delete: if satisfactionAdmin();
+}
+
+match /satisfactionCompanies/{companyId} {
+  // الجمهور يقرأ فقط الشركة المفعلة.
+  // الأدمن ومستخدم الشركة يستطيعان قراءة شركتهما حتى داخل لوحة الإدارة.
+  allow read: if resource.data.active == true
+    || satisfactionAdmin()
+    || satisfactionCompanyMember(companyId);
+
+  allow create, update, delete: if satisfactionAdmin();
+
+  match /responses/{responseId} {
+    // التقييم العام لا يتطلب تسجيل دخول.
+    allow create: if request.resource.data.keys().hasOnly([
+        'score','note','createdAt','clientCreatedAt','source'
+      ])
+      && request.resource.data.score is int
+      && request.resource.data.score >= 1
+      && request.resource.data.score <= 5
+      && request.resource.data.note == ''
+      && request.resource.data.source == 'web';
+
+    // تعديل الملاحظة فقط بعد إنشاء التقييم.
+    allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        'note','noteUpdatedAt'
+      ])
+      && request.resource.data.note is string
+      && request.resource.data.note.size() <= 300;
+
+    allow read: if satisfactionAdmin()
+      || satisfactionCompanyMember(companyId);
+
+    allow delete: if satisfactionAdmin();
+  }
+}
