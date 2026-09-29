@@ -2,7 +2,7 @@ import {initializeApp,deleteApp} from 'https://www.gstatic.com/firebasejs/12.17.
 import {
   getAuth,setPersistence,browserLocalPersistence,GoogleAuthProvider,signInWithPopup,
   signInWithEmailAndPassword,createUserWithEmailAndPassword,onAuthStateChanged,
-  signOut,sendPasswordResetEmail,deleteUser
+  signOut,sendPasswordResetEmail,deleteUser,signInAnonymously,inMemoryPersistence
 } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js';
 import {
   getFirestore,doc,getDoc,setDoc,collection,addDoc,updateDoc,getDocs,
@@ -43,6 +43,25 @@ let selectedCompanyId='';
 let companyLogoDraft='';
 let unsubscribeResponses=null;
 let dashboardEntry=null;
+let publicSession=null;
+
+async function getPublicSession(){
+  if(!publicSession){
+    publicSession=(async()=>{
+      const surveyApp=initializeApp(firebaseConfig,'satisfaction-public');
+      try{
+        const surveyAuth=getAuth(surveyApp);
+        await setPersistence(surveyAuth,inMemoryPersistence);
+        const credential=await signInAnonymously(surveyAuth);
+        return {db:getFirestore(surveyApp),uid:credential.user.uid};
+      }catch(error){
+        await deleteApp(surveyApp).catch(()=>{});
+        throw error;
+      }
+    })().catch(error=>{publicSession=null;throw error});
+  }
+  return publicSession;
+}
 
 function toast(message){
   const el=$('#toast');
@@ -110,7 +129,9 @@ async function submitVote(score){
   $$('.face-btn').forEach(btn=>btn.disabled=true);
   $('#publicStatus').textContent='جارٍ تسجيل التقييم…';
   try{
-    currentResponseRef=await addDoc(collection(db,COMPANIES,currentPublicCompany.id,'responses'),{
+    const surveySession=await getPublicSession();
+    currentResponseRef=await addDoc(collection(surveySession.db,COMPANIES,currentPublicCompany.id,'responses'),{
+      ownerUid:surveySession.uid,
       score:Number(score),
       note:'',
       createdAt:serverTimestamp(),
@@ -211,7 +232,7 @@ function authError(error){
 
 async function resolveProfile(user){
   const email=(user.email||'').toLowerCase();
-  if(email===ADMIN_EMAIL){
+  if(email===ADMIN_EMAIL&&user.emailVerified){
     return {uid:user.uid,email:user.email||ADMIN_EMAIL,name:user.displayName||'نايف',role:'admin',active:true};
   }
   const snap=await getDoc(doc(db,USERS,user.uid));
@@ -313,6 +334,7 @@ async function loadDashboardData(){
   }else{
     const snap=await getDoc(doc(db,COMPANIES,currentProfile.companyId));
     if(!snap.exists()) throw new Error('company-missing');
+    if(snap.data().active===false) throw new Error('not-authorized');
     companies=[{id:snap.id,...snap.data()}];
     selectedCompanyId=currentProfile.companyId;
   }
