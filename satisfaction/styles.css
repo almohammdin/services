@@ -217,3 +217,27 @@ body.public-mode .public-view{height:100%;min-height:0;overflow:hidden;padding:1
 body.public-mode .survey-shell{transform-origin:center center;will-change:transform}
 body.public-mode .footer{flex:0 0 auto}
 body.public-mode .platform-head{flex:0 0 auto}
+
+/* Lock the public survey viewport: no empty vertical scroll or iOS rubber-band. */
+html.public-mode,
+body.public-mode{
+  width:100%;
+  height:100%;
+  height:100dvh;
+  max-height:100dvh;
+  overflow:hidden!important;
+  overscroll-behavior:none;
+}
+body.public-mode{
+  position:fixed;
+  inset:0;
+}
+html.public-mode body.public-mode main{
+  height:auto;
+  flex:1 1 auto;
+  overflow:hidden!important;
+}
+html.public-mode body.public-mode .public-view{
+  overflow:hidden!important;
+  overscroll-behavior:none;
+}
