@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs><linearGradient id="a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#06346e"/><stop offset=".5" stop-color="#078ee8"/><stop offset="1" stop-color="#0ab45f"/></linearGradient><linearGradient id="g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#008b61"/><stop offset="1" stop-color="#18c858"/></linearGradient></defs>
+<path d="M236 58a180 180 0 0 0-119 45" fill="none" stroke="url(#a)" stroke-width="58" stroke-linecap="round"/>
+<path d="M94 126a180 180 0 0 0-51 106" fill="none" stroke="#078ee8" stroke-width="58" stroke-linecap="round"/>
+<path d="M44 266a180 180 0 0 0 54 119" fill="none" stroke="#063d83" stroke-width="58" stroke-linecap="round"/>
+<circle cx="235" cy="249" r="119" fill="#fff" stroke="#e7eef3" stroke-width="3"/>
+<path d="M172 229q16-23 32 0M267 229q16-23 32 0M175 283q57 67 117 0" fill="none" stroke="#073a70" stroke-width="20" stroke-linecap="round"/>
+<circle cx="389" cy="142" r="70" fill="url(#g)"/><path d="m354 145 25 25 48-52" fill="none" stroke="#fff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="url(#g)"><rect x="335" y="337" width="48" height="78" rx="13"/><rect x="396" y="290" width="48" height="125" rx="13"/><rect x="457" y="238" width="48" height="177" rx="13"/></g>
+</svg>
