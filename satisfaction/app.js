@@ -296,6 +296,7 @@ async function loadAuthenticatedDashboard(user){
 }
 
 function showDashboard(){
+  document.documentElement.classList.remove('public-mode');
   document.body.classList.remove('public-mode');
   const shell=$('.survey-shell'); if(shell) shell.style.transform='none';
   $('#publicView').hidden=true;
@@ -310,6 +311,7 @@ function showDashboard(){
 }
 
 function showPublic(){
+  document.documentElement.classList.add('public-mode');
   document.body.classList.add('public-mode');
   $('#dashboardView').hidden=true;
   $('#publicView').hidden=false;
@@ -652,6 +654,7 @@ function fitPublicViewport(){
 window.addEventListener('resize',()=>requestAnimationFrame(fitPublicViewport));
 window.addEventListener('orientationchange',()=>setTimeout(fitPublicViewport,80));
 if(!dashboardRequested){
+  document.documentElement.classList.add('public-mode');
   document.body.classList.add('public-mode');
   requestAnimationFrame(fitPublicViewport);
 }
