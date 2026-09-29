@@ -209,3 +209,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .footBrand p{font-size:10px}
   .socials a,.admin-access{width:32px;height:32px}
 }
+
+/* Public survey is a true one-screen layout. JS scales only when the real viewport is shorter. */
+body.public-mode{height:100vh;height:100dvh;overflow:hidden}
+body.public-mode main{flex:1 1 auto;min-height:0;overflow:hidden}
+body.public-mode .public-view{height:100%;min-height:0;overflow:hidden;padding:10px 0}
+body.public-mode .survey-shell{transform-origin:center center;will-change:transform}
+body.public-mode .footer{flex:0 0 auto}
+body.public-mode .platform-head{flex:0 0 auto}
