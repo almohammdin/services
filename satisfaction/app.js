@@ -204,9 +204,7 @@ function authError(error){
 async function resolveProfile(user){
   const email=(user.email||'').toLowerCase();
   if(email===ADMIN_EMAIL){
-    const profile={uid:user.uid,email:user.email||ADMIN_EMAIL,name:user.displayName||'نايف',role:'admin',active:true};
-    await setDoc(doc(db,USERS,user.uid),{...profile,updatedAt:serverTimestamp()},{merge:true});
-    return profile;
+    return {uid:user.uid,email:user.email||ADMIN_EMAIL,name:user.displayName||'نايف',role:'admin',active:true};
   }
   const snap=await getDoc(doc(db,USERS,user.uid));
   if(!snap.exists()) throw new Error('not-authorized');
@@ -242,6 +240,12 @@ async function enterDashboard(user){
     closeAuth();
   }catch(error){
     console.error(error);
+    const code=String(error?.code||error?.message||'');
+    if(code.includes('permission-denied')){
+      $('#authMessage').textContent='تم تسجيل الدخول، لكن صلاحيات تخزين Firebase الحالية تمنع بيانات منصة الرضا.';
+      openAuth();
+      return;
+    }
     await signOut(auth).catch(()=>{});
     $('#authMessage').textContent='هذا الحساب غير مضاف ضمن مستخدمي المنصة.';
     openAuth();
