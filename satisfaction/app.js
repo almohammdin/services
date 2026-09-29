@@ -101,6 +101,7 @@ function applyPublicCompany(company){
     $('#clientLogo').removeAttribute('src');
     $('#clientLogoWrap').hidden=true;
   }
+  fitPublicViewport();
 }
 
 async function loadPublicCompany(){
@@ -295,6 +296,8 @@ async function loadAuthenticatedDashboard(user){
 }
 
 function showDashboard(){
+  document.body.classList.remove('public-mode');
+  const shell=$('.survey-shell'); if(shell) shell.style.transform='none';
   $('#publicView').hidden=true;
   $('#dashboardView').hidden=false;
   $('#platformHead').hidden=true;
@@ -307,11 +310,13 @@ function showDashboard(){
 }
 
 function showPublic(){
+  document.body.classList.add('public-mode');
   $('#dashboardView').hidden=true;
   $('#publicView').hidden=false;
   $('#platformHead').hidden=false;
   dashboardRequested=false;
   loadPublicCompany();
+  requestAnimationFrame(fitPublicViewport);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -630,3 +635,23 @@ if(dashboardRequested){
 
 loadPublicCompany();
 
+
+function fitPublicViewport(){
+  if(!document.body.classList.contains('public-mode')) return;
+  const view=$('#publicView'),shell=$('.survey-shell');
+  if(!view||!shell||view.hidden) return;
+  shell.style.transform='none';
+  requestAnimationFrame(()=>{
+    const style=getComputedStyle(view);
+    const available=Math.max(1,view.clientHeight-(parseFloat(style.paddingTop)||0)-(parseFloat(style.paddingBottom)||0));
+    const natural=shell.getBoundingClientRect().height;
+    const scale=Math.min(1,available/natural);
+    shell.style.transform=scale<.999?'scale('+Math.max(.72,scale)+')':'none';
+  });
+}
+window.addEventListener('resize',()=>requestAnimationFrame(fitPublicViewport));
+window.addEventListener('orientationchange',()=>setTimeout(fitPublicViewport,80));
+if(!dashboardRequested){
+  document.body.classList.add('public-mode');
+  requestAnimationFrame(fitPublicViewport);
+}
