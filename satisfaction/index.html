@@ -3,480 +3,241 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0D3656">
-<meta name="description" content="منصة قياس رضا العملاء عبر رابط مباشر أو QR أو NFC مع لوحة تحكم وتحليلات فورية.">
-<title>قياس رضا العملاء | Naif Services</title>
-<link rel="icon" type="image/svg+xml" href="https://almohammdin.github.io/mudaraba-to-sjsc/assets/site-icon.svg">
+<meta name="theme-color" content="#06346e">
+<meta name="description" content="منصة قياس رضا العملاء عبر رابط مباشر أو QR أو NFC مع لوحات نتائج مستقلة لكل جهة.">
+<title>قياس رضا العملاء</title>
+<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=2">
+<link rel="stylesheet" href="./styles.css?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<style>
-@font-face{font-family:Craft;src:url('https://almohammdin.github.io/emtidad/assets/fonts/TheYearofHandicrafts-Regular.woff2')}
-@font-face{font-family:Craft;src:url('https://almohammdin.github.io/emtidad/assets/fonts/TheYearofHandicrafts-SemiBold.woff2');font-weight:600}
-@font-face{font-family:Craft;src:url('https://almohammdin.github.io/emtidad/assets/fonts/TheYearofHandicrafts-Black.woff2');font-weight:900}
-:root{
-  --n:#0D3656;--n2:#154D74;--n3:#071F33;--g:#C9853C;--g2:#E2A45E;--green:#165A3D;
-  --ink:#18232D;--muted:#5E6C76;--line:#E3DED6;--soft:#F6F2EC;--paper:#FFFEFC;
-  --shadow:0 16px 42px rgba(13,54,86,.09);--shadow-hover:0 22px 52px rgba(13,54,86,.13);
-  --r:24px;--ease:cubic-bezier(.23,1,.32,1)
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:#F7F5F1;color:var(--ink);font-family:Craft,Tahoma,Arial,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-a{color:inherit}
-[hidden]{display:none!important}
-.c{width:min(1180px,calc(100% - 34px));margin:auto}
-.nav{position:sticky;top:0;z-index:30;background:rgba(255,254,252,.92);backdrop-filter:blur(18px) saturate(150%);border-bottom:1px solid rgba(13,54,86,.07)}
-.navin{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--n);font-weight:900;white-space:nowrap}
-.brand img{width:44px;height:44px;object-fit:contain}
-.brandText{display:grid;line-height:1.25}
-.brandText b{font-size:14px}
-.brandText small{color:#788690;font-size:11px;font-weight:700}
-.navActions{display:flex;gap:6px;align-items:center}
-.navBtn{border:0;border-radius:11px;background:transparent;color:#4F5E68;padding:9px 11px;font-size:13px;font-weight:800}
-.navBtn:hover{background:#EEF3F6;color:var(--n)}
-.navBtn.primary{background:var(--n);color:#fff}
-.demoBadge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:#FFF4E7;color:#825A2C;border:1px solid #E8D2B6;padding:5px 9px;font-size:11px;font-weight:900}
-.demoBadge:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--g)}
-.publicPage{min-height:calc(100vh - 72px);display:grid;place-items:center;padding:28px 0 56px;background:
- radial-gradient(circle at 12% 4%,rgba(201,133,60,.11),transparent 24%),
- radial-gradient(circle at 88% 92%,rgba(13,54,86,.08),transparent 26%),#F7F5F1}
-.surveyShell{width:min(860px,calc(100% - 28px));text-align:center}
-.clientLogoWrap{width:104px;height:104px;margin:0 auto 15px;border-radius:28px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);display:grid;place-items:center;overflow:hidden}
-.clientLogo{width:82%;height:82%;object-fit:contain}
-.clientFallback{width:72px;height:72px;border-radius:22px;background:linear-gradient(145deg,var(--n3),var(--n2));display:grid;place-items:center;color:#fff;font:900 24px Arial,sans-serif}
-.orgName{margin:0;color:var(--n);font-size:clamp(18px,2.8vw,24px);font-weight:900}
-.locationName{margin:3px 0 0;color:var(--muted);font-size:13px}
-.surveyCard{margin-top:24px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:32px;box-shadow:var(--shadow);padding:34px 28px 28px}
-.surveyCard h1{margin:0;color:var(--n);font-size:clamp(29px,5vw,44px);line-height:1.3}
-.surveyLead{margin:7px auto 0;color:var(--muted);font-size:15px}
-.faces{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:30px;direction:rtl}
-.faceBtn{appearance:none;border:1px solid transparent;background:#fff;border-radius:24px;padding:16px 7px 13px;min-height:154px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;transition:transform 170ms var(--ease),box-shadow 170ms ease,border-color 170ms ease;background 170ms ease}
-.faceBtn:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:rgba(13,54,86,.12)}
-.faceBtn:active{transform:scale(.97)}
-.faceIcon{width:76px;height:76px;display:block;filter:drop-shadow(0 8px 16px rgba(13,54,86,.11))}
-.faceBtn b{color:var(--n);font-size:14px}
-.faceBtn small{color:#83909A;font-size:11px}
-.f5{background:#EDF8F2}.f4{background:#F2F8EC}.f3{background:#FFF8E8}.f2{background:#FFF2E8}.f1{background:#FBEDEC}
-.voteFoot{margin:18px 0 0;color:#8A7D70;font-size:11px}
-.thanks{padding:24px 12px 12px}
-.thanksIcon{width:82px;height:82px;border-radius:50%;margin:auto;display:grid;place-items:center;background:#EAF4EF;color:var(--green);font-size:38px}
-.thanks h2{margin:14px 0 4px;color:var(--n);font-size:27px}
-.thanks p{margin:0;color:var(--muted);font-size:14px}
-.optionalNote{max-width:520px;margin:18px auto 0;text-align:right}
-.optionalNote textarea{width:100%;min-height:92px;resize:vertical;border:1px solid #DED5C9;border-radius:15px;padding:12px 13px;background:#fff;color:var(--ink);outline:0}
-.optionalNote textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(201,133,60,.11)}
-.thanksActions{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
-.btn{border:1px solid #DCCDBA;background:#fff;color:var(--n);border-radius:11px;padding:10px 14px;min-height:44px;font-weight:900;font-size:13px}
-.btn.primary{background:var(--n);border-color:var(--n);color:#fff}
-.publicAdminLink{display:inline-flex;margin-top:18px;color:#8B979F;font-size:11px;text-decoration:none}
-.adminPage{padding:26px 0 70px}
-.adminHero{position:relative;overflow:hidden;background:linear-gradient(145deg,#082A45,var(--n) 58%,#174F76);color:#fff;border-radius:28px;padding:31px 30px;margin-bottom:18px;box-shadow:var(--shadow)}
-.adminHero:after{content:"";position:absolute;inset:auto 0 0;height:160px;background:url('https://almohammdin.github.io/mudaraba-to-sjsc/assets/brand-pattern.svg') center bottom/cover no-repeat;opacity:.05}
-.adminHero>*{position:relative;z-index:1}
-.adminHeroTop{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
-.adminEy{color:#E9B979;font-size:12px;font-weight:900}
-.adminHero h1{margin:4px 0 6px;font-size:clamp(28px,4vw,43px);line-height:1.3}
-.adminHero p{margin:0;color:rgba(255,255,255,.75);font-size:14px}
-.adminGrid{display:grid;grid-template-columns:1.45fr .8fr;gap:16px;align-items:start}
-.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:22px}
-.panelTitle{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px}
-.panelTitle h2{margin:0;color:var(--n);font-size:21px}
-.panelTitle p{margin:2px 0 0;color:var(--muted);font-size:12px}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.kpi{background:#fff;border:1px solid var(--line);border-radius:19px;padding:17px;box-shadow:0 8px 24px rgba(13,54,86,.05)}
-.kpi small{display:block;color:var(--muted);font-size:11px}
-.kpi strong{display:block;margin-top:4px;color:var(--n);font:900 28px Arial,sans-serif;direction:ltr;text-align:right}
-.kpi em{display:block;margin-top:2px;color:var(--green);font-size:11px;font-style:normal}
-.dist{display:grid;gap:11px}
-.distRow{display:grid;grid-template-columns:110px 1fr 64px;gap:9px;align-items:center}
-.distLabel{display:flex;align-items:center;gap:7px;color:var(--n);font-size:12px;font-weight:800}
-.miniFace{width:26px;height:26px}
-.track{height:12px;background:#EEE9E2;border-radius:999px;overflow:hidden}
-.fill{height:100%;width:0;border-radius:inherit;transition:width 350ms var(--ease)}
-.count{font:800 12px Arial,sans-serif;color:var(--n);direction:ltr;text-align:left}
-.chartFoot{display:flex;justify-content:space-between;gap:10px;margin-top:15px;padding-top:12px;border-top:1px solid #EEE7DE;color:var(--muted);font-size:11px}
-.daily{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:170px;margin-top:8px}
-.day{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%}
-.dayBar{width:min(42px,70%);min-height:6px;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,var(--g2),var(--g));transition:height 350ms var(--ease)}
-.day b{font:800 10px Arial,sans-serif;color:#8A7D70}
-.day span{font-size:10px;color:#8A7D70}
-.linkBox{display:grid;gap:10px}
-.qrWrap{width:190px;height:190px;margin:4px auto 8px;border:1px solid var(--line);border-radius:20px;background:#fff;display:grid;place-items:center;padding:12px}
-.qrWrap img,.qrWrap canvas{max-width:100%;height:auto}
-.urlBox{direction:ltr;text-align:left;border:1px solid #E4DCD2;border-radius:12px;background:#F8F6F2;padding:10px 11px;color:#4E5D67;font:700 11px Arial,sans-serif;word-break:break-all}
-.linkActions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.sectionGap{margin-top:16px}
-.settingsGrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.field{display:grid;gap:5px}
-.field.full{grid-column:1/-1}
-.field span{color:var(--n);font-size:12px;font-weight:900}
-.field input,.field textarea{width:100%;min-height:44px;border:1px solid #DDD5CB;border-radius:11px;background:#fff;padding:9px 11px;color:var(--n);outline:0}
-.field input:focus,.field textarea:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(201,133,60,.11)}
-.field small{color:var(--muted);font-size:10px}
-.logoUpload{display:flex;align-items:center;gap:10px;padding:10px;border:1px dashed #D8C6AE;border-radius:14px;background:#FBFAF7}
-.logoPreview{width:54px;height:54px;border-radius:14px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;flex:0 0 auto}
-.logoPreview img{max-width:86%;max-height:86%;object-fit:contain}
-.logoUpload input{min-height:0;border:0;padding:0;font-size:11px;background:transparent}
-.tableWrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:590px}
-th,td{padding:10px 8px;text-align:right;border-bottom:1px solid #EEE7DE;font-size:12px;vertical-align:middle}
-th{color:var(--n);background:#F7F3ED}
-td{color:#4F5E68}
-.scoreDot{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#fff;font:900 12px Arial,sans-serif}
-.empty{padding:28px;text-align:center;color:var(--muted);font-size:13px}
-.loginOverlay{position:fixed;inset:0;z-index:100;background:rgba(7,31,51,.68);backdrop-filter:blur(9px);display:grid;place-items:center;padding:18px}
-.loginCard{width:min(440px,100%);background:#fff;border:1px solid rgba(255,255,255,.45);border-radius:27px;padding:26px;box-shadow:0 28px 80px rgba(7,31,51,.28)}
-.loginBrand{display:flex;align-items:center;gap:11px;margin-bottom:18px}
-.loginBrand img{width:46px;height:46px}
-.loginBrand h2{margin:0;color:var(--n);font-size:21px}
-.loginBrand p{margin:1px 0 0;color:var(--muted);font-size:11px}
-.loginForm{display:grid;gap:10px}
-.loginHint{margin-top:12px;padding:10px 11px;border-radius:12px;background:#FFF8EF;border:1px solid #E6C8A5;color:#7B562D;font-size:11px}
-.toast{position:fixed;inset:auto 50% 22px auto;transform:translateX(50%);z-index:120;padding:11px 16px;border-radius:12px;background:var(--n3);color:#fff;font-size:13px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity 160ms}
-.toast.show{opacity:1}
-.siteFoot{text-align:center;color:#8A7D70;font-size:11px;padding:22px 14px}
-.siteFoot a{color:var(--n);font-weight:900;text-decoration:none}
-@media(max-width:930px){.adminGrid{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
-@media(max-width:680px){
-  .c{width:min(100% - 20px,1180px)}
-  .navin{min-height:64px}.brand img{width:40px;height:40px}.brandText small{display:none}.navBtn{padding:8px 9px;font-size:11px}.demoBadge{display:none}
-  .publicPage{min-height:calc(100vh - 64px);padding-top:20px}.surveyCard{padding:25px 14px 20px;border-radius:24px}
-  .faces{grid-template-columns:repeat(5,1fr);gap:5px;margin-top:24px}
-  .faceBtn{min-height:112px;border-radius:17px;padding:10px 2px;gap:5px}.faceIcon{width:52px;height:52px}.faceBtn b{font-size:10px}.faceBtn small{display:none}
-  .clientLogoWrap{width:82px;height:82px;border-radius:22px}.orgName{font-size:17px}
-  .adminPage{padding-top:14px}.adminHero{padding:24px 18px;border-radius:22px}.adminHeroTop{flex-direction:column}
-  .kpis{grid-template-columns:1fr 1fr;gap:7px}.kpi{padding:13px}.kpi strong{font-size:23px}
-  .panel{padding:16px}.settingsGrid{grid-template-columns:1fr}.field.full{grid-column:auto}
-  .distRow{grid-template-columns:90px 1fr 48px}.linkActions{grid-template-columns:1fr}
-}
-@media(max-width:390px){.faceIcon{width:46px;height:46px}.faceBtn{min-height:102px}.faceBtn b{font-size:9px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-</style>
 </head>
 <body>
-<nav class="nav">
-  <div class="c navin">
-    <a class="brand" href="/services/">
-      <img src="https://almohammdin.github.io/mudaraba-to-sjsc/assets/site-icon.svg" alt="">
-      <span class="brandText"><b>قياس رضا العملاء</b><small>Customer Satisfaction</small></span>
-    </a>
-    <div class="navActions">
-      <span class="demoBadge">الإصدار الأول</span>
-      <button class="navBtn" id="publicBtn" type="button">واجهة الجمهور</button>
-      <button class="navBtn primary" id="adminBtn" type="button">الإدارة</button>
-    </div>
-  </div>
-</nav>
+
+<header class="platform-head" id="platformHead">
+  <a class="platform-brand" href="./" aria-label="قياس رضا العملاء">
+    <img src="./assets/logo.svg?v=2" alt="قياس رضا العملاء">
+  </a>
+</header>
 
 <main>
-<section class="publicPage" id="publicView">
-  <div class="surveyShell">
-    <div class="clientLogoWrap" id="clientLogoWrap" hidden>
-      <img class="clientLogo" id="clientLogo" alt="شعار الجهة" hidden>
-    </div>
-    <h2 class="orgName" id="orgName">شركة السعادة</h2>
-    <p class="locationName" id="locationName">نقطة قياس تجريبية</p>
-
-    <div class="surveyCard">
-      <div id="surveyStep">
-        <h1 id="surveyQuestion">كيف كانت تجربتك اليوم؟</h1>
-        <p class="surveyLead">اختيار واحد فقط. ما يحتاج تسجيل ولا كتابة.</p>
-        <div class="faces" id="faces">
-          <button class="faceBtn f5" data-score="5" type="button" aria-label="ممتاز">
-            <svg class="faceIcon" viewBox="0 0 100 100" aria-hidden="true">
-              <circle cx="50" cy="50" r="46" fill="#138A5B"/>
-              <circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/>
-              <path d="M26 56c5 18 43 24 50 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-            </svg>
-            <b>ممتاز</b><small>راض جدا</small>
-          </button>
-          <button class="faceBtn f4" data-score="4" type="button" aria-label="جيد">
-            <svg class="faceIcon" viewBox="0 0 100 100" aria-hidden="true">
-              <circle cx="50" cy="50" r="46" fill="#63A852"/>
-              <circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/>
-              <path d="M29 58c7 13 34 16 42 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-            </svg>
-            <b>جيد</b><small>راض</small>
-          </button>
-          <button class="faceBtn f3" data-score="3" type="button" aria-label="عادي">
-            <svg class="faceIcon" viewBox="0 0 100 100" aria-hidden="true">
-              <circle cx="50" cy="50" r="46" fill="#D5A43A"/>
-              <circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/>
-              <path d="M31 62h38" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-            </svg>
-            <b>عادي</b><small>محايد</small>
-          </button>
-          <button class="faceBtn f2" data-score="2" type="button" aria-label="غير جيد">
-            <svg class="faceIcon" viewBox="0 0 100 100" aria-hidden="true">
-              <circle cx="50" cy="50" r="46" fill="#D8782D"/>
-              <circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/>
-              <path d="M29 68c8-14 34-16 42 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-            </svg>
-            <b>غير جيد</b><small>غير راض</small>
-          </button>
-          <button class="faceBtn f1" data-score="1" type="button" aria-label="سيئ">
-            <svg class="faceIcon" viewBox="0 0 100 100" aria-hidden="true">
-              <circle cx="50" cy="50" r="46" fill="#B8443D"/>
-              <circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/>
-              <path d="M25 70c6-19 44-25 50 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-            </svg>
-            <b>سيئ</b><small>غير راض جدا</small>
-          </button>
-        </div>
-        <p class="voteFoot">التقييم يستغرق ثانية واحدة.</p>
+  <section id="publicView" class="public-view">
+    <div class="survey-shell">
+      <div class="client-logo-wrap" id="clientLogoWrap" hidden>
+        <img id="clientLogo" alt="شعار الجهة">
       </div>
+      <h1 class="org-name" id="orgName">شركة السعادة</h1>
+      <p class="location-name" id="locationName">نقطة قياس تجريبية</p>
 
-      <div class="thanks" id="thanksStep" hidden>
-        <div class="thanksIcon">✓</div>
-        <h2>شكرا لك</h2>
-        <p>تم تسجيل تقييمك.</p>
-        <div class="optionalNote">
-          <textarea id="noteInput" maxlength="300" placeholder="ملاحظة إضافية - اختياري"></textarea>
-          <div class="thanksActions">
-            <button class="btn" id="saveNoteBtn" type="button">حفظ الملاحظة</button>
-            <button class="btn primary" id="newVoteBtn" type="button">إنهاء</button>
+      <section class="survey-card" aria-live="polite">
+        <div id="surveyStep">
+          <h2 id="surveyQuestion">كيف كانت تجربتك اليوم؟</h2>
+          <p class="survey-lead">اختر التقييم الأقرب لتجربتك.</p>
+
+          <div class="faces" id="faces">
+            <button class="face-btn face-5" data-score="5" type="button" aria-label="ممتاز">
+              <svg class="face-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#08a85d"/><circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/><path d="M26 56c5 18 43 24 50 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>
+              <b>ممتاز</b>
+            </button>
+            <button class="face-btn face-4" data-score="4" type="button" aria-label="جيد">
+              <svg class="face-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#6caf49"/><circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/><path d="M29 58c7 13 34 16 42 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>
+              <b>جيد</b>
+            </button>
+            <button class="face-btn face-3" data-score="3" type="button" aria-label="عادي">
+              <svg class="face-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#d8a737"/><circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/><path d="M31 62h38" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>
+              <b>عادي</b>
+            </button>
+            <button class="face-btn face-2" data-score="2" type="button" aria-label="غير جيد">
+              <svg class="face-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#db792d"/><circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/><path d="M29 68c8-14 34-16 42 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>
+              <b>غير جيد</b>
+            </button>
+            <button class="face-btn face-1" data-score="1" type="button" aria-label="سيئ">
+              <svg class="face-icon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#b8443d"/><circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/><path d="M25 70c6-19 44-25 50 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>
+              <b>سيئ</b>
+            </button>
+          </div>
+
+          <p class="public-status" id="publicStatus"></p>
+        </div>
+
+        <div id="thanksStep" class="thanks" hidden>
+          <div class="thanks-icon">✓</div>
+          <h2>شكرا لك</h2>
+          <p>تم تسجيل تقييمك.</p>
+          <div class="optional-note">
+            <textarea id="noteInput" maxlength="300" placeholder="ملاحظة إضافية - اختياري"></textarea>
+            <div class="thanks-actions">
+              <button class="btn ghost" id="saveNoteBtn" type="button">حفظ الملاحظة</button>
+              <button class="btn primary" id="newVoteBtn" type="button">إنهاء</button>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
-    <a class="publicAdminLink" href="?admin=1">دخول الإدارة</a>
-  </div>
-</section>
+  </section>
 
-<section class="adminPage" id="adminView" hidden>
-  <div class="c">
-    <div class="adminHero">
-      <div class="adminHeroTop">
-        <div>
-          <span class="adminEy">لوحة الإدارة</span>
-          <h1>رضا العميل في شاشة واحدة</h1>
-          <p>التقييم يصل من الرابط العام، QR أو NFC. هنا تظهر الصورة مباشرة بدون أجهزة مخصصة.</p>
+  <section id="dashboardView" class="dashboard-view" hidden>
+    <div class="dash-shell">
+      <header class="dash-head">
+        <div class="dash-identity">
+          <img src="./assets/favicon.svg?v=2" alt="">
+          <div><strong>قياس رضا العملاء</strong><span id="sessionLabel">لوحة النتائج</span></div>
         </div>
-        <span class="demoBadge" style="background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.18);color:#F0C38E">بيانات تجريبية</span>
-      </div>
-    </div>
+        <div class="dash-actions">
+          <button class="icon-action" id="openPublicBtn" type="button" title="فتح رابط التقييم" aria-label="فتح رابط التقييم">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+          </button>
+          <button class="icon-action" id="logoutBtn" type="button" title="تسجيل الخروج" aria-label="تسجيل الخروج">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M14 8l4 4-4 4M8 12h10"/></svg>
+          </button>
+        </div>
+      </header>
 
-    <div class="kpis">
-      <article class="kpi"><small>إجمالي التقييمات</small><strong id="kpiTotal">0</strong><em>كل التقييمات</em></article>
-      <article class="kpi"><small>الرضا العام</small><strong id="kpiSat">0%</strong><em>تقييم 4 و5</em></article>
-      <article class="kpi"><small>متوسط التقييم</small><strong id="kpiAvg">0.0</strong><em>من 5</em></article>
-      <article class="kpi"><small>اليوم</small><strong id="kpiToday">0</strong><em>تقييم جديد</em></article>
-    </div>
+      <nav class="dash-tabs" id="dashTabs">
+        <button type="button" class="active" data-tab="results">النتائج</button>
+        <button type="button" data-tab="companies" data-admin-only>الشركات</button>
+        <button type="button" data-tab="users" data-admin-only>المستخدمون</button>
+      </nav>
 
-    <div class="adminGrid">
-      <div>
-        <section class="panel">
-          <div class="panelTitle">
-            <div><h2>توزيع الرضا</h2><p>مقياس رضا من 5 درجات بوجوه واضحة.</p></div>
+      <section class="dash-panel active" data-panel="results">
+        <div class="results-toolbar">
+          <div>
+            <span class="eyebrow">لوحة القياس</span>
+            <h2 id="dashCompanyName">شركة السعادة</h2>
           </div>
-          <div class="dist" id="distribution"></div>
-          <div class="chartFoot"><span>الأخضر = رضا أعلى</span><span id="responseRate">آخر تحديث: الآن</span></div>
+          <label class="company-select-wrap" id="companySelectWrap">
+            <span>الشركة</span>
+            <select id="companySelect"></select>
+          </label>
+        </div>
+
+        <div class="kpis">
+          <article class="kpi"><small>إجمالي التقييمات</small><strong id="kpiTotal">0</strong></article>
+          <article class="kpi"><small>الرضا العام</small><strong id="kpiSat">0%</strong><span>تقييم 4 و5</span></article>
+          <article class="kpi"><small>متوسط التقييم</small><strong id="kpiAvg">0.0</strong><span>من 5</span></article>
+          <article class="kpi"><small>اليوم</small><strong id="kpiToday">0</strong><span>تقييم جديد</span></article>
+        </div>
+
+        <div class="results-grid">
+          <section class="card">
+            <div class="card-head"><div><h3>توزيع الرضا</h3><p>تفصيل التقييمات الخمسة.</p></div></div>
+            <div id="distribution" class="distribution"></div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>الرابط العام</h3><p>QR أو NFC أو رابط مباشر.</p></div></div>
+            <div class="qr-wrap" id="qr"></div>
+            <div class="public-url" id="publicUrl"></div>
+            <div class="inline-actions">
+              <button class="btn primary" id="copyUrlBtn" type="button">نسخ الرابط</button>
+              <button class="btn ghost" id="openLinkBtn" type="button">فتح</button>
+            </div>
+          </section>
+        </div>
+
+        <section class="card section-gap">
+          <div class="card-head"><div><h3>آخر 7 أيام</h3><p>عدد التقييمات اليومية.</p></div></div>
+          <div id="dailyChart" class="daily-chart"></div>
         </section>
 
-        <section class="panel sectionGap">
-          <div class="panelTitle">
-            <div><h2>الحركة خلال 7 أيام</h2><p>عدد التقييمات اليومية.</p></div>
-          </div>
-          <div class="daily" id="dailyChart"></div>
-        </section>
-
-        <section class="panel sectionGap">
-          <div class="panelTitle">
-            <div><h2>آخر التقييمات</h2><p>سجل مختصر لأحدث المشاركات.</p></div>
-            <button class="btn" id="clearVotesBtn" type="button">مسح التجربة</button>
-          </div>
-          <div class="tableWrap">
+        <section class="card section-gap">
+          <div class="card-head"><div><h3>آخر التقييمات</h3><p>أحدث المشاركات والملاحظات.</p></div></div>
+          <div class="table-wrap">
             <table>
-              <thead><tr><th>التقييم</th><th>الوصف</th><th>الوقت</th><th>الملاحظة</th></tr></thead>
-              <tbody id="votesTable"></tbody>
+              <thead><tr><th>التقييم</th><th>الوصف</th><th>التاريخ</th><th>الملاحظة</th></tr></thead>
+              <tbody id="responsesTable"></tbody>
             </table>
           </div>
         </section>
-      </div>
+      </section>
 
-      <aside>
-        <section class="panel">
-          <div class="panelTitle"><div><h2>الرابط العام</h2><p>اطبعه QR أو ضعه على NFC.</p></div></div>
-          <div class="linkBox">
-            <div class="qrWrap" id="qr"></div>
-            <div class="urlBox" id="publicUrl"></div>
-            <div class="linkActions">
-              <button class="btn primary" id="copyUrlBtn" type="button">نسخ الرابط</button>
-              <button class="btn" id="openPublicBtn" type="button">فتح التقييم</button>
-            </div>
-          </div>
-        </section>
+      <section class="dash-panel" data-panel="companies" data-admin-only>
+        <div class="section-title-row"><div><span class="eyebrow">إدارة الجهات</span><h2>الشركات</h2><p>كل شركة لها رابط وشعار وسؤال ونتائج مستقلة.</p></div><button class="btn primary" id="newCompanyBtn" type="button">شركة جديدة</button></div>
+        <div class="manage-grid">
+          <section class="card">
+            <div class="card-head"><div><h3 id="companyFormTitle">إضافة شركة</h3><p>الرابط العام يعتمد على اسم الرابط.</p></div></div>
+            <form id="companyForm" class="form-grid">
+              <input type="hidden" id="companyEditingId">
+              <label class="field full"><span>اسم الشركة</span><input id="companyName" maxlength="100" required></label>
+              <label class="field"><span>اسم الرابط</span><input id="companySlug" dir="ltr" maxlength="40" placeholder="company-name" required></label>
+              <label class="field"><span>نقطة القياس</span><input id="companyLocation" maxlength="100" placeholder="الفرع الرئيسي"></label>
+              <label class="field full"><span>سؤال التقييم</span><input id="companyQuestion" maxlength="140" value="كيف كانت تجربتك اليوم؟" required></label>
+              <label class="field full"><span>شعار الشركة</span><input id="companyLogoFile" type="file" accept="image/*"><small>اختياري. إذا ما تم رفع شعار ما يظهر مكانه في واجهة الجمهور.</small></label>
+              <div class="logo-admin-preview" id="companyLogoPreview" hidden><img alt=""></div>
+              <label class="check-field full"><input id="companyActive" type="checkbox" checked><span>الشركة مفعلة</span></label>
+              <div class="form-actions full"><button class="btn ghost" id="cancelCompanyEdit" type="button" hidden>إلغاء</button><button class="btn primary" type="submit">حفظ الشركة</button></div>
+            </form>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><h3>الشركات الحالية</h3><p>اختر أي شركة للنتائج أو التعديل.</p></div></div>
+            <div id="companiesList" class="company-list"></div>
+          </section>
+        </div>
+      </section>
 
-        <section class="panel sectionGap">
-          <div class="panelTitle"><div><h2>إعدادات الجهة</h2><p>اسم الجهة والشعار والسؤال والرابط.</p></div></div>
-          <div class="settingsGrid">
-            <label class="field full"><span>اسم الجهة</span><input id="setOrg" value="شركة السعادة"></label>
-            <label class="field"><span>اسم المستخدم</span><input id="setUser" dir="ltr" value="alsaadah"></label>
-            <label class="field"><span>البريد الإداري</span><input id="setEmail" dir="ltr" type="email" value="admin@example.sa"></label>
-            <label class="field full"><span>نقطة القياس</span><input id="setLocation" value="نقطة قياس تجريبية"></label>
-            <label class="field full"><span>سؤال التقييم</span><input id="setQuestion" value="كيف كانت تجربتك اليوم؟"></label>
-            <div class="field full">
-              <span>شعار الجهة</span>
-              <div class="logoUpload">
-                <div class="logoPreview"><img id="settingsLogo" alt="" hidden><span id="settingsLogoFallback">شعار</span></div>
-                <input id="logoFile" type="file" accept="image/*">
-              </div>
-              <small>في النسخة الأولية يحفظ الشعار على هذا المتصفح.</small>
-            </div>
-            <div class="field full"><button class="btn primary" id="saveSettingsBtn" type="button">حفظ الإعدادات</button></div>
-          </div>
-        </section>
-      </aside>
+      <section class="dash-panel" data-panel="users" data-admin-only>
+        <div class="section-title-row"><div><span class="eyebrow">الصلاحيات</span><h2>المستخدمون</h2><p>كل مستخدم يرى بيانات الشركة المرتبط بها فقط.</p></div></div>
+        <div class="manage-grid">
+          <section class="card">
+            <div class="card-head"><div><h3>إنشاء مستخدم</h3><p>يتم إنشاء حساب Firebase وربطه بالشركة مباشرة.</p></div></div>
+            <form id="userForm" class="form-grid">
+              <label class="field full"><span>اسم المستخدم</span><input id="userName" maxlength="80" required></label>
+              <label class="field full"><span>البريد الإلكتروني</span><input id="userEmail" type="email" dir="ltr" required></label>
+              <label class="field"><span>كلمة المرور المؤقتة</span><input id="userPassword" type="password" dir="ltr" minlength="6" required></label>
+              <label class="field"><span>الشركة</span><select id="userCompany" required></select></label>
+              <div class="form-actions full"><button class="btn primary" type="submit">إنشاء الحساب</button></div>
+            </form>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><h3>الحسابات الحالية</h3><p>تعطيل الحساب يوقف دخوله للوحة الشركة.</p></div></div>
+            <div class="table-wrap"><table><thead><tr><th>المستخدم</th><th>الشركة</th><th>الحالة</th><th></th></tr></thead><tbody id="usersTable"></tbody></table></div>
+          </section>
+        </div>
+      </section>
     </div>
-  </div>
-</section>
+  </section>
 </main>
 
-<div class="loginOverlay" id="loginOverlay" hidden>
-  <div class="loginCard">
-    <div class="loginBrand">
-      <img src="https://almohammdin.github.io/mudaraba-to-sjsc/assets/site-icon.svg" alt="">
-      <div><h2>دخول الإدارة</h2><p>نسخة أولية لواجهة حساب الجهة.</p></div>
+<footer class="footer">
+  <div class="c footin">
+    <div class="footBrand">
+      <img class="naifLogo" src="https://almohammdin.github.io/emtidad/assets/images/naif-logo-gold.png" alt="شعار نايف المحمدي">
+      <p>مستشار الحوكمة وتطوير الأعمال</p>
     </div>
-    <div class="loginForm">
-      <label class="field"><span>البريد الإلكتروني</span><input id="loginEmail" type="email" dir="ltr" value="admin@example.sa"></label>
-      <label class="field"><span>كلمة المرور</span><input id="loginPassword" type="password" dir="ltr" value="123456"></label>
-      <button class="btn primary" id="loginSubmit" type="button">دخول</button>
+    <div class="footerRight">
+      <div class="socials" aria-label="حسابات التواصل">
+        <a href="https://x.com/almohammdin" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24"><path d="M4.4 3h4.8l3.8 5.1L17.5 3H20l-5.9 6.9L20.5 21h-4.8l-4.2-5.7L6.6 21H4l6.3-7.5L4.4 3Zm3.7 2 8.5 14h1.8L9.9 5H8.1Z"/></svg></a>
+        <a href="https://www.linkedin.com/in/almohammdin/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M5.2 8.4h3.2V19H5.2V8.4Zm1.6-5.2a1.9 1.9 0 1 1 0 3.8 1.9 1.9 0 0 1 0-3.8Zm3.8 5.2h3.1v1.5h.1c.5-.8 1.6-1.8 3.5-1.8 3.3 0 4 2.2 4 5.1V19H18v-5.2c0-1.2 0-2.8-1.8-2.8s-2 1.3-2 2.7V19h-3.3V8.4Z"/></svg></a>
+        <a href="https://www.snapchat.com/add/almohammdin" target="_blank" rel="noopener" aria-label="Snapchat"><svg viewBox="0 0 24 24"><path d="M8.2 16.9c.8.3 1.1.7 1.3 1.1.7-.1 1.5-.2 2.5-.2s1.8.1 2.5.2c.2-.4.5-.8 1.3-1.1 1.2-.4 2.1-1 2.5-1.6-1.9-.7-2.1-2.3-2.1-4.7 0-2.7-1.7-4.5-4.2-4.5s-4.2 1.8-4.2 4.5c0 2.4-.2 4-2.1 4.7.4.6 1.3 1.2 2.5 1.6Z"/></svg></a>
+        <a href="https://linktr.ee/almohammdin" target="_blank" rel="noopener" aria-label="Linktree"><svg viewBox="0 0 24 24"><path d="M13.736 5.852 17.644 2l1.92 1.92-3.852 3.736h5.644v2.736h-5.66l3.868 3.752-1.92 1.92-5.276-5.28-5.276 5.28-1.92-1.92 3.868-3.752H3.38V7.656h5.644L5.172 3.92 7.092 2l3.932 3.852V0h2.712v5.852ZM11.024 24v-8.604h2.712V24h-2.712Z"/></svg></a>
+      </div>
+      <a class="handle" href="https://linktr.ee/almohammdin" target="_blank">Almohammdin</a>
+      <button class="admin-access" id="adminAccess" type="button" aria-label="دخول المنصة" title="دخول المنصة">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2"/></svg>
+      </button>
     </div>
-    <div class="loginHint">الدخول هنا تجريبي لعرض شكل المنصة. الربط الحقيقي بالحسابات وقاعدة البيانات هو خطوة الإنتاج.</div>
   </div>
+</footer>
+
+<div class="auth-overlay" id="authOverlay" hidden>
+  <section class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="auth-close" id="authClose" type="button" aria-label="إغلاق">×</button>
+    <img class="auth-logo" src="./assets/logo.svg?v=2" alt="قياس رضا العملاء">
+    <h2 id="authTitle">دخول المنصة</h2>
+    <p>الإدارة ومستخدمي الشركات.</p>
+    <button class="google-btn" id="googleLoginBtn" type="button"><b>G</b> المتابعة بحساب Google</button>
+    <div class="auth-divider">أو</div>
+    <form id="loginForm">
+      <label class="field"><span>البريد الإلكتروني</span><input id="loginEmail" type="email" dir="ltr" autocomplete="email" required></label>
+      <label class="field"><span>كلمة المرور</span><input id="loginPassword" type="password" dir="ltr" autocomplete="current-password" required></label>
+      <button class="btn primary full-btn" type="submit">دخول</button>
+    </form>
+    <p class="auth-message" id="authMessage"></p>
+  </section>
 </div>
 
-<div class="toast" id="toast">تم</div>
-<footer class="siteFoot">منصة قياس رضا العملاء · <a href="/services/">خدمات نايف المحمدي</a></footer>
+<div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const defaults={
-  org:"شركة السعادة",user:"alsaadah",email:"admin@example.sa",
-  location:"نقطة قياس تجريبية",question:"كيف كانت تجربتك اليوم؟",logo:""
-};
-const demoVotes=[
-  {score:5,t:Date.now()-3*60*1000,note:""},
-  {score:5,t:Date.now()-18*60*1000,note:"الخدمة سريعة"},
-  {score:4,t:Date.now()-39*60*1000,note:""},
-  {score:5,t:Date.now()-75*60*1000,note:""},
-  {score:3,t:Date.now()-130*60*1000,note:""},
-  {score:4,t:Date.now()-210*60*1000,note:""},
-  {score:2,t:Date.now()-360*60*1000,note:"ازدحام"},
-  {score:5,t:Date.now()-510*60*1000,note:""}
-];
-const seedCounts={1:18,2:29,3:61,4:184,5:427};
-const seedDaily=[78,91,84,103,112,119,132];
-let currentVote=null;
-let settings=loadSettings();
-function loadSettings(){
-  try{
-    const saved=JSON.parse(localStorage.getItem("csat_settings")||"{}");
-    const merged={...defaults,...saved};
-    if(merged.org==="مطار الملك عبدالعزيز الدولي"){
-      merged.org=defaults.org;
-      if(!saved.user||saved.user==="kaia")merged.user=defaults.user;
-    }
-    return merged
-  }catch{return {...defaults}}
-}
-function saveSettings(){localStorage.setItem("csat_settings",JSON.stringify(settings))}
-function loadVotes(){try{return JSON.parse(localStorage.getItem("csat_votes")||"[]")}catch{return []}}
-function saveVotes(v){localStorage.setItem("csat_votes",JSON.stringify(v))}
-function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1500)}
-function publicLink(){
-  const u=new URL(location.href);u.search="";u.hash="";u.searchParams.set("u",settings.user||"demo");return u.toString()
-}
-function applySettings(){
-  $("#orgName").textContent=settings.org;
-  $("#locationName").textContent=settings.location;
-  $("#surveyQuestion").textContent=settings.question;
-  $("#setOrg").value=settings.org;$("#setUser").value=settings.user;$("#setEmail").value=settings.email;$("#setLocation").value=settings.location;$("#setQuestion").value=settings.question;
-  if(settings.logo){
-    $("#clientLogo").src=settings.logo;
-    $("#clientLogo").hidden=false;
-    $("#clientLogoWrap").hidden=false;
-    $("#settingsLogo").src=settings.logo;
-    $("#settingsLogo").hidden=false;
-    $("#settingsLogoFallback").hidden=true
-  }else{
-    $("#clientLogo").removeAttribute("src");
-    $("#clientLogo").hidden=true;
-    $("#clientLogoWrap").hidden=true;
-    $("#settingsLogo").hidden=true;
-    $("#settingsLogoFallback").hidden=false
-  }
-  renderQR()
-}
-function renderQR(){
-  const url=publicLink();$("#publicUrl").textContent=url;$("#qr").innerHTML="";
-  if(window.QRCode)new QRCode($("#qr"),{text:url,width:166,height:166,colorDark:"#0D3656",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
-}
-function submitVote(score){
-  const votes=loadVotes();currentVote={score:Number(score),t:Date.now(),note:""};votes.push(currentVote);saveVotes(votes);
-  $("#surveyStep").hidden=true;$("#thanksStep").hidden=false;$("#noteInput").value="";renderDashboard();
-}
-$$(".faceBtn").forEach(b=>b.addEventListener("click",()=>submitVote(b.dataset.score)));
-$("#saveNoteBtn").addEventListener("click",()=>{
-  if(!currentVote)return;
-  const votes=loadVotes(), idx=votes.findIndex(v=>v.t===currentVote.t);
-  if(idx>-1){votes[idx].note=$("#noteInput").value.trim();saveVotes(votes);currentVote=votes[idx];toast("تم حفظ الملاحظة");renderDashboard()}
-});
-function resetSurvey(){currentVote=null;$("#thanksStep").hidden=true;$("#surveyStep").hidden=false}
-$("#newVoteBtn").addEventListener("click",resetSurvey);
-function label(score){return ({5:"ممتاز",4:"جيد",3:"عادي",2:"غير جيد",1:"سيئ"})[score]}
-function color(score){return ({5:"#138A5B",4:"#63A852",3:"#D5A43A",2:"#D8782D",1:"#B8443D"})[score]}
-function faceSvg(score){
-  const paths={5:"M26 56c5 18 43 24 50 0",4:"M29 58c7 13 34 16 42 0",3:"M31 62h38",2:"M29 68c8-14 34-16 42 0",1:"M25 70c6-19 44-25 50 0"};
-  return '<svg class="miniFace" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="'+color(score)+'"/><circle cx="35" cy="39" r="5" fill="#fff"/><circle cx="65" cy="39" r="5" fill="#fff"/><path d="'+paths[score]+'" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/></svg>'
-}
-function allCounts(){
-  const counts={...seedCounts};loadVotes().forEach(v=>counts[v.score]=(counts[v.score]||0)+1);return counts
-}
-function renderDashboard(){
-  const votes=loadVotes(), counts=allCounts();
-  const total=Object.values(counts).reduce((a,b)=>a+b,0), sum=Object.entries(counts).reduce((a,[s,c])=>a+Number(s)*c,0);
-  const sat=((counts[4]+counts[5])/total*100)||0, avg=sum/total||0;
-  $("#kpiTotal").textContent=total.toLocaleString("en-US");$("#kpiSat").textContent=sat.toFixed(0)+"%";$("#kpiAvg").textContent=avg.toFixed(1);
-  $("#kpiToday").textContent=(132+votes.filter(v=>Date.now()-v.t<86400000).length).toLocaleString("en-US");
-  const max=Math.max(...Object.values(counts));
-  $("#distribution").innerHTML=[5,4,3,2,1].map(s=>'<div class="distRow"><div class="distLabel">'+faceSvg(s)+'<span>'+label(s)+'</span></div><div class="track"><div class="fill" style="width:'+((counts[s]/max)*100).toFixed(1)+'%;background:'+color(s)+'"></div></div><div class="count">'+counts[s].toLocaleString("en-US")+'</div></div>').join("");
-  const daily=[...seedDaily];votes.forEach(v=>{const d=new Date(v.t),diff=Math.floor((Date.now()-new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime())/86400000);if(diff>=0&&diff<7)daily[6-diff]++});
-  const dmax=Math.max(...daily), names=["س","أ","ث","ر","خ","ج","س"];
-  $("#dailyChart").innerHTML=daily.map((n,i)=>'<div class="day"><div class="dayBar" style="height:'+Math.max(6,n/dmax*130)+'px"></div><b>'+n+'</b><span>'+names[i]+'</span></div>').join("");
-  const recent=[...demoVotes,...votes].sort((a,b)=>b.t-a.t).slice(0,9);
-  $("#votesTable").innerHTML=recent.length?recent.map(v=>'<tr><td><span class="scoreDot" style="background:'+color(v.score)+'">'+v.score+'</span></td><td>'+label(v.score)+'</td><td>'+new Date(v.t).toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"})+'</td><td>'+(v.note||"—")+'</td></tr>').join(""):'<tr><td colspan="4" class="empty">لا توجد تقييمات بعد</td></tr>';
-}
-function showPublic(){
-  $("#adminView").hidden=true;$("#publicView").hidden=false;$("#loginOverlay").hidden=true;
-  const u=new URL(location.href);u.search="";if(settings.user)u.searchParams.set("u",settings.user);history.replaceState(null,"",u);resetSurvey()
-}
-function showAdmin(requireLogin=true){
-  $("#publicView").hidden=true;$("#adminView").hidden=false;renderDashboard();renderQR();
-  if(requireLogin && sessionStorage.getItem("csat_admin")!=="1")$("#loginOverlay").hidden=false; else $("#loginOverlay").hidden=true;
-  const u=new URL(location.href);u.search="";u.searchParams.set("admin","1");history.replaceState(null,"",u)
-}
-$("#publicBtn").addEventListener("click",showPublic);
-$("#adminBtn").addEventListener("click",()=>showAdmin(true));
-$("#loginSubmit").addEventListener("click",()=>{sessionStorage.setItem("csat_admin","1");$("#loginOverlay").hidden=true;toast("تم الدخول")});
-$("#copyUrlBtn").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(publicLink());toast("تم نسخ الرابط")}catch{toast("انسخ الرابط يدويا")}});
-$("#openPublicBtn").addEventListener("click",()=>window.open(publicLink(),"_blank","noopener"));
-$("#clearVotesBtn").addEventListener("click",()=>{localStorage.removeItem("csat_votes");renderDashboard();toast("تم مسح تقييمات التجربة")});
-$("#saveSettingsBtn").addEventListener("click",()=>{
-  settings={...settings,org:$("#setOrg").value.trim()||defaults.org,user:($("#setUser").value.trim()||"demo").replace(/[^a-zA-Z0-9_-]/g,"").toLowerCase(),email:$("#setEmail").value.trim(),location:$("#setLocation").value.trim(),question:$("#setQuestion").value.trim()||defaults.question};
-  saveSettings();applySettings();toast("تم حفظ الإعدادات")
-});
-$("#logoFile").addEventListener("change",e=>{
-  const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{settings.logo=r.result;saveSettings();applySettings();toast("تم تحديث الشعار")};r.readAsDataURL(f)
-});
-applySettings();renderDashboard();
-const params=new URLSearchParams(location.search);
-if(params.get("admin")==="1")showAdmin(true);else showPublic();
-</script>
+<script type="module" src="./app.js?v=2"></script>
 </body>
 </html>
