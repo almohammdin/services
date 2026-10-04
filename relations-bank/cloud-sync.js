@@ -165,8 +165,10 @@
   async function signUp(){
     const form = document.getElementById('cloudAuthForm');
     const fd = new FormData(form);
+    const name = String(fd.get('display_name')||'').trim();
     const email = String(fd.get('email')||'').trim();
     const password = String(fd.get('password')||'');
+    if (!name) { setMsg('cloudAuthMsg','اكتب الاسم.'); return; }
     if (!email || password.length < 8) { setMsg('cloudAuthMsg','أدخل بريدًا صحيحًا وكلمة مرور من 8 أحرف على الأقل.'); return; }
     setMsg('cloudAuthMsg','جارٍ التحقق من الدعوة...');
     const pendingInvite=localStorage.getItem(PENDING_INVITE_KEY)||'';
@@ -179,7 +181,7 @@
     setMsg('cloudAuthMsg','جارٍ إنشاء الحساب...');
     const { data, error } = await db.auth.signUp({
       email, password,
-      options: { emailRedirectTo: location.origin + location.pathname + (localStorage.getItem(PENDING_INVITE_KEY)?('?invite='+encodeURIComponent(localStorage.getItem(PENDING_INVITE_KEY))):'') }
+      options: { data:{display_name:name}, emailRedirectTo: location.origin + location.pathname + (localStorage.getItem(PENDING_INVITE_KEY)?('?invite='+encodeURIComponent(localStorage.getItem(PENDING_INVITE_KEY))):'') }
     });
     if (error) { setMsg('cloudAuthMsg', authMessage(error)); return; }
     if (data?.session) {
