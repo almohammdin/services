@@ -1,7 +1,9 @@
 import {GoogleGenAI,Modality} from 'https://cdn.jsdelivr.net/npm/@google/genai@2.14.0/+esm';
 import {RB_TOOL_DECLARATIONS,executeRBTool} from './rb-assistant-tools.js?v=1';
+import {saveMemberName} from './rb-name-tool.js?v=1';
 
 const MODEL='gemini-3.1-flash-live-preview',INPUT_RATE=16000,OUTPUT_RATE=24000,TOOL_TIMEOUT=15000;
+const NAME_TOOL={name:'set_member_name',description:'اعتمد اسم العضو بعد أن يؤكده بنفسه.',parametersJsonSchema:{type:'object',properties:{name:{type:'string'}},required:['name'],additionalProperties:false}};
 let active=false,session=null,micStream=null,micContext=null,outContext=null,micSource=null,micProcessor=null,silentGain=null,outWorklet=null,outGain=null,micSuppressed=false,queuedUntil=0,resumeTimer=null,streamEndSent=false;
 const isIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const emit=(state,label,detail='')=>window.dispatchEvent(new CustomEvent('relationsbank:voice-state',{detail:{state,label,detail}}));
