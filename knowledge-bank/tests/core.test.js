@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {normalize,findMatches,canAdvance,emptyState,demoState,validateState,recordsFromCSV,csvParse,recordMatches} from '../core.js';
+test('Arabic normalization and needs search',()=>{assert.equal(normalize('إستشَارَة ﻷحمد'),normalize('استشاره لاحمد'));assert.ok(recordMatches(demoState().records[0],'ابحث عن محمصة'));});
+test('seed is valid and produces directional complementary matches',()=>{const s=validateState(demoState());const m=findMatches(s.records);assert.ok(m.find(x=>x.fromId==='r2'&&x.toId==='r1'));assert.ok(m.find(x=>x.fromId==='r4'&&x.toId==='r3'));assert.ok(m.find(x=>x.fromId==='r6'&&x.toId==='r5'));assert.ok(m.every(x=>x.fromId!==x.toId));});
+test('city is a hard constraint when requested',()=>{const rows=demoState().records.filter(r=>['r3','r4'].includes(r.id));rows[1].scope='city';assert.equal(findMatches(rows).length,0);});
+test('stale and unconfirmed evidence are flagged',()=>{const m=findMatches(demoState().records).find(x=>x.fromId==='r8'&&x.toId==='r7');assert.ok(m.stale);assert.ok(m.needsConfirm);assert.ok(m.checks.length>=4);});
+test('two consents and evidence are required for introduction',()=>{for(const stage of ['introduced','meeting','followup','completed']){assert.equal(canAdvance({consentA:true,consentB:false},stage),false);assert.equal(canAdvance({consentA:true,consentB:true,consentEvidence:''},stage),false);assert.equal(canAdvance({consentA:true,consentB:true,consentEvidence:'اتصال بتاريخ اليوم'},stage),true);}assert.equal(canAdvance({},'consent'),true);assert.equal(canAdvance({},'unknown'),false);});
+test('CSV quoting and conservative import',()=>{assert.deepEqual(csvParse('name,offers\r\n"one,two","quote ""three"""'),[['name','offers'],['one,two','quote "three"']]);const rows=recordsFromCSV('\ufeffالاسم,يقدم,يبحث_عن\r\nتجربة,برمجة,عميل');assert.equal(rows[0].visibility,'private');assert.equal(rows[0].verification,'followup');assert.throws(()=>recordsFromCSV('الاسم,يقدم\nاسم,'));});
+test('duplicate IDs and invalid references are rejected',()=>{const s=demoState();s.records.push({...s.records[0]});assert.throws(()=>validateState(s));const q=emptyState();q.intros=[{id:'x',fromId:'no',toId:'none',stage:'review'}];assert.throws(()=>validateState(q));});
+
+test('specific multiword search requires all terms',()=>{assert.equal(recordMatches(demoState().records[5],'سجل اختبار'),false);assert.equal(recordMatches({name:'سجل اختبار'},'سجل اختبار'),true);});
