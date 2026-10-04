@@ -6,12 +6,12 @@ const FIREBASE_CONFIG={apiKey:'AIzaSyAAvC9y5jQ_7fAwmkCqBtgFDrBRF5t4uI0',authDoma
 const ACTIONS=['none','get_context','set_name','set_profile','record_insight','add_relationship','add_knowledge','next_gap'];
 const actionSchema=Schema.object({properties:{
  action:Schema.enumString({enum:ACTIONS}),
- company:Schema.string(),roleTitle:Schema.string(),field:Schema.string(),city:Schema.string(),
+ name:Schema.string(),company:Schema.string(),roleTitle:Schema.string(),field:Schema.string(),city:Schema.string(),
  key:Schema.enumString({enum:['contribution','needs','strength_sectors','intro_preference','reach_style']}),value:Schema.string(),
  targetOrg:Schema.string(),targetPerson:Schema.string(),targetRole:Schema.string(),sector:Schema.string(),lastContactAt:Schema.string(),
  directContact:Schema.boolean(),canRequestMeeting:Schema.boolean(),priorHelp:Schema.boolean(),scope:Schema.enumString({enum:['private','owner','circle']}),
  knowledgeType:Schema.enumString({enum:['need','offer','insight']}),title:Schema.string(),details:Schema.string(),tags:Schema.array({items:Schema.string()})
-},optionalProperties:['company','roleTitle','field','city','key','value','targetOrg','targetPerson','targetRole','sector','lastContactAt','directContact','canRequestMeeting','priorHelp','scope','knowledgeType','title','details','tags']});
+},optionalProperties:['name','company','roleTitle','field','city','key','value','targetOrg','targetPerson','targetRole','sector','lastContactAt','directContact','canRequestMeeting','priorHelp','scope','knowledgeType','title','details','tags']});
 const schema=Schema.object({properties:{reply:Schema.string(),actions:Schema.array({items:actionSchema})},optionalProperties:['actions']});
 const app=getApps().find(x=>x.name===APP_NAME)||initializeApp(FIREBASE_CONFIG,APP_NAME);
 
