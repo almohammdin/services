@@ -50,6 +50,16 @@ async function refresh(){try{await window.RBV2?.load?.()}catch{}window.dispatchE
 export async function executeRBTool(name,args={}){
  if(name==='get_member_context')return {ok:true,context:await context()};
  const {client,u,circleId,p}=await ensureProfile();
+ if(name==='set_member_name'){
+   const memberName=clean(args.name,180);
+   if(!memberName)return {ok:false,error:'name-required'};
+   const updated=await client.from('rb_people').update({name:memberName,relationship_owner:memberName}).eq('id',p.id);
+   if(updated.error)throw updated.error;
+   const saved=await client.from('rb_profile_answers').upsert({circle_id:circleId,created_by:u.id,person_id:p.id,question_key:'name_confirmed',category:'profile',answer:memberName,source:'self',answered_at:new Date().toISOString()},{onConflict:'person_id,question_key,source'});
+   if(saved.error)throw saved.error;
+   await refresh();
+   return {ok:true,persisted:true,name:memberName};
+ }
  if(name==='set_profile_basics'){
    const patch={};for(const k of ['company','role_title','field','city'])if(clean(args[k]))patch[k]=clean(args[k],180);
    if(!Object.keys(patch).length)return {ok:false,error:'no-values'};
