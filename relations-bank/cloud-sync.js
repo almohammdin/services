@@ -3,6 +3,7 @@
 
   const STORAGE_KEY = 'relations_bank_v1_20261004';
   const CIRCLE_KEY = 'relations_bank_circle_v1';
+  const PENDING_INVITE_KEY = 'relations_bank_pending_invite_v1';
   const SUPABASE_URL = 'https://iyqtrbpamoslemjdsqcg.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_yiknaa_5w5jPszTw_oxrZw_kgBHNCyX';
 
@@ -92,7 +93,7 @@
               <button class="cloud-btn" id="cloudSignupBtn" type="button">إنشاء حساب</button>
             </div>
           </form>
-          <div class="cloud-msg" id="cloudAuthMsg"></div>
+          <div class="cloud-msg" id="cloudAuthMsg"></div><div class="cloud-section"><strong>الدخول للمنصة بالدعوة</strong><span style="font-size:11px;color:#6b7880">إنشاء الحساب وحده لا يمنح عضوية. العضو ينضم عبر رابط أو كود دعوة من دائرة قائمة.</span></div>
         </div>
         <div id="cloudManagePane" hidden>
           <span style="color:#C9853C;font-size:12px;font-weight:900">إدارة الدائرة</span>
@@ -202,6 +203,15 @@
       return;
     }
 
+    if(currentUser && !currentCircle){
+      if(auth){auth.textContent='بانتظار دعوة';auth.className='cloud-btn';}
+      if(manage) manage.hidden=false;
+      if(select) select.hidden=true;
+      if(pill) pill.textContent='الدخول بالدعوة فقط';
+      if(reset) reset.hidden=true;
+      return;
+    }
+
     if(auth){auth.textContent='سحابي ✓';auth.className='cloud-btn ok';}
     if(manage) manage.hidden=false;
     if(select) select.hidden=false;
@@ -219,16 +229,39 @@
 
     let ids = (memberships||[]).map(x=>x.circle_id);
     if (!ids.length) {
-      const { data: circle, error } = await db.from('rb_circles').insert({ name:'دائرة المؤسسين', created_by:currentUser.id }).select('id,name,invite_code,created_by').single();
-      if (error) throw error;
-      const { error: addError } = await db.from('rb_circle_members').insert({ circle_id:circle.id, user_id:currentUser.id, role:'owner' });
-      if (addError) throw addError;
-      ids=[circle.id];
+      let platformOwner = false;
+      const { data: ownerRow } = await db.from('rb_platform_bootstrap').select('owner_user_id').eq('id',1).maybeSingle();
+      if(ownerRow?.owner_user_id === currentUser.id) platformOwner = true;
+
+      if(!platformOwner){
+        const { error: bootstrapError } = await db.from('rb_platform_bootstrap').insert({id:1,owner_user_id:currentUser.id});
+        if(!bootstrapError) platformOwner = true;
+      }
+
+      if(platformOwner){
+        const {data:existingOwned}=await db.from('rb_circles').select('id').eq('created_by',currentUser.id).eq('active',true).order('created_at').limit(1);
+        let circleId=existingOwned?.[0]?.id||'';
+        if(!circleId){
+          const { data: circle, error } = await db.from('rb_circles').insert({ name:'دائرة المؤسسين', created_by:currentUser.id }).select('id,name,invite_code,created_by').single();
+          if (error) throw error;
+          circleId=circle.id;
+        }
+        const { error: addError } = await db.from('rb_circle_members').upsert({ circle_id:circleId, user_id:currentUser.id, role:'owner' },{onConflict:'circle_id,user_id'});
+        if (addError) throw addError;
+        ids=[circleId];
+      }else{
+        currentCircle=null;
+        const select=document.getElementById('cloudCircleSelect');
+        if(select)select.hidden=true;
+        updateChrome();
+        setMsg('cloudManageMsg','هذا الحساب غير مرتبط بدائرة. افتح رابط الدعوة أو أدخل كود الدعوة.');
+        return false;
+      }
     }
 
     const { data: circles, error: circleError } = await db.from('rb_circles').select('id,name,invite_code,created_by,active').in('id',ids).eq('active',true).order('created_at');
     if (circleError) throw circleError;
-    if (!circles?.length) throw new Error('no_active_circle');
+    if (!circles?.length) return false;
 
     const select=document.getElementById('cloudCircleSelect');
     if(select){
@@ -241,6 +274,7 @@
     nativeSetItem.call(localStorage,CIRCLE_KEY,chosen.id);
     if(select)select.value=chosen.id;
     updateChrome();
+    return true;
   }
 
   async function selectCircle(id, reload){
@@ -378,8 +412,12 @@
 
   async function copyInvite(){
     const code=currentCircle?.invite_code; if(!code)return;
-    await navigator.clipboard.writeText(code).catch(()=>{});
-    setMsg('cloudManageMsg','تم نسخ كود الدعوة.');
+    const inviteUrl=new URL(location.href);
+    inviteUrl.search='';
+    inviteUrl.hash='';
+    inviteUrl.searchParams.set('invite',code);
+    await navigator.clipboard.writeText(inviteUrl.toString()).catch(()=>{});
+    setMsg('cloudManageMsg','تم نسخ رابط الدعوة.');
   }
 
   async function joinCircle(){
@@ -389,11 +427,14 @@
     const {data,error}=await db.functions.invoke('rb-join-circle',{body:{invite_code:code}});
     if(error||!data?.circle_id){setMsg('cloudManageMsg','تعذر الانضمام. تأكد من الكود.');return}
     nativeSetItem.call(localStorage,CIRCLE_KEY,data.circle_id);
+    localStorage.removeItem(PENDING_INVITE_KEY);
     await ensureCircle();
     await selectCircle(data.circle_id,true);
   }
 
   async function createCircleFromUi(){
+    const {data:ownerRow}=await db.from('rb_platform_bootstrap').select('owner_user_id').eq('id',1).maybeSingle();
+    if(ownerRow?.owner_user_id!==currentUser.id){setMsg('cloudManageMsg','إنشاء الدوائر متاح لمالك المنصة فقط.');return}
     const name=String(document.getElementById('cloudNewCircleName')?.value||'').trim();
     if(name.length<2){setMsg('cloudManageMsg','اكتب اسم الدائرة.');return}
     setMsg('cloudManageMsg','جارٍ إنشاء الدائرة...');
@@ -412,9 +453,21 @@
     if(!currentUser){ currentCircle=null; updateChrome(); return; }
     try{
       await db.from('rb_profiles').upsert({user_id:currentUser.id,display_name:currentUser.user_metadata?.display_name||''},{onConflict:'user_id'});
-      await ensureCircle();
+      const hasCircle=await ensureCircle();
+      if(!hasCircle){
+        const pending=localStorage.getItem(PENDING_INVITE_KEY)||'';
+        if(/^[a-f0-9]{12}$/i.test(pending)){
+          const {data,error}=await db.functions.invoke('rb-join-circle',{body:{invite_code:pending}});
+          if(!error&&data?.circle_id){
+            localStorage.removeItem(PENDING_INVITE_KEY);
+            nativeSetItem.call(localStorage,CIRCLE_KEY,data.circle_id);
+            await ensureCircle();
+          }
+        }
+      }
       updateChrome();
-      await hydrateFromCloud(false);
+      if(currentCircle) await hydrateFromCloud(false);
+      else openCloud('manage');
     }catch(error){
       console.error('Relations Bank cloud session',error);
       setMsg('cloudManageMsg','تعذر فتح الحساب السحابي.');
@@ -422,7 +475,13 @@
   }
 
   async function init(){
+    const invite=new URLSearchParams(location.search).get('invite')||'';
+    if(/^[a-f0-9]{12}$/i.test(invite)){
+      localStorage.setItem(PENDING_INVITE_KEY,invite);
+    }
     buildUi();
+    const joinInput=document.getElementById('cloudJoinCode');
+    if(joinInput&&invite)joinInput.value=invite;
     updateChrome();
     const {data:{session}}=await db.auth.getSession();
     await handleSession(session);
