@@ -39,6 +39,7 @@ jobs:
           s=s.replace("assert 'تم التعارف' in page.locator('#main').inner_text()","expect(page.locator('#main')).to_contain_text('تم التعارف')")
           s=s.replace("assert 'PRIVATE_TEST_NAME' in page.locator('#main').inner_text()","expect(page.locator('#main')).to_contain_text('PRIVATE_TEST_NAME')")
           s=s.replace("assert 'وثق موافقة' in page.locator('.form-error').inner_text()","expect(page.locator('.form-error')).to_contain_text('وثق موافقة')")
+          s=s.replace('page.wait_for_function("document.querySelector(\'.form-error\').textContent.length>0")',"expect(page.locator('.form-error')).not_to_have_text('')")
           files['tests/browser.py']=s
           for name,content in files.items():
               path=pathlib.PurePosixPath(name)
