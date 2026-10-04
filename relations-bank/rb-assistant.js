@@ -43,18 +43,18 @@ function append(role,text){
 function setState(state,label,detail=''){
  if(!card)return;card.dataset.state=state||'ready';
  const s=$('#rbAiStatus');if(s)s.textContent=label||'جاهز';
- if(detail&&detail!==lastTranscript){lastTranscript=detail;append(detail.startsWith('أنت:')?'user':'assistant',detail.replace(/^(أنت:|الوكيل:)\s*/,'').trim())}
+ const live=$('#rbAiLive');if(live&&detail)live.textContent=detail.replace(/^(أنت:|الوكيل:)\s*/,'').trim();
 }
 function ensureAssistant(){
  if(document.getElementById('rbAiCard'))return;
- const host=document.querySelector('#v2Workspace .shell');if(!host)return setTimeout(ensureAssistant,120);
+ const main=document.querySelector('main');if(!main)return setTimeout(ensureAssistant,120);
  card=document.createElement('section');card.id='rbAiCard';card.className='rb-ai-card';card.dataset.state='ready';
- card.innerHTML='<div class="rb-ai-inner"><div class="rb-ai-top"><div><span class="rb-ai-kicker">Gemini · ملفك يتكون من الحوار</span><h2>تكلم، والمنصة ترتب المعلومات داخليا</h2><p>احك عن شغلك، احتياجاتك، والجهات التي تعرفها. الوكيل يحول كلامك إلى ملف مهني وعلاقات داخل الدائرة بدون نموذج تعبئة أمامك.</p></div><button class="rb-ai-stop" id="rbAiStop">إنهاء المحادثة</button></div><div class="rb-ai-actions"><form class="rb-ai-input" id="rbAiForm"><input id="rbAiText" autocomplete="off" placeholder="مثال: أنا أعمل في الإعاشة وأعرف عدة جهات صحية..."><button class="rb-ai-send">إرسال</button></form><button class="rb-ai-mic" id="rbAiMic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"></path></svg><span><strong>ابدأ المحادثة الصوتية</strong><span>تكلم بشكل طبيعي · Gemini Live</span></span></button></div><div class="rb-ai-status"><i class="rb-ai-dot"></i><span id="rbAiStatus">جاهز</span></div><div class="rb-ai-chat" id="rbAiChat"></div><div class="rb-ai-note">إجاباتك تستخدم لبناء ملفك المهني داخل الدائرة. يمكنك التوقف والعودة لاحقا.</div></div>';
- const anchor=document.getElementById('v3Economics')||host.firstElementChild;host.insertBefore(card,anchor);
+ card.innerHTML='<div class="rb-ai-inner"><div class="rb-ai-hero"><div class="rb-ai-heading"><span class="rb-ai-kicker">Gemini</span><h2>محادثة الملف</h2></div><button class="rb-ai-mic" id="rbAiMic" type="button"><span class="rb-ai-mic-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"></path></svg></span><span><strong>ابدأ المحادثة</strong><small>Gemini Live</small></span></button><div class="rb-ai-status"><i class="rb-ai-dot"></i><span id="rbAiStatus">جاهز</span></div><div class="rb-ai-live" id="rbAiLive"></div><div class="rb-ai-hero-actions"><button class="rb-ai-toggle" id="rbAiToggle" type="button" aria-expanded="false">فتح المحادثة</button><button class="rb-ai-stop" id="rbAiStop" type="button">إنهاء</button></div></div><div class="rb-ai-panel" id="rbAiPanel" hidden><div class="rb-ai-chat" id="rbAiChat"></div><form class="rb-ai-input" id="rbAiForm"><input id="rbAiText" autocomplete="off" placeholder="اكتب للوكيل"><button class="rb-ai-send">إرسال</button></form></div></div>';
+ main.insertBefore(card,main.firstElementChild);
  $('#rbAiForm').onsubmit=e=>{e.preventDefault();sendText($('#rbAiText').value)};
- $('#rbAiMic').onclick=async()=>{try{if(window.RelationsBankVoice?.active){await stopVoice();return}setState('connecting','أجهز المايك…');await startVoice()}catch(e){console.error(e);setState('error','تعذر تشغيل الصوت','استخدم الكتابة أو حاول مرة أخرى.')}};
+ $('#rbAiToggle').onclick=()=>{const panel=$('#rbAiPanel'),open=panel.hidden;panel.hidden=!open;$('#rbAiToggle').textContent=open?'إغلاق المحادثة':'فتح المحادثة';$('#rbAiToggle').setAttribute('aria-expanded',String(open))};
+ $('#rbAiMic').onclick=async()=>{try{if(window.RelationsBankVoice?.active){await stopVoice();return}setState('connecting','أجهز المايك…');await startVoice()}catch(e){console.error(e);setState('error','تعذر تشغيل الصوت')}};
  $('#rbAiStop').onclick=()=>stopVoice().catch(()=>{});
- append('system','المحادثة تبني ملفك المهني وعلاقاتك داخل الدائرة. ابدأ بما تحب، والوكيل يسأل عن الناقص فقط.');
 }
 async function sendText(text){
  const value=String(text||'').trim();if(!value||busy)return;$('#rbAiText').value='';append('user',value);busy=true;setState('working','أفهم كلامك…');
@@ -76,6 +76,7 @@ async function sendText(text){
  finally{busy=false}
 }
 window.addEventListener('relationsbank:voice-state',e=>{const d=e.detail||{};setState(d.state,d.label,d.detail)});
+window.addEventListener('relationsbank:voice-turn',e=>{const d=e.detail||{};if(d.userText)append('user',d.userText);if(d.assistantText)append('assistant',d.assistantText)});
 window.addEventListener('relationsbank:assistant-saved',()=>{try{window.RBV3Dashboard?.render?.()}catch{}});
 window.addEventListener('relationsbank:access',e=>accessState(e.detail));
 addGate();
