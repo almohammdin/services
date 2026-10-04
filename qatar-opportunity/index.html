@@ -29,7 +29,7 @@ a{color:inherit}
 .app{min-height:100vh}
 .top{position:sticky;top:0;z-index:30;background:rgba(10,14,26,.96);color:#fff;border-bottom:1px solid rgba(201,168,76,.35);backdrop-filter:blur(12px)}
 .top-inner{max-width:1220px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:12px}.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}.brand img{width:72px;height:38px;object-fit:contain;border-radius:9px;padding:4px;background:rgba(255,255,255,.06)}.brand-copy{min-width:0}.brand-copy strong{display:block;font-size:14px}.brand-copy span{display:block;font-size:11px;color:#e8d59a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.top-actions{display:flex;gap:7px;align-items:center}.top-actions button,.top-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 10px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.07);color:#fff;text-decoration:none;font-size:11px;font-weight:800;cursor:pointer}
+.top-actions{display:flex;gap:7px;align-items:center}.top-actions button,.top-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 10px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.07);color:#fff;text-decoration:none;font-size:11px;font-weight:800;cursor:pointer}.top-menu-wrap{border-top:1px solid rgba(255,255,255,.09);background:rgba(7,11,21,.5)}.top-menu{max-width:1220px;margin:0 auto;padding:7px 14px 8px;display:flex;gap:6px;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin}.top-menu a{flex:0 0 auto;white-space:nowrap;text-decoration:none;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.06);color:#dce5f2;padding:6px 10px;font-size:10.8px;font-weight:800;transition:.16s}.top-menu a:hover,.top-menu a:focus-visible{background:#fff;color:var(--navy);border-color:#fff;outline:none}.top-menu a.route-qatar{border-color:rgba(201,168,76,.44);color:#f1dc9d}.top-menu a.route-saudi{border-color:rgba(87,170,125,.42);color:#bfe6cf}section[id]{scroll-margin-top:118px}
 .wrap{max-width:1220px;margin:0 auto;padding:18px 14px 44px}
 .hero{border-radius:24px;padding:24px;background:linear-gradient(135deg,#0a0e1a,#122046 62%,#1b3a6b);color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;left:-80px;top:-120px;border:38px solid rgba(201,168,76,.1)}.hero>*{position:relative;z-index:1}.eyebrow{display:inline-flex;border-radius:999px;background:rgba(201,168,76,.14);border:1px solid rgba(232,213,154,.28);color:#f2dc98;padding:5px 10px;font-size:11px;font-weight:800}.hero h1{margin:10px 0 6px;font-size:clamp(27px,5vw,43px);line-height:1.35}.hero p{margin:0;max-width:880px;color:#dbe3ef;font-size:14px}.hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.hero-meta span{border:1px solid rgba(255,255,255,.17);background:rgba(255,255,255,.08);border-radius:999px;padding:5px 10px;font-size:11px;font-weight:700}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:14px 0}.kpi{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:0 7px 20px rgba(10,14,26,.04)}.kpi small{display:block;color:var(--muted);font-size:11.5px;font-weight:700}.kpi strong{display:block;margin-top:4px;color:var(--navy);font-size:22px}.kpi span{display:block;color:var(--muted);font-size:10.5px;margin-top:2px}
@@ -55,7 +55,7 @@ section.panel{background:#fff;border:1px solid var(--line);border-radius:20px;pa
 dialog{border:0;border-radius:20px;padding:0;width:min(650px,calc(100% - 24px));box-shadow:0 30px 90px rgba(0,0,0,.3)}dialog::backdrop{background:rgba(7,11,21,.66)}.dialog-head{padding:15px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff}.dialog-head h2{margin:0;font-size:18px}.dialog-body{padding:17px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:13px}
 .security{font-size:10.5px;color:#667085;margin-top:9px}
 @media(max-width:900px){.kpis,.grid3{grid-template-columns:repeat(2,1fr)}.grid2,.decision-grid,.check-groups{grid-template-columns:1fr}}
-@media(max-width:620px){.top-inner{align-items:flex-start}.top-actions{gap:4px}.top-actions a{display:none}.wrap{padding:12px 9px 30px}.hero{padding:20px 16px}.kpis{grid-template-columns:1fr 1fr;gap:8px}.kpi{padding:12px}.kpi strong{font-size:19px}section.panel{padding:14px}.section-head{display:block}.section-actions{margin-top:8px}.grid3{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.note-form{display:block}.note-form button{width:100%;margin-top:7px}.footer{display:block}.footer a{display:inline-block;margin-top:7px}.pin-row{display:grid}.pin-row button{width:100%}}
+@media(max-width:620px){.top-inner{align-items:flex-start}.top-actions{gap:4px}.top-actions a{padding:6px 8px;font-size:10px}.brand-copy span{display:none}.top-menu{padding:6px 9px 7px;gap:5px}.top-menu a{font-size:10px;padding:6px 9px}section[id]{scroll-margin-top:126px}.wrap{padding:12px 9px 30px}.hero{padding:20px 16px}.kpis{grid-template-columns:1fr 1fr;gap:8px}.kpi{padding:12px}.kpi strong{font-size:19px}section.panel{padding:14px}.section-head{display:block}.section-actions{margin-top:8px}.grid3{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.note-form{display:block}.note-form button{width:100%;margin-top:7px}.footer{display:block}.footer a{display:inline-block;margin-top:7px}.pin-row{display:grid}.pin-row button{width:100%}}
 @media print{.top,.navtabs,.section-actions,.filters,.row-actions,.top-actions,.lock-screen,.note-form,dialog{display:none!important}body{background:#fff}.wrap{max-width:none}.panel,.hero,.kpi{box-shadow:none;break-inside:avoid}}
 </style>
 </head>
@@ -76,21 +76,34 @@ dialog{border:0;border-radius:20px;padding:0;width:min(650px,calc(100% - 24px));
 <div class="app" id="app" hidden>
 <header class="top">
   <div class="top-inner">
-    <div class="brand"><img src="../assets/media/site-logo.webp" alt="شعار الخدمات"><div class="brand-copy"><strong>فرص الاستثمار | مجالس</strong><span>من الفحص الأولي حتى قرار الاستمرار أو التوقف</span></div></div>
+    <div class="brand"><img src="../assets/media/site-logo.webp" alt="شعار الخدمات"><div class="brand-copy"><strong>فرص الاستثمار | مجالس</strong><span>قطر START + السعودية DGA/STV</span></div></div>
     <div class="top-actions">
       <a href="../">خدماتي</a>
-      <a href="https://almohammdin.github.io/majalis/" target="_blank" rel="noopener">مجالس</a>
-      <button type="button" id="exportBtn">تصدير</button>
-      <button type="button" id="printBtn">طباعة</button>
-      <button type="button" id="lockBtn">قفل</button>
+      <a href="https://almohammdin.github.io/majalis/" target="_blank" rel="noopener">فتح مجالس</a>
     </div>
+  </div>
+  <div class="top-menu-wrap">
+    <nav class="top-menu" aria-label="الوصول السريع">
+      <a href="#decision">القرار</a>
+      <a href="#tasks">المهام</a>
+      <a href="#checklist">قائمة التدقيق</a>
+      <a href="#plan">خطة المسارين</a>
+      <a class="route-qatar" href="#programs">قطر START</a>
+      <a class="route-qatar" href="#application">تقديم قطر</a>
+      <a class="route-saudi" href="#saudi-track">السعودية DGA + STV</a>
+      <a class="route-saudi" href="#saudi-application">تقديم السعودية</a>
+      <a href="#brief">بطاقة المشروع</a>
+      <a href="#templates">النماذج</a>
+      <a href="#sources">الروابط</a>
+      <a href="#notes">السجل</a>
+    </nav>
   </div>
 </header>
 
 <main class="wrap">
 <section class="hero">
-  <span class="eyebrow">Qatar Opportunity Workspace</span>
-  <h1>فرصة قطر لمنصة مجالس</h1>
+  <span class="eyebrow">Majalis Investment Workspace</span>
+  <h1>فرص الاستثمار والتوسع لمنصة مجالس</h1>
   <p>ملف عمل حي لمسارين متوازيين: Startup Qatar START، ومسار هيئة الحكومة الرقمية + STV في السعودية، مع خطة التقديم والمتابعة حتى القبول أو التوقف.</p>
   <div class="hero-meta"><span>قطر: START | طلب $1,000,000</span><span>السعودية: DGA + STV</span><span>B2B SaaS + GovTech + AI</span><span>المنتج: Majalis</span><span id="lastSaved">آخر حفظ: —</span></div>
 </section>
@@ -101,10 +114,6 @@ dialog{border:0;border-radius:20px;padding:0;width:min(650px,calc(100% - 24px));
   <article class="kpi"><small>المهام المكتملة</small><strong id="kpiTasks">0/0</strong><span id="taskStatusHint">متابعة التنفيذ</span></article>
   <article class="kpi"><small>المسارات النشطة</small><strong>2</strong><span>قطر START + السعودية DGA/STV</span></article>
 </div>
-
-<nav class="navtabs" aria-label="أقسام الملف">
-  <a href="#decision">القرار</a><a href="#plan">خطة المسارين</a><a href="#checklist">قائمة التدقيق</a><a href="#tasks">متابعة المهام</a><a href="#programs">قطر START</a><a href="#saudi-track">السعودية DGA + STV</a><a href="#brief">بطاقة المشروع</a><a href="#application">تقديم قطر</a><a href="#saudi-application">تقديم السعودية</a><a href="#templates">النماذج</a><a href="#sources">الروابط</a><a href="#notes">السجل</a>
-</nav>
 
 <section class="panel" id="decision">
   <div class="section-head"><div><h2>بوابة القرار</h2><p>لا تأسيس ولا التزام مالي قبل اكتمال شروط الحسم الأساسية.</p></div></div>
@@ -660,11 +669,8 @@ function bindStatic(){
  document.getElementById('taskForm').onsubmit=saveTaskFromForm;
  document.getElementById('saveBriefBtn').onclick=saveBrief;
  document.getElementById('noteForm').onsubmit=addNote;
- document.getElementById('exportBtn').onclick=exportState;
  document.getElementById('importBtn').onclick=function(){document.getElementById('importFile').click()};
  document.getElementById('importFile').onchange=importState;
- document.getElementById('printBtn').onclick=function(){window.print()};
- document.getElementById('lockBtn').onclick=lock;
  document.querySelectorAll('.copy-btn').forEach(function(btn){btn.onclick=function(){copyText(btn.dataset.copy,btn)}});
 }
 function renderAll(){renderChecklist();renderTasks();renderGates();renderBrief();renderSources();renderNotes();updateKpis();populateTrackFilter()}
