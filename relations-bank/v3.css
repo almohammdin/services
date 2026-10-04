@@ -26,3 +26,6 @@
 
 #cloudAuthBtn.ok{font-size:0}#cloudAuthBtn.ok::after{content:"الحساب";font-size:12px}
 .v2-modal:has(#v3NomForm) .v3-warning{display:none!important}
+
+/* presentation cleanup */
+#v2Mode{display:none!important}.v2-hero .v2-kicker{font-size:0}.v2-hero .v2-kicker::after{content:"بنك العلاقات والفرص";font-size:11px}
