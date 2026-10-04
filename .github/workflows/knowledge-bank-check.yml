@@ -1,0 +1,80 @@
+name: Knowledge Bank checks
+on:
+  push:
+    branches: [main]
+    paths: ['knowledge-bank/**', '.github/workflows/knowledge-bank-check.yml']
+  pull_request:
+    branches: [main]
+    paths: ['knowledge-bank/**', '.github/workflows/knowledge-bank-check.yml']
+permissions:
+  contents: read
+concurrency:
+  group: knowledge-bank-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test matching and encrypted storage
+        working-directory: knowledge-bank
+        run: npm test && npm run check
+      - name: Install test browser
+        run: |
+          python3 -m pip install playwright==1.57.0
+          python3 -m playwright install --with-deps chromium
+      - name: Verify browser journeys and responsive layouts
+        run: python3 knowledge-bank/tests/browser.py
+      - name: Verify the published page and identity assets
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import urllib.request, pathlib, time, os, json
+          from playwright.sync_api import sync_playwright, expect
+          base='https://almohammdin.github.io/services/knowledge-bank/'
+          source=pathlib.Path('knowledge-bank')
+          artifacts=source/'test-artifacts'
+          files=['index.html','styles.css','app.js','core.js','vault.js','icon.svg']
+          for attempt in range(30):
+              try:
+                  for filename in files:
+                      request=urllib.request.Request(base+filename+'?build='+os.environ['GITHUB_SHA'],headers={'Cache-Control':'no-cache'})
+                      with urllib.request.urlopen(request,timeout=15) as response:
+                          assert response.status==200
+                          assert response.read()==(source/filename).read_bytes(), filename
+                  break
+              except Exception as error:
+                  if attempt==29: raise
+                  print('Waiting for current Pages build:',type(error).__name__,flush=True)
+                  time.sleep(10)
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True,args=['--no-sandbox'])
+              page=browser.new_page(viewport={'width':1440,'height':1060})
+              errors=[]
+              page.on('pageerror',lambda error:errors.append(str(error)))
+              response=page.goto(base+'?v='+os.environ['GITHUB_SHA'],wait_until='networkidle')
+              assert response.status==200
+              expect(page.locator('.stat b').first).to_have_text('8')
+              page.evaluate('() => document.fonts.ready.then(() => true)')
+              identity=page.evaluate("() => ({font:getComputedStyle(document.body).fontFamily,fonts:[...document.fonts].map(x=>({family:x.family,weight:x.weight,status:x.status})),logo:[...document.querySelectorAll('.footer img')].every(x=>x.complete&&x.naturalWidth>0)})")
+              assert identity['logo'],identity
+              assert any(x['family']=='Craft' and x['status']=='loaded' for x in identity['fonts']),identity
+              page.screenshot(path=str(artifacts/'published-desktop.png'),full_page=True)
+              page.set_viewport_size({'width':390,'height':844})
+              page.screenshot(path=str(artifacts/'published-mobile.png'),full_page=True)
+              assert page.evaluate('() => document.documentElement.scrollWidth <= innerWidth+1')
+              assert not errors,errors
+              (artifacts/'published.json').write_text(json.dumps({'url':base,'files_verified':files,'identity':identity,'errors':errors},ensure_ascii=False,indent=2))
+              print('Published page and identity verified:',base)
+              browser.close()
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: knowledge-bank-verification
+          path: knowledge-bank/test-artifacts/
+          retention-days: 7
