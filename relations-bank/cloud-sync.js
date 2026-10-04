@@ -169,6 +169,14 @@
     const email = String(fd.get('email')||'').trim();
     const password = String(fd.get('password')||'');
     if (!email || password.length < 8) { setMsg('cloudAuthMsg','أدخل بريدًا صحيحًا وكلمة مرور من 8 أحرف على الأقل.'); return; }
+    setMsg('cloudAuthMsg','جارٍ التحقق من الدعوة...');
+    const pendingInvite=localStorage.getItem(PENDING_INVITE_KEY)||'';
+    const {data:accessStatus,error:accessStatusError}=await db.functions.invoke('rb-access-status',{body:{}});
+    if(accessStatusError){setMsg('cloudAuthMsg','تعذر التحقق من الدعوة الآن. حاول مرة أخرى.');return}
+    if(accessStatus?.initialized && !/^[a-f0-9]{12}$/i.test(pendingInvite)){
+      setMsg('cloudAuthMsg','إنشاء الحساب متاح عبر رابط دعوة فقط.');
+      return;
+    }
     setMsg('cloudAuthMsg','جارٍ إنشاء الحساب...');
     const { data, error } = await db.auth.signUp({
       email, password,
