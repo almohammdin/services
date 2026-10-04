@@ -76,7 +76,7 @@ export async function start(){
   const ctx=(await executeRBTool('get_member_context',{}))?.context||{};
   await prepare();const t=await token();if(!active)return;
   const ai=new GoogleGenAI({apiKey:t,httpOptions:{apiVersion:'v1alpha'}});
-  session=await ai.live.connect({model:MODEL,config:{responseModalities:[Modality.AUDIO],systemInstruction:instruction(ctx),inputAudioTranscription:{},outputAudioTranscription:{},speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:'Kore'}}},tools:[{functionDeclarations:RB_TOOL_DECLARATIONS}]},callbacks:{onopen:()=>emit('connecting','أتصل بالوكيل…'),onmessage:message,onerror:e=>console.error('Relations Bank voice',e),onclose:()=>{if(active){active=false;emit('error','انقطع الاتصال')}}}});
+  session=await ai.live.connect({model:MODEL,config:{responseModalities:[Modality.AUDIO],systemInstruction:instruction(ctx),inputAudioTranscription:{},outputAudioTranscription:{},speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:'Kore'}}},tools:[{functionDeclarations:[...RB_TOOL_DECLARATIONS,NAME_TOOL]}]},callbacks:{onopen:()=>emit('connecting','أتصل بالوكيل…'),onmessage:message,onerror:e=>console.error('Relations Bank voice',e),onclose:()=>{if(active){active=false;emit('error','انقطع الاتصال')}}}});
   if(!active)return;startMic();emit('listening','أسمعك الآن','تكلم بشكل طبيعي. الوكيل يحول كلامك إلى ملفك المهني داخليا.');
  }catch(e){console.error(e);active=false;emit('error','تعذر تشغيل المحادثة الصوتية','استخدم الكتابة الآن أو حاول مرة أخرى.');try{session?.close?.()}catch{}session=null;await shutdown();throw e}
 }
