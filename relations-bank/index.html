@@ -480,7 +480,8 @@
   function startIntroduction(id){
     const o=opportunities.find(x=>x.id===id); if(!o) return;
     if(state.introductions.some(i=>i.opportunityId===id && stageOf(i.status)!=='done')){ toast('هذه الفرصة لديها مسار تعارف مفتوح'); switchView('introductions'); closeModal(); return; }
-    state.introductions.unshift({id:uid('i'),opportunityId:id,title:`${o.needPerson.name} × ${o.offerPerson.name}`,status:'approval',createdAt:new Date().toISOString(),note:`الموافقة مطلوبة من أصحاب العلاقة قبل مشاركة تفاصيل التواصل.`});
+    const introTitle=(o.need.scope==='owner'||o.offer.scope==='owner')?'مسار تعارف بإذن أصحاب العلاقة':`${o.needPerson.name} × ${o.offerPerson.name}`;
+    state.introductions.unshift({id:uid('i'),opportunityId:id,title:introTitle,status:'approval',createdAt:new Date().toISOString(),note:`الموافقة مطلوبة من أصحاب العلاقة قبل مشاركة تفاصيل التواصل.`});
     save(); renderAll(); closeModal(); switchView('introductions'); toast('تم إنشاء مسار التعارف بانتظار الموافقات');
   }
 
