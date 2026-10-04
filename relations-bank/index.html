@@ -246,6 +246,8 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.95.0"></script>
+  <script src="./cloud-sync.js?v=20261004-1"></script>
   <script>
 (() => {
   'use strict';
@@ -256,7 +258,7 @@
   const now = new Date();
   const daysAgo = n => new Date(now.getTime() - n * 86400000).toISOString();
   const daysAhead = n => new Date(now.getTime() + n * 86400000).toISOString();
-  const uid = prefix => `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
+  const uid = prefix => (globalThis.crypto?.randomUUID?.() || `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`);
 
   const seed = () => ({
     people: [
