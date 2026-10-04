@@ -8,7 +8,7 @@ function addGate(){
  if(document.getElementById('rbAccessGate'))return;
  document.body.classList.add('rb-access-locked');
  const gate=document.createElement('section');gate.id='rbAccessGate';gate.className='rb-access-gate';
- gate.innerHTML='<div class="rb-gate-card"><div class="rb-gate-mark">✦</div><h1 id="rbGateTitle">بنك العلاقات والفرص</h1><p id="rbGateText">الدخول إلى المنصة بالدعوة فقط.</p><div class="rb-gate-invite" id="rbGateInvite">الحساب وحده لا يمنح عضوية في أي دائرة.</div><div class="rb-gate-actions"><button class="rb-gate-primary" id="rbGatePrimary">دخول</button><button class="rb-gate-soft" id="rbGateSecondary">لدي كود دعوة</button></div></div>';
+ gate.innerHTML='<div class="rb-gate-card"><div class="rb-gate-mark">✦</div><h1 id="rbGateTitle">بنك العلاقات والفرص</h1><div class="rb-gate-actions"><button class="rb-gate-primary" id="rbGatePrimary">دخول</button><button class="rb-gate-soft" id="rbGateSecondary">دعوة</button></div></div>';
  document.body.appendChild(gate);
  $('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openAuth?.();
  $('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openManage?.();
