@@ -2,7 +2,7 @@ name: Knowledge Bank V1 verification
 on:
   push:
     branches: [feature/knowledge-bank-v1-20261004]
-    paths: [.github/kb-bootstrap/part3.txt]
+    paths: [.github/kb-bootstrap/part3.txt, .github/workflows/knowledge-bank-bootstrap.yml]
 permissions:
   contents: write
 concurrency:
@@ -27,6 +27,12 @@ jobs:
           raw=bz2.decompress(base64.b64decode(encoded,validate=True))
           assert hashlib.sha256(raw).hexdigest()=='a9458135ac283d0c706282927a15f725b1df39b217a962de77679b0a7818f48f'
           files=json.loads(raw)
+          # Browser regression: require all specific search terms, not any single word.
+          old='return terms.some(t=>text.includes(t))||cats.some(c=>recordCats.includes(c));'
+          new='return terms.every(t=>text.includes(t))||cats.some(c=>recordCats.includes(c));'
+          assert files['core.js'].count(old)==1
+          files['core.js']=files['core.js'].replace(old,new)
+          files['tests/core.test.js']+="\ntest('specific multiword search requires all terms',()=>{assert.equal(recordMatches(demoState().records[5],'سجل اختبار'),false);assert.equal(recordMatches({name:'سجل اختبار'},'سجل اختبار'),true);});\n"
           for name,content in files.items():
               path=pathlib.PurePosixPath(name)
               assert not path.is_absolute() and '..' not in path.parts
