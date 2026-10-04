@@ -1,8 +1,9 @@
 import {executeRBTool} from './rb-assistant-tools.js?v=1';
 import {start as startVoice,stop as stopVoice} from './rb-voice.js?v=1';
+import {getNameState,saveMemberName} from './rb-name-tool.js?v=1';
 
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-let history=[],busy=false,card=null,lastTranscript='';
+let history=[],busy=false,card=null,lastTranscript='',nameState=null;
 
 function addGate(){
  if(document.getElementById('rbAccessGate'))return;
@@ -40,6 +41,21 @@ function setState(state,label,detail=''){
  const s=$('#rbAiStatus');if(s)s.textContent=label||'جاهز';
  const live=$('#rbAiLive');if(live&&detail)live.textContent=detail.replace(/^(أنت:|الوكيل:)\s*/,'').trim();
 }
+async function primeName(){
+ try{
+   nameState=await getNameState();
+   if(nameState?.confirmed)return;
+   const prompt=(nameState?.name&&nameState.name!=='عضو')?('اسمك '+nameState.name+'، صحيح؟'):'وش اسمك؟';
+   const live=$('#rbAiLive');if(live)live.textContent=prompt;
+   append('assistant',prompt);
+ }catch(e){console.error(e)}
+}
+function extractNameReply(value){
+ const text=String(value||'').trim();
+ if(nameState?.name&&nameState.name!=='عضو'&&/^(اي|ايوه|أيوه|نعم|صح|صحيح|تمام|يب|yes)$/i.test(text))return nameState.name;
+ const m=text.match(/(?:اسمي|أنا|انا)\s+(.{2,80})$/);
+ return (m?.[1]||text).replace(/[.!؟]+$/,'').trim();
+}
 function ensureAssistant(){
  if(document.getElementById('rbAiCard'))return;
  const main=document.querySelector('main');if(!main)return setTimeout(ensureAssistant,120);
@@ -50,6 +66,7 @@ function ensureAssistant(){
  $('#rbAiToggle').onclick=()=>{const panel=$('#rbAiPanel'),open=panel.hidden;panel.hidden=!open;$('#rbAiToggle').textContent=open?'إغلاق المحادثة':'فتح المحادثة';$('#rbAiToggle').setAttribute('aria-expanded',String(open))};
  $('#rbAiMic').onclick=async()=>{try{if(window.RelationsBankVoice?.active){await stopVoice();return}setState('connecting','أجهز المايك…');await startVoice()}catch(e){console.error(e);setState('error','تعذر تشغيل الصوت')}};
  $('#rbAiStop').onclick=()=>stopVoice().catch(()=>{});
+ primeName();
 }
 async function sendText(text){
  const value=String(text||'').trim();if(!value||busy)return;$('#rbAiText').value='';append('user',value);busy=true;setState('working','أفهم كلامك…');
