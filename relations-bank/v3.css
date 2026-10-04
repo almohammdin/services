@@ -23,3 +23,6 @@
 
 /* keep account and onboarding screens action-only */
 #cloudAuthPane > p,#cloudAuthPane > .cloud-section,#rbGateText,#rbGateInvite,.rb-ai-top p,.rb-ai-note{display:none!important}
+
+#cloudAuthBtn.ok{font-size:0}#cloudAuthBtn.ok::after{content:"الحساب";font-size:12px}
+.v2-modal:has(#v3NomForm) .v3-warning{display:none!important}
