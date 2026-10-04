@@ -20,18 +20,13 @@ function accessState(detail){
  }
  gate.hidden=false;document.body.classList.add('rb-access-locked');
  if(detail?.authenticated){
-   $('#rbGateTitle').textContent='عضويتك تحتاج دعوة';
-   $('#rbGateText').textContent='أنت مسجل الدخول، لكنك لست عضوا في دائرة حتى الآن.';
-   $('#rbGateInvite').textContent='افتح رابط الدعوة الذي وصلك أو أدخل كود الدعوة للانضمام.';
-   $('#rbGatePrimary').textContent='إدخال كود الدعوة';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openManage?.();
+   $('#rbGateTitle').textContent='بنك العلاقات والفرص';
+   $('#rbGatePrimary').textContent='دعوة';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openManage?.();
    $('#rbGateSecondary').textContent='تسجيل الخروج';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.db?.auth?.signOut?.().then(()=>location.reload());
  }else{
-   const pending=new URLSearchParams(location.search).get('invite');
-   $('#rbGateTitle').textContent=pending?'دعوتك جاهزة':'الدخول بالدعوة فقط';
-   $('#rbGateText').textContent=pending?'سجل الدخول أو أنشئ حسابك، وبعدها تنضم تلقائيا إلى الدائرة التي دُعيت لها.':'هذه المنصة خاصة بدوائر موثوقة. تحتاج رابط دعوة من دائرة قائمة.';
-   $('#rbGateInvite').textContent=pending?'كود الدائرة موجود داخل رابط الدعوة ولا تحتاج إدخاله يدويا.':'إذا كنت عضوا سابقا، سجل الدخول بحسابك.';
-   $('#rbGatePrimary').textContent=pending?'متابعة الدعوة':'تسجيل الدخول';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openAuth?.();
-   $('#rbGateSecondary').textContent='لدي كود دعوة';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openManage?.();
+   $('#rbGateTitle').textContent='بنك العلاقات والفرص';
+   $('#rbGatePrimary').textContent='دخول';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openAuth?.();
+   $('#rbGateSecondary').textContent='دعوة';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openManage?.();
  }
 }
 function append(role,text){
