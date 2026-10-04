@@ -24,6 +24,10 @@
   const owners = { people: new Map(), knowledge: new Map(), introductions: new Map() };
   const nativeSetItem = Storage.prototype.setItem;
 
+  function emitAccess(){
+    window.dispatchEvent(new CustomEvent('relationsbank:access',{detail:{authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle?{id:currentCircle.id,name:currentCircle.name}:null,user:currentUser?{id:currentUser.id,email:currentUser.email||''}:null,invite_pending:!!localStorage.getItem(PENDING_INVITE_KEY)}}));
+  }
+
   const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
   const isUuid = v => /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(v||''));
 
@@ -450,7 +454,7 @@
   async function handleSession(session){
     currentUser=session?.user||null;
     cloudReady=false;
-    if(!currentUser){ currentCircle=null; updateChrome(); return; }
+    if(!currentUser){ currentCircle=null; updateChrome(); emitAccess(); return; }
     try{
       await db.from('rb_profiles').upsert({user_id:currentUser.id,display_name:currentUser.user_metadata?.display_name||''},{onConflict:'user_id'});
       const hasCircle=await ensureCircle();
@@ -468,6 +472,7 @@
       updateChrome();
       if(currentCircle) await hydrateFromCloud(false);
       else openCloud('manage');
+      emitAccess();
     }catch(error){
       console.error('Relations Bank cloud session',error);
       setMsg('cloudManageMsg','تعذر فتح الحساب السحابي.');
@@ -488,6 +493,6 @@
     db.auth.onAuthStateChange((_event,session)=>{ setTimeout(()=>handleSession(session),0); });
   }
 
-  window.relationsBankCloud={db,hydrate:()=>hydrateFromCloud(true)};
+  window.relationsBankCloud={db,hydrate:()=>hydrateFromCloud(true),getAccess:()=>({authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle,user:currentUser}),openAuth:()=>openCloud('auth'),openManage:()=>openCloud('manage')};
   init();
 })();
