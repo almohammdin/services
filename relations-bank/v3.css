@@ -20,3 +20,6 @@
 .v3-warning{padding:11px 12px;border-radius:12px;background:#FFF4E7;border:1px solid #E8C79F;color:#805B31;font-size:10px;line-height:1.65;margin-top:9px}
 @media(max-width:800px){.v3-grid{grid-template-columns:1fr}.v3-reward-types{grid-template-columns:1fr 1fr}.v3-nominations{grid-template-columns:1fr 1fr}.v3-value-strip{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.v3-section{padding:16px;border-radius:19px}.v3-head{align-items:flex-start;flex-direction:column}.v3-reward-types,.v3-nominations{grid-template-columns:1fr}.v3-split-row{grid-template-columns:1fr 88px}}
+
+/* keep account and onboarding screens action-only */
+#cloudAuthPane > p,#cloudAuthPane > .cloud-section,#rbGateText,#rbGateInvite,.rb-ai-top p,.rb-ai-note{display:none!important}
