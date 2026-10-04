@@ -3,7 +3,7 @@ import {getAI,getGenerativeModel,GoogleAIBackend,Schema} from 'https://www.gstat
 
 const APP_NAME='relations-bank-ai';
 const FIREBASE_CONFIG={apiKey:'AIzaSyAAvC9y5jQ_7fAwmkCqBtgFDrBRF5t4uI0',authDomain:'mesraah-a2dfc.firebaseapp.com',projectId:'mesraah-a2dfc',storageBucket:'mesraah-a2dfc.firebasestorage.app',messagingSenderId:'986043593957',appId:'1:986043593957:web:b848313ef8cf83a5f3500c'};
-const ACTIONS=['none','get_context','set_profile','record_insight','add_relationship','add_knowledge','next_gap'];
+const ACTIONS=['none','get_context','set_name','set_profile','record_insight','add_relationship','add_knowledge','next_gap'];
 const actionSchema=Schema.object({properties:{
  action:Schema.enumString({enum:ACTIONS}),
  company:Schema.string(),roleTitle:Schema.string(),field:Schema.string(),city:Schema.string(),
