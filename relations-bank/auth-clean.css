@@ -1,0 +1,6 @@
+#cloudAuthPane>p,
+#cloudAuthPane #cloudAuthMsg + .cloud-section,
+#rbGateText,
+#rbGateInvite{display:none!important}
+#rbGateTitle{margin-bottom:14px}
+.rb-gate-card{max-width:480px}
