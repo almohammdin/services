@@ -10,10 +10,10 @@ function build(){
   const host=document.querySelector('#v2Workspace .shell');if(!host||document.getElementById('v3Economics'))return;
   const sec=document.createElement('section');sec.className='v3-section';sec.id='v3Economics';
   let pipe='';stages.forEach(s=>pipe+='<div class="v3-step"><b>'+R3.stageLabel(s)+'</b><span data-stage-count="'+s+'">0 فرصة</span></div>');
-  sec.innerHTML='<div class="v3-head"><div><span class="v3-kicker">V3 · اقتصاد الفرصة</span><h2>من أين جاءت الفرصة؟ ومن يستحق ماذا إذا نجحت؟</h2><p>الاستحقاق مرتبط بفرصة محددة ومساهمة فعلية، وليس بالدعوات أو النقاط.</p></div><button class="v2-btn gold" id="v3NominateBtn">+ رشّح عضوا للدائرة</button></div><div class="v3-value-strip" id="v3Stats"></div><div class="v3-pipeline">'+pipe+'</div><div class="v3-grid" id="v3Opportunities"></div><div class="v3-head" style="margin-top:22px"><div><span class="v3-kicker">الترشيحات</span><h2 style="font-size:20px">أعضاء مقترحون للدائرة</h2><p>الترشيح لا يمنح عضوية تلقائيا. صاحب الدائرة يراجع ثم يقرر الدعوة.</p></div></div><div class="v3-nominations" id="v3Nominations"></div>';
+  sec.innerHTML='<div class="v3-head"><div><span class="v3-kicker">الفرص والاستحقاقات</span><h2>من أين جاءت الفرصة؟ ومن يستحق ماذا إذا نجحت؟</h2></div><button class="v2-btn gold" id="v3NominateBtn">+ رشّح عضوا للدائرة</button></div><div class="v3-value-strip" id="v3Stats"></div><div class="v3-pipeline">'+pipe+'</div><div class="v3-grid" id="v3Opportunities"></div><div class="v3-head" style="margin-top:22px"><div><span class="v3-kicker">الترشيحات</span><h2 style="font-size:20px">أعضاء مقترحون للدائرة</h2></div></div><div class="v3-nominations" id="v3Nominations"></div>';
   const first=document.querySelector('#v2Workspace .v2-section');host.insertBefore(sec,first||null);
   $('#v3NominateBtn').onclick=()=>window.RBV3Dialogs&&window.RBV3Dialogs.openNomination();
-  const k=document.querySelector('.v2-kicker');if(k)k.textContent='V3 · بنك العلاقات والفرص';
+  const k=document.querySelector('.v2-kicker');if(k)k.textContent='بنك العلاقات والفرص';
 }
 function renderStats(){
   const el=$('#v3Stats');if(!el)return;
