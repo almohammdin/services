@@ -43,6 +43,7 @@ const PERSONALITY=[
   const response=await model.generateContent(prompt),raw=JSON.parse(response?.response?.text?.()||'{}'),toolCalls=[];
   for(const a of Array.isArray(raw.actions)?raw.actions.slice(0,6):[]){
     if(a.action==='get_context')toolCalls.push({name:'get_member_context',arguments:{}});
+    if(a.action==='set_name')toolCalls.push({name:'set_member_name',arguments:{name:a.name||''}});
     if(a.action==='set_profile')toolCalls.push({name:'set_profile_basics',arguments:{company:a.company||'',role_title:a.roleTitle||'',field:a.field||'',city:a.city||''}});
     if(a.action==='record_insight')toolCalls.push({name:'record_profile_insight',arguments:{key:a.key||'',value:a.value||''}});
     if(a.action==='add_relationship')toolCalls.push({name:'add_relationship',arguments:{target_org:a.targetOrg||'',target_person:a.targetPerson||'',target_role:a.targetRole||'',sector:a.sector||'',city:a.city||'',last_contact_at:a.lastContactAt||'',direct_contact:a.directContact===true,can_request_meeting:a.canRequestMeeting===true,prior_help:a.priorHelp===true,scope:a.scope||'owner'}});
