@@ -103,7 +103,7 @@ dialog{border:0;border-radius:20px;padding:0;width:min(650px,calc(100% - 24px));
 </div>
 
 <nav class="navtabs" aria-label="أقسام الملف">
-  <a href="#decision">القرار</a><a href="#plan">خطة العمل</a><a href="#checklist">قائمة التدقيق</a><a href="#tasks">متابعة المهام</a><a href="#programs">برامج قطر</a><a href="#brief">بطاقة المشروع</a><a href="#templates">النماذج</a><a href="#sources">الروابط</a><a href="#notes">السجل</a>
+  <a href="#decision">القرار</a><a href="#plan">خطة التقديم</a><a href="#checklist">قائمة التدقيق</a><a href="#tasks">متابعة المهام</a><a href="#programs">برامج قطر</a><a href="#brief">بطاقة المشروع</a><a href="#application">محتوى التقديم</a><a href="#templates">النماذج</a><a href="#sources">الروابط</a><a href="#notes">السجل</a>
 </nav>
 
 <section class="panel" id="decision">
@@ -114,7 +114,7 @@ dialog{border:0;border-radius:20px;padding:0;width:min(650px,calc(100% - 24px));
       <select class="decision-select" id="decisionSelect">
         <option>قيد الدراسة</option><option>استمرار مشروط</option><option>الاستمرار والتقديم</option><option>توقف مؤقت</option><option>إغلاق الفرصة</option>
       </select>
-      <div class="notice"><b>القرار العملي الآن:</b> نجهز المنتج والـ traction وملف التقديم أولا. تسجيل كيان قطري أو دفع رسوم يأتي بعد وضوح القبول أو الحاجة النظامية.</div>
+      <div class="notice"><b>القرار العملي الآن:</b> نقدم بالـMVP الحالي كما هو. لا توظيف CTO، لا فريق برمجة، لا تأسيس قطري، ولا تطوير كبير قبل القبول. التمويل المطلوب سيشمل بناء الفريق التقني وتطوير Majalis 2.0 بعد القبول.</div>
       <label class="field"><span>مبررات القرار</span><textarea id="decisionReason" placeholder="ما الذي يبرر الاستمرار أو التوقف؟"></textarea></label>
     </div>
     <div class="gates" id="decisionGates"></div>
@@ -122,14 +122,14 @@ dialog{border:0;border-radius:20px;padding:0;width:min(650px,calc(100% - 24px));
 </section>
 
 <section class="panel" id="plan">
-  <div class="section-head"><div><h2>خطة العمل</h2><p>المراحل مرتبة بحسب ما يرفع احتمال القبول ويقلل الصرف المبكر.</p></div></div>
+  <div class="section-head"><div><h2>خطة التقديم</h2><p>الهدف: تقديم START بأقل التزامات مسبقة، ثم صرف الوقت والمال فقط إذا وصل قبول وعرض مناسب.</p></div></div>
   <div class="grid3">
-    <article class="card"><span class="tag">1 | المنتج</span><h3>تجهيز Majalis 2.0</h3><p>تحويله من إدارة اجتماعات إلى Governance OS: قرارات، مهام، صلاحيات، Audit Log، Board Pack، عربي/إنجليزي وAI مرتبط بسياق المجلس.</p></article>
-    <article class="card"><span class="tag">2 | السوق</span><h3>إثبات الطلب</h3><p>مقابلات عملاء في قطر والخليج، 3 إلى 5 تجارب Pilot، و2 إلى 3 خطابات اهتمام LOI مع اختبار سعر سنوي.</p></article>
-    <article class="card"><span class="tag">3 | الفريق</span><h3>إظهار التنفيذ التقني</h3><p>تحديد Tech Lead/CTO واضح وسيرته ودوره، وخارطة تقنية 24 شهرا، وتكلفة التطوير والسحابة والذكاء الاصطناعي.</p></article>
-    <article class="card"><span class="tag">4 | الاستثمار</span><h3>ملف START</h3><p>صياغة المشكلة، السوق، نموذج الإيراد، المؤشرات، استخدام التمويل، خطة دخول قطر، والـ milestones التي يمكن ربط الدفعات بها.</p></article>
-    <article class="card"><span class="tag">5 | المسارات المساندة</span><h3>Alchemist وQRDI وAI Credits</h3><p>التقديم المتوازي للمسارات التي تناسب B2B SaaS وAI، مع استخدام برامج البحث والابتكار بعد وجود نشاط تطوير فعلي في قطر.</p></article>
-    <article class="card"><span class="tag">6 | التأسيس</span><h3>الكيان بعد وضوح الحاجة</h3><p>تقييم QFC أو المسار الأنسب بعد القبول/الترشيح. المبدأ: لا ندفع رسوم تأسيس قبل التأكد من الحوافز والهيكل المطلوب.</p></article>
+    <article class="card"><span class="tag">1 | الآن</span><h3>نستخدم Majalis الحالي كـ MVP</h3><p>المنتج حي ويغطي إعداد الاجتماع، المشاركين، جدول الأعمال والدعوة، إدارة الاجتماع، الحضور والتصويت، المحاضر والقرارات والوثائق، مع إدارة سحابية ومساعد Gemini.</p></article>
+    <article class="card"><span class="tag">2 | الآن</span><h3>نجهز طلب START فقط</h3><p>نعبئ ملف الشركة والمؤسس، المشكلة والحل، السوق، نموذج الإيراد، لماذا قطر، Technology Roadmap، Use of Funds وخطة التشغيل بعد التمويل.</p></article>
+    <article class="card"><span class="tag">3 | الآن</span><h3>Pitch Deck ورابط Demo</h3><p>نجهز عرضا مختصرا يثبت وجود MVP وخبرة المؤسس، من دون ادعاء عملاء أو إيرادات غير موجودة. رابط المنتج الحالي هو دليل الـMVP.</p></article>
+    <article class="card"><span class="tag">4 | التقديم</span><h3>فتح F6S وإرسال الطلب</h3><p>بنك قطر للتنمية يحيل رسميا إلى F6S. نطابق بنك الإجابات الموجود في هذا الملف مع الحقول الفعلية ثم نرسل الطلب.</p></article>
+    <article class="card"><span class="tag">5 | إذا تم القبول</span><h3>نراجع العرض قبل أي التزام</h3><p>نطلب المبلغ، المقابل الاستثماري، الدفعات والـmilestones، اشتراط وجود المؤسس، هل Founder Compensation مسموح، وما الذي يشمله السكن والتأشيرات والتأسيس.</p></article>
+    <article class="card"><span class="tag">6 | بعد عرض مناسب</span><h3>نبدأ التوظيف والتطوير</h3><p>أول تعيين تقني CTO/Tech Lead، ثم المطورون، ثم تطوير Majalis 2.0 والتواجد التشغيلي في قطر حسب الاتفاق. قبل ذلك لا نوظف.</p></article>
   </div>
 </section>
 
@@ -149,7 +149,7 @@ dialog{border:0;border-radius:20px;padding:0;width:min(650px,calc(100% - 24px));
   <div class="section-head"><div><h2>برامج قطر التي تهم مجالس</h2><p>معلومات تشغيلية مختصرة مبنية على المصادر الرسمية، ومؤرخة للتحقق وقت التقديم.</p></div></div>
   <div class="grid3">
     <article class="card program-card"><span class="tag">المسار الأساسي</span><h3>Startup Qatar Investment Program | START</h3><p>تمويل حتى $1.1M للشركات التقنية التي تطلق أعمالها في قطر. التمويل على دفعات مرتبطة بمراحل متفق عليها. B2B SaaS وAI/ML ضمن القطاعات ذات الأولوية.</p><ul><li>إعفاءات تسجيل وتجديد</li><li>مساحات عمل مدعومة</li><li>دعم مواهب وتدريب</li><li>سكن مدعوم ووصول للسوق</li></ul><a href="https://www.qdb.qa/en/Financing-And-Funding/Equity-And-Investment/Startup-Qatar-Investment-Program" target="_blank" rel="noopener">المصدر الرسمي</a></article>
-    <article class="card program-card"><span class="tag">نموذج التقديم</span><h3>F6S | START Application</h3><p>نموذج التقديم المرتبط من بنك قطر للتنمية. لا يقدم قبل تجهيز Technology Roadmap، السوق، نموذج الإيراد، الفريق ومواد الإثبات.</p><ul><li>نبني الإجابات أولا داخل هذا الملف</li><li>ثم نراجعها سؤالا سؤالا</li></ul><a href="https://www.f6s.com/sqinvestmentprogram" target="_blank" rel="noopener">فتح نموذج التقديم</a></article>
+    <article class="card program-card"><span class="tag">نموذج التقديم</span><h3>F6S | START Application</h3><p>هذا هو رابط التقديم الرسمي المحال إليه من بنك قطر للتنمية. معايير QDB المنشورة لا تذكر اشتراط CTO موظف قبل التقديم؛ المطلوب MVP/PoC، خطة تنفيذ، Technology Roadmap، سوق، نموذج دخل وقيادة ملتزمة.</p><ul><li>نقدم بالـMVP الحالي</li><li>CTO والفريق ضمن خطة ما بعد التمويل</li></ul><a href="https://www.f6s.com/sqinvestmentprogram" target="_blank" rel="noopener">فتح نموذج التقديم</a></article>
     <article class="card program-card"><span class="tag">AI</span><h3>Startup Qatar AI Compute Credits</h3><p>أرصدة حوسبة سحابية/GPU للشركات التي تطور AI من قطر، مع حاجة مبررة للحوسبة وفريق تقني موجود أو مخطط وجوده في قطر.</p><ul><li>أفضلية لـ MVP أو traction</li><li>يتطلب استخدام AI حقيقي</li></ul><a href="https://startupqatar.qa/en/ai-credits" target="_blank" rel="noopener">المصدر الرسمي</a></article>
     <article class="card program-card"><span class="tag">Pilot</span><h3>Qatar Open Innovation | QOI</h3><p>يربط الجهات الحكومية والشركات الكبيرة بالمبتكرين لتنفيذ تجارب لحلول تحديات محددة. التمويل قد يصل إلى $100,000 بحسب الفرصة.</p><ul><li>مفيد للحصول على Pilot قطري</li><li>نراقب التحديات المناسبة للحوكمة والذكاء الاصطناعي</li></ul><a href="https://startupqatar.qa/en/" target="_blank" rel="noopener">Startup Qatar | البرامج</a></article>
     <article class="card program-card"><span class="tag">R&D</span><h3>Technology Development Grant | TDG</h3><p>برنامج QRDI لمشاريع R&D يمكن أن يصل إلى QAR 10M ولمدة تصل إلى 3 سنوات للمشاريع المؤهلة. مناسب لاحقا لمحرك Arabic Governance Intelligence الحقيقي.</p><ul><li>يحتاج R&D وليس تطوير واجهة عادي</li><li>التأسيس في قطر يصبح مهما عند المنحة</li></ul><a href="https://startupqatar.qa/en/" target="_blank" rel="noopener">Startup Qatar | البرامج</a></article>
@@ -173,6 +173,128 @@ dialog{border:0;border-radius:20px;padding:0;width:min(650px,calc(100% - 24px));
     <label class="field"><span>نموذج الإيراد</span><textarea id="briefRevenue"></textarea></label>
     <label class="field"><span>استخدام التمويل</span><textarea id="briefUse"></textarea></label>
     <label class="field full"><span>الميزة الدفاعية / لماذا لن يكون مجرد أداة اجتماعات؟</span><textarea id="briefMoat"></textarea></label>
+  </div>
+</section>
+
+<section class="panel" id="application">
+  <div class="section-head">
+    <div><h2>محتوى التقديم الجاهز</h2><p>بنك إجابات إنجليزي جاهز للنسخ إلى START / F6S. رتبت المحتوى على معايير QDB والحقول المعتادة في ملفات F6S.</p></div>
+    <div class="section-actions"><a class="secondary" href="https://www.f6s.com/sqinvestmentprogram" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center">فتح F6S</a></div>
+  </div>
+  <div class="notice"><b>حدود الفحص:</b> تم التحقق من أن QDB يوجّه رسميا إلى رابط F6S الحالي، لكن F6S يمنع قراءة نموذج الطلب آليا بدون جلسة دخول (403). لذلك النصوص أدناه جاهزة وشاملة، لكن ترتيب أسماء الحقول يجب مطابقته عند فتح النموذج بحسابك. لا أعتبرها نسخة حرفية من ترتيب F6S.</div>
+  <div class="notice"><b>قبل الضغط على Submit فقط نحتاج تأكيد هذه البيانات:</b> الوضع القانوني الحالي للمشروع، تاريخ التأسيس إن وجد، عدد أعضاء الفريق حاليا، الإيرادات الحالية إن وجدت، التمويل السابق إن وجد، ملكية الكود/IP، والمبلغ النهائي المطلوب. باقي المحتوى جاهز.</div>
+  <div class="grid2">
+    <article class="template"><h3>Company / Startup name</h3><p>جاهز</p><pre id="appName">Majalis</pre><button class="tiny copy-btn" data-copy="appName">نسخ</button></article>
+
+    <article class="template"><h3>Website / MVP link</h3><p>جاهز</p><pre id="appWebsite">https://almohammdin.github.io/majalis/</pre><button class="tiny copy-btn" data-copy="appWebsite">نسخ</button></article>
+
+    <article class="template"><h3>Sector / Category</h3><p>جاهز</p><pre id="appSector">B2B SaaS / Governance Technology / AI & Machine Learning</pre><button class="tiny copy-btn" data-copy="appSector">نسخ</button></article>
+
+    <article class="template"><h3>Stage</h3><p>جاهز</p><pre id="appStage">MVP / Early-stage. A live product is available today. Majalis is not yet commercially launched in Qatar and no Qatar revenue is assumed in this application.</pre><button class="tiny copy-btn" data-copy="appStage">نسخ</button></article>
+
+    <article class="template"><h3>One-line description</h3><p>جاهز</p><pre id="appOneLine">Majalis is an Arabic-first AI governance platform for boards and committees, managing meetings, documents, voting, minutes, resolutions and institutional knowledge in one controlled workflow.</pre><button class="tiny copy-btn" data-copy="appOneLine">نسخ</button></article>
+
+    <article class="template"><h3>What problem are you solving?</h3><p>جاهز</p><pre id="appProblem">Boards and committees across the GCC still manage critical governance workflows through fragmented tools: email, messaging apps, spreadsheets, Word files and disconnected document folders. This creates duplicated work, weak traceability, inconsistent meeting records, delayed follow-up on resolutions, and limited institutional memory. Existing global board portals are often expensive, complex, and not designed around Arabic-first governance workflows and regional meeting practices.</pre><button class="tiny copy-btn" data-copy="appProblem">نسخ</button></article>
+
+    <article class="template"><h3>Describe your solution</h3><p>جاهز ومبني على المنتج الحالي</p><pre id="appSolution">Majalis digitizes the full board and committee meeting cycle. The current live MVP supports meeting setup, participant management, agenda and invitations, meeting management, attendance, voting, minutes, resolutions, document generation and cloud administration. It also includes an AI assistant powered by Gemini. After funding, Majalis will evolve into a multi-tenant Governance OS with enterprise permissions, audit logs, action-item tracking, board packs, bilingual workflows, integrations and an AI governance knowledge layer that connects decisions and documents over time.</pre><button class="tiny copy-btn" data-copy="appSolution">نسخ</button></article>
+
+    <article class="template"><h3>What is innovative / differentiated?</h3><p>جاهز</p><pre id="appDifferentiation">Majalis is not positioned as another meeting scheduler or generic AI summarizer. Its differentiation is an Arabic-first governance workflow built around the actual lifecycle of boards and committees, combined with structured institutional knowledge. The long-term product advantage is Arabic Governance Intelligence: connecting meetings, decisions, documents, obligations and follow-up history so authorized users can ask what was decided, what remains open, who is responsible, and how current agenda items relate to prior decisions.</pre><button class="tiny copy-btn" data-copy="appDifferentiation">نسخ</button></article>
+
+    <article class="template"><h3>Who are your target customers?</h3><p>جاهز</p><pre id="appCustomers">Initial customers are private companies, family businesses, boards of directors, board committees, associations and governance-heavy organizations in Qatar and Saudi Arabia. The beachhead customer is an organization that runs formal recurring board or committee meetings and needs reliable documentation, voting, resolutions, document control and follow-up.</pre><button class="tiny copy-btn" data-copy="appCustomers">نسخ</button></article>
+
+    <article class="template"><h3>Why Qatar?</h3><p>جاهز ومتوافق مع قطاعات الأولوية</p><pre id="appWhyQatar">Qatar is a strong launch market for Majalis because the Startup Qatar Investment Program explicitly prioritizes B2B SaaS and AI/ML, while the market has a concentrated ecosystem of private companies, family businesses, government-related entities and institutions that rely on formal governance. Qatar also provides a practical GCC base for product localization, enterprise pilots and regional expansion into Saudi Arabia and the wider Gulf. We plan to establish real operations in Qatar after funding, not simply register an entity.</pre><button class="tiny copy-btn" data-copy="appWhyQatar">نسخ</button></article>
+
+    <article class="template"><h3>Business model / Monetization</h3><p>جاهز كفرضية تسعير أولية</p><pre id="appBusinessModel">Majalis will operate as a B2B SaaS subscription. The working pricing hypothesis is:
+• Basic: QAR 12,000 per organization/year
+• Pro: QAR 30,000 per organization/year
+• Enterprise: QAR 60,000+ per organization/year
+Additional revenue can come from onboarding, enterprise integrations, private-cloud/data-residency options and specialized implementation. Pricing will be refined after the first Qatar pilots.</pre><button class="tiny copy-btn" data-copy="appBusinessModel">نسخ</button></article>
+
+    <article class="template"><h3>Current traction</h3><p>صياغة محافظة بدون اختلاق أرقام</p><pre id="appTraction">Majalis has a functioning live MVP rather than a concept-only prototype. The current product already supports the core governance meeting workflow, cloud administration, documents, voting, minutes and an AI assistant. The company is at the pre-commercial / early-validation stage for Qatar. We are intentionally not claiming Qatar customers or revenue that do not yet exist; the first post-funding milestone is structured customer pilots and conversion to paid annual subscriptions.</pre><button class="tiny copy-btn" data-copy="appTraction">نسخ</button></article>
+
+    <article class="template"><h3>Founder / leadership</h3><p>جاهز</p><pre id="appFounder">Majalis is founder-led by Naif Al-Mohammdi, a Saudi governance and business-development advisor with hands-on experience working with boards, owners, executives and organizational decision-making. The product originated from recurring practical governance needs observed in real board and business environments. The founder leads product vision, governance domain design, commercial development and GCC market access.</pre><button class="tiny copy-btn" data-copy="appFounder">نسخ</button></article>
+
+    <article class="template"><h3>Team today and hiring plan</h3><p>متوافق مع قرار عدم التوظيف قبل القبول</p><pre id="appTeam">Majalis is currently founder-led with a live MVP. We are deliberately keeping the pre-funding team lean. The first post-funding hire will be a CTO / Technical Lead responsible for architecture, security, engineering delivery and AI infrastructure, followed by product engineers and a Qatar-focused business development / customer success role. We are applying for funding to build this execution team rather than hiring it before investment.</pre><button class="tiny copy-btn" data-copy="appTeam">نسخ</button></article>
+
+    <article class="template"><h3>Technology today</h3><p>مبني على المستودع الحالي</p><pre id="appTechToday">The current Majalis MVP is a web application with Firebase-based authentication, Firestore data storage and Firebase Storage for meeting files and documents. The product includes cloud administration and a Gemini-powered AI assistant. The post-funding architecture roadmap will strengthen multi-tenancy, role-based permissions, auditability, security, integrations and AI retrieval over authorized governance data.</pre><button class="tiny copy-btn" data-copy="appTechToday">نسخ</button></article>
+
+    <article class="template"><h3>24-month technology roadmap</h3><p>جاهز للتقديم</p><pre id="appRoadmap">Months 0–3 after funding:
+• Hire CTO / Technical Lead and core engineering capacity
+• Architecture and security review
+• Harden multi-tenant data model and role-based access
+• Define Qatar hosting, privacy and compliance requirements
+
+Months 4–6:
+• Resolution and action-item tracking
+• Audit logs and enterprise administration
+• Board Pack and document versioning
+• Arabic/English production workflows
+
+Months 7–12:
+• AI governance knowledge layer across authorized documents and decisions
+• Semantic search and decision-history retrieval
+• Qatar pilots and enterprise feedback loop
+• APIs and core integrations
+
+Months 13–18:
+• SSO/MFA, enterprise integrations and advanced reporting
+• Configurable governance templates
+• Data-residency and private deployment options where required
+
+Months 19–24:
+• GCC expansion features
+• Governance analytics and benchmarking
+• Scale infrastructure, security and customer success operations</pre><button class="tiny copy-btn" data-copy="appRoadmap">نسخ</button></article>
+
+    <article class="template"><h3>Competitive landscape</h3><p>جاهز</p><pre id="appCompetition">Majalis competes with global board-management platforms such as Diligent, Convene, BoardPro and other enterprise board portals, as well as the status quo of email, messaging apps and Office/PDF workflows. Majalis differentiates through Arabic-first UX, GCC governance context, structured meeting-to-resolution workflows, lower implementation complexity for regional organizations, and an AI knowledge layer designed around governance history rather than generic document chat.</pre><button class="tiny copy-btn" data-copy="appCompetition">نسخ</button></article>
+
+    <article class="template"><h3>Go-to-market in Qatar</h3><p>جاهز</p><pre id="appGTM">Phase 1: establish the funded operating presence and recruit technical leadership.
+Phase 2: target a focused group of private companies, family businesses, associations and governance-heavy organizations for structured pilots.
+Phase 3: convert successful pilots into annual SaaS subscriptions and use reference customers to expand across Qatar.
+Phase 4: use Qatar as a GCC reference market and expand commercially into Saudi Arabia and neighboring Gulf markets.
+The founder will lead strategic sales and partnerships, while a Qatar-focused commercial/customer-success role will support day-to-day market execution.</pre><button class="tiny copy-btn" data-copy="appGTM">نسخ</button></article>
+
+    <article class="template"><h3>Funding requested</h3><p>اقتراح عمل، يحتاج تأكيد قبل Submit</p><pre id="appAsk">Working funding request: USD 750,000 in staged START funding over 24 months, subject to QDB program structure and agreed milestones.</pre><button class="tiny copy-btn" data-copy="appAsk">نسخ</button></article>
+
+    <article class="template"><h3>Use of funds</h3><p>جاهز كنموذج أولي</p><pre id="appUseFunds">Proposed allocation:
+• 45% Engineering, CTO/technical leadership and AI development
+• 15% Product security, cloud infrastructure and enterprise readiness
+• 20% Qatar go-to-market, pilots and customer acquisition
+• 10% Operations and talent
+• 10% Legal, compliance, localization and contingency
+
+All spending would be linked to measurable product, hiring and market-entry milestones. Founder compensation, if any, would only be included if explicitly permitted under the investment agreement.</pre><button class="tiny copy-btn" data-copy="appUseFunds">نسخ</button></article>
+
+    <article class="template"><h3>Funding milestones</h3><p>جاهز</p><pre id="appMilestones">Milestone 1: Qatar entity/operating setup as required + CTO/Technical Lead hired + enterprise architecture plan approved.
+Milestone 2: Multi-tenant enterprise version with RBAC, audit logs, resolutions and action tracking.
+Milestone 3: First Qatar pilots live with measurable usage and feedback.
+Milestone 4: AI governance knowledge layer released with controlled access to board documents and decision history.
+Milestone 5: First paid Qatar subscriptions and repeatable sales process.
+Milestone 6: GCC expansion readiness and enterprise integration package.</pre><button class="tiny copy-btn" data-copy="appMilestones">نسخ</button></article>
+
+    <article class="template"><h3>3-year commercial targets</h3><p>توقعات Base Case وليست إيرادات حالية</p><pre id="appTargets">Illustrative base-case targets, to be refined during diligence:
+Year 1: 25 paying organizations at ~QAR 30,000 average ARR = ~QAR 750,000 ARR
+Year 2: 75 paying organizations = ~QAR 2.25M ARR
+Year 3: 200 paying organizations = ~QAR 6.0M ARR
+
+These are forward-looking operating targets, not historical revenue.</pre><button class="tiny copy-btn" data-copy="appTargets">نسخ</button></article>
+
+    <article class="template"><h3>Commitment to Qatar</h3><p>صياغة لا تعد بانتقال كامل قبل معرفة الشروط</p><pre id="appQatarCommitment">We are committed to establishing meaningful operations in Qatar if selected and funded. The founder will actively lead market entry, key partnerships, investor/program engagement and major customer relationships in Qatar. Day-to-day technical execution will be built through the funded team. The exact founder residency schedule will be aligned with the investment agreement and operational requirements rather than assumed before selection.</pre><button class="tiny copy-btn" data-copy="appQatarCommitment">نسخ</button></article>
+
+    <article class="template"><h3>IP / legal / cap table</h3><p>يلزم تأكيد قبل اللصق</p><pre id="appLegal">TO CONFIRM BEFORE SUBMISSION:
+• Current legal owner/entity of Majalis
+• Incorporation status and date, if any
+• Founder ownership / cap table
+• Confirmation that code, brand and product IP can be assigned to the funded company
+• Any prior investors, grants or external ownership rights</pre><button class="tiny copy-btn" data-copy="appLegal">نسخ</button></article>
+
+    <article class="template"><h3>Revenue / prior funding / team size</h3><p>يلزم تأكيد قبل اللصق</p><pre id="appFacts">TO CONFIRM BEFORE SUBMISSION:
+• Current revenue: [enter actual amount or 0]
+• Paying customers: [actual only]
+• Prior external funding: [actual only / none]
+• Current full-time team size: [actual]
+• Current part-time / contractor support: [actual]
+• Date project started: [actual]</pre><button class="tiny copy-btn" data-copy="appFacts">نسخ</button></article>
   </div>
 </section>
 
@@ -233,7 +355,7 @@ Signature:</pre><button class="tiny copy-btn" data-copy="tplLoi">نسخ</button>
 </section>
 
 <section class="panel" id="sources">
-  <div class="section-head"><div><h2>الروابط والمصادر</h2><p>آخر تحقق أساسي: 4 أكتوبر 2026. يعاد التحقق قبل أي تقديم أو التزام مالي.</p></div></div>
+  <div class="section-head"><div><h2>الروابط والمصادر</h2><p>آخر تحقق أساسي: 4 أكتوبر 2026. تم التحقق من مسار QDB الرسمي ورابط F6S، ويعاد التحقق من الشروط عند الإرسال وقبل أي توقيع.</p></div></div>
   <div id="sourceList"></div>
 </section>
 
@@ -254,7 +376,7 @@ Signature:</pre><button class="tiny copy-btn" data-copy="tplLoi">نسخ</button>
       <input type="hidden" id="taskId">
       <div class="form-grid">
         <label class="field full"><span>المهمة</span><input id="taskTitle" required></label>
-        <label class="field"><span>المسار</span><select id="taskTrack"><option>المنتج</option><option>السوق</option><option>الفريق</option><option>الاستثمار</option><option>قطر</option><option>قانوني/تأسيس</option><option>تشغيل</option><option>قرار</option></select></label>
+        <label class="field"><span>المسار</span><select id="taskTrack"><option>التقديم</option><option>متابعة</option><option>بعد القبول</option><option>قطر</option><option>تشغيل</option><option>قرار</option><option>المنتج</option><option>الاستثمار</option></select></label>
         <label class="field"><span>المسؤول</span><input id="taskOwner" value="نايف"></label>
         <label class="field"><span>الأولوية</span><select id="taskPriority"><option>عالية</option><option selected>متوسطة</option><option>منخفضة</option></select></label>
         <label class="field"><span>الموعد</span><input id="taskDue" type="date"></label>
@@ -275,7 +397,7 @@ var SESSION_KEY='qatarOpportunityUnlockedV1';
 var STORE_KEY='naifQatarOpportunityV1';
 var sourceData=[
  ['برنامج Startup Qatar الاستثماري','QDB | START حتى $1.1M، GROW حتى $5.5M، الدفعات مرتبطة بمراحل','https://www.qdb.qa/en/Financing-And-Funding/Equity-And-Investment/Startup-Qatar-Investment-Program'],
- ['نموذج START','F6S | الرابط المباشر من صفحة بنك قطر للتنمية','https://www.f6s.com/sqinvestmentprogram'],
+ ['نموذج START','F6S | الرابط المباشر من صفحة بنك قطر للتنمية. قد يتطلب جلسة دخول لعرض الحقول','https://www.f6s.com/sqinvestmentprogram'],
  ['Startup Qatar Investment Program','Invest Qatar / Startup Qatar','https://startupqatar.qa/en/investment-program'],
  ['AI Compute Credits','شروط الائتمان السحابي/GPU للشركات المبنية على AI','https://startupqatar.qa/en/ai-credits'],
  ['Startup Qatar Programs','بوابة البرامج وتشمل QOI وKTP وTDG','https://startupqatar.qa/en/'],
@@ -286,86 +408,69 @@ var sourceData=[
  ['Majalis','المنتج الحالي','https://almohammdin.github.io/majalis/']
 ];
 var checklistGroups=[
- {name:'ملاءمة START',items:[
-  'مشكلة سوقية غير ملباة ومثبتة بمقابلات عملاء',
-  'هدف واضح وخطة تنفيذ قابلة للقياس',
-  'Technology Roadmap مفصلة لمدة 24 شهرا',
-  'MVP يعمل ويمكن عرضه مباشرة',
-  'دراسة سوق قطر والخليج موثقة',
-  'نموذج أعمال واضح واستراتيجية Monetization',
-  'فريق قيادة وخبرة ذات صلة',
-  'خطة فعلية لإطلاق عمليات في قطر'
+ {name:'جاهزية التقديم الآن',items:[
+  'رابط MVP الحالي يعمل ويمكن عرضه',
+  'المشكلة والحل مكتوبان بصياغة استثمارية',
+  'Technology Roadmap لمدة 24 شهرا جاهزة على الورق',
+  'نموذج الإيراد والتسعير الأولي جاهز',
+  'خطة دخول قطر بعد التمويل جاهزة',
+  'Use of Funds ومراحل الصرف جاهزة',
+  'محتوى التقديم الإنجليزي موجود داخل هذا الملف'
  ]},
- {name:'Majalis 2.0 | المنتج',items:[
-  'Multi-tenant حقيقي لعدة جهات',
-  'صلاحيات Role-Based Access دقيقة',
-  'Audit Log لكل العمليات الحساسة',
-  'إدارة القرارات Resolutions وربطها بالاجتماعات',
-  'متابعة Action Items ومسؤول وموعد وتنبيه',
-  'Board Pack وتجميع وثائق الاجتماع',
-  'Versioning للوثائق',
-  'عربي وإنجليزي كامل',
-  'MFA/SSO وخطة أمن معلومات أولية',
-  'AI Copilot يفهم وثائق وقرارات المجلس بحسب الصلاحية'
+ {name:'بيانات تحتاج تأكيد قبل Submit',items:[
+  'الوضع القانوني الحالي للمشروع / الكيان',
+  'تاريخ بدء المشروع أو التأسيس',
+  'عدد أعضاء الفريق حاليا',
+  'الإيرادات الحالية الفعلية إن وجدت',
+  'عدد العملاء الدافعين الفعلي إن وجد',
+  'أي تمويل أو منح سابقة',
+  'ملكية الكود والعلامة والـ IP',
+  'المبلغ النهائي المطلوب من START',
+  'رابط Pitch Deck أو Company Profile'
  ]},
- {name:'السوق والإيراد',items:[
-  'تحديد 3 شرائح عميل مستهدفة فقط في البداية',
-  'إجراء 10 مقابلات اكتشاف مشكلة',
-  'تشغيل 3 إلى 5 Pilots',
-  'الحصول على 2 إلى 3 LOIs',
-  'اختبار 3 مستويات تسعير سنوي',
-  'توثيق من صاحب قرار الشراء ومدة دورة البيع',
-  'تحليل منافسين في قطر والخليج',
-  'حساب CAC مبدئي وGross Margin وتكلفة AI/Cloud'
+ {name:'ملف F6S',items:[
+  'إنشاء أو تحديث حساب F6S للمؤسس',
+  'إنشاء أو تحديث صفحة Majalis على F6S',
+  'إكمال بيانات المؤسس والسيرة',
+  'إضافة رابط Majalis الحالي',
+  'إضافة رابط Pitch Deck',
+  'مطابقة بنك الإجابات مع الحقول الفعلية',
+  'مراجعة كل رقم وادعاء قبل الإرسال',
+  'إرسال الطلب وتسجيل تاريخ ورقم/حالة التقديم'
  ]},
- {name:'الفريق والتقنية',items:[
-  'تحديد Tech Lead/CTO واضح بالاسم والدور',
-  'توثيق ملكية الكود والـ IP',
-  'مخطط Architecture بسيط وقابل للشرح',
-  'خطة Data Privacy وData Residency',
-  'خطة نسخ احتياطي واستمرارية',
-  'تقدير تكلفة التطوير 24 شهرا'
- ]},
- {name:'ملف الاستثمار',items:[
-  'One-pager',
-  'Pitch Deck من 10 إلى 12 شريحة',
-  'Financial Model لثلاث سنوات',
-  'Use of Funds مرتبط بـ milestones',
-  'Founder/Team CVs',
-  'Demo script مدته 5 دقائق',
-  'Data Room مرتب',
-  'صياغة لماذا قطر؟ بدون كلام عام'
- ]},
- {name:'قطر وما بعد القبول',items:[
-  'تأكيد الحوافز والإعفاءات كتابة قبل التأسيس',
-  'مقارنة QFC مع بدائل التأسيس المناسبة',
-  'تحديد هل يحتاج المؤسس/الفريق إقامة فعلية',
-  'تقييم AI Compute Credits بعد تثبيت نشاط AI',
-  'متابعة تحديات Qatar Open Innovation',
-  'تقييم KTP-Q لمشروع بحثي مناسب',
-  'تقييم TDG لمحرك Arabic Governance Intelligence'
+ {name:'بعد القبول فقط',items:[
+  'استلام العرض أو Term Sheet ومراجعته',
+  'تأكيد مبلغ الاستثمار والدفعات والـ milestones',
+  'تأكيد المقابل الاستثماري / الملكية',
+  'تأكيد هل Founder Compensation مسموح وسقفه',
+  'تأكيد مقدار وجود المؤسس المطلوب في قطر',
+  'تأكيد تفاصيل السكن والتأشيرات والإعفاءات',
+  'تأسيس الكيان القطري إذا أصبح مطلوبا',
+  'توظيف CTO / Tech Lead',
+  'توظيف فريق التطوير',
+  'بدء تطوير Majalis 2.0'
  ]}
 ];
 var defaultTasks=[
- {id:'t1',title:'اعتماد المنتج المستهدف: مجالس وترك امتداد كفرصة تطوير داخلية',track:'قرار',owner:'نايف',priority:'عالية',due:'',status:'مكتمل',note:'تم حسمها في 4 أكتوبر 2026.',link:''},
- {id:'t2',title:'تحديد المسار الأساسي: Startup Qatar START وليس GROW',track:'قطر',owner:'نايف',priority:'عالية',due:'',status:'مكتمل',note:'START أقرب لوضع المنتج الحالي.',link:'https://www.qdb.qa/en/Financing-And-Funding/Equity-And-Investment/Startup-Qatar-Investment-Program'},
- {id:'t3',title:'إنشاء ملف متابعة فرصة قطر وربطه بصفحة خدماتي',track:'تشغيل',owner:'نايف',priority:'عالية',due:'',status:'مكتمل',note:'هذه الصفحة هي ملف المتابعة.',link:''},
- {id:'t4',title:'فحص مستودع Majalis وظيفيا وتحديد فجوات Majalis 2.0 بندا بندا',track:'المنتج',owner:'نايف + تقني',priority:'عالية',due:'2026-10-08',status:'قيد العمل',note:'التركيز على Multi-tenant، صلاحيات، قرارات، مهام، Audit Log، Board Pack وAI.',link:'https://almohammdin.github.io/majalis/'},
- {id:'t5',title:'كتابة Product Positioning نهائي لقطر',track:'المنتج',owner:'نايف',priority:'عالية',due:'2026-10-09',status:'لم يبدأ',note:'Majalis | AI Governance Platform for Boards & Committees.',link:''},
- {id:'t6',title:'تحديد Tech Lead/CTO ومسؤوليته وسيرته',track:'الفريق',owner:'نايف',priority:'عالية',due:'2026-10-12',status:'لم يبدأ',note:'نقطة مهمة خصوصا لمسار Alchemist.',link:''},
- {id:'t7',title:'عمل قائمة 10 جهات مستهدفة في قطر لمقابلات اكتشاف المشكلة',track:'السوق',owner:'نايف',priority:'عالية',due:'2026-10-14',status:'لم يبدأ',note:'شركات عائلية، مجالس، جمعيات، شركات خاصة.',link:''},
- {id:'t8',title:'تنفيذ 10 مقابلات عملاء وتلخيص الأنماط المتكررة',track:'السوق',owner:'نايف',priority:'عالية',due:'2026-10-25',status:'لم يبدأ',note:'لا نبيع في أول 15 دقيقة. نثبت المشكلة أولا.',link:''},
- {id:'t9',title:'الحصول على 3 Pilots و2 LOIs على الأقل',track:'السوق',owner:'نايف',priority:'عالية',due:'2026-11-05',status:'لم يبدأ',note:'يفضل جهة قطرية واحدة على الأقل إن أمكن.',link:''},
- {id:'t10',title:'اختبار التسعير السنوي مع العملاء',track:'السوق',owner:'نايف',priority:'متوسطة',due:'2026-11-05',status:'لم يبدأ',note:'اختبار Basic / Pro / Enterprise، لا نعتمد السعر قبل مقابلات.',link:''},
- {id:'t11',title:'إعداد Technology Roadmap لمدة 24 شهرا',track:'المنتج',owner:'تقني + نايف',priority:'عالية',due:'2026-11-08',status:'لم يبدأ',note:'مرتبطة بالمراحل التمويلية والمخرجات.',link:''},
- {id:'t12',title:'إعداد Financial Model لثلاث سنوات وUnit Economics',track:'الاستثمار',owner:'نايف',priority:'عالية',due:'2026-11-10',status:'لم يبدأ',note:'ARR، CAC، Gross Margin، Cloud/AI، رواتب، runway.',link:''},
- {id:'t13',title:'إعداد Pitch Deck وOne-pager وDemo Script',track:'الاستثمار',owner:'نايف',priority:'عالية',due:'2026-11-12',status:'لم يبدأ',note:'لا نضع ادعاءات غير مثبتة.',link:''},
- {id:'t14',title:'تجهيز Data Room وملكية الكود والـ IP',track:'الاستثمار',owner:'نايف + تقني',priority:'متوسطة',due:'2026-11-12',status:'لم يبدأ',note:'خصوصا إذا ساهم أكثر من مطور.',link:''},
- {id:'t15',title:'تعبئة مسودة START داخل الملف قبل فتح F6S',track:'قطر',owner:'نايف',priority:'عالية',due:'2026-11-15',status:'لم يبدأ',note:'نراجع كل إجابة قبل التقديم.',link:'https://www.f6s.com/sqinvestmentprogram'},
- {id:'t16',title:'تقديم Alchemist Doha إذا اكتمل الفريق والـ traction الأولي',track:'الاستثمار',owner:'نايف',priority:'متوسطة',due:'2026-11-16',status:'لم يبدأ',note:'مسار متواز مع QDB.',link:'https://www.alchemistaccelerator.com/apply'},
- {id:'t17',title:'قرار Go / Stop قبل أي تأسيس قطري أو رسوم',track:'قرار',owner:'نايف',priority:'عالية',due:'2026-11-20',status:'لم يبدأ',note:'القرار مبني على المنتج + السوق + الفريق + شروط قطر + اقتصاد الوحدة.',link:''}
+ {id:'t1',title:'اعتماد مجالس كمشروع التقديم وترك امتداد كفرصة تطوير لاحقة',track:'قرار',owner:'نايف',priority:'عالية',due:'',status:'مكتمل',note:'تم الحسم: التقديم عن طريق Majalis.',link:''},
+ {id:'t2',title:'اعتماد START كمسار التقديم الأساسي',track:'قطر',owner:'نايف',priority:'عالية',due:'',status:'مكتمل',note:'المسار الأنسب للـMVP الحالي. GROW يتطلب شركة قائمة بسجل تشغيلي أقدم.',link:'https://www.qdb.qa/en/Financing-And-Funding/Equity-And-Investment/Startup-Qatar-Investment-Program'},
+ {id:'t3',title:'اعتماد سياسة: لا توظيف ولا تأسيس ولا تطوير كبير قبل القبول',track:'قرار',owner:'نايف',priority:'عالية',due:'',status:'مكتمل',note:'CTO والمطورون والتأسيس القطري من ميزانية ما بعد القبول إذا كانت الشروط مناسبة.',link:''},
+ {id:'t4',title:'فحص مسار التقديم الرسمي وتجهيز بنك الإجابات الكامل',track:'التقديم',owner:'نايف',priority:'عالية',due:'',status:'مكتمل',note:'QDB يحيل إلى F6S. نموذج F6S نفسه يمنع القراءة الآلية بدون جلسة؛ تمت كتابة بنك إجابات شامل حسب معايير QDB والحقول المعتادة.',link:'https://www.f6s.com/sqinvestmentprogram'},
+ {id:'t5',title:'تأكيد البيانات الواقعية الناقصة قبل Submit',track:'التقديم',owner:'نايف',priority:'عالية',due:'2026-10-05',status:'لم يبدأ',note:'الوضع القانوني، تاريخ البدء، الفريق الحالي، الإيرادات، العملاء، التمويل السابق، ملكية IP، والمبلغ النهائي المطلوب.',link:''},
+ {id:'t6',title:'تجهيز Pitch Deck مختصر ورفعه على رابط قابل للمشاركة',track:'التقديم',owner:'نايف',priority:'عالية',due:'2026-10-06',status:'لم يبدأ',note:'10 إلى 12 شريحة. لا ننتظر CTO ولا تطوير جديد.',link:''},
+ {id:'t7',title:'فتح حساب/ملف F6S وتعبئة بيانات Majalis الأساسية',track:'التقديم',owner:'نايف',priority:'عالية',due:'2026-10-06',status:'لم يبدأ',note:'فتح النموذج الفعلي ومطابقة ترتيب الحقول مع بنك الإجابات.',link:'https://www.f6s.com/sqinvestmentprogram'},
+ {id:'t8',title:'مراجعة الطلب النهائي ثم Submit',track:'التقديم',owner:'نايف',priority:'عالية',due:'2026-10-07',status:'لم يبدأ',note:'المراجعة تركز على عدم اختلاق traction أو إيراد وعدم الالتزام بانتقال كامل قبل معرفة الشروط.',link:'https://www.f6s.com/sqinvestmentprogram'},
+ {id:'t9',title:'تسجيل تاريخ التقديم وحفظ رسالة التأكيد',track:'متابعة',owner:'نايف',priority:'عالية',due:'',status:'لم يبدأ',note:'إضافة أي رقم طلب أو رسالة تأكيد إلى سجل الملف.',link:''},
+ {id:'t10',title:'متابعة أي طلب معلومات إضافية أو مقابلة من QDB',track:'متابعة',owner:'نايف',priority:'عالية',due:'',status:'لم يبدأ',note:'لا يتم أي توظيف خلال الانتظار.',link:''},
+ {id:'t11',title:'إذا وصل قبول: استلام العرض وشروط الاستثمار كاملة',track:'بعد القبول',owner:'نايف',priority:'عالية',due:'',status:'لم يبدأ',note:'لا توقيع ولا انتقال قبل قراءة الشروط.',link:''},
+ {id:'t12',title:'حسم 6 نقاط قبل قبول العرض: المبلغ، الملكية، الدفعات، راتب المؤسس، وجوده في قطر، السكن/التأشيرات',track:'بعد القبول',owner:'نايف',priority:'عالية',due:'',status:'لم يبدأ',note:'هذه النقاط تحدد إن كانت الفرصة مجدية شخصيا وتجاريا.',link:''},
+ {id:'t13',title:'إذا كان العرض مناسبا: توظيف CTO / Tech Lead من التمويل',track:'بعد القبول',owner:'نايف',priority:'عالية',due:'',status:'لم يبدأ',note:'أول تعيين تقني بعد التمويل، وليس قبله.',link:''},
+ {id:'t14',title:'بناء فريق التطوير وبدء Majalis 2.0',track:'بعد القبول',owner:'CTO + نايف',priority:'عالية',due:'',status:'لم يبدأ',note:'حسب Technology Roadmap والـmilestones المتفق عليها.',link:''},
+ {id:'t15',title:'تأسيس الكيان والتواجد القطري حسب شروط البرنامج',track:'بعد القبول',owner:'نايف',priority:'عالية',due:'',status:'لم يبدأ',note:'نختار QFC أو البديل المناسب بعد معرفة الإعفاءات والمتطلبات الفعلية.',link:''},
+ {id:'t16',title:'تقييم AI Compute Credits وQRDI بعد بدء النشاط في قطر',track:'بعد القبول',owner:'CTO + نايف',priority:'متوسطة',due:'',status:'لم يبدأ',note:'مسارات لاحقة لدعم AI وR&D، وليست شرطا لإرسال START.',link:'https://startupqatar.qa/en/'},
+ {id:'t17',title:'قرار نهائي استمرار / توقف بعد ظهور العرض الفعلي',track:'قرار',owner:'نايف',priority:'عالية',due:'',status:'لم يبدأ',note:'القرار النهائي يعتمد على اقتصاد الصفقة وشروط وجود المؤسس في قطر.',link:''}
 ];
-var defaultBrief={
+var defaultBrief={var defaultBrief={
  project:'Majalis',
  category:'B2B SaaS + AI / Governance Tech',
  oneLiner:'Majalis is an Arabic-first AI governance platform for boards and committees, managing meetings, documents, resolutions, action items and institutional knowledge in one controlled workflow.',
@@ -378,10 +483,11 @@ var defaultBrief={
  moat:'التمييز ليس في تلخيص الاجتماعات. الأساس هو Arabic Governance Intelligence: ربط تاريخ القرارات والوثائق والالتزامات والسياق المؤسسي مع صلاحيات دقيقة، ثم استخدام AI على هذه المعرفة بشكل آمن وقابل للتتبع.'
 };
 var defaultState={
- version:1,decision:'قيد الدراسة',decisionReason:'نستمر في الفحص وبناء الجاهزية دون تأسيس كيان قطري أو دفع رسوم حتى نثبت المنتج والسوق والفريق ونجهز ملف START.',
+ version:2,decision:'الاستمرار والتقديم',decisionReason:'نقدم بالـMVP الحالي مباشرة. لا نوظف CTO أو مطورين، ولا نؤسس شركة في قطر قبل القبول. إذا وصل عرض مناسب نراجع المبلغ والملكية والدفعات ووجود المؤسس وراتبه، ثم نقرر.',
  checks:{},tasks:defaultTasks,brief:defaultBrief,notes:[
   {id:'n1',at:'2026-10-04T12:18:00+03:00',text:'تم حسم أن التقديم سيكون عن طريق مجالس، مع إبقاء امتداد فرصة تطوير لاحقة داخل المنتج وليس مشروعا مستقلا.'},
-  {id:'n2',at:'2026-10-04T12:19:00+03:00',text:'المسار الأولي الأنسب: START. لا نعتمد على فكرة راتب للمؤسس؛ KTP-Q يدعم راتب Associate متخصص لمشروع ابتكار لمدة قد تصل إلى 3 سنوات.'}
+  {id:'n2',at:'2026-10-04T12:19:00+03:00',text:'المسار الأولي الأنسب: START. لا نعتمد على فكرة راتب للمؤسس؛ KTP-Q يدعم راتب Associate متخصص لمشروع ابتكار لمدة قد تصل إلى 3 سنوات.'},
+  {id:'n3',at:'2026-10-04T15:31:00+03:00',text:'تم تغيير الخطة: لا CTO ولا مبرمج ولا تطوير كبير قبل القبول. يقدم Majalis الحالي كـMVP، والتوظيف والتأسيس بعد التمويل فقط إذا كانت الشروط مناسبة.'}
  ]};
 var state;
 
@@ -389,7 +495,15 @@ function clone(x){return JSON.parse(JSON.stringify(x))}
 function load(){
  try{
   var raw=localStorage.getItem(STORE_KEY);
-  state=raw?Object.assign(clone(defaultState),JSON.parse(raw)):clone(defaultState);
+  var saved=raw?JSON.parse(raw):null;
+  state=saved?Object.assign(clone(defaultState),saved):clone(defaultState);
+  if(!saved||Number(saved.version||1)<2){
+    var oldNotes=Array.isArray(saved?.notes)?saved.notes:[];
+    state=clone(defaultState);
+    state.notes=[{id:'n-migration',at:new Date().toISOString(),text:'تم تحديث خطة قطر: التقديم بالـMVP الحالي أولا، وتأجيل CTO والتوظيف والتأسيس والتطوير الكبير إلى ما بعد القبول والعرض المناسب.'}].concat(oldNotes);
+    state.checks={};
+  }
+  state.version=2;
   state.tasks=Array.isArray(state.tasks)?state.tasks:clone(defaultTasks);
   state.notes=Array.isArray(state.notes)?state.notes:[];
   state.checks=state.checks||{};
@@ -479,17 +593,13 @@ function renderChecklist(){
  updateKpis();
 }
 function renderGates(){
- var total=function(g){return checklistGroups[g].items.length};
- var doneGroup=function(g){var n=0;checklistGroups[g].items.forEach(function(_,i){if(state.checks[checkKey(g,i)])n++});return n};
- var pilots=state.tasks.some(function(t){return t.id==='t9'&&t.status==='مكتمل'});
- var tech=state.tasks.some(function(t){return t.id==='t6'&&t.status==='مكتمل'});
- var fin=state.tasks.some(function(t){return t.id==='t12'&&t.status==='مكتمل'});
+ var complete=function(id){return state.tasks.some(function(t){return t.id===id&&t.status==='مكتمل'})};
  var gates=[
-  {t:'أهلية START',d:'اكتمال أغلب متطلبات الأهلية والجاهزية',pass:doneGroup(0)>=Math.ceil(total(0)*.75)},
-  {t:'منتج قابل للبيع',d:'فجوات المنتج الأساسية تحت السيطرة',pass:doneGroup(1)>=Math.ceil(total(1)*.7)},
-  {t:'دليل طلب السوق',d:'Pilots + LOIs أو أدلة مكافئة',pass:pilots},
-  {t:'قدرة تقنية واضحة',d:'Tech Lead/CTO محدد ومسؤول',pass:tech},
-  {t:'اقتصاد المشروع',d:'نموذج مالي ووحدة اقتصاد مقنعة',pass:fin}
+  {t:'MVP حي',d:'Majalis الحالي متاح ويمكن عرضه',pass:true},
+  {t:'محتوى الطلب',d:'بنك إجابات START جاهز داخل الملف',pass:complete('t4')},
+  {t:'البيانات الواقعية',d:'تأكيد الأرقام والكيان وملكية IP',pass:complete('t5')},
+  {t:'Pitch Deck',d:'رابط عرض مختصر قابل للمشاركة',pass:complete('t6')},
+  {t:'إرسال F6S',d:'الطلب أرسل وتم حفظ التأكيد',pass:complete('t8')}
  ];
  document.getElementById('decisionGates').innerHTML=gates.map(function(g){return '<div class="gate '+(g.pass?'pass':'warn')+'"><i></i><div><b>'+escapeHtml(g.t)+'</b><span>'+escapeHtml(g.d)+' · '+(g.pass?'متحقق':'مفتوح')+'</span></div></div>'}).join('');
 }
@@ -524,7 +634,7 @@ function openTask(id){
  document.getElementById('taskDialogTitle').textContent=t?'تعديل المهمة':'إضافة مهمة';
  document.getElementById('taskId').value=t?t.id:'';
  document.getElementById('taskTitle').value=t?t.title:'';
- document.getElementById('taskTrack').value=t?t.track:'المنتج';
+ document.getElementById('taskTrack').value=t?t.track:'التقديم';
  document.getElementById('taskOwner').value=t?t.owner:'نايف';
  document.getElementById('taskPriority').value=t?t.priority:'متوسطة';
  document.getElementById('taskDue').value=t?t.due:'';
