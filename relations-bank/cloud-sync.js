@@ -211,7 +211,7 @@
       if(auth){auth.textContent='دخول';auth.className='cloud-btn primary';}
       if(manage) manage.hidden=true;
       if(select) select.hidden=true;
-      if(pill) pill.textContent='تجربة محلية';
+      if(pill) pill.textContent='';
       if(reset) reset.hidden=false;
       return;
     }
@@ -220,12 +220,12 @@
       if(auth){auth.textContent='بانتظار دعوة';auth.className='cloud-btn';}
       if(manage) manage.hidden=false;
       if(select) select.hidden=true;
-      if(pill) pill.textContent='الدخول بالدعوة فقط';
+      if(pill) pill.textContent='';
       if(reset) reset.hidden=true;
       return;
     }
 
-    if(auth){auth.textContent='سحابي ✓';auth.className='cloud-btn ok';}
+    if(auth){auth.textContent=currentUser?.user_metadata?.display_name||'الحساب';auth.className='cloud-btn ok';}
     if(manage) manage.hidden=false;
     if(select) select.hidden=false;
     if(pill) pill.textContent=currentCircle?.name || 'حساب سحابي';
@@ -233,7 +233,7 @@
 
     document.querySelectorAll('.demo-badge').forEach(el => el.textContent='بيانات الدائرة');
     const meta=document.querySelector('.footer-meta');
-    if(meta) meta.textContent='حفظ سحابي بصلاحيات حسب المستخدم والدائرة.';
+    if(meta) meta.textContent='';
   }
 
   async function ensureCircle(){
@@ -267,7 +267,7 @@
         const select=document.getElementById('cloudCircleSelect');
         if(select)select.hidden=true;
         updateChrome();
-        setMsg('cloudManageMsg','هذا الحساب غير مرتبط بدائرة. افتح رابط الدعوة أو أدخل كود الدعوة.');
+        setMsg('cloudManageMsg','');
         return false;
       }
     }
