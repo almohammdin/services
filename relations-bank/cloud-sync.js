@@ -172,7 +172,7 @@
     setMsg('cloudAuthMsg','جارٍ إنشاء الحساب...');
     const { data, error } = await db.auth.signUp({
       email, password,
-      options: { emailRedirectTo: location.origin + location.pathname }
+      options: { emailRedirectTo: location.origin + location.pathname + (localStorage.getItem(PENDING_INVITE_KEY)?('?invite='+encodeURIComponent(localStorage.getItem(PENDING_INVITE_KEY))):'') }
     });
     if (error) { setMsg('cloudAuthMsg', authMessage(error)); return; }
     if (data?.session) {
