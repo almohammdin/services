@@ -62,3 +62,17 @@ body.rb-access-locked main,body.rb-access-locked footer{visibility:hidden}
   .rb-ai-mic-icon{width:64px;height:64px;border-radius:19px}
   .rb-ai-mic strong{font-size:16px}
 }
+
+/* V2 conversational layout */
+.rb-ai-launch{padding:18px 0 4px;background:#F7F5F1}
+.rb-ai-card{border-radius:26px;padding:24px}
+.rb-ai-mic{width:100%;min-height:138px;margin-top:20px;justify-content:center;gap:22px;padding:20px 28px;border-radius:23px}
+.rb-ai-mic-orbit{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.15);box-shadow:0 0 0 10px rgba(255,255,255,.05)}
+.rb-ai-mic-orbit svg{width:38px;height:38px}
+.rb-ai-mic-copy strong,.rb-ai-mic-copy span{display:block}.rb-ai-mic-copy strong{font-size:24px}.rb-ai-mic-copy span{font-size:12px;color:rgba(255,255,255,.78)}
+.rb-ai-secondary{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;margin-top:13px}
+.rb-ai-transcript-toggle{border:1px solid rgba(255,255,255,.14);border-radius:13px;background:rgba(255,255,255,.07);color:#fff;padding:0 14px;font:800 11px Craft,Tahoma,Arial;cursor:pointer}
+.rb-ai-transcript{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)}.rb-ai-transcript[hidden]{display:none}
+.rb-ai-live{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(70vw,720px);color:rgba(255,255,255,.52)}
+.rb-gate-card p,.rb-gate-invite{display:none}
+@media(max-width:650px){.rb-ai-mic{min-height:124px}.rb-ai-mic-orbit{width:64px;height:64px}.rb-ai-secondary{grid-template-columns:1fr}}
