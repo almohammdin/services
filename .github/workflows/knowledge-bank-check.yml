@@ -65,7 +65,15 @@ jobs:
               assert any(x['family']=='Craft' and x['status']=='loaded' for x in identity['fonts']),identity
               page.screenshot(path=str(artifacts/'published-desktop.png'),full_page=True)
               page.set_viewport_size({'width':390,'height':844})
-              page.screenshot(path=str(artifacts/'published-mobile.png'),full_page=True)
+              page.reload(wait_until='networkidle')
+              page.evaluate('() => document.fonts.ready.then(() => true)')
+              page.screenshot(path=str(artifacts/'published-mobile.png'),full_page=True,animations='disabled')
+              assert page.evaluate('() => document.querySelector("#sidebar").getBoundingClientRect().left >= innerWidth'), 'Mobile menu must start offscreen'
+              page.locator('[data-action=menu]').click()
+              expect(page.locator('[data-action=menu]')).to_have_attribute('aria-expanded','true')
+              page.locator('a[href="#knowledge"]').click()
+              expect(page.locator('#knowledgeSearch')).to_be_visible()
+              expect(page.locator('[data-action=menu]')).to_have_attribute('aria-expanded','false')
               assert page.evaluate('() => document.documentElement.scrollWidth <= innerWidth+1')
               assert not errors,errors
               (artifacts/'published.json').write_text(json.dumps({'url':base,'files_verified':files,'identity':identity,'errors':errors},ensure_ascii=False,indent=2))
