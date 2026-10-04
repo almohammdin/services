@@ -27,12 +27,19 @@ jobs:
           raw=bz2.decompress(base64.b64decode(encoded,validate=True))
           assert hashlib.sha256(raw).hexdigest()=='a9458135ac283d0c706282927a15f725b1df39b217a962de77679b0a7818f48f'
           files=json.loads(raw)
-          # Browser regression: require all specific search terms, not any single word.
           old='return terms.some(t=>text.includes(t))||cats.some(c=>recordCats.includes(c));'
           new='return terms.every(t=>text.includes(t))||cats.some(c=>recordCats.includes(c));'
           assert files['core.js'].count(old)==1
           files['core.js']=files['core.js'].replace(old,new)
           files['tests/core.test.js']+="\ntest('specific multiword search requires all terms',()=>{assert.equal(recordMatches(demoState().records[5],'سجل اختبار'),false);assert.equal(recordMatches({name:'سجل اختبار'},'سجل اختبار'),true);});\n"
+          s=files['tests/browser.py'].replace('from playwright.sync_api import sync_playwright','from playwright.sync_api import sync_playwright, expect')
+          for n in ['8','9','0','1']:
+              s=s.replace(f"assert page.locator('.stat b').first.inner_text()=='{n}'",f"expect(page.locator('.stat b').first).to_have_text('{n}')")
+          s=s.replace("assert page.locator('#knowledgeResults article').count()==1","expect(page.locator('#knowledgeResults article')).to_have_count(1)")
+          s=s.replace("assert 'تم التعارف' in page.locator('#main').inner_text()","expect(page.locator('#main')).to_contain_text('تم التعارف')")
+          s=s.replace("assert 'PRIVATE_TEST_NAME' in page.locator('#main').inner_text()","expect(page.locator('#main')).to_contain_text('PRIVATE_TEST_NAME')")
+          s=s.replace("assert 'وثق موافقة' in page.locator('.form-error').inner_text()","expect(page.locator('.form-error')).to_contain_text('وثق موافقة')")
+          files['tests/browser.py']=s
           for name,content in files.items():
               path=pathlib.PurePosixPath(name)
               assert not path.is_absolute() and '..' not in path.parts
