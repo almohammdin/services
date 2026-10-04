@@ -86,10 +86,9 @@
       <section class="cloud-card" role="dialog" aria-modal="true" aria-labelledby="cloudTitle">
         <button class="cloud-close" id="cloudCloseBtn" type="button">×</button>
         <div id="cloudAuthPane">
-          <span style="color:#C9853C;font-size:12px;font-weight:900">الحساب السحابي</span>
-          <h2 id="cloudTitle">دخول بنك العلاقات والفرص</h2>
-          <p>الحساب يفصل بياناتك الخاصة عن بقية الدائرة، ويطبق الصلاحيات على مستوى كل معلومة.</p>
+          <h2 id="cloudTitle">بنك العلاقات والفرص</h2>
           <form id="cloudAuthForm" class="cloud-form">
+            <label><span>الاسم</span><input name="display_name" type="text" autocomplete="name" placeholder="الاسم"></label>
             <label><span>البريد الإلكتروني</span><input name="email" type="email" autocomplete="email" required></label>
             <label><span>كلمة المرور</span><input name="password" type="password" autocomplete="current-password" minlength="8" required></label>
             <div class="cloud-actions">
@@ -97,7 +96,7 @@
               <button class="cloud-btn" id="cloudSignupBtn" type="button">إنشاء حساب</button>
             </div>
           </form>
-          <div class="cloud-msg" id="cloudAuthMsg"></div><div class="cloud-section"><strong>الدخول للمنصة بالدعوة</strong><span style="font-size:11px;color:#6b7880">إنشاء الحساب وحده لا يمنح عضوية. العضو ينضم عبر رابط أو كود دعوة من دائرة قائمة.</span></div>
+          <div class="cloud-msg" id="cloudAuthMsg"></div>
         </div>
         <div id="cloudManagePane" hidden>
           <span style="color:#C9853C;font-size:12px;font-weight:900">إدارة الدائرة</span>
