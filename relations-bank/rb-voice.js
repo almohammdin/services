@@ -1,6 +1,6 @@
 import {GoogleGenAI,Modality} from 'https://cdn.jsdelivr.net/npm/@google/genai@2.14.0/+esm';
 import {RB_TOOL_DECLARATIONS,executeRBTool} from './rb-assistant-tools.js?v=1';
-import {saveMemberName} from './rb-name-tool.js?v=1';
+import {getNameState,saveMemberName} from './rb-name-tool.js?v=1';
 
 const MODEL='gemini-3.1-flash-live-preview',INPUT_RATE=16000,OUTPUT_RATE=24000,TOOL_TIMEOUT=15000;
 const NAME_TOOL={name:'set_member_name',description:'اعتمد اسم العضو بعد أن يؤكده بنفسه.',parametersJsonSchema:{type:'object',properties:{name:{type:'string'}},required:['name'],additionalProperties:false}};
@@ -73,7 +73,8 @@ export async function start(){
  const access=window.relationsBankCloud?.getAccess?.();if(!access?.member)throw new Error('invite-membership-required');
  active=true;emit('connecting','أجهز المحادثة…');
  try{
-  const ctx=(await executeRBTool('get_member_context',{}))?.context||{};
+  const nameState=await getNameState();
+  const ctx=nameState?.confirmed?((await executeRBTool('get_member_context',{}))?.context||{}):{profile:{name:(nameState?.name&&nameState.name!=='عضو')?nameState.name:''},answers:{},gaps:[{key:'name',prompt:(nameState?.name&&nameState.name!=='عضو')?('اسمك '+nameState.name+'، صحيح؟'):'وش اسمك؟'}]};
   await prepare();const t=await token();if(!active)return;
   const ai=new GoogleGenAI({apiKey:t,httpOptions:{apiVersion:'v1alpha'}});
   session=await ai.live.connect({model:MODEL,config:{responseModalities:[Modality.AUDIO],systemInstruction:instruction(ctx),inputAudioTranscription:{},outputAudioTranscription:{},speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:'Kore'}}},tools:[{functionDeclarations:[...RB_TOOL_DECLARATIONS,NAME_TOOL]}]},callbacks:{onopen:()=>emit('connecting','أتصل بالوكيل…'),onmessage:message,onerror:e=>console.error('Relations Bank voice',e),onclose:()=>{if(active){active=false;emit('error','انقطع الاتصال')}}}});
