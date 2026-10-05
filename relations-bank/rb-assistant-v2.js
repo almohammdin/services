@@ -114,20 +114,38 @@ let rbWakeLock=null,rbWakeTimer=null,rbVoiceSession=false,rbWavePhase=0;
 async function rbReleaseWake(){clearTimeout(rbWakeTimer);rbWakeTimer=null;if(rbWakeLock){try{await rbWakeLock.release()}catch{}rbWakeLock=null}}
 async function rbAcquireWake(){if(!rbVoiceSession||document.visibilityState!=='visible'||!('wakeLock' in navigator))return;if(rbWakeLock&&!rbWakeLock.released)return;try{rbWakeLock=await navigator.wakeLock.request('screen');rbWakeLock.addEventListener('release',()=>{rbWakeLock=null})}catch{}}
 function rbSpeechActivity(){if(!rbVoiceSession)return;rbAcquireWake();clearTimeout(rbWakeTimer);rbWakeTimer=setTimeout(()=>rbReleaseWake(),120000)}
-function rbWave(state,detail){
-  const bars=[...document.querySelectorAll('#rbAiWave i')];if(!bars.length)return;
-  const talking=state==='speaking'||(state==='listening'&&!!detail);
-  if(!talking){bars.forEach(b=>b.style.transform='scaleY(.18)');return}
-  rbWavePhase+=1;
-  const base=state==='speaking'?.92:.68;
-  bars.forEach((bar,i)=>{const pulse=.32+.68*Math.abs(Math.sin(rbWavePhase*.73+i*1.17));bar.style.transform='scaleY('+(.2+base*pulse)+')'});
+let rbWaveTarget=0,rbWaveCurrent=0,rbWaveSource='user',rbWaveRAF=null;
+function rbAnimateWave(){
+  const bars=[...document.querySelectorAll('#rbAiWave i')];
+  rbWaveCurrent+=(rbWaveTarget-rbWaveCurrent)*.28;
+  if(rbWaveTarget<.02)rbWaveCurrent*=.88;
+  if(bars.length){
+    rbWavePhase+=.16;
+    bars.forEach((bar,i)=>{
+      const shape=.28+.72*Math.abs(Math.sin(rbWavePhase+i*.82));
+      const center=1-Math.min(1,Math.abs(i-(bars.length-1)/2)/((bars.length-1)/2));
+      const energy=Math.min(1,.12+rbWaveCurrent*(.65+.45*center)*shape);
+      bar.style.transform='scaleY('+(.16+energy*1.05)+')';
+      bar.style.opacity=String(.38+energy*.62);
+    });
+  }
+  if(rbVoiceSession||rbWaveCurrent>.01)rbWaveRAF=requestAnimationFrame(rbAnimateWave);
+  else{rbWaveRAF=null;bars.forEach(b=>{b.style.transform='scaleY(.16)';b.style.opacity='.45'})}
+}
+function rbSetWave(level,source='user'){
+  rbWaveTarget=Math.max(0,Math.min(1,Number(level)||0));rbWaveSource=source;
+  const orb=document.getElementById('rbAiMic');if(orb)orb.dataset.voiceSource=source;
+  if(!rbWaveRAF)rbWaveRAF=requestAnimationFrame(rbAnimateWave);
 }
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&rbVoiceSession&&rbWakeTimer)rbAcquireWake()});
 window.addEventListener('relationsbank:voice-state',e=>{
   const d=e.detail||{},state=d.state||'';
   if(['connecting','listening','speaking','working'].includes(state)){rbVoiceSession=true;if(state==='speaking'||d.detail)rbSpeechActivity();else if(state==='connecting')rbSpeechActivity()}
-  if(['stopped','error'].includes(state)){rbVoiceSession=false;rbReleaseWake()}
-  rbWave(state,d.detail||'');
+  if(['stopped','error'].includes(state)){rbVoiceSession=false;rbReleaseWake();rbSetWave(0)}
+});
+window.addEventListener('relationsbank:voice-level',e=>{
+  const d=e.detail||{};rbVoiceSession=true;rbSetWave(d.level||0,d.source||'user');
+  if((d.level||0)>.035)rbSpeechActivity();
 });
 installVoiceOrb();
 addGate();
