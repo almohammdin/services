@@ -168,28 +168,27 @@
     const name = String(fd.get('display_name')||'').trim();
     const email = String(fd.get('email')||'').trim();
     const password = String(fd.get('password')||'');
-    if (!name) { setMsg('cloudAuthMsg','اكتب الاسم.'); return; }
-    if (!email || password.length < 8) { setMsg('cloudAuthMsg','أدخل بريدًا صحيحًا وكلمة مرور من 8 أحرف على الأقل.'); return; }
-    setMsg('cloudAuthMsg','جارٍ التحقق من الدعوة...');
-    const pendingInvite=localStorage.getItem(PENDING_INVITE_KEY)||'';
-    const {data:accessStatus,error:accessStatusError}=await db.functions.invoke('rb-access-status',{body:{}});
-    if(accessStatusError){setMsg('cloudAuthMsg','تعذر التحقق من الدعوة الآن. حاول مرة أخرى.');return}
-    if(accessStatus?.initialized && !/^[a-f0-9]{12}$/i.test(pendingInvite)){
-      setMsg('cloudAuthMsg','إنشاء الحساب متاح عبر رابط دعوة فقط.');
-      return;
-    }
+    if (name.length < 2) { setMsg('cloudAuthMsg','اكتب الاسم.'); return; }
+    if (!email || password.length < 8) { setMsg('cloudAuthMsg','تحقق من البريد وكلمة المرور.'); return; }
+
     setMsg('cloudAuthMsg','جارٍ إنشاء الحساب...');
-    const { data, error } = await db.auth.signUp({
-      email, password,
-      options: { data:{display_name:name}, emailRedirectTo: location.origin + location.pathname + (localStorage.getItem(PENDING_INVITE_KEY)?('?invite='+encodeURIComponent(localStorage.getItem(PENDING_INVITE_KEY))):'') }
-    });
-    if (error) { setMsg('cloudAuthMsg', authMessage(error)); return; }
-    if (data?.session) {
-      setMsg('cloudAuthMsg','تم إنشاء الحساب والدخول.');
-      closeCloud();
-    } else {
-      setMsg('cloudAuthMsg','تم إنشاء الحساب. تحقق من رسالة البريد لتأكيده ثم ارجع وسجل الدخول.');
+    const pendingInvite=localStorage.getItem(PENDING_INVITE_KEY)||'';
+    const {data,error}=await db.functions.invoke('rb-invite-signup',{body:{
+      display_name:name,email,password,invite_code:pendingInvite
+    }});
+
+    if(error||!data?.ok){
+      const code=data?.error||'';
+      if(code==='invite_required'||code==='invalid_invite'){setMsg('cloudAuthMsg','الدعوة غير صالحة.');return}
+      if(code==='exists'){setMsg('cloudAuthMsg','البريد مسجل مسبقا. استخدم تسجيل الدخول.');return}
+      setMsg('cloudAuthMsg','تعذر إنشاء الحساب الآن.');return;
     }
+
+    if(data.circle_id) nativeSetItem.call(localStorage,CIRCLE_KEY,data.circle_id);
+    const signed=await db.auth.signInWithPassword({email,password});
+    if(signed.error){setMsg('cloudAuthMsg','تم إنشاء الحساب. حاول تسجيل الدخول.');return}
+    setMsg('cloudAuthMsg','تم الدخول.');
+    closeCloud();
   }
 
   function authMessage(error){
