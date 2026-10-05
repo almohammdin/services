@@ -60,7 +60,7 @@ function ensureAssistant(){
  if(document.getElementById('rbAiCard'))return;
  const main=document.querySelector('main');if(!main)return setTimeout(ensureAssistant,120);
  card=document.createElement('section');card.id='rbAiCard';card.className='rb-ai-card';card.dataset.state='ready';
- card.innerHTML='<div class="rb-ai-inner"><div class="rb-ai-hero"><button class="rb-ai-mic rb-ai-orb" id="rbAiMic" type="button" aria-label="بدء المحادثة الصوتية"><span class="rb-ai-orb-rings" aria-hidden="true"><i></i><i></i><i></i></span><span class="rb-ai-wave" id="rbAiWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="rb-ai-brandmark" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="rb-logo-links" d="M16 19 32 32 48 17M32 32 47 47M32 32 17 47"/><circle class="rb-logo-node" cx="16" cy="19" r="4"/><circle class="rb-logo-node" cx="48" cy="17" r="4"/><circle class="rb-logo-node" cx="47" cy="47" r="4"/><circle class="rb-logo-node" cx="17" cy="47" r="4"/><path class="rb-logo-spark" d="M32 19c1.7 7.1 3.9 9.3 11 11-7.1 1.7-9.3 3.9-11 11-1.7-7.1-3.9-9.3-11-11 7.1-1.7 9.3-3.9 11-11Z"/></svg></span><span class="rb-ai-gemini"><b>✦</b> Gemini</span></button><div class="rb-ai-heading"><h2>تحدث مع وكيل العلاقات</h2></div><div class="rb-ai-status"><i class="rb-ai-dot"></i><span id="rbAiStatus">جاهز</span></div><div class="rb-ai-live" id="rbAiLive"></div><div class="rb-ai-hero-actions"><button class="rb-ai-toggle" id="rbAiToggle" type="button" aria-expanded="false">فتح المحادثة</button><button class="rb-ai-stop" id="rbAiStop" type="button">إنهاء</button></div></div><div class="rb-ai-panel" id="rbAiPanel" hidden><div class="rb-ai-chat" id="rbAiChat"></div><form class="rb-ai-input" id="rbAiForm"><input id="rbAiText" autocomplete="off" placeholder="اكتب للوكيل"><button class="rb-ai-send">إرسال</button></form></div></div>';
+ card.innerHTML='<div class="rb-ai-inner"><div class="rb-ai-hero"><button class="rb-ai-mic rb-ai-orb" id="rbAiMic" type="button" aria-label="بدء المحادثة الصوتية"><span class="rb-ai-breath-ring" aria-hidden="true"></span><span class="rb-ai-core-wave" id="rbAiWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="rb-ai-gemini"><b>✦</b> Gemini</span></button><div class="rb-ai-heading"><h2>تحدث مع وكيل العلاقات</h2></div><div class="rb-ai-status"><i class="rb-ai-dot"></i><span id="rbAiStatus">جاهز</span></div><div class="rb-ai-live" id="rbAiLive"></div><div class="rb-ai-hero-actions"><button class="rb-ai-toggle" id="rbAiToggle" type="button" aria-expanded="false">فتح المحادثة</button><button class="rb-ai-stop" id="rbAiStop" type="button">إنهاء</button></div></div><div class="rb-ai-panel" id="rbAiPanel" hidden><div class="rb-ai-chat" id="rbAiChat"></div><form class="rb-ai-input" id="rbAiForm"><input id="rbAiText" autocomplete="off" placeholder="اكتب للوكيل"><button class="rb-ai-send">إرسال</button></form></div></div>';
  main.insertBefore(card,main.firstElementChild);
  $('#rbAiForm').onsubmit=e=>{e.preventDefault();sendText($('#rbAiText').value)};
  $('#rbAiToggle').onclick=()=>{const panel=$('#rbAiPanel'),open=panel.hidden;panel.hidden=!open;$('#rbAiToggle').textContent=open?'إغلاق المحادثة':'فتح المحادثة';$('#rbAiToggle').setAttribute('aria-expanded',String(open))};
@@ -96,18 +96,52 @@ function installVoiceOrb(){
   const kicker=document.querySelector('.v2-kicker');if(kicker&&/V2|V3/.test(kicker.textContent||''))kicker.textContent='بنك العلاقات والفرص';
   if(document.getElementById('rbVoiceOrbStyle'))return;
   const style=document.createElement('style');style.id='rbVoiceOrbStyle';style.textContent=`
-    .rb-ai-card{padding:0!important}.rb-ai-inner{padding:28px!important}.rb-ai-hero{gap:12px!important}.rb-ai-heading h2{font-size:24px!important;margin:6px 0 0!important}
-    .rb-ai-orb{position:relative!important;isolation:isolate;width:clamp(220px,28vw,292px)!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important;border-radius:50%!important;padding:0!important;margin:8px auto 4px!important;overflow:hidden!important;display:grid!important;place-items:center!important;background:radial-gradient(circle at 32% 27%,rgba(255,255,255,.22),transparent 27%),radial-gradient(circle at 50% 52%,#174F76 0 37%,#0D3656 59%,#071F33 100%)!important;border:1px solid rgba(226,164,94,.38)!important;box-shadow:0 28px 65px rgba(4,24,39,.35),inset 0 0 0 1px rgba(255,255,255,.06)!important}
-    .rb-ai-orb:before{content:"";position:absolute;inset:13px;border-radius:50%;border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 0 40px rgba(201,133,60,.08);z-index:0}
-    .rb-ai-orb-rings,.rb-ai-orb-rings i{position:absolute;inset:0;border-radius:50%;pointer-events:none}.rb-ai-orb-rings i{border:1px solid rgba(226,164,94,.22);opacity:0}
-    .rb-ai-card[data-state="listening"] .rb-ai-orb-rings i,.rb-ai-card[data-state="speaking"] .rb-ai-orb-rings i{animation:rbOrbRing 1.8s ease-out infinite}.rb-ai-orb-rings i:nth-child(2){animation-delay:.55s!important}.rb-ai-orb-rings i:nth-child(3){animation-delay:1.1s!important}
-    @keyframes rbOrbRing{0%{inset:34%;opacity:.58}100%{inset:2%;opacity:0}}
-    .rb-ai-wave{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 25px;opacity:.78;pointer-events:none}.rb-ai-wave i{display:block;width:5px;height:54px;border-radius:999px;background:linear-gradient(180deg,rgba(240,195,142,.16),rgba(240,195,142,.96),rgba(240,195,142,.16));transform:scaleY(.18);transition:transform .08s linear,opacity .15s ease;transform-origin:center}.rb-ai-wave i:nth-child(odd){height:40px}.rb-ai-wave i:nth-child(3n){height:68px}
-    .rb-ai-brandmark{position:relative;z-index:3;width:108px;height:108px;border-radius:34px;display:grid;place-items:center;background:rgba(7,31,51,.87);border:1px solid rgba(255,255,255,.11);box-shadow:0 18px 38px rgba(0,0,0,.28),inset 0 0 28px rgba(201,133,60,.1);backdrop-filter:blur(8px)}.rb-ai-brandmark svg{width:76px!important;height:76px!important;overflow:visible}.rb-logo-links{fill:none;stroke:#8EACC0;stroke-width:2;stroke-linecap:round}.rb-logo-node{fill:#E7EEF3;stroke:#0D3656;stroke-width:1}.rb-logo-spark{fill:#E2A45E;filter:drop-shadow(0 0 7px rgba(226,164,94,.35))}
-    .rb-ai-gemini{position:absolute;z-index:4;bottom:28px;left:50%;transform:translateX(-50%);display:flex!important;align-items:center;gap:5px;color:rgba(255,255,255,.68)!important;font:700 10px Arial,sans-serif;letter-spacing:.02em}.rb-ai-gemini b{color:#E9B979;font-size:12px}
-    .rb-ai-card[data-state="listening"] .rb-ai-orb{box-shadow:0 0 0 7px rgba(240,112,112,.06),0 28px 65px rgba(4,24,39,.4)!important}.rb-ai-card[data-state="speaking"] .rb-ai-orb{box-shadow:0 0 0 7px rgba(226,164,94,.08),0 28px 65px rgba(4,24,39,.4)!important}
+    .rb-ai-card{padding:0!important}.rb-ai-inner{padding:28px!important}.rb-ai-hero{gap:12px!important}.rb-ai-heading h2{font-size:24px!important;margin:7px 0 0!important}
+    .rb-ai-orb{
+      position:relative!important;width:clamp(190px,25vw,244px)!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important;
+      border-radius:50%!important;padding:0!important;margin:8px auto 6px!important;overflow:hidden!important;display:grid!important;place-items:center!important;
+      background:linear-gradient(145deg,#174F76 0%,#0D3656 58%,#082A45 100%)!important;
+      border:1px solid rgba(255,255,255,.12)!important;
+      box-shadow:0 22px 54px rgba(5,31,50,.28),inset 0 1px 0 rgba(255,255,255,.06)!important;
+      transition:transform .2s ease,box-shadow .2s ease,background .2s ease!important
+    }
+    .rb-ai-orb:hover{transform:translateY(-2px)}
+    .rb-ai-breath-ring{
+      position:absolute;inset:16px;border-radius:50%;border:1px solid rgba(255,255,255,.11);
+      box-shadow:inset 0 0 28px rgba(255,255,255,.02);pointer-events:none
+    }
+    .rb-ai-core-wave{position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:8px;height:88px}
+    .rb-ai-core-wave i{
+      display:block;width:9px;height:58px;border-radius:999px;
+      background:linear-gradient(180deg,#F7D5AB 0%,#E2A45E 52%,#C9853C 100%);
+      transform:scaleY(.28);transform-origin:center;transition:transform .07s linear,opacity .1s ease;
+      box-shadow:0 0 14px rgba(226,164,94,.18)
+    }
+    .rb-ai-core-wave i:nth-child(1),.rb-ai-core-wave i:nth-child(5){height:38px}
+    .rb-ai-core-wave i:nth-child(2),.rb-ai-core-wave i:nth-child(4){height:52px}
+    .rb-ai-core-wave i:nth-child(3){height:68px}
+    .rb-ai-gemini{
+      position:absolute;z-index:4;bottom:27px;left:50%;transform:translateX(-50%);
+      display:flex!important;align-items:center;gap:4px;color:rgba(255,255,255,.62)!important;
+      font:700 10px Arial,sans-serif;letter-spacing:.01em
+    }
+    .rb-ai-gemini b{color:#E9B979;font-size:11px;line-height:1}
+    .rb-ai-card[data-state="listening"] .rb-ai-orb{
+      background:linear-gradient(145deg,#174F76 0%,#0D3656 64%,#082A45 100%)!important;
+      box-shadow:0 0 0 8px rgba(21,77,116,.07),0 22px 54px rgba(5,31,50,.34)!important
+    }
+    .rb-ai-card[data-state="speaking"] .rb-ai-orb{
+      background:linear-gradient(145deg,#154D74 0%,#0D3656 55%,#071F33 100%)!important;
+      box-shadow:0 0 0 8px rgba(201,133,60,.07),0 22px 54px rgba(5,31,50,.34)!important
+    }
+    .rb-ai-card[data-state="listening"] .rb-ai-breath-ring,
+    .rb-ai-card[data-state="speaking"] .rb-ai-breath-ring{animation:rbBreathRing 1.5s ease-in-out infinite}
+    @keyframes rbBreathRing{50%{inset:11px;border-color:rgba(255,255,255,.18)}}
     .rb-ai-status{margin-top:4px!important}.rb-ai-panel{width:min(780px,100%);margin-inline:auto!important}
-    @media(max-width:650px){.rb-ai-inner{padding:20px 14px!important}.rb-ai-orb{width:min(72vw,250px)!important}.rb-ai-brandmark{width:92px;height:92px;border-radius:29px}.rb-ai-brandmark svg{width:64px!important;height:64px!important}.rb-ai-wave{gap:5px;padding:0 20px}.rb-ai-wave i{width:4px;height:46px}.rb-ai-heading h2{font-size:20px!important}}
+    @media(max-width:650px){
+      .rb-ai-inner{padding:20px 14px!important}.rb-ai-orb{width:min(64vw,220px)!important}.rb-ai-core-wave{gap:7px;height:82px}
+      .rb-ai-core-wave i{width:8px}.rb-ai-heading h2{font-size:20px!important}
+    }
   `;document.head.appendChild(style);
 }
 let rbWakeLock=null,rbWakeTimer=null,rbVoiceSession=false,rbWavePhase=0;
@@ -117,16 +151,16 @@ function rbSpeechActivity(){if(!rbVoiceSession)return;rbAcquireWake();clearTimeo
 let rbWaveTarget=0,rbWaveCurrent=0,rbWaveSource='user',rbWaveRAF=null;
 function rbAnimateWave(){
   const bars=[...document.querySelectorAll('#rbAiWave i')];
-  rbWaveCurrent+=(rbWaveTarget-rbWaveCurrent)*.28;
-  if(rbWaveTarget<.02)rbWaveCurrent*=.88;
+  rbWaveCurrent+=(rbWaveTarget-rbWaveCurrent)*.3;
+  if(rbWaveTarget<.02)rbWaveCurrent*=.86;
   if(bars.length){
-    rbWavePhase+=.16;
+    rbWavePhase+=.18;
+    const patterns=[.68,.88,1,.88,.68];
     bars.forEach((bar,i)=>{
-      const shape=.28+.72*Math.abs(Math.sin(rbWavePhase+i*.82));
-      const center=1-Math.min(1,Math.abs(i-(bars.length-1)/2)/((bars.length-1)/2));
-      const energy=Math.min(1,.12+rbWaveCurrent*(.65+.45*center)*shape);
-      bar.style.transform='scaleY('+(.16+energy*1.05)+')';
-      bar.style.opacity=String(.38+energy*.62);
+      const organic=.45+.55*Math.abs(Math.sin(rbWavePhase+i*.9));
+      const energy=Math.min(1,.08+rbWaveCurrent*patterns[i]*organic*1.35);
+      bar.style.transform='scaleY('+(.24+energy*.95)+')';
+      bar.style.opacity=String(.58+energy*.42);
     });
   }
   if(rbVoiceSession||rbWaveCurrent>.01)rbWaveRAF=requestAnimationFrame(rbAnimateWave);
