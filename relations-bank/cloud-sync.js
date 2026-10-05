@@ -88,11 +88,11 @@
         <div id="cloudAuthPane">
           <h2 id="cloudTitle">بنك العلاقات والفرص</h2>
           <form id="cloudAuthForm" class="cloud-form">
-            <label><span>الاسم</span><input name="display_name" type="text" autocomplete="name" placeholder="الاسم"></label>
+            <label id="cloudNameField" hidden><span>الاسم</span><input name="display_name" type="text" autocomplete="name" placeholder="الاسم"></label>
             <label><span>البريد الإلكتروني</span><input name="email" type="email" autocomplete="email" required></label>
             <label><span>كلمة المرور</span><input name="password" type="password" autocomplete="current-password" minlength="8" required></label>
             <div class="cloud-actions">
-              <button class="cloud-btn primary" type="submit">دخول</button>
+              <button class="cloud-btn primary" id="cloudAuthSubmit" type="submit">دخول</button>
               <button class="cloud-btn" id="cloudSignupBtn" type="button">إنشاء حساب</button>
             </div>
           </form>
@@ -125,8 +125,8 @@
     document.getElementById('cloudCloseBtn')?.addEventListener('click', closeCloud);
     overlay.addEventListener('click', e => { if (e.target === overlay) closeCloud(); });
 
-    document.getElementById('cloudAuthForm')?.addEventListener('submit', signIn);
-    document.getElementById('cloudSignupBtn')?.addEventListener('click', signUp);
+    document.getElementById('cloudAuthForm')?.addEventListener('submit', handleAuthSubmit);
+    document.getElementById('cloudSignupBtn')?.addEventListener('click', toggleAuthMode);
     document.getElementById('cloudLogoutBtn')?.addEventListener('click', async () => { await db.auth.signOut(); closeCloud(); location.reload(); });
     document.getElementById('cloudRefreshBtn')?.addEventListener('click', async () => { await hydrateFromCloud(true); });
     document.getElementById('cloudCopyInvite')?.addEventListener('click', copyInvite);
@@ -144,11 +144,43 @@
     overlay.hidden = false;
     document.getElementById('cloudAuthPane').hidden = mode !== 'auth';
     document.getElementById('cloudManagePane').hidden = mode !== 'manage';
+    if (mode === 'auth') setAuthMode('signin');
     if (mode === 'manage') refreshManagePane();
   }
   function closeCloud(){ const o=document.getElementById('cloudOverlay'); if(o)o.hidden=true; }
 
   function setMsg(id, msg){ const el=document.getElementById(id); if(el)el.textContent=msg||''; }
+
+  function setAuthMode(mode){
+    const form=document.getElementById('cloudAuthForm');
+    if(!form)return;
+    const signup=mode==='signup';
+    form.dataset.mode=signup?'signup':'signin';
+    const nameField=document.getElementById('cloudNameField');
+    const nameInput=nameField?.querySelector('input');
+    const submit=document.getElementById('cloudAuthSubmit');
+    const toggle=document.getElementById('cloudSignupBtn');
+    const password=form.elements.password;
+    if(nameField)nameField.hidden=!signup;
+    if(nameInput){nameInput.required=signup;if(!signup)nameInput.value=''}
+    if(submit)submit.textContent=signup?'إنشاء الحساب':'دخول';
+    if(toggle)toggle.textContent=signup?'لدي حساب':'إنشاء حساب';
+    if(password)password.autocomplete=signup?'new-password':'current-password';
+    const title=document.getElementById('cloudTitle');
+    if(title)title.textContent=signup?'إنشاء حساب':'تسجيل الدخول';
+    setMsg('cloudAuthMsg','');
+  }
+
+  function toggleAuthMode(){
+    const form=document.getElementById('cloudAuthForm');
+    setAuthMode(form?.dataset.mode==='signup'?'signin':'signup');
+  }
+
+  async function handleAuthSubmit(e){
+    const form=e.currentTarget;
+    if(form?.dataset.mode==='signup'){e.preventDefault();await signUp();return}
+    await signIn(e);
+  }
 
   async function signIn(e){
     e.preventDefault();
@@ -497,7 +529,16 @@
     if(joinInput&&invite)joinInput.value=invite;
     updateChrome();
     const {data:{session}}=await db.auth.getSession();
-    await handleSession(session);
+    let validSession=session;
+    if(session){
+      const checked=await db.auth.getUser();
+      if(checked.error||!checked.data?.user){
+        try{await db.auth.signOut({scope:'local'})}catch{}
+        localStorage.removeItem(CIRCLE_KEY);
+        validSession=null;
+      }
+    }
+    await handleSession(validSession);
     db.auth.onAuthStateChange((_event,session)=>{ setTimeout(()=>handleSession(session),0); });
   }
 
