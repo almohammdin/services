@@ -1,5 +1,5 @@
 import {executeRBTool} from './rb-assistant-tools.js?v=1';
-import {start as startVoice,stop as stopVoice} from './rb-voice.js?v=1';
+import {start as startVoice,stop as stopVoice} from './rb-voice.js?v=2';
 import {getNameState,saveMemberName} from './rb-name-tool.js?v=1';
 
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
