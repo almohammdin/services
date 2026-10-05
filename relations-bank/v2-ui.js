@@ -17,7 +17,6 @@ function buildUI(){
   main.insertBefore(hero,main.firstChild);
   const wrap=document.createElement('div');wrap.className='v2-wrap';wrap.id='v2Workspace';
   wrap.innerHTML=`<div class="shell">
-  <div class="v2-toolbar"><span class="v2-mode" id="v2Mode"></span><button class="v2-btn" id="v2Refresh">تحديث</button><button class="v2-btn" id="v2ArchiveLink">فتح V1</button></div>
   <section class="v2-section"><div class="v2-head"><div><span class="v2-label">محرك الطلبات</span><h2>الطلبات وما يقابلها داخل الشبكة</h2><p>ترتيب المرشحين يعتمد على الوصول الفعلي، القطاع، الجهة، قوة العلاقة وسجل المساعدة.</p></div><button class="v2-btn primary" id="v2RequestBtn">+ طلب جديد</button></div><div class="v2-request-grid" id="v2Requests"></div></section>
   <section class="v2-section"><div class="v2-head"><div><span class="v2-label">ملفات الذكاء العلاقاتية</span><h2>من يفيدنا في ماذا؟ وما الذي لا نعرفه عنه بعد؟</h2><p>اكتمال الملف يعتمد على جودة المعرفة والعلاقات، وليس عدد الخانات.</p></div><button class="v2-btn gold" id="v2PersonBtn">+ أضف/حدّث شخصا</button></div><div class="v2-profile-grid" id="v2Profiles"></div></section>
   <section class="v2-section"><div class="v2-head"><div><span class="v2-label">رؤية الشبكة</span><h2>العلاقات والفجوات</h2><p>أين عندك وصول فعلي؟ وأين تحتاج سؤالا جديدا أو تحديثا؟</p></div></div><div class="v2-insight-grid"><div class="v2-map" id="v2Map"></div><div class="v2-gap-list" id="v2Gaps"></div></div></section>
@@ -26,7 +25,6 @@ function buildUI(){
   const layer=document.createElement('div');layer.className='v2-modal-layer';layer.id='v2ModalLayer';layer.hidden=true;document.body.appendChild(layer);
   $('#v2NewRequest').onclick=openRequest;$('#v2RequestBtn').onclick=openRequest;
   const openV1Person=()=>document.querySelector('[data-open="person"]')?.click();$('#v2AddPerson').onclick=openV1Person;$('#v2PersonBtn').onclick=openV1Person;
-  $('#v2Refresh').onclick=()=>RB.load();$('#v2ArchiveLink').onclick=()=>location.href='./v1/';
 }
 
 function openRequest(){
@@ -81,7 +79,7 @@ function renderMap(){
   const x=[];RB.requests.filter(r=>r.status==='open').forEach(r=>{if(!RB.matches(r).length)x.push('لا يوجد وصول واضح لطلب: '+r.title)});RB.people.slice(0,8).forEach(p=>{const c=RB.completeness(p.id);if(c.score<50)x.push(p.name+': نحتاج '+c.gaps.slice(0,2).join(' و '))});
   gaps.innerHTML=x.slice(0,6).map(t=>'<div class="v2-gap-card"><strong>فجوة تستحق سؤالا</strong><span>'+RB.esc(t)+'</span></div>').join('')||'<div class="v2-gap-card"><strong>الشبكة جيدة حاليا</strong><span>أضف طلبا أو حدث ملفات الأشخاص لاكتشاف فجوات جديدة.</span></div>';
 }
-function renderAll(){const m=$('#v2Mode');if(m){m.textContent=RB.cloud?'حفظ سحابي · دائرة نشطة':'تجربة محلية';m.classList.toggle('local',!RB.cloud)}renderRequests();renderProfiles();renderMap()}
+function renderAll(){renderRequests();renderProfiles();renderMap()}
 buildUI();window.addEventListener('rbv2:data',renderAll);setTimeout(renderAll,300);
 window.RBV2UI={openLayer,closeLayer,openRelationship,openPersonDetail,renderAll};
 })();
