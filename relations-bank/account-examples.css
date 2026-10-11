@@ -1,0 +1,15 @@
+.cloud-form [hidden]{display:none!important}
+.cloud-form .cloud-hint{font-size:11px;line-height:1.8;margin:0;color:#5e6c76}
+.cloud-form input:focus-visible,.cloud-btn:focus-visible,.cloud-select:focus-visible{outline:3px solid #c9853c;outline-offset:3px}
+.cloud-btn:disabled{opacity:.6;cursor:wait}
+#cloudAccountSettings summary{cursor:pointer;font-weight:900;color:#0d3656;list-style-position:inside}
+#cloudAccountSettings[open] summary{margin-bottom:14px}
+.rb-examples-guide{width:min(1180px,calc(100% - 34px));margin:20px auto;padding:20px 24px;background:#fffbf5;border:1px solid #e6cfb4;border-radius:20px;display:grid;grid-template-columns:1fr auto;gap:12px 22px;align-items:center}
+.rb-examples-guide h2{font-size:22px;color:#0d3656;margin:2px 0}
+.rb-examples-guide p{font-size:12px;color:#66747d;margin:0;max-width:740px}
+.rb-example-label,.rb-example-badge{color:#865827;background:#fff0dc;border-radius:8px;padding:3px 8px;font-size:10px;font-weight:900;display:inline-block}
+.rb-example-steps{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:#53616b;grid-row:2;grid-column:1}
+.rb-example-steps b{display:inline-grid;place-items:center;width:22px;height:22px;background:#0d3656;color:#fff;border-radius:50%;margin-inline-end:4px;font-family:Arial}
+#rbExamplesAction{grid-column:2;grid-row:1/3;min-height:44px;color:#855b30;border-color:#dcb88f}
+#rbExamplesMsg{grid-column:1/-1;margin:0;min-height:0}
+@media(max-width:650px){.rb-examples-guide{width:calc(100% - 24px);grid-template-columns:1fr;padding:17px}.rb-example-steps{grid-row:auto;grid-column:auto;display:grid;gap:8px}#rbExamplesAction{grid-row:auto;grid-column:auto;justify-self:start}.topbar-inner{flex-wrap:wrap;padding-block:10px}.top-actions{width:100%;justify-content:space-between}.cloud-select{max-width:55vw!important}.cloud-card{padding:18px}}

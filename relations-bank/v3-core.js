@@ -1,6 +1,7 @@
 (() => {
 'use strict';
 const RB=window.RBV2;if(!RB)return;
+const q=query=>window.relationsBankCloud?.filterExamples?.(query)||query;
 const KEY='relations_bank_v3_local_20261004';
 const R3=window.RBV3={opportunities:[],contributions:[],agreements:[],splits:[],events:[],nominations:[],loading:false};
 
@@ -31,7 +32,7 @@ R3.load=async()=>{
     if(!RB.cloud){Object.assign(R3,local());window.dispatchEvent(new CustomEvent('rbv3:data'));return}
     const c=RB.circleId;
     const [o,co,a,s,e,n]=await Promise.all([
-      RB.db.from('rb_opportunities').select('*').eq('circle_id',c).order('created_at',{ascending:false}),
+      q(RB.db.from('rb_opportunities').select('*')).eq('circle_id',c).order('created_at',{ascending:false}),
       RB.db.from('rb_opportunity_contributions').select('*').eq('circle_id',c).order('created_at',{ascending:true}),
       RB.db.from('rb_success_agreements').select('*').eq('circle_id',c).order('created_at',{ascending:false}),
       RB.db.from('rb_success_splits').select('*').eq('circle_id',c).order('created_at',{ascending:true}),

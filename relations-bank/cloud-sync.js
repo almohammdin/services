@@ -21,6 +21,8 @@
   let cloudReady = false;
   let internalWrite = false;
   let syncTimer = null;
+  let examplesHidden = false;
+  let handleProfile = null;
   const owners = { people: new Map(), knowledge: new Map(), introductions: new Map() };
   const nativeSetItem = Storage.prototype.setItem;
 
@@ -58,6 +60,7 @@
       select.id = 'cloudCircleSelect';
       select.className = 'cloud-select';
       select.hidden = true;
+      select.setAttribute('aria-label','اختر الدائرة');
 
       const manage = document.createElement('button');
       manage.id = 'cloudManageBtn';
@@ -89,19 +92,43 @@
           <h2 id="cloudTitle">بنك العلاقات والفرص</h2>
           <form id="cloudAuthForm" class="cloud-form">
             <label id="cloudNameField" hidden><span>الاسم</span><input name="display_name" type="text" autocomplete="name" placeholder="الاسم"></label>
-            <label><span>البريد الإلكتروني</span><input name="email" type="email" autocomplete="email" required></label>
-            <label><span>كلمة المرور</span><input name="password" type="password" autocomplete="current-password" minlength="8" required></label>
+            <label><span id="cloudIdentifierLabel">اسم المستخدم أو البريد الإلكتروني</span><input name="identifier" type="text" autocomplete="username" dir="ltr" maxlength="320" required></label>
+            <label id="cloudContactField" hidden><span>البريد الإلكتروني (اختياري)</span><input name="contact_email" type="email" autocomplete="email" dir="ltr" maxlength="320"></label>
+            <label id="cloudInviteField" hidden><span>كود الدعوة</span><input name="invite_code" type="text" dir="ltr" maxlength="12" pattern="[a-fA-F0-9]{12}" placeholder="الصق كود الدعوة هنا"></label>
+            <label><span>كلمة المرور</span><input name="password" type="password" autocomplete="current-password" required></label>
+            <p id="cloudAuthHint" class="cloud-hint">استخدم بيانات حسابك للدخول.</p>
             <div class="cloud-actions">
               <button class="cloud-btn primary" id="cloudAuthSubmit" type="submit">دخول</button>
               <button class="cloud-btn" id="cloudSignupBtn" type="button">إنشاء حساب</button>
             </div>
           </form>
-          <div class="cloud-msg" id="cloudAuthMsg"></div>
+          <div class="cloud-msg" id="cloudAuthMsg" role="status" aria-live="polite"></div>
         </div>
         <div id="cloudManagePane" hidden>
           <span style="color:#C9853C;font-size:12px;font-weight:900">إدارة الدائرة</span>
           <h2>الحساب والدائرة</h2>
           <p id="cloudUserLabel"></p>
+          <details class="cloud-section" id="cloudAccountSettings"><summary>إعدادات الحساب</summary>
+            <form id="cloudProfileForm" class="cloud-form">
+              <label><span>الاسم الظاهر</span><input name="display_name" autocomplete="name" minlength="2" maxlength="120" required></label>
+              <label><span>اسم المستخدم</span><input name="username" autocomplete="username" dir="ltr" pattern="[a-zA-Z][a-zA-Z0-9_]{2,29}" minlength="3" maxlength="30" required></label>
+              <p class="cloud-hint">من 3 إلى 30 حرفًا إنجليزيًا أو رقمًا أو شرطة سفلية، ويبدأ بحرف.</p>
+              <label><span>البريد الإلكتروني (اختياري)</span><input name="contact_email" type="email" autocomplete="email" dir="ltr" maxlength="320"></label>
+              <p class="cloud-hint">بريد للتواصل. يبقى تسجيل الدخول باسم المستخدم؛ إضافة البريد لا تجعله وسيلة لاستعادة الحساب.</p>
+              <label><span>كلمة المرور الحالية لتأكيد التعديل</span><input name="current_password" type="password" autocomplete="current-password" required></label>
+              <button class="cloud-btn primary" type="submit">حفظ بيانات الحساب</button>
+              <div class="cloud-msg" id="cloudProfileMsg" role="status" aria-live="polite"></div>
+            </form>
+            <form id="cloudPasswordForm" class="cloud-form" style="margin-top:18px">
+              <strong>تغيير كلمة المرور</strong>
+              <label><span>كلمة المرور الحالية</span><input name="current_password" type="password" autocomplete="current-password" required></label>
+              <label><span>كلمة المرور الجديدة</span><input name="new_password" type="password" autocomplete="new-password" minlength="12" maxlength="256" required></label>
+              <label><span>تأكيد كلمة المرور الجديدة</span><input name="confirm_password" type="password" autocomplete="new-password" minlength="12" maxlength="256" required></label>
+              <p class="cloud-hint">12 حرفًا على الأقل. بعد التغيير ستدخل بكلمة المرور الجديدة.</p>
+              <button class="cloud-btn" type="submit">تغيير كلمة المرور</button>
+              <div class="cloud-msg" id="cloudPasswordMsg" role="status" aria-live="polite"></div>
+            </form>
+          </details>
           <div class="cloud-section">
             <strong>كود دعوة الدائرة الحالية</strong>
             <div class="invite-row"><div class="invite-code" id="cloudInviteCode">—</div><button class="cloud-btn" id="cloudCopyInvite" type="button">نسخ</button></div>
@@ -126,6 +153,8 @@
     overlay.addEventListener('click', e => { if (e.target === overlay) closeCloud(); });
 
     document.getElementById('cloudAuthForm')?.addEventListener('submit', handleAuthSubmit);
+    document.getElementById('cloudProfileForm')?.addEventListener('submit', saveProfile);
+    document.getElementById('cloudPasswordForm')?.addEventListener('submit', savePassword);
     document.getElementById('cloudSignupBtn')?.addEventListener('click', toggleAuthMode);
     document.getElementById('cloudLogoutBtn')?.addEventListener('click', async () => { await db.auth.signOut(); closeCloud(); location.reload(); });
     document.getElementById('cloudRefreshBtn')?.addEventListener('click', async () => { await hydrateFromCloud(true); });
@@ -139,6 +168,7 @@
   }
 
   function openCloud(mode){
+    if(mode==='manage'&&!currentUser)mode='auth';
     const overlay = document.getElementById('cloudOverlay');
     if (!overlay) return;
     overlay.hidden = false;
@@ -146,6 +176,7 @@
     document.getElementById('cloudManagePane').hidden = mode !== 'manage';
     if (mode === 'auth') setAuthMode('signin');
     if (mode === 'manage') refreshManagePane();
+    document.querySelector(mode==='manage'?'#cloudAccountSettings':'#cloudAuthForm input:not([hidden])')?.focus();
   }
   function closeCloud(){ const o=document.getElementById('cloudOverlay'); if(o)o.hidden=true; }
 
@@ -166,6 +197,15 @@
     if(submit)submit.textContent=signup?'إنشاء الحساب':'دخول';
     if(toggle)toggle.textContent=signup?'لدي حساب':'إنشاء حساب';
     if(password)password.autocomplete=signup?'new-password':'current-password';
+    if(password){password.minLength=signup?12:1;password.maxLength=256;}
+    const identifier=form.elements.identifier;
+    if(identifier){identifier.maxLength=signup?30:320;identifier.pattern=signup?'[a-zA-Z][a-zA-Z0-9_]{2,29}':'.*';}
+    document.getElementById('cloudIdentifierLabel').textContent=signup?'اسم المستخدم':'اسم المستخدم أو البريد الإلكتروني';
+    document.getElementById('cloudContactField').hidden=!signup;
+    document.getElementById('cloudInviteField').hidden=!signup;
+    form.elements.invite_code.required=signup;
+    form.elements.invite_code.value=localStorage.getItem(PENDING_INVITE_KEY)||form.elements.invite_code.value||'';
+    document.getElementById('cloudAuthHint').textContent=signup?'إنشاء الحساب يتطلب دعوة. اختر اسم مستخدم وكلمة مرور من 12 حرفًا على الأقل.':'استخدم بيانات حسابك للدخول.';
     const title=document.getElementById('cloudTitle');
     if(title)title.textContent=signup?'إنشاء حساب':'تسجيل الدخول';
     setMsg('cloudAuthMsg','');
@@ -178,18 +218,27 @@
 
   async function handleAuthSubmit(e){
     const form=e.currentTarget;
-    if(form?.dataset.mode==='signup'){e.preventDefault();await signUp();return}
-    await signIn(e);
+    e.preventDefault();
+    if(form.dataset.busy)return;
+    form.dataset.busy='1';
+    const buttons=[...form.querySelectorAll('button')];buttons.forEach(b=>b.disabled=true);
+    try{
+      if(form?.dataset.mode==='signup')await signUp();
+      else await signIn(e);
+    }catch{setMsg('cloudAuthMsg','تعذر الاتصال. تحقق من الإنترنت وحاول مجددًا.');}
+    finally{delete form.dataset.busy;buttons.forEach(b=>b.disabled=false);}
   }
 
   async function signIn(e){
     e.preventDefault();
     setMsg('cloudAuthMsg','جارٍ التحقق...');
     const fd = new FormData(e.currentTarget);
-    const email = String(fd.get('email')||'').trim();
+    const identifier = String(fd.get('identifier')||'').trim();
     const password = String(fd.get('password')||'');
-    const { error } = await db.auth.signInWithPassword({ email, password });
-    if (error) { setMsg('cloudAuthMsg', authMessage(error)); return; }
+    const result=await invokeAccount({action:'signin',identifier,password});
+    if(result.error){setMsg('cloudAuthMsg',accountMessage(result.error));return;}
+    const {error}=await db.auth.setSession(result.session);
+    if(error){setMsg('cloudAuthMsg',authMessage(error));return;}
     setMsg('cloudAuthMsg','تم الدخول.');
     closeCloud();
   }
@@ -198,27 +247,33 @@
     const form = document.getElementById('cloudAuthForm');
     const fd = new FormData(form);
     const name = String(fd.get('display_name')||'').trim();
-    const email = String(fd.get('email')||'').trim();
+    const username = String(fd.get('identifier')||'').trim().toLowerCase();
+    const contact_email = String(fd.get('contact_email')||'').trim();
     const password = String(fd.get('password')||'');
     if (name.length < 2) { setMsg('cloudAuthMsg','اكتب الاسم.'); return; }
-    if (!email || password.length < 8) { setMsg('cloudAuthMsg','تحقق من البريد وكلمة المرور.'); return; }
+    if (!/^[a-z][a-z0-9_]{2,29}$/.test(username) || password.length < 12) { setMsg('cloudAuthMsg','تحقق من اسم المستخدم وكلمة المرور.'); return; }
 
     setMsg('cloudAuthMsg','جارٍ إنشاء الحساب...');
-    const pendingInvite=localStorage.getItem(PENDING_INVITE_KEY)||'';
+    const pendingInvite=String(fd.get('invite_code')||'').trim().toLowerCase();
+    if(!/^[a-f0-9]{12}$/.test(pendingInvite)){setMsg('cloudAuthMsg','أدخل كود دعوة صالحًا لإنشاء الحساب.');return;}
+    localStorage.setItem(PENDING_INVITE_KEY,pendingInvite);
     const {data,error}=await db.functions.invoke('rb-invite-signup',{body:{
-      display_name:name,email,password,invite_code:pendingInvite
+      display_name:name,username,contact_email,password,invite_code:pendingInvite
     }});
 
     if(error||!data?.ok){
-      const code=data?.error||'';
+      const code=data?.error||(await functionError(error))||'';
       if(code==='invite_required'||code==='invalid_invite'){setMsg('cloudAuthMsg','الدعوة غير صالحة.');return}
       if(code==='exists'){setMsg('cloudAuthMsg','البريد مسجل مسبقا. استخدم تسجيل الدخول.');return}
+      if(code==='username_taken'){setMsg('cloudAuthMsg','اسم المستخدم مستخدم. اختر اسمًا آخر.');return;}
       setMsg('cloudAuthMsg','تعذر إنشاء الحساب الآن.');return;
     }
 
     if(data.circle_id) nativeSetItem.call(localStorage,CIRCLE_KEY,data.circle_id);
-    const signed=await db.auth.signInWithPassword({email,password});
-    if(signed.error){setMsg('cloudAuthMsg','تم إنشاء الحساب. حاول تسجيل الدخول.');return}
+    const signed=await invokeAccount({action:'signin',identifier:username,password});
+    if(signed.error){setMsg('cloudAuthMsg','تم إنشاء الحساب. حاول تسجيل الدخول.');return;}
+    const sessionResult=await db.auth.setSession(signed.session);
+    if(sessionResult.error){setMsg('cloudAuthMsg','تم إنشاء الحساب. حاول تسجيل الدخول.');return;}
     setMsg('cloudAuthMsg','تم الدخول.');
     closeCloud();
   }
@@ -230,6 +285,42 @@
     if(m.includes('already registered')) return 'البريد مسجل مسبقا. استخدم تسجيل الدخول.';
     return 'تعذر إكمال العملية الآن.';
   }
+
+  async function functionError(error){
+    try{return (await error?.context?.json())?.error||'';}catch{return '';}
+  }
+  async function invokeAccount(body){
+    const {data,error}=await db.functions.invoke('rb-account',{body});
+    return error?{error:(await functionError(error))||'unavailable'}:data||{error:'unavailable'};
+  }
+  function accountMessage(code){
+    return ({invalid_credentials:'اسم المستخدم أو كلمة المرور غير صحيحة.',rate_limit:'محاولات كثيرة. انتظر 10 دقائق ثم حاول مجددًا.',current_password:'كلمة المرور الحالية غير صحيحة.',username_taken:'اسم المستخدم مستخدم. اختر اسمًا آخر.',username_format:'ابدأ اسم المستخدم بحرف إنجليزي، واستخدم 3 إلى 30 حرفًا أو رقمًا أو شرطة سفلية.',name:'اكتب اسمًا من حرفين على الأقل.',email:'تحقق من صيغة البريد الإلكتروني.',password_length:'كلمة المرور الجديدة يجب أن تكون من 12 إلى 256 حرفًا.',invalid_session:'انتهت الجلسة. سجل الدخول مجددًا.',profile_partial:'حُفظ اسم المستخدم، لكن تعذر تحديث الاسم الظاهر. أعد المحاولة.'})[code]||'تعذر حفظ التعديل الآن. حاول مجددًا.';
+  }
+  async function saveProfile(e){
+    e.preventDefault();const form=e.currentTarget,button=form.querySelector('button');if(button.disabled)return;
+    button.disabled=true;setMsg('cloudProfileMsg','جارٍ حفظ بيانات الحساب…');
+    try{
+      const values=Object.fromEntries(new FormData(form));
+      const result=await invokeAccount({action:'profile',...values});
+      if(result.error){setMsg('cloudProfileMsg',accountMessage(result.error));return;}
+      handleProfile={user_id:currentUser.id,username:result.username,contact_email:result.contact_email};
+      form.elements.current_password.value='';
+      await db.auth.refreshSession();
+      setMsg('cloudProfileMsg','تم حفظ بيانات الحساب.');
+    }catch{setMsg('cloudProfileMsg','تعذر الاتصال. حاول مجددًا.');}finally{button.disabled=false;}
+  }
+  async function savePassword(e){
+    e.preventDefault();const form=e.currentTarget,button=form.querySelector('button');if(button.disabled)return;
+    const values=Object.fromEntries(new FormData(form));
+    if(values.new_password!==values.confirm_password){setMsg('cloudPasswordMsg','كلمتا المرور غير متطابقتين.');return;}
+    button.disabled=true;setMsg('cloudPasswordMsg','جارٍ تغيير كلمة المرور…');
+    try{
+      const result=await invokeAccount({action:'password',current_password:values.current_password,new_password:values.new_password});
+      if(result.error){setMsg('cloudPasswordMsg',accountMessage(result.error));return;}
+      await db.auth.signOut({scope:'local'});form.reset();location.reload();
+    }catch{setMsg('cloudPasswordMsg','تعذر الاتصال. حاول مجددًا.');}finally{button.disabled=false;}
+  }
+  const filterExamples=query=>examplesHidden?query.eq('is_example',false):query;
 
   function updateChrome(){
     const auth = document.getElementById('cloudAuthBtn');
@@ -303,8 +394,15 @@
       }
     }
 
-    const { data: circles, error: circleError } = await db.from('rb_circles').select('id,name,invite_code,created_by,active').in('id',ids).eq('active',true).order('created_at');
+    const { data: allCircles, error: circleError } = await db.from('rb_circles').select('id,name,invite_code,created_by,active,is_example').in('id',ids).eq('active',true).order('created_at');
     if (circleError) throw circleError;
+    let circles=allCircles||[];
+    if(examplesHidden){
+      const real=await db.rpc('rb_circles_with_real_data');
+      if(real.error)throw real.error;
+      const keep=new Set((real.data||[]).map(x=>x.circle_id));
+      circles=circles.filter(c=>!c.is_example||keep.has(c.id));
+    }
     if (!circles?.length) return false;
 
     const select=document.getElementById('cloudCircleSelect');
@@ -313,7 +411,7 @@
     }
 
     const wanted = localStorage.getItem(CIRCLE_KEY);
-    const chosen = circles.find(c=>c.id===wanted) || circles[0];
+    const chosen = circles.find(c=>c.id===wanted) || (!wanted&&currentUser.email?.endsWith('@accounts.relations-bank.invalid')?circles.find(c=>c.is_example):null) || circles[0];
     currentCircle=chosen;
     nativeSetItem.call(localStorage,CIRCLE_KEY,chosen.id);
     if(select)select.value=chosen.id;
@@ -322,7 +420,7 @@
   }
 
   async function selectCircle(id, reload){
-    const { data, error }=await db.from('rb_circles').select('id,name,invite_code,created_by,active').eq('id',id).single();
+    const { data, error }=await db.from('rb_circles').select('id,name,invite_code,created_by,active,is_example').eq('id',id).single();
     if(error) throw error;
     currentCircle=data;
     nativeSetItem.call(localStorage,CIRCLE_KEY,id);
@@ -333,9 +431,9 @@
   async function loadRemoteState(){
     const circleId=currentCircle.id;
     const [peopleRes, knowledgeRes, introRes]=await Promise.all([
-      db.from('rb_people').select('*').eq('circle_id',circleId).order('created_at',{ascending:false}),
-      db.from('rb_knowledge').select('*').eq('circle_id',circleId).order('created_at',{ascending:false}),
-      db.from('rb_introductions').select('*').eq('circle_id',circleId).order('created_at',{ascending:false})
+      filterExamples(db.from('rb_people').select('*')).eq('circle_id',circleId).order('created_at',{ascending:false}),
+      filterExamples(db.from('rb_knowledge').select('*')).eq('circle_id',circleId).order('created_at',{ascending:false}),
+      filterExamples(db.from('rb_introductions').select('*')).eq('circle_id',circleId).order('created_at',{ascending:false})
     ]);
     if(peopleRes.error) throw peopleRes.error;
     if(knowledgeRes.error) throw knowledgeRes.error;
@@ -345,7 +443,7 @@
 
     const people=(peopleRes.data||[]).map(p=>{
       owners.people.set(p.id,p.created_by);
-      return {id:p.id,name:p.name,company:p.company,role:p.role_title,city:p.city,sector:p.field,owner:p.relationship_owner,strength:p.relationship_strength,scope:p.scope,note:p.notes,createdBy:p.created_by};
+      return {id:p.id,name:p.name,company:p.company,role:p.role_title,city:p.city,sector:p.field,owner:p.relationship_owner,strength:p.relationship_strength,scope:p.scope,note:p.notes,createdBy:p.created_by,isExample:p.is_example};
     });
     const knowledge=(knowledgeRes.data||[]).map(k=>{
       owners.knowledge.set(k.id,k.created_by);
@@ -418,7 +516,7 @@
         rows.forEach(r=>owners.knowledge.set(r.id,r.created_by));
       }
 
-      const intros=state.introductions.filter(i=>isUuid(i.id));
+      const intros=state.introductions.filter(i=>!owners.introductions.has(i.id)||owners.introductions.get(i.id)===currentUser.id).filter(i=>isUuid(i.id));
       if(intros.length){
         const rows=intros.map(i=>{
           const parts=String(i.opportunityId||'').split('__');
@@ -448,7 +546,14 @@
   async function refreshManagePane(){
     if(!currentUser)return;
     const userLabel=document.getElementById('cloudUserLabel');
-    if(userLabel)userLabel.textContent=currentUser.email||'حساب مسجل';
+    if(userLabel)userLabel.textContent=handleProfile?.username||currentUser.email||'حساب مسجل';
+    const profile=document.getElementById('cloudProfileForm');
+    if(profile){
+      profile.elements.display_name.value=currentUser.user_metadata?.display_name||'';
+      profile.elements.username.value=handleProfile?.username||'';
+      profile.elements.contact_email.value=handleProfile?.contact_email||(!currentUser.email?.endsWith('.invalid')?currentUser.email:'')||'';
+      profile.elements.current_password.value='';
+    }
     const invite=document.getElementById('cloudInviteCode');
     if(invite)invite.textContent=currentCircle?.invite_code||'—';
     setMsg('cloudManageMsg','');
@@ -496,6 +601,12 @@
     cloudReady=false;
     if(!currentUser){ currentCircle=null; updateChrome(); emitAccess(); return; }
     try{
+      const [handle,pref]=await Promise.all([
+        db.from('rb_login_handles').select('user_id,username,contact_email').eq('user_id',currentUser.id).maybeSingle(),
+        db.from('rb_example_preferences').select('hidden').eq('user_id',currentUser.id).maybeSingle()
+      ]);
+      if(handle.error||pref.error)throw handle.error||pref.error;
+      handleProfile=handle.data;examplesHidden=!!pref.data?.hidden;
       await db.from('rb_profiles').upsert({user_id:currentUser.id,display_name:currentUser.user_metadata?.display_name||''},{onConflict:'user_id'});
       const hasCircle=await ensureCircle();
       if(!hasCircle){
@@ -513,6 +624,7 @@
       if(currentCircle) await hydrateFromCloud(false);
       else openCloud('manage');
       emitAccess();
+      renderExamplesGuide();
     }catch(error){
       console.error('Relations Bank cloud session',error);
       setMsg('cloudManageMsg','تعذر فتح الحساب السحابي.');
@@ -542,6 +654,25 @@
     db.auth.onAuthStateChange((_event,session)=>{ setTimeout(()=>handleSession(session),0); });
   }
 
-  window.relationsBankCloud={db,hydrate:()=>hydrateFromCloud(true),getAccess:()=>({authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle,user:currentUser}),openAuth:()=>openCloud('auth'),openManage:()=>openCloud('manage')};
+  function renderExamplesGuide(){
+    if(!currentCircle)return;
+    let banner=document.getElementById('rbExamplesGuide');
+    if(!banner){banner=document.createElement('section');banner.id='rbExamplesGuide';banner.className='rb-examples-guide';document.querySelector('main')?.prepend(banner);}
+    banner.innerHTML=`<div><span class="rb-example-label">${examplesHidden?'مساحة عملك':'جرّب المنصة'}</span><h2>${examplesHidden?'الأمثلة ممسوحة من عرض حسابك':'من علاقة إلى فرصة'}</h2><p>${examplesHidden?'إضافاتك الحقيقية محفوظة. يمكنك إعادة الأمثلة في أي وقت.':'اختر دائرة تحمل كلمة «مثال» من أعلى الصفحة. جميع الأسماء والجهات فيها افتراضية للتوضيح.'}</p></div><div class="rb-example-steps"><span><b>1</b> افتح ملف شخص وعلاقاته</span><span><b>2</b> جرّب طلبًا وشاهد سبب الترشيح</span><span><b>3</b> تابع التعارف حتى يتحول إلى فرصة</span></div><button class="cloud-btn" id="rbExamplesAction" type="button">${examplesHidden?'إعادة الأمثلة':'مسح الأمثلة'}</button><div id="rbExamplesMsg" class="cloud-msg" role="status" aria-live="polite"></div>`;
+    document.getElementById('rbExamplesAction').onclick=async()=>{
+      const button=document.getElementById('rbExamplesAction');button.disabled=true;
+      try{
+        clearTimeout(syncTimer);await syncRaw(localStorage.getItem(STORAGE_KEY)||'');
+        const next=!examplesHidden;
+        const result=await db.from('rb_example_preferences').upsert({user_id:currentUser.id,hidden:next},{onConflict:'user_id'});
+        if(result.error)throw result.error;
+        examplesHidden=next;
+        await ensureCircle();
+        await hydrateFromCloud(true);
+      }catch{setMsg('rbExamplesMsg','تعذر تحديث الأمثلة الآن. حاول مجددًا.');button.disabled=false;}
+    };
+  }
+  window.relationsBankCloud={db,filterExamples,examplesVisible:()=>!examplesHidden,hydrate:()=>hydrateFromCloud(true),getAccess:()=>({authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle,user:currentUser}),openAuth:()=>openCloud('auth'),openSignup:()=>{openCloud('auth');setAuthMode('signup');},openManage:()=>openCloud('manage')};
   init();
 })();
+

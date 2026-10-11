@@ -12,7 +12,7 @@ function addGate(){
  gate.innerHTML='<div class="rb-gate-card"><div class="rb-gate-mark">✦</div><h1 id="rbGateTitle">بنك العلاقات والفرص</h1><div class="rb-gate-actions"><button class="rb-gate-primary" id="rbGatePrimary">دخول</button><button class="rb-gate-soft" id="rbGateSecondary">دعوة</button></div></div>';
  document.body.appendChild(gate);
  $('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openAuth?.();
- $('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openManage?.();
+  $('#rbGateSecondary').textContent='عندي دعوة';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openSignup?.();
 }
 function accessState(detail){
  const gate=$('#rbAccessGate');if(!gate)return;
@@ -27,7 +27,7 @@ function accessState(detail){
  }else{
    $('#rbGateTitle').textContent='بنك العلاقات والفرص';
    $('#rbGatePrimary').textContent='دخول';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openAuth?.();
-   $('#rbGateSecondary').textContent='دعوة';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openManage?.();
+    $('#rbGateSecondary').textContent='عندي دعوة';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openSignup?.();
  }
 }
 function append(role,text){
@@ -98,7 +98,7 @@ function installVoiceOrb(){
   const style=document.createElement('style');style.id='rbVoiceOrbStyle';style.textContent=`
     .rb-ai-card{padding:0!important}.rb-ai-inner{padding:28px!important}.rb-ai-hero{gap:12px!important}.rb-ai-heading h2{font-size:24px!important;margin:7px 0 0!important}
     .rb-ai-orb{
-      position:relative!important;width:clamp(190px,25vw,244px)!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important;
+      position:relative!important;width:132px!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important;
       border-radius:50%!important;padding:0!important;margin:8px auto 6px!important;overflow:hidden!important;display:grid!important;place-items:center!important;
       background:linear-gradient(145deg,#174F76 0%,#0D3656 58%,#082A45 100%)!important;
       border:1px solid rgba(255,255,255,.12)!important;
@@ -110,18 +110,18 @@ function installVoiceOrb(){
       position:absolute;inset:16px;border-radius:50%;border:1px solid rgba(255,255,255,.11);
       box-shadow:inset 0 0 28px rgba(255,255,255,.02);pointer-events:none
     }
-    .rb-ai-core-wave{position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:8px;height:88px}
+    .rb-ai-mic .rb-ai-core-wave{position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:5px;height:54px}
     .rb-ai-core-wave i{
-      display:block;width:9px;height:58px;border-radius:999px;
+      display:block;width:6px;height:36px;border-radius:999px;
       background:linear-gradient(180deg,#F7D5AB 0%,#E2A45E 52%,#C9853C 100%);
       transform:scaleY(.28);transform-origin:center;transition:transform .07s linear,opacity .1s ease;
       box-shadow:0 0 14px rgba(226,164,94,.18)
     }
-    .rb-ai-core-wave i:nth-child(1),.rb-ai-core-wave i:nth-child(5){height:38px}
-    .rb-ai-core-wave i:nth-child(2),.rb-ai-core-wave i:nth-child(4){height:52px}
-    .rb-ai-core-wave i:nth-child(3){height:68px}
+    .rb-ai-core-wave i:nth-child(1),.rb-ai-core-wave i:nth-child(5){height:24px}
+    .rb-ai-core-wave i:nth-child(2),.rb-ai-core-wave i:nth-child(4){height:36px}
+    .rb-ai-core-wave i:nth-child(3){height:48px}
     .rb-ai-gemini{
-      position:absolute;z-index:4;bottom:27px;left:50%;transform:translateX(-50%);
+      position:absolute;z-index:4;bottom:14px;left:50%;transform:translateX(-50%);
       display:flex!important;align-items:center;gap:4px;color:rgba(255,255,255,.62)!important;
       font:700 10px Arial,sans-serif;letter-spacing:.01em
     }
@@ -139,8 +139,7 @@ function installVoiceOrb(){
     @keyframes rbBreathRing{50%{inset:11px;border-color:rgba(255,255,255,.18)}}
     .rb-ai-status{margin-top:4px!important}.rb-ai-panel{width:min(780px,100%);margin-inline:auto!important}
     @media(max-width:650px){
-      .rb-ai-inner{padding:20px 14px!important}.rb-ai-orb{width:min(64vw,220px)!important}.rb-ai-core-wave{gap:7px;height:82px}
-      .rb-ai-core-wave i{width:8px}.rb-ai-heading h2{font-size:20px!important}
+      .rb-ai-inner{padding:20px 14px!important}.rb-ai-orb{width:120px!important}.rb-ai-heading h2{font-size:20px!important}
     }
   `;document.head.appendChild(style);
 }
