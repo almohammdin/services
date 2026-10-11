@@ -47,6 +47,8 @@ Deno.serve(async (req: Request) => {
       }
       const result = await client.auth.signInWithPassword({email,password});
       if (result.error || !result.data.session) return reply({error:'invalid_credentials'}, 401);
+      // Successful authentication clears failures for this account, while the IP limit remains in force.
+      await admin.from('rb_login_limits').delete().eq('bucket',await digest(secret+'id:'+identifier));
       return reply({session:{access_token:result.data.session.access_token,refresh_token:result.data.session.refresh_token}});
     }
     // Account changes are authorized using the current user's validated token.
