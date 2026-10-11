@@ -35,3 +35,14 @@ h1,h2,.knowledge-product h3,.case-study-content h3,.cta-title{font-variant-ligat
 .footer .site-social-link img,.footer .site-social-link svg{width:16px;height:16px;fill:currentColor}
 @media(max-width:560px){.footer-inner{width:calc(100% - 28px);gap:12px;flex-wrap:wrap}.footer .footer-logo{width:72px;height:36px}.footer .social-username{font-size:11px;padding-inline:5px}.footer-social-cluster{padding-inline:7px 4px}.footer .site-social-link{width:30px;min-width:30px;height:34px;min-height:34px}}
 @media print{.footer{background:#061f56}.footer-inner{min-height:60px}.footer .footer-logo{width:90px}}
+
+/* Distinct audience cards in the Hatta palette. */
+#audience .audience-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#audience .audience-card{min-width:0;align-items:flex-start;gap:14px;padding:22px;border:1px solid #c9d5e7;border-inline-start:4px solid var(--navy);border-radius:14px;background:#edf1f8}
+#audience .audience-card:nth-child(4n+2),#audience .audience-card:nth-child(4n+3){background:#f7efdf;border-color:#dfcba7;border-inline-start-color:var(--gold)}
+#audience .audience-dot{width:8px;height:8px;margin-block-start:13px;border-radius:50%;background:var(--navy)}
+#audience .audience-card:nth-child(4n+2) .audience-dot,#audience .audience-card:nth-child(4n+3) .audience-dot{background:var(--gold)}
+#audience .audience-card b{font-size:18px;line-height:1.6;margin-block-end:9px}
+#audience .audience-card span:not(.audience-dot){display:block;font-size:15px;line-height:1.9;color:#46516a}
+@media(max-width:560px){#audience .audience-grid{grid-template-columns:1fr;gap:12px}#audience .audience-card{padding:20px 18px;gap:12px}#audience .audience-card b{font-size:17px}#audience .audience-card span:not(.audience-dot){font-size:14px}}
+@media print{#audience .audience-card{break-inside:avoid;border-color:#b6c3d5}}
