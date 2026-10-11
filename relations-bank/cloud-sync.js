@@ -23,6 +23,7 @@
   let syncTimer = null;
   let examplesHidden = false;
   let handleProfile = null;
+  let lastCloudFocus = null;
   const owners = { people: new Map(), knowledge: new Map(), introductions: new Map() };
   const nativeSetItem = Storage.prototype.setItem;
 
@@ -87,7 +88,7 @@
     overlay.hidden = true;
     overlay.innerHTML = `
       <section class="cloud-card" role="dialog" aria-modal="true" aria-labelledby="cloudTitle">
-        <button class="cloud-close" id="cloudCloseBtn" type="button">×</button>
+        <button class="cloud-close" id="cloudCloseBtn" type="button" aria-label="إغلاق">×</button>
         <div id="cloudAuthPane">
           <h2 id="cloudTitle">بنك العلاقات والفرص</h2>
           <form id="cloudAuthForm" class="cloud-form">
@@ -106,7 +107,7 @@
         </div>
         <div id="cloudManagePane" hidden>
           <span style="color:#C9853C;font-size:12px;font-weight:900">إدارة الدائرة</span>
-          <h2>الحساب والدائرة</h2>
+          <h2 id="cloudManageTitle">الحساب والدائرة</h2>
           <p id="cloudUserLabel"></p>
           <details class="cloud-section" id="cloudAccountSettings"><summary>إعدادات الحساب</summary>
             <form id="cloudProfileForm" class="cloud-form">
@@ -151,6 +152,7 @@
     document.getElementById('cloudManageBtn')?.addEventListener('click', () => openCloud('manage'));
     document.getElementById('cloudCloseBtn')?.addEventListener('click', closeCloud);
     overlay.addEventListener('click', e => { if (e.target === overlay) closeCloud(); });
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeCloud();});
 
     document.getElementById('cloudAuthForm')?.addEventListener('submit', handleAuthSubmit);
     document.getElementById('cloudProfileForm')?.addEventListener('submit', saveProfile);
@@ -171,14 +173,16 @@
     if(mode==='manage'&&!currentUser)mode='auth';
     const overlay = document.getElementById('cloudOverlay');
     if (!overlay) return;
+    if(overlay.hidden)lastCloudFocus=document.activeElement;
     overlay.hidden = false;
     document.getElementById('cloudAuthPane').hidden = mode !== 'auth';
     document.getElementById('cloudManagePane').hidden = mode !== 'manage';
     if (mode === 'auth') setAuthMode('signin');
     if (mode === 'manage') refreshManagePane();
-    document.querySelector(mode==='manage'?'#cloudAccountSettings':'#cloudAuthForm input:not([hidden])')?.focus();
+    overlay.querySelector('[role="dialog"]').setAttribute('aria-labelledby',mode==='manage'?'cloudManageTitle':'cloudTitle');
+    document.querySelector(mode==='manage'?'#cloudCloseBtn':'#cloudAuthForm input[name="identifier"]')?.focus();
   }
-  function closeCloud(){ const o=document.getElementById('cloudOverlay'); if(o)o.hidden=true; }
+  function closeCloud(){ const o=document.getElementById('cloudOverlay'); if(o)o.hidden=true;lastCloudFocus?.focus?.(); }
 
   function setMsg(id, msg){ const el=document.getElementById(id); if(el)el.textContent=msg||''; }
 
@@ -675,4 +679,3 @@
   window.relationsBankCloud={db,filterExamples,examplesVisible:()=>!examplesHidden,hydrate:()=>hydrateFromCloud(true),getAccess:()=>({authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle,user:currentUser}),openAuth:()=>openCloud('auth'),openSignup:()=>{openCloud('auth');setAuthMode('signup');},openManage:()=>openCloud('manage')};
   init();
 })();
-
