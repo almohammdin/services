@@ -54,6 +54,7 @@ alter table public.rb_requests add column is_example boolean not null default fa
 alter table public.rb_relationship_evidence add column is_example boolean not null default false;
 alter table public.rb_profile_answers add column is_example boolean not null default false;
 alter table public.rb_opportunities add column is_example boolean not null default false;
+create policy rb_answers_read_examples_in_circle on public.rb_profile_answers for select to authenticated using (is_example and (select private.rb_is_circle_member(circle_id)));
 
 create function public.rb_circles_with_real_data() returns table(circle_id uuid)
 language sql stable security invoker set search_path = '' as $$
