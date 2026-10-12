@@ -109,7 +109,7 @@ async function aiAction(task){
  ids.forEach(k=>$(k).disabled=true);button.textContent=task==='diacritize'?'يجري ضبط القراءة…':'يجري اكتشاف الإيقاع…';
  const payload={poem:state.poem,genre:state.genre,meter:state.meter,reference:state.reference,locked:state.locked,intent:state.intent};
  try{
-  const {askAI}=await import('./ai.js?v=5');
+  const {askAI}=await import('./ai.js?v=6');
   if(task==='diacritize'){
    const out=await askAI(task,payload);if(fp!==fingerprint()){toast('تغير النص. أعد الطلب للأبيات الجديدة.');return;}
    if(typeof out.poem!=='string'||!sameReading(out.poem,state.poem))throw Error('changed-text');pushHistory();state.poem=out.poem;discoveryCache=null;syncUI();doScan();toast('تم ضبط القراءة مع إبقاء الكلمات كما هي.');return;

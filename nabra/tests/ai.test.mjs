@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {aiErrorInfo} from '../ai-errors.js';
+const source=readFileSync(new URL('../ai.js',import.meta.url),'utf8');
+const generate=source.slice(source.indexOf('async function generate('),source.indexOf('export async function askAI'));
+const calls=[];let failPrimary=true;
+const factory=(ai,{model})=>({generateContent:async(prompt,options)=>{
+ calls.push(model);assert(options.signal instanceof AbortSignal);
+ if(model==='gemini-3.8-flash'&&failPrimary)throw Object.assign(new Error('quota'),{customData:{status:429,errorDetails:[{retryDelay:'60s'}]}});
+ return {response:{text:()=>'{"poem":"test"}'}};
+}});
+const run=new Function('getClient','models','cooldowns',generate+';return generate;')(async()=>({ai:{},getGenerativeModel:factory}),new Map(),new Map());
+await run('detect','test',new AbortController().signal);
+assert.deepEqual(calls,['gemini-3.5-flash-lite']);calls.length=0;
+await run('suggest','test',new AbortController().signal);
+assert.deepEqual(calls,['gemini-3.8-flash','gemini-3.5-flash-lite']);calls.length=0;
+await run('repair','test',new AbortController().signal);
+assert.deepEqual(calls,['gemini-3.5-flash-lite']);
+assert.match(aiErrorInfo({code:'fetch-error',customData:{status:429}}).message,/حد الاستخدام/);
+assert.match(aiErrorInfo({code:'appCheck/recaptcha-error'}).message,/حماية/);
+console.log('PASS: light model for detection, quota fallback, cooldown, error messages');
