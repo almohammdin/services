@@ -26,3 +26,19 @@ Meter tables derived from [Aruudy](https://github.com/kariminf/aruudy), copyrigh
 - One-time current-draft layout migration preserves poem content and saved drafts.
 - Automatic genre/reading discovery and whole-poem meter ranking. Suggestions use the inferred shared meter, retain line count/locked words, display changed vocabulary and undergo one bounded repair pass using local scansion feedback.
 - Original-font canvas rendering and `node nabra/tests/layout.test.mjs` validate short-poem dimensions, font-size growth, wrapping, fixed-preset overflow and shared-meter inference. Live Gemini/App Check remains unverified from a browser in this environment.
+
+## الإصدار 2 — الكتابة والإلقاء
+
+- اختيار شطر محدد للتعديل مع رفض أي رد يغير كلمات الأشطر الأخرى، وتطبيق الشطر المختار وحده. زر تراجع ظاهر يعيد النص السابق.
+- مقارنة نهايات الصدور أو الأعجاز وقائمة كلمات محلية، مع فصل التشابه الكتابي عن الحكم العروضي على القافية. لا يوجد حكم آلي على الإيطاء أو الروي.
+- تسجيل حتى 60 ثانية أو رفع صوت حتى 10 MiB. صيغة التسجيل تختار عبر `MediaRecorder.isTypeSupported`، ويتوقف الميكروفون عند الانتهاء أو مغادرة الصفحة.
+- تفريغ صوتي عبر Firebase AI Logic بعد اختيار الموافقة والضغط على زر الإرسال. يعرض النص للمراجعة قبل اعتماده؛ لا استنتاج للمقام ولا تصديق تلقائي لوزن النبطي.
+- الصوت في ذاكرة الصفحة فقط، لا يدخل المسودات أو مخزن الردود. سياسة معالجة الصوت عند الإرسال تخضع لمزود الخدمة.
+- إعادة استخدام ردود النص لمدة 5 دقائق في ذاكرة الجلسة، بحد 20 طلبا، مع دمج الطلب المتكرر الجاري. الحصة السحابية تظل محدودة.
+- تحسين الوقف على التنوين والتاء المربوطة، وتجنب فرض البحر الأقرب على قراءة شديدة البعد عن الصور المسجلة.
+- وحدات مستقلة للقافية وحماية نطاق التعديل والتسجيل. تبقى جداول العروض محدودة؛ هذه النسخة لا تدعي تغطية كل الزحافات والعلل.
+
+### التحقق
+
+`node --test nabra/tests/*.test.mjs` من جذر المستودع.
+تشمل الاختبارات حفظ نطاق التعديل، نهايات القافية، الوقف والتنوين، حدود الصوت وصيغته، انتقال النموذج عند نفاد الحصة، وأمثلة الوزن والإخراج السابقة. هي اختبارات تراجع برمجي وليست معيار دقة شامل للبحور أو اللهجات. تسجيل الميكروفون وAAC على iPhone يحتاج تجربة جهاز حقيقية.

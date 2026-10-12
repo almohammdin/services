@@ -1,11 +1,12 @@
-import {METERS} from './meters.js';
+import {METERS} from './meters.js?v=20';
 export {METERS};
 export const strip=s=>String(s).normalize('NFC').replace(/[\u064B-\u065F\u0670ـ]/g,'');
 export const skeleton=s=>strip(s).replace(/[^\u0621-\u063A\u0641-\u064A]/g,'');
 export function splitPoem(s){const lines=String(s).split(/\n/).map(s=>s.trim()).filter(Boolean);const verses=[];for(let i=0;i<lines.length;i++){if(/[*#|]/.test(lines[i])){const a=lines[i].split(/\s*[*#|]\s*/);verses.push([a[0],a.slice(1).join(' ')]);}else if(lines[i+1]&&!/[*#|]/.test(lines[i+1])){verses.push([lines[i],lines[++i]]);}else verses.push([lines[i],'']);}return verses;}
 const vowels=/[ًٌٍَُِ]/,marks=/[\u064B-\u065F\u0670]/,sun='تثدذرزسشصضطظلن';
 export function scan(text,ending='saturate'){
- const raw=String(text).normalize('NFC').replace(/ـ/g,'').replace(/آ/g,'أَا').replace(/ٰ/g,'ا').replace(/ٱ/g,'ا');
+ const normalized=ending==='pause'?String(text).trim().replace(/ة[ًٌٍَُِ]?([،.!؟]*)$/u,'هْ$1').replace(/ًا?([،.!؟]*)$/u,'َا$1').replace(/[ٌٍ]([،.!؟]*)$/u,'ْ$1'):String(text);
+ const raw=normalized.normalize('NFC').replace(/ـ/g,'').replace(/آ/g,'أَا').replace(/ٰ/g,'ا').replace(/ٱ/g,'ا');
  const words=raw.match(/[\u0621-\u065F\u0670]+/g)||[];let units=[],uncertain=[];
  words.forEach((word,wi)=>{
   let chars=[];for(const c of word){if(marks.test(c)&&chars.length)chars.at(-1).m+=c;else if(/[ء-ي]/.test(c))chars.push({c,m:''});}
@@ -52,5 +53,5 @@ export function inferPoem(poem,ending='saturate'){
  const lines=splitPoem(poem).flat().filter(Boolean),readings=lines.map(s=>scan(s,ending));
  if(!lines.length||readings.some(s=>s.unknown.length||!s.pattern||s.pattern.length>200))return {ready:false,candidates:[],lines:lines.length};
  const candidates=METERS.map(m=>{const results=lines.map(s=>analyze(s,m.name,ending));return {name:m.name,matched:results.filter(r=>r.exact).length,total:lines.length,distance:results.reduce((a,r)=>a+(r.best?.distance??200),0),score:results.reduce((a,r)=>a+(r.best?.distance??200)/Math.max(1,r.pattern.length),0)/lines.length,results};}).sort((a,b)=>a.score-b.score||b.matched-a.matched);
- const [first,second]=candidates;return {ready:true,candidates:candidates.slice(0,3),best:first,ambiguous:!!second&&Math.abs(second.score-first.score)<.025,lines:lines.length};
+ const [first,second]=candidates;return {ready:true,plausible:first.score<=.18,candidates:candidates.slice(0,3),best:first,ambiguous:!!second&&Math.abs(second.score-first.score)<.025,lines:lines.length};
 }

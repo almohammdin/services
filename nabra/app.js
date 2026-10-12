@@ -1,8 +1,11 @@
-import {aiErrorInfo} from './ai-errors.js?v=5';
-import {METERS,strip,skeleton,splitPoem,analyze,extendWord,inferPoem} from './prosody.js?v=2';
-import {planLayout} from './layout.js?v=2';
+import {rhymeReport,rhymeWords,endingKey} from './rhyme.js?v=20';
+import {preservesScope,applyScoped} from './suggestions.js?v=20';
+import {initVoice} from './audio/recorder.js?v=20';
+import {aiErrorInfo} from './ai-errors.js?v=20';
+import {METERS,strip,skeleton,splitPoem,analyze,extendWord,inferPoem} from './prosody.js?v=20';
+import {planLayout} from './layout.js?v=20';
 const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const defaults={poem:'',poemTitle:'',author:'',genre:'auto',meter:'auto',ending:'saturate',reference:'',locked:'',intent:'',theme:'paper',format:'content',layout:'auto',fontSize:64,lineGap:1.65,columnGap:60,stretch:2,equalize:true,showPattern:true,showBrand:true,transparent:false,showDiacritics:true,manual:{}};
+const defaults={poem:'',poemTitle:'',author:'',genre:'auto',meter:'auto',ending:'saturate',reference:'',locked:'',intent:'',targetShatr:'all',theme:'paper',format:'content',layout:'auto',fontSize:64,lineGap:1.65,columnGap:60,stretch:2,equalize:true,showPattern:true,showBrand:true,transparent:false,showDiacritics:true,manual:{}};
 let state={...defaults},revision=0,fontsReady=false,formatted=[],imageOverflow=false,saveTimer,toastTimer,busy=false;const history=[];
 const storage={get(k,f){try{return JSON.parse(localStorage.getItem(k))??f;}catch{return f;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch{return false;}}};
 state={...defaults,...storage.get('nabra-current-v1',{}),manual:storage.get('nabra-current-v1',{}).manual||{}};
@@ -10,17 +13,17 @@ if(!storage.get('nabra-layout-v2',false)){state.format='content';state.layout='a
 const themes={paper:{bg:'#f5f0e6',ink:'#382847',accent:'#aa6854',muted:'#8d7889'},ink:{bg:'#382847',ink:'#f6efe3',accent:'#d4aa86',muted:'#ad93ab'},clay:{bg:'#b76b57',ink:'#fff4e5',accent:'#f4d2a7',muted:'#ebbeaa'},sage:{bg:'#dbe2cf',ink:'#354e40',accent:'#6a7960',muted:'#768776'},night:{bg:'#202b35',ink:'#f1ece2',accent:'#c19c75',muted:'#8d9ca9'}};
 for(const m of METERS)$('meter').add(new Option(m.name,m.name));
 function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),4000);}
-function syncUI(){for(const key of Object.keys(defaults)){const el=$(key);if(!el)continue;if(el.type==='checkbox')el.checked=!!state[key];else el.value=state[key];}document.querySelectorAll('[data-theme]').forEach(b=>{b.classList.toggle('active',b.dataset.theme===state.theme);b.setAttribute('aria-pressed',b.dataset.theme===state.theme);});update();}
-function pushHistory(){history.push(JSON.stringify(state));if(history.length>30)history.shift();}
-function changed(key,value){state[key]=value;revision++;if(['poem','genre','meter','reference','ending'].includes(key)){discoveryCache=null;$('discovery').replaceChildren();}if(key==='poem'){state.manual={};$('suggestions').replaceChildren();$('analysis').innerHTML='<div class="notice">تغير النص. افحص الوزن لعرض نتيجة محدثة.</div>';}update();}
-function update(){['fontSize','lineGap','columnGap','stretch'].forEach(k=>$(k+'Out').value=state[k]);const v=splitPoem(state.poem);$('lineCount').textContent=v.length+' أبيات';$('draftCount').textContent=storage.get('nabra-drafts-v1',[]).length;const prev=$('wordPick').value;$('wordPick').replaceChildren();v.forEach((a,i)=>a.forEach((s,j)=>s.split(/\s+/).filter(Boolean).forEach((w,k)=>$('wordPick').add(new Option(`${i+1} · ${strip(w)}`,`${i}-${j}-${k}`)))));$('wordPick').value=prev||$('wordPick').options[0]?.value||'';render();clearTimeout(saveTimer);saveTimer=setTimeout(()=>{$('autosave').textContent=storage.set('nabra-current-v1',state)?'حفظ تلقائي على هذا الجهاز ✓':'تعذر الحفظ المحلي. نزل النص للاحتفاظ به.';},500);}
+function syncUI(){if(discoveryCache&&discoveryCache.key!==poemKey()){discoveryCache=null;$('discovery').replaceChildren();$('analysis').replaceChildren();$('suggestions').replaceChildren();}for(const key of Object.keys(defaults)){const el=$(key);if(!el)continue;if(el.type==='checkbox')el.checked=!!state[key];else el.value=state[key];}document.querySelectorAll('[data-theme]').forEach(b=>{b.classList.toggle('active',b.dataset.theme===state.theme);b.setAttribute('aria-pressed',b.dataset.theme===state.theme);});update();}
+function pushHistory(){history.push(JSON.stringify(state));if(history.length>30)history.shift();$('undoBtn').disabled=false;}
+function changed(key,value){state[key]=value;revision++;if(['poem','genre','meter','reference','ending'].includes(key)){discoveryCache=null;$('discovery').replaceChildren();}if(key==='targetShatr')$('suggestions').replaceChildren();if(key==='poem'){state.manual={};$('suggestions').replaceChildren();$('analysis').innerHTML='<div class="notice">تغير النص. افحص الوزن لعرض نتيجة محدثة.</div>';}update();}
+function update(){['fontSize','lineGap','columnGap','stretch'].forEach(k=>$(k+'Out').value=state[k]);const v=splitPoem(state.poem);$('lineCount').textContent=v.length+' أبيات';$('draftCount').textContent=storage.get('nabra-drafts-v1',[]).length;const prev=$('wordPick').value;$('wordPick').replaceChildren();v.forEach((a,i)=>a.forEach((s,j)=>s.split(/\s+/).filter(Boolean).forEach((w,k)=>$('wordPick').add(new Option(`${i+1} · ${strip(w)}`,`${i}-${j}-${k}`)))));$('wordPick').value=prev||$('wordPick').options[0]?.value||'';updateScope(v);renderRhymes();render();clearTimeout(saveTimer);saveTimer=setTimeout(()=>{$('autosave').textContent=storage.set('nabra-current-v1',state)?'حفظ تلقائي على هذا الجهاز ✓':'تعذر الحفظ المحلي. نزل النص للاحتفاظ به.';},500);}
 for(const key of Object.keys(defaults)){const el=$(key);if(el)el.addEventListener('input',()=>changed(key,el.type==='checkbox'?el.checked:el.type==='range'?Number(el.value):el.value));}
-function tab(name){document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.dataset.tab===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',active);b.tabIndex=active?0:-1;});['write','meter','design'].forEach(k=>$(k+'Panel').hidden=k!==name);}
-document.querySelectorAll('[data-tab]').forEach((b,i)=>{b.onclick=()=>tab(b.dataset.tab);b.onkeydown=e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const tabs=[...document.querySelectorAll('[data-tab]')];const n=(i+(e.key==='ArrowLeft'?1:-1)+3)%3;tab(tabs[n].dataset.tab);tabs[n].focus();}};});
+function tab(name){document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.dataset.tab===name;b.classList.toggle('active',active);b.setAttribute('aria-selected',active);b.tabIndex=active?0:-1;});['write','meter','voice','design'].forEach(k=>$(k+'Panel').hidden=k!==name);}
+document.querySelectorAll('[data-tab]').forEach((b,i)=>{b.onclick=()=>tab(b.dataset.tab);b.onkeydown=e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();const tabs=[...document.querySelectorAll('[data-tab]')];const n=(i+(e.key==='ArrowLeft'?1:-1)+4)%4;tab(tabs[n].dataset.tab);tabs[n].focus();}};});
 $('toMeter').onclick=()=>{tab('meter');aiAction('detect');};
 $('sampleBtn').onclick=()=>{if(state.poem&&!confirm('استبدال النص الحالي بالمثال؟ يمكنك حفظه كمسودة أولا.'))return;pushHistory();state={...state,poemTitle:'على قدر أهل العزم',author:'المتنبي',genre:'classical',meter:'الطويل',manual:{},poem:'عَلَى قَدْرِ أَهْلِ الْعَزْمِ تَأْتِي الْعَزَائِمُ * وَتَأْتِي عَلَى قَدْرِ الْكِرَامِ الْمَكَارِمُ\nوَتَعْظُمُ فِي عَيْنِ الصَّغِيرِ صِغَارُهَا * وَتَصْغُرُ فِي عَيْنِ الْعَظِيمِ الْعَظَائِمُ'};revision++;syncUI();};
 $('clearBtn').onclick=()=>{if(state.poem&&!confirm('بدء قصيدة جديدة؟ احفظ مسودتك أولا إن أردت الرجوع إليها.'))return;pushHistory();state={...defaults,manual:{}};revision++;syncUI();$('analysis').replaceChildren();$('suggestions').replaceChildren();$('discovery').replaceChildren();discoveryCache=null;};
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!['TEXTAREA','INPUT'].includes(e.target.tagName)&&history.length){e.preventDefault();state=JSON.parse(history.pop());revision++;syncUI();toast('تراجع عن آخر تعديل');}});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!['TEXTAREA','INPUT'].includes(e.target.tagName)&&history.length){e.preventDefault();state=JSON.parse(history.pop());revision++;syncUI();discoveryCache=null;$('discovery').replaceChildren();$('analysis').replaceChildren();$('suggestions').replaceChildren();$('undoBtn').disabled=!history.length;toast('تراجع عن آخر تعديل');}});
 document.querySelectorAll('[data-theme]').forEach(b=>b.onclick=()=>{state.theme=b.dataset.theme;syncUI();});
 $('moreStretch').onclick=()=>manualStretch(1);$('lessStretch').onclick=()=>manualStretch(-1);function manualStretch(d){const k=$('wordPick').value;if(!k)return;pushHistory();state.manual[k]=Math.max(-8,Math.min(30,(state.manual[k]||0)+d));update();}
 $('fitImage').onclick=()=>{pushHistory();state.format='content';state.layout='auto';state.fontSize=64;state.lineGap=1.65;syncUI();toast('أصبحت الصورة على قدر الأبيات');};
@@ -59,8 +62,10 @@ let html='<p class="hint">النتائج تخص القراءة المكتوبة 
 for(const [i,pair] of verses.entries())for(const [j,line] of pair.entries()){if(!line)continue;const r=analyze(line,selected,state.ending);if(!r.best){html+='<div class="notice">الشطر '+(i+1)+' طويل جدا للفحص أو لا يحتوي حروفا عربية.</div>';continue;}const unknown=r.unknown.length>0;const status=unknown?'يحتاج ضبط القراءة':r.exact?'مطابقة ضمن الصور المدعومة':'أقرب صورة تحتاج مراجعة';const wordHtml=r.words.map((w,k)=>`<${(!unknown&&r.badWords.includes(k))?'mark':'span'}>${esc(w)}</${(!unknown&&r.badWords.includes(k))?'mark':'span'}>`).join(' ');html+=`<article class="result"><div class="result-head"><span>البيت ${i+1} · ${j?'العجز':'الصدر'}</span><span class="status ${r.exact?'ok':''}">${status}</span></div><p class="verse">${wordHtml}</p><strong>${unknown?'قراءة غير مكتملة':esc(r.best.name)}</strong>${unknown?`<p class="hint">اضبط: ${r.unknown.map(k=>esc(r.words[k])).join('، ')}. استخدم التشكيل الذكي أو أضف الحركات يدويا.</p>`:`<div class="feet">${r.best.feet.map(esc).join(' / ')}</div><p class="hint">${r.best.changes.map(esc).join(' · ')}</p>`}<details><summary>التقطيع والمقارنة</summary><div class="rhythm">${r.pattern.replace(/1/g,'/').replace(/0/g,'○')}</div><p>/ متحرك · ○ ساكن · ? قراءة ناقصة</p>${!unknown?`<p>الصورة المقارنة:</p><div class="rhythm">${r.best.pattern.replace(/1/g,'/').replace(/0/g,'○')}</div><p>${r.exact?'مطابقة الإيقاع لا تغني عن مراجعة اللغة والمعنى.':'اختلافات صوتية: '+r.best.distance+'. النتيجة لا تستبعد صورة عروضية أخرى خارج الجدول.'}</p>`:''}</details></article>`;}
 $('analysis').innerHTML=html;}
 $('scanBtn').onclick=()=>aiAction('detect');
-function fingerprint(){return JSON.stringify([state.poem,state.meter,state.genre,state.ending,state.locked,state.reference,state.intent]);}
+function fingerprint(){return JSON.stringify([state.poem,state.meter,state.genre,state.ending,state.locked,state.reference,state.intent,state.targetShatr]);}
 let discoveryCache=null;
+$('toVoice').onclick=()=>tab('voice');
+$('undoBtn').onclick=()=>{if(!history.length)return;state=JSON.parse(history.pop());discoveryCache=null;$('discovery').replaceChildren();$('analysis').replaceChildren();$('suggestions').replaceChildren();revision++;syncUI();$('undoBtn').disabled=!history.length;toast('استعدت النص قبل التعديل');};
 function poemKey(){return JSON.stringify([state.poem,state.genre,state.meter,state.reference,state.ending]);}
 function sameReading(a,b){return JSON.stringify(splitPoem(a).map(p=>p.map(skeleton)))===JSON.stringify(splitPoem(b).map(p=>p.map(skeleton)));}
 function canonMeter(name){const n=String(name||'').replace(/بحر/g,'').trim();return METERS.find(m=>m.name.replace(/^ال/,'')===n.replace(/^ال/,''))?.name||n;}
@@ -68,6 +73,7 @@ async function discoverCore(askAI,payload){
  const cached=discoveryCache;if(cached&&cached.key===poemKey())return cached;
  let reading=payload.poem,genre=payload.genre,aiCandidates=[],note='';
  const local=inferPoem(reading,state.ending);
+ if(genre==='auto'&&local.ready&&local.best.matched===local.lines)genre='classical';
  if(!local.ready||genre==='auto'||genre==='nabati'){
   const response=await askAI('detect',payload);genre=['classical','nabati'].includes(response.genre)?response.genre:genre;
   if(typeof response.poem==='string'&&sameReading(response.poem,payload.poem))reading=response.poem;
@@ -75,13 +81,13 @@ async function discoverCore(askAI,payload){
   note=String(response.note||'');
  }
  let rank=genre==='classical'?inferPoem(reading,state.ending):null;
- let candidates=rank?.ready?rank.candidates.map(c=>({name:c.name,reason:`${c.matched} من ${c.total} أشطر تطابق الصور المسجلة؛ مجموع الاختلافات الصوتية ${c.distance}.`})):aiCandidates;
+ let candidates=rank?.ready?(rank.plausible?rank.candidates:[]).map(c=>({name:c.name,reason:`${c.matched} من ${c.total} أشطر تطابق الصور المسجلة؛ مجموع الاختلافات الصوتية ${c.distance}.`})):aiCandidates;
  let target=payload.meter!=='auto'?payload.meter:candidates[0]?.name||'';
  if(payload.reference.trim()){
   const ref=analyze(payload.reference,'auto',state.ending);if(ref.exact)target=ref.best.name;
   else {const resp=await askAI('detect',{...payload,poem:payload.reference,reference:''});if(resp.poem&&sameReading(resp.poem,payload.reference)){const ranked=inferPoem(resp.poem,state.ending);if(ranked.ready)target=ranked.best.name;}}
  }
- if(genre==='classical'&&target&&!METERS.some(m=>m.name===target))target=rank?.best?.name||'';
+ if(genre==='classical'&&target&&!METERS.some(m=>m.name===target))target=rank?.plausible?rank.best.name:'';
  return {key:poemKey(),reading,genre,target,candidates,rank,note};
 }
 function showDiscovery(d){
@@ -92,11 +98,12 @@ function showDiscovery(d){
  if(d.note){const p=document.createElement('p');p.className='hint';p.textContent=d.note;card.append(p);}
  box.append(card);
  if(d.genre==='classical'&&METERS.some(m=>m.name===d.target))doScan(d.reading,d.target);
+ else if(d.genre==='classical')$('analysis').innerHTML='<p class="notice">لم نجد تقاربا كافيا مع الصور المدعومة. راجع القراءة أو أضف شطرا مرجعيا؛ لن نفرض بحرا على النص.</p>';
  else $('analysis').innerHTML='<p class="notice">سيحافظ الاقتراح على اللهجة والقافية، مع بيان موضع التعديل. تأكيد وزن النبطي يتطلب مراجعة النطق.</p>';
 }
 function wordChanges(original,proposed){const a=strip(original).split(/\s+/),b=strip(proposed).split(/\s+/);const old=a.filter(w=>!b.includes(w)&&!/^[*#|]$/.test(w)),added=b.filter(w=>!a.includes(w)&&!/^[*#|]$/.test(w));return {old:[...new Set(old)],added:[...new Set(added)],count:old.length+added.length};}
 function checkSuggestion(s,payload,d){
- if(typeof s?.poem!=='string'||s.poem.length>5000)return null;
+ if(typeof s?.poem!=='string'||s.poem.length>5000||!preservesScope(payload.poem,s.poem,payload.targetShatr))return null;
  const pairs=splitPoem(s.poem),sourcePairs=splitPoem(payload.poem);if(pairs.length!==sourcePairs.length||pairs.some((a,i)=>a.filter(Boolean).length!==sourcePairs[i].filter(Boolean).length))return null;
  const locks=payload.locked.split(/[,،\n]/).map(x=>skeleton(x.trim())).filter(Boolean);if(locks.some(w=>!skeleton(s.poem).includes(w)))return null;
  const lines=pairs.flat().filter(Boolean),results=d.genre==='classical'&&METERS.some(m=>m.name===d.target)?lines.map(l=>analyze(l,d.target,state.ending)):[];
@@ -107,9 +114,9 @@ async function aiAction(task){
  if(busy)return;if(!state.poem.trim()){toast('اكتب أبياتك أولا');return;}if(state.poem.length>2400){toast('للدقة، حلل حتى 2400 حرف في كل طلب.');return;}
  busy=true;const ids=['scanBtn','diacritizeBtn','suggestBtn'],id=task==='detect'?'scanBtn':task==='diacritize'?'diacritizeBtn':'suggestBtn',button=$(id),old=button.textContent,fp=fingerprint(),key=poemKey();
  ids.forEach(k=>$(k).disabled=true);button.textContent=task==='diacritize'?'يجري ضبط القراءة…':'يجري اكتشاف الإيقاع…';
- const payload={poem:state.poem,genre:state.genre,meter:state.meter,reference:state.reference,locked:state.locked,intent:state.intent};
+ const payload={poem:state.poem,genre:state.genre,meter:state.meter,reference:state.reference,locked:state.locked,intent:state.intent,targetShatr:state.targetShatr};
  try{
-  const {askAI}=await import('./ai.js?v=6');
+  const {askAI}=await import('./ai.js?v=20');
   if(task==='diacritize'){
    const out=await askAI(task,payload);if(fp!==fingerprint()){toast('تغير النص. أعد الطلب للأبيات الجديدة.');return;}
    if(typeof out.poem!=='string'||!sameReading(out.poem,state.poem))throw Error('changed-text');pushHistory();state.poem=out.poem;discoveryCache=null;syncUI();doScan();toast('تم ضبط القراءة مع إبقاء الكلمات كما هي.');return;
@@ -131,13 +138,14 @@ async function aiAction(task){
   $('suggestions').replaceChildren();if(!suggestions.length)throw Error('locks');
   for(const s of suggestions){
    const card=document.createElement('article');card.className='suggestion';const h=document.createElement('h4');h.textContent=String(s.label||'أقل تعديل مقترح');card.append(h);
-   const verse=document.createElement('p');verse.className='verse';verse.style.whiteSpace='pre-line';verse.textContent=s.poem;card.append(verse);
+   const verse=document.createElement('p');verse.className='verse';verse.style.whiteSpace='pre-line';verse.textContent=s.poem;
+   if(payload.targetShatr!=='all'){const [bi,sj]=payload.targetShatr.split('-').map(Number);const before=document.createElement('p');before.className='hint';before.textContent='قبل: '+splitPoem(payload.poem)[bi][sj];card.append(before);verse.textContent=splitPoem(s.poem)[bi][sj];}card.append(verse);
    const changes=document.createElement('p');changes.className='change-summary';changes.textContent='التغيير: '+(s.changes.old.length?s.changes.old.join('، '):'إضافة')+' ← '+(s.changes.added.length?s.changes.added.join('، '):'حذف الكلمات الزائدة');card.append(changes);
    const why=document.createElement('p');why.textContent=String(s.reason||'');card.append(why);
    const badge=document.createElement('p');badge.className='status'+(s.verified?' ok':'');badge.textContent=d.genre==='nabati'?`اقتراح على ${d.target} · يحتاج مراجعة بالإلقاء`:`${s.matched} من ${s.results.length} أشطر تطابق ${d.target}${s.verified?'':' · الوزن يحتاج مراجعة'}`;card.append(badge);
-   const apply=document.createElement('button');apply.className='secondary';apply.textContent=s.verified?'استخدام التعديل':'تجربة الصياغة';apply.onclick=()=>{if(fingerprint()!==fp){toast('تغير النص. اطلب اقتراحات جديدة.');return;}pushHistory();state.poem=s.poem;state.manual={};discoveryCache=null;syncUI();doScan(state.poem,d.target);$('suggestions').replaceChildren();toast('طبقت الصياغة. يمكنك التراجع عن التعديل.');};card.append(apply);$('suggestions').append(card);
+   const apply=document.createElement('button');apply.className='secondary';apply.textContent=s.verified?'استخدام التعديل':'تجربة الصياغة';apply.onclick=()=>{if(fingerprint()!==fp){toast('تغير النص. اطلب اقتراحات جديدة.');return;}pushHistory();state.poem=applyScoped(state.poem,s.poem,payload.targetShatr);state.manual={};discoveryCache=null;syncUI();if(d.genre==='classical')doScan(state.poem,d.target);else $('analysis').innerHTML='<p class="notice">طبقت الصياغة النبطية. راجعها بالإلقاء؛ الاقتراح ليس تصديقا آليا للوزن.</p>';$('suggestions').replaceChildren();toast('طبقت الصياغة. يمكنك التراجع عن التعديل.');};card.append(apply);$('suggestions').append(card);
   }
- }catch(e){const message=e.message==='changed-text'?'لم تحافظ القراءة المقترحة على الكلمات، لذلك احتفظنا بالنص الأصلي.':e.message==='no-meter'?'تعذر ترجيح بحر من هذه القراءة. أضف شطرا آخر أو وضح النطق في ملاحظة التعديل.':e.message==='locks'?'تعذر إنتاج تعديل يحافظ على الأبيات والكلمات المثبتة. جرب توضيح المعنى المطلوب.':e.message==='timeout'?'تأخر اتصال المساعد. حاول مرة أخرى.':aiErrorInfo(e).message;toast(message);const p=document.createElement('p');p.className='notice';p.textContent=message;$(task==='suggest'?'suggestions':'analysis').prepend(p);const diagnostic=aiErrorInfo(e);p.textContent+=` [${diagnostic.code}${diagnostic.status?' / '+diagnostic.status:''}]`;console.warn('Nabra AI:',JSON.stringify(diagnostic));}
+ }catch(e){const message=e.message==='changed-text'?'لم تحافظ القراءة المقترحة على الكلمات، لذلك احتفظنا بالنص الأصلي.':e.message==='no-meter'?'تعذر ترجيح بحر من هذه القراءة. أضف شطرا آخر أو وضح النطق في ملاحظة التعديل.':e.message==='locks'?'تعذر إنتاج تعديل يحافظ على الأبيات والكلمات المثبتة. جرب توضيح المعنى المطلوب.':e.message==='timeout'?'تأخر اتصال المساعد. حاول مرة أخرى.':aiErrorInfo(e).message;toast(message);const p=document.createElement('p');p.className='notice';p.textContent=message;$(task==='suggest'?'suggestions':'analysis').prepend(p);const diagnostic=aiErrorInfo(e);p.textContent+=` [${diagnostic.code}${diagnostic.status?' / '+diagnostic.status:''}]`;console.warn('Nabra AI:',JSON.stringify({code:diagnostic.code,status:diagnostic.status}));}
  finally{busy=false;button.textContent=old;ids.forEach(k=>$(k).disabled=false);}
 }
 $('diacritizeBtn').onclick=()=>aiAction('diacritize');$('suggestBtn').onclick=()=>aiAction('suggest');
@@ -152,3 +160,20 @@ $('saveBtn').onclick=()=>{if(!state.poem.trim()){toast('اكتب أبياتك أ
 $('draftsBtn').onclick=()=>{const list=$('draftList');list.replaceChildren();const drafts=storage.get('nabra-drafts-v1',[]);if(!drafts.length)list.textContent='ستجد قصائدك المحفوظة هنا.';drafts.forEach(d=>{const row=document.createElement('div');row.className='draft';const title=document.createElement('div');title.textContent=d.state.poemTitle||strip(d.state.poem).slice(0,35);const date=document.createElement('small');date.textContent=new Date(d.id).toLocaleDateString('ar-SA-u-nu-latn',{calendar:'gregory'});title.append(date);const open=document.createElement('button');open.className='secondary';open.textContent='فتح';open.onclick=()=>{if(state.poem&&state.poem!==d.state.poem&&!confirm('فتح المسودة بدلا من النص الحالي؟'))return;pushHistory();state={...defaults,...d.state};revision++;syncUI();$('analysis').replaceChildren();$('suggestions').replaceChildren();$('discovery').replaceChildren();discoveryCache=null;$('draftsDialog').close();};const del=document.createElement('button');del.className='quiet';del.textContent='حذف';del.onclick=()=>{if(!confirm('حذف هذه المسودة؟'))return;storage.set('nabra-drafts-v1',storage.get('nabra-drafts-v1',[]).filter(x=>x.id!==d.id));row.remove();update();};row.append(title,open,del);list.append(row);});$('draftsDialog').showModal();};
 $('helpBtn').onclick=()=>$('helpDialog').showModal();document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 syncUI();Promise.all([document.fonts.load('400 42px Thmanyah'),document.fonts.load('700 42px Thmanyah')]).then(v=>{if(v.some(a=>!a.length))throw Error('font');fontsReady=true;$('fontLoading').hidden=true;render();}).catch(()=>{$('fontLoading').textContent='تعذر تحميل خط ثمانية. أعد تحميل الصفحة لإكمال المعاينة والتصدير.';});
+
+function updateScope(pairs){
+ const select=$('targetShatr'),value=state.targetShatr;select.replaceChildren(new Option('القصيدة كاملة','all'));
+ pairs.forEach((pair,i)=>pair.forEach((line,j)=>{if(line)select.add(new Option(`البيت ${i+1} · ${j?'العجز':'الصدر'}: ${strip(line).slice(0,42)}`,`${i}-${j}`));}));
+ select.value=value;if(!select.value){select.value='all';state.targetShatr='all';}
+}
+function renderRhymes(){
+ const report=rhymeReport(state.poem,$('rhymeSide').value),box=$('rhymeReport');box.replaceChildren();
+ if(!report.endings.length){box.innerHTML='<p class="hint">اكتب أبياتك لتظهر نهاياتها هنا.</p>';return;}
+ const list=document.createElement('div');list.className='ending-list';
+ report.endings.forEach(x=>{const button=document.createElement('button');button.className='ending-chip';button.textContent=`${x.bayt} · ${strip(x.word)}`;button.title='اقتراح كلمات على هذه النهاية';button.onclick=()=>{$('rhymeSeed').value=strip(x.word);showRhymeWords();};list.append(button);});box.append(list);
+ const note=document.createElement('p');note.className='hint';note.textContent=report.groups===1?'النهايات الكتابية متقاربة. راجع النطق للتأكد من القافية.':`توجد ${report.groups} نهايات كتابية مختلفة. اضغط كلمة لاستكشاف بدائلها.`;box.append(note);
+ if(report.repeated.length){const p=document.createElement('p');p.className='hint';p.textContent='كلمة نهاية مكررة: '+report.repeated.join('، ')+'. قد يكون التكرار مقصودا؛ لا نحكم على المعنى آليا.';box.append(p);}
+}
+function showRhymeWords(){const seed=$('rhymeSeed').value.trim(),box=$('rhymeWords');box.replaceChildren();const words=rhymeWords(seed);if(!words.length){const p=document.createElement('p');p.className='hint';p.textContent='لا توجد كلمات في القائمة المحلية لهذه النهاية. حدد القافية المطلوبة في ملاحظة التعديل.';box.append(p);return;}for(const word of words){const b=document.createElement('button');b.className='word-chip';b.textContent=word;b.onclick=()=>{pushHistory();state.intent=`حافظ على المعنى واقترح صياغة تنتهي بكلمة «${word}» إن استقام الوزن.`;$('intent').value=state.intent;toast('أضفت الكلمة إلى توجيه التعديل. اختر الشطر ثم اطلب الاقتراح.');};box.append(b);}}
+$('rhymeSide').onchange=renderRhymes;$('rhymeFind').onclick=showRhymeWords;$('rhymeSeed').onkeydown=e=>{if(e.key==='Enter')showRhymeWords();};
+initVoice({getPoem:()=>state.poem,askAI:async(...args)=>(await import('./ai.js?v=20')).askAI(...args),applyPoem:text=>{pushHistory();changed('poem',text);syncUI();tab('meter');toast('اعتمدت القراءة. اضغط اكتشف البحر لفحصها.');}});
