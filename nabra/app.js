@@ -1,3 +1,4 @@
+import {aiErrorInfo} from './ai-errors.js?v=5';
 import {METERS,strip,skeleton,splitPoem,analyze,extendWord,inferPoem} from './prosody.js?v=2';
 import {planLayout} from './layout.js?v=2';
 const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -108,7 +109,7 @@ async function aiAction(task){
  ids.forEach(k=>$(k).disabled=true);button.textContent=task==='diacritize'?'يجري ضبط القراءة…':'يجري اكتشاف الإيقاع…';
  const payload={poem:state.poem,genre:state.genre,meter:state.meter,reference:state.reference,locked:state.locked,intent:state.intent};
  try{
-  const {askAI}=await import('./ai.js?v=2');
+  const {askAI}=await import('./ai.js?v=5');
   if(task==='diacritize'){
    const out=await askAI(task,payload);if(fp!==fingerprint()){toast('تغير النص. أعد الطلب للأبيات الجديدة.');return;}
    if(typeof out.poem!=='string'||!sameReading(out.poem,state.poem))throw Error('changed-text');pushHistory();state.poem=out.poem;discoveryCache=null;syncUI();doScan();toast('تم ضبط القراءة مع إبقاء الكلمات كما هي.');return;
@@ -136,7 +137,7 @@ async function aiAction(task){
    const badge=document.createElement('p');badge.className='status'+(s.verified?' ok':'');badge.textContent=d.genre==='nabati'?`اقتراح على ${d.target} · يحتاج مراجعة بالإلقاء`:`${s.matched} من ${s.results.length} أشطر تطابق ${d.target}${s.verified?'':' · الوزن يحتاج مراجعة'}`;card.append(badge);
    const apply=document.createElement('button');apply.className='secondary';apply.textContent=s.verified?'استخدام التعديل':'تجربة الصياغة';apply.onclick=()=>{if(fingerprint()!==fp){toast('تغير النص. اطلب اقتراحات جديدة.');return;}pushHistory();state.poem=s.poem;state.manual={};discoveryCache=null;syncUI();doScan(state.poem,d.target);$('suggestions').replaceChildren();toast('طبقت الصياغة. يمكنك التراجع عن التعديل.');};card.append(apply);$('suggestions').append(card);
   }
- }catch(e){const message=e.message==='changed-text'?'لم تحافظ القراءة المقترحة على الكلمات، لذلك احتفظنا بالنص الأصلي.':e.message==='no-meter'?'تعذر ترجيح بحر من هذه القراءة. أضف شطرا آخر أو وضح النطق في ملاحظة التعديل.':e.message==='locks'?'تعذر إنتاج تعديل يحافظ على الأبيات والكلمات المثبتة. جرب توضيح المعنى المطلوب.':e.message==='timeout'?'تأخر اتصال المساعد. حاول مرة أخرى.':'تعذر اتصال المساعد حاليا. يمكنك متابعة التنسيق والتصدير.';toast(message);const p=document.createElement('p');p.className='notice';p.textContent=message;$(task==='suggest'?'suggestions':'analysis').prepend(p);console.warn('Nabra AI:',e.code||e.message);}
+ }catch(e){const message=e.message==='changed-text'?'لم تحافظ القراءة المقترحة على الكلمات، لذلك احتفظنا بالنص الأصلي.':e.message==='no-meter'?'تعذر ترجيح بحر من هذه القراءة. أضف شطرا آخر أو وضح النطق في ملاحظة التعديل.':e.message==='locks'?'تعذر إنتاج تعديل يحافظ على الأبيات والكلمات المثبتة. جرب توضيح المعنى المطلوب.':e.message==='timeout'?'تأخر اتصال المساعد. حاول مرة أخرى.':aiErrorInfo(e).message;toast(message);const p=document.createElement('p');p.className='notice';p.textContent=message;$(task==='suggest'?'suggestions':'analysis').prepend(p);const diagnostic=aiErrorInfo(e);p.textContent+=` [${diagnostic.code}${diagnostic.status?' / '+diagnostic.status:''}]`;console.warn('Nabra AI:',JSON.stringify(diagnostic));}
  finally{busy=false;button.textContent=old;ids.forEach(k=>$(k).disabled=false);}
 }
 $('diacritizeBtn').onclick=()=>aiAction('diacritize');$('suggestBtn').onclick=()=>aiAction('suggest');
