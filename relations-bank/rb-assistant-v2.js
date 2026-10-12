@@ -51,7 +51,6 @@ async function primeName(){
    nameState=await getNameState();
    if(nameState?.confirmed)return;
    const prompt=(nameState?.name&&nameState.name!=='عضو')?('اسمك '+nameState.name+'، صحيح؟'):'وش اسمك؟';
-   const live=$('#rbAiLive');if(live)live.textContent=prompt;
    append('assistant',prompt);
  }catch(e){console.error(e)}
 }
