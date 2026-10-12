@@ -78,40 +78,13 @@ R3.createOpportunity=async(req,candidate)=>{
   const [c1,c2]=await Promise.all([ins('rb_opportunity_contributions',reqCon),ins('rb_opportunity_contributions',relCon)]);
   R3.contributions.push(c1,c2);save();window.dispatchEvent(new CustomEvent('rbv3:data'));return opp;
 };
-R3.saveAgreement=async(oppId,data,splitRows)=>{
-  const existing=R3.agreementFor(oppId);
-  let agreement;
-  if(existing){agreement=await upd('rb_success_agreements',existing.id,data);Object.assign(existing,agreement)}
-  else{
-    const row={id:RB.cloud?undefined:RB.uuid(),opportunity_id:oppId,circle_id:RB.circleId||'local',
-      created_by:RB.user?.id||'local',...data};if(!row.id)delete row.id;
-    agreement=await ins('rb_success_agreements',row);R3.agreements.unshift(agreement);
-  }
-  if(existing){
-    if(RB.cloud){
-      const {error}=await RB.db.from('rb_success_splits').delete().eq('agreement_id',agreement.id);
-      if(error)throw error;
-    }
-    R3.splits=R3.splits.filter(x=>x.agreement_id!==agreement.id);
-  }
-  if(splitRows?.length){
-    for(const x of splitRows){
-      const row={id:RB.cloud?undefined:RB.uuid(),agreement_id:agreement.id,circle_id:RB.circleId||'local',...x};
-      if(!row.id)delete row.id;
-      R3.splits.push(await ins('rb_success_splits',row));
-    }
-  }
-  save();window.dispatchEvent(new CustomEvent('rbv3:data'));return agreement;
+R3.saveAgreement=async(oppId,data,shares,submit=false)=>{
+  const result=await window.RBGov.api('agreement_save',{opportunity_id:oppId,values:data,shares,submit});
+  await R3.load();return result.agreement;
 };
 R3.recordEvent=async(agreement,event)=>{
-  const row={id:RB.cloud?undefined:RB.uuid(),agreement_id:agreement.id,circle_id:RB.circleId||'local',
-    created_by:RB.user?.id||'local',...event};if(!row.id)delete row.id;
-  const saved=await ins('rb_success_events',row);R3.events.unshift(saved);
-  if(event.event_type===agreement.trigger_event){
-    const updated=await upd('rb_success_agreements',agreement.id,{status:'earned'});
-    Object.assign(agreement,updated);
-  }
-  save();window.dispatchEvent(new CustomEvent('rbv3:data'));return saved;
+  const result=await window.RBGov.api('agreement_event',{agreement_id:agreement.id,event});
+  await R3.load();return result.event;
 };
 R3.updateStage=async(opp,stage)=>{const x=await upd('rb_opportunities',opp.id,{stage});Object.assign(opp,x);window.dispatchEvent(new CustomEvent('rbv3:data'));return x};
 R3.nominate=async(data)=>{

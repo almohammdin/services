@@ -17,12 +17,13 @@ function addGate(){
 function accessState(detail){
  const gate=$('#rbAccessGate');if(!gate)return;
  if(detail?.member){
-   gate.hidden=true;document.body.classList.remove('rb-access-locked');ensureAssistant();return;
+   gate.hidden=true;document.body.classList.remove('rb-access-locked');ensureAssistant();if(card)card.hidden=false;return;
  }
  gate.hidden=false;document.body.classList.add('rb-access-locked');
+ if(card)card.hidden=true;if(window.RelationsBankVoice?.active)stopVoice().catch(()=>{});
  if(detail?.authenticated){
    $('#rbGateTitle').textContent='بنك العلاقات والفرص';
-   $('#rbGatePrimary').textContent='دعوة';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openManage?.();
+   $('#rbGatePrimary').textContent=window.RBGov?.state?.can_create_circle?'إنشاء دائرة':'الدائرة والدعوة';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openManage?.();
    $('#rbGateSecondary').textContent='تسجيل الخروج';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.db?.auth?.signOut?.().then(()=>location.reload());
  }else{
    $('#rbGateTitle').textContent='بنك العلاقات والفرص';
@@ -39,6 +40,10 @@ function append(role,text){
 function setState(state,label,detail=''){
  if(!card)return;card.dataset.state=state||'ready';
  const s=$('#rbAiStatus');if(s)s.textContent=label||'جاهز';
+ const active=$('#rbAiActive'),speaking=['connecting','listening','speaking'].includes(state)||!!window.RelationsBankVoice?.active;
+ if(active)active.hidden=!speaking&&state!=='error';
+ const stop=$('#rbAiStop');if(stop)stop.hidden=!speaking;
+ const mic=$('#rbAiMic');if(mic)mic.textContent=speaking?'إنهاء الصوت':'ابدأ بالصوت';
  const live=$('#rbAiLive');if(live&&detail)live.textContent=detail.replace(/^(أنت:|الوكيل:)\s*/,'').trim();
 }
 async function primeName(){
@@ -56,16 +61,24 @@ function extractNameReply(value){
  const m=text.match(/(?:اسمي|أنا|انا)\s+(.{2,80})$/);
  return (m?.[1]||text).replace(/[.!؟]+$/,'').trim();
 }
+function setPanel(open){
+ const panel=$('#rbAiPanel');if(!panel)return;panel.hidden=!open;
+ $('#rbAiToggle').setAttribute('aria-expanded',String(open));
+ if(open)setTimeout(()=>$('#rbAiText')?.focus(),0);
+}
 function ensureAssistant(){
  if(document.getElementById('rbAiCard'))return;
- const main=document.querySelector('main');if(!main)return setTimeout(ensureAssistant,120);
- card=document.createElement('section');card.id='rbAiCard';card.className='rb-ai-card';card.dataset.state='ready';
- card.innerHTML='<div class="rb-ai-inner"><div class="rb-ai-hero"><button class="rb-ai-mic rb-ai-orb" id="rbAiMic" type="button" aria-label="بدء المحادثة الصوتية"><span class="rb-ai-breath-ring" aria-hidden="true"></span><span class="rb-ai-core-wave" id="rbAiWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="rb-ai-gemini"><b>✦</b> Gemini</span></button><div class="rb-ai-heading"><h2>تحدث مع وكيل العلاقات</h2></div><div class="rb-ai-status"><i class="rb-ai-dot"></i><span id="rbAiStatus">جاهز</span></div><div class="rb-ai-live" id="rbAiLive"></div><div class="rb-ai-hero-actions"><button class="rb-ai-toggle" id="rbAiToggle" type="button" aria-expanded="false">فتح المحادثة</button><button class="rb-ai-stop" id="rbAiStop" type="button">إنهاء</button></div></div><div class="rb-ai-panel" id="rbAiPanel" hidden><div class="rb-ai-chat" id="rbAiChat"></div><form class="rb-ai-input" id="rbAiForm"><input id="rbAiText" autocomplete="off" placeholder="اكتب للوكيل"><button class="rb-ai-send">إرسال</button></form></div></div>';
- main.insertBefore(card,main.firstElementChild);
+ card=document.createElement('section');card.id='rbAiCard';card.className='rb-ai-card rb-ai-float';card.dataset.state='ready';
+ card.innerHTML='<div class="rb-ai-player"><button class="rb-ai-toggle" id="rbAiToggle" type="button" aria-expanded="false" aria-controls="rbAiPanel"><span aria-hidden="true">✦</span><strong>المساعد</strong></button><div class="rb-ai-active" id="rbAiActive" hidden><span class="rb-ai-core-wave" id="rbAiWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span id="rbAiStatus" role="status" aria-live="polite">جاهز</span><button class="rb-ai-stop" id="rbAiStop" type="button" aria-label="إنهاء المحادثة الصوتية" hidden>إنهاء</button></div></div><div class="rb-ai-panel" id="rbAiPanel" role="dialog" aria-labelledby="rbAiHeading" hidden><div class="rb-ai-panel-head"><h2 id="rbAiHeading">وكيل العلاقات</h2><button id="rbAiMinimize" type="button" aria-label="تصغير المساعد">×</button></div><p class="rb-ai-live" id="rbAiLive"></p><button class="rb-ai-mic" id="rbAiMic" type="button">ابدأ بالصوت</button><div class="rb-ai-chat" id="rbAiChat"></div><form class="rb-ai-input" id="rbAiForm"><label class="rb-sr-only" for="rbAiText">اكتب للوكيل</label><input id="rbAiText" autocomplete="off" placeholder="أو اكتب هنا"><button class="rb-ai-send" type="submit">إرسال</button></form></div>';
+ document.body.appendChild(card);
+ const position=()=>{const vv=window.visualViewport;if(!vv)return;card.style.setProperty('--rb-keyboard-offset',Math.max(0,innerHeight-vv.height-vv.offsetTop)+'px');card.style.setProperty('--rb-panel-max-height',Math.max(160,Math.min(470,vv.height-100))+'px');};
+ window.visualViewport?.addEventListener('resize',position);window.visualViewport?.addEventListener('scroll',position);position();
  $('#rbAiForm').onsubmit=e=>{e.preventDefault();sendText($('#rbAiText').value)};
- $('#rbAiToggle').onclick=()=>{const panel=$('#rbAiPanel'),open=panel.hidden;panel.hidden=!open;$('#rbAiToggle').textContent=open?'إغلاق المحادثة':'فتح المحادثة';$('#rbAiToggle').setAttribute('aria-expanded',String(open))};
- $('#rbAiMic').onclick=async()=>{try{if(window.RelationsBankVoice?.active){await stopVoice();return}setState('connecting','أجهز المايك…');await startVoice()}catch(e){console.error(e);setState('error','تعذر تشغيل الصوت')}};
+ $('#rbAiToggle').onclick=()=>setPanel($('#rbAiPanel').hidden);
+ $('#rbAiMinimize').onclick=()=>setPanel(false);
+ $('#rbAiMic').onclick=async()=>{try{if(window.RelationsBankVoice?.active){await stopVoice();return;}setPanel(false);setState('connecting','أجهز المحادثة…');await startVoice();}catch(e){console.error(e);setState('error','تعذر تشغيل الصوت');setPanel(true);}};
  $('#rbAiStop').onclick=()=>stopVoice().catch(()=>{});
+ card.addEventListener('keydown',e=>{if(e.key==='Escape'){setPanel(false);$('#rbAiToggle').focus();}});
  primeName();
 }
 async function sendText(text){
@@ -92,56 +105,8 @@ window.addEventListener('relationsbank:assistant-saved',()=>{try{window.RBV3Dash
 window.addEventListener('relationsbank:access',e=>accessState(e.detail));
 
 function installVoiceOrb(){
-  document.querySelector('.v2-toolbar')?.remove();
-  const kicker=document.querySelector('.v2-kicker');if(kicker&&/V2|V3/.test(kicker.textContent||''))kicker.textContent='بنك العلاقات والفرص';
-  if(document.getElementById('rbVoiceOrbStyle'))return;
-  const style=document.createElement('style');style.id='rbVoiceOrbStyle';style.textContent=`
-    .rb-ai-card{padding:0!important}.rb-ai-inner{padding:28px!important}.rb-ai-hero{gap:12px!important}.rb-ai-heading h2{font-size:24px!important;margin:7px 0 0!important}
-    .rb-ai-orb{
-      position:relative!important;width:132px!important;min-width:0!important;min-height:0!important;aspect-ratio:1!important;
-      border-radius:50%!important;padding:0!important;margin:8px auto 6px!important;overflow:hidden!important;display:grid!important;place-items:center!important;
-      background:linear-gradient(145deg,#174F76 0%,#0D3656 58%,#082A45 100%)!important;
-      border:1px solid rgba(255,255,255,.12)!important;
-      box-shadow:0 22px 54px rgba(5,31,50,.28),inset 0 1px 0 rgba(255,255,255,.06)!important;
-      transition:transform .2s ease,box-shadow .2s ease,background .2s ease!important
-    }
-    .rb-ai-orb:hover{transform:translateY(-2px)}
-    .rb-ai-breath-ring{
-      position:absolute;inset:16px;border-radius:50%;border:1px solid rgba(255,255,255,.11);
-      box-shadow:inset 0 0 28px rgba(255,255,255,.02);pointer-events:none
-    }
-    .rb-ai-mic .rb-ai-core-wave{position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:5px;height:54px}
-    .rb-ai-core-wave i{
-      display:block;width:6px;height:36px;border-radius:999px;
-      background:linear-gradient(180deg,#F7D5AB 0%,#E2A45E 52%,#C9853C 100%);
-      transform:scaleY(.28);transform-origin:center;transition:transform .07s linear,opacity .1s ease;
-      box-shadow:0 0 14px rgba(226,164,94,.18)
-    }
-    .rb-ai-core-wave i:nth-child(1),.rb-ai-core-wave i:nth-child(5){height:24px}
-    .rb-ai-core-wave i:nth-child(2),.rb-ai-core-wave i:nth-child(4){height:36px}
-    .rb-ai-core-wave i:nth-child(3){height:48px}
-    .rb-ai-gemini{
-      position:absolute;z-index:4;bottom:14px;left:50%;transform:translateX(-50%);
-      display:flex!important;align-items:center;gap:4px;color:rgba(255,255,255,.62)!important;
-      font:700 10px Arial,sans-serif;letter-spacing:.01em
-    }
-    .rb-ai-gemini b{color:#E9B979;font-size:11px;line-height:1}
-    .rb-ai-card[data-state="listening"] .rb-ai-orb{
-      background:linear-gradient(145deg,#174F76 0%,#0D3656 64%,#082A45 100%)!important;
-      box-shadow:0 0 0 8px rgba(21,77,116,.07),0 22px 54px rgba(5,31,50,.34)!important
-    }
-    .rb-ai-card[data-state="speaking"] .rb-ai-orb{
-      background:linear-gradient(145deg,#154D74 0%,#0D3656 55%,#071F33 100%)!important;
-      box-shadow:0 0 0 8px rgba(201,133,60,.07),0 22px 54px rgba(5,31,50,.34)!important
-    }
-    .rb-ai-card[data-state="listening"] .rb-ai-breath-ring,
-    .rb-ai-card[data-state="speaking"] .rb-ai-breath-ring{animation:rbBreathRing 1.5s ease-in-out infinite}
-    @keyframes rbBreathRing{50%{inset:11px;border-color:rgba(255,255,255,.18)}}
-    .rb-ai-status{margin-top:4px!important}.rb-ai-panel{width:min(780px,100%);margin-inline:auto!important}
-    @media(max-width:650px){
-      .rb-ai-inner{padding:20px 14px!important}.rb-ai-orb{width:120px!important}.rb-ai-heading h2{font-size:20px!important}
-    }
-  `;document.head.appendChild(style);
+ document.querySelector('.v2-toolbar')?.remove();
+ const kicker=document.querySelector('.v2-kicker');if(kicker&&/V2|V3/.test(kicker.textContent||''))kicker.textContent='بنك العلاقات والفرص';
 }
 let rbWakeLock=null,rbWakeTimer=null,rbVoiceSession=false,rbWavePhase=0;
 async function rbReleaseWake(){clearTimeout(rbWakeTimer);rbWakeTimer=null;if(rbWakeLock){try{await rbWakeLock.release()}catch{}rbWakeLock=null}}

@@ -22,6 +22,7 @@
   let internalWrite = false;
   let syncTimer = null;
   let examplesHidden = false;
+  let guideSeen = false;
   let handleProfile = null;
   let lastCloudFocus = null;
   const owners = { people: new Map(), knowledge: new Map(), introductions: new Map() };
@@ -132,7 +133,7 @@
           </details>
           <div class="cloud-section">
             <strong>كود دعوة الدائرة الحالية</strong>
-            <div class="invite-row"><div class="invite-code" id="cloudInviteCode">—</div><button class="cloud-btn" id="cloudCopyInvite" type="button">نسخ</button></div>
+            <div class="invite-row"><div class="invite-code" id="cloudInviteCode">غير متاح</div><button class="cloud-btn" id="cloudCopyInvite" type="button">نسخ</button></div>
           </div>
           <div class="cloud-section">
             <strong>الانضمام إلى دائرة</strong>
@@ -178,7 +179,7 @@
     document.getElementById('cloudAuthPane').hidden = mode !== 'auth';
     document.getElementById('cloudManagePane').hidden = mode !== 'manage';
     if (mode === 'auth') setAuthMode('signin');
-    if (mode === 'manage') refreshManagePane();
+    if (mode === 'manage') {refreshManagePane();window.RBGov?.renderManagement?.().catch(e=>setMsg('cloudManageMsg',e.message));}
     overlay.querySelector('[role="dialog"]').setAttribute('aria-labelledby',mode==='manage'?'cloudManageTitle':'cloudTitle');
     document.querySelector(mode==='manage'?'#cloudCloseBtn':'#cloudAuthForm input[name="identifier"]')?.focus();
   }
@@ -365,40 +366,12 @@
   async function ensureCircle(){
     const { data: memberships, error: memberError } = await db.from('rb_circle_members').select('circle_id,role').eq('user_id',currentUser.id);
     if (memberError) throw memberError;
+    const roleMap=new Map((memberships||[]).map(m=>[m.circle_id,m.role]));
 
     let ids = (memberships||[]).map(x=>x.circle_id);
-    if (!ids.length) {
-      let platformOwner = false;
-      const { data: ownerRow } = await db.from('rb_platform_bootstrap').select('owner_user_id').eq('id',1).maybeSingle();
-      if(ownerRow?.owner_user_id === currentUser.id) platformOwner = true;
+    if (!ids.length) {currentCircle=null;updateChrome();return false;}
 
-      if(!platformOwner){
-        const { error: bootstrapError } = await db.from('rb_platform_bootstrap').insert({id:1,owner_user_id:currentUser.id});
-        if(!bootstrapError) platformOwner = true;
-      }
-
-      if(platformOwner){
-        const {data:existingOwned}=await db.from('rb_circles').select('id').eq('created_by',currentUser.id).eq('active',true).order('created_at').limit(1);
-        let circleId=existingOwned?.[0]?.id||'';
-        if(!circleId){
-          const { data: circle, error } = await db.from('rb_circles').insert({ name:'دائرة المؤسسين', created_by:currentUser.id }).select('id,name,invite_code,created_by').single();
-          if (error) throw error;
-          circleId=circle.id;
-        }
-        const { error: addError } = await db.from('rb_circle_members').upsert({ circle_id:circleId, user_id:currentUser.id, role:'owner' },{onConflict:'circle_id,user_id'});
-        if (addError) throw addError;
-        ids=[circleId];
-      }else{
-        currentCircle=null;
-        const select=document.getElementById('cloudCircleSelect');
-        if(select)select.hidden=true;
-        updateChrome();
-        setMsg('cloudManageMsg','');
-        return false;
-      }
-    }
-
-    const { data: allCircles, error: circleError } = await db.from('rb_circles').select('id,name,invite_code,created_by,active,is_example').in('id',ids).eq('active',true).order('created_at');
+    const { data: allCircles, error: circleError } = await db.from('rb_circles').select('id,name,invite_code,created_by,active,is_example,partnerships_enabled').in('id',ids).eq('active',true).order('created_at');
     if (circleError) throw circleError;
     let circles=allCircles||[];
     if(examplesHidden){
@@ -416,7 +389,7 @@
 
     const wanted = localStorage.getItem(CIRCLE_KEY);
     const chosen = circles.find(c=>c.id===wanted) || (!wanted&&currentUser.email?.endsWith('@accounts.relations-bank.invalid')?circles.find(c=>c.is_example):null) || circles[0];
-    currentCircle=chosen;
+    currentCircle={...chosen,role:roleMap.get(chosen.id)||'member'};
     nativeSetItem.call(localStorage,CIRCLE_KEY,chosen.id);
     if(select)select.value=chosen.id;
     updateChrome();
@@ -424,7 +397,7 @@
   }
 
   async function selectCircle(id, reload){
-    const { data, error }=await db.from('rb_circles').select('id,name,invite_code,created_by,active,is_example').eq('id',id).single();
+    const { data, error }=await db.from('rb_circles').select('id,name,invite_code,created_by,active,is_example,partnerships_enabled').eq('id',id).single();
     if(error) throw error;
     currentCircle=data;
     nativeSetItem.call(localStorage,CIRCLE_KEY,id);
@@ -559,7 +532,7 @@
       profile.elements.current_password.value='';
     }
     const invite=document.getElementById('cloudInviteCode');
-    if(invite)invite.textContent=currentCircle?.invite_code||'—';
+    if(invite)invite.textContent=currentCircle?.invite_code||'غير متاح';
     setMsg('cloudManageMsg','');
   }
 
@@ -586,18 +559,12 @@
   }
 
   async function createCircleFromUi(){
-    const {data:ownerRow}=await db.from('rb_platform_bootstrap').select('owner_user_id').eq('id',1).maybeSingle();
-    if(ownerRow?.owner_user_id!==currentUser.id){setMsg('cloudManageMsg','إنشاء الدوائر متاح لمالك المنصة فقط.');return}
+    const button=document.getElementById('cloudCreateCircleBtn');if(button.disabled)return;
     const name=String(document.getElementById('cloudNewCircleName')?.value||'').trim();
-    if(name.length<2){setMsg('cloudManageMsg','اكتب اسم الدائرة.');return}
-    setMsg('cloudManageMsg','جارٍ إنشاء الدائرة...');
-    const {data:circle,error}=await db.from('rb_circles').insert({name,created_by:currentUser.id}).select('id,name,invite_code,created_by').single();
-    if(error){console.error(error);setMsg('cloudManageMsg','تعذر إنشاء الدائرة.');return}
-    const {error:memberError}=await db.from('rb_circle_members').insert({circle_id:circle.id,user_id:currentUser.id,role:'owner'});
-    if(memberError){console.error(memberError);setMsg('cloudManageMsg','تعذر ربط الحساب بالدائرة.');return}
-    nativeSetItem.call(localStorage,CIRCLE_KEY,circle.id);
-    await ensureCircle();
-    await selectCircle(circle.id,true);
+    if(name.length<2){setMsg('cloudManageMsg','اكتب اسم الدائرة.');return;}
+    button.disabled=true;setMsg('cloudManageMsg','جارٍ إنشاء دائرتك…');
+    try{const result=await window.RBGov.api('create_circle',{name});nativeSetItem.call(localStorage,CIRCLE_KEY,result.circle.id);await ensureCircle();await selectCircle(result.circle.id,true);}
+    catch(e){setMsg('cloudManageMsg',e.message);}finally{button.disabled=false;}
   }
 
   async function handleSession(session){
@@ -607,10 +574,11 @@
     try{
       const [handle,pref]=await Promise.all([
         db.from('rb_login_handles').select('user_id,username,contact_email').eq('user_id',currentUser.id).maybeSingle(),
-        db.from('rb_example_preferences').select('hidden').eq('user_id',currentUser.id).maybeSingle()
+        db.from('rb_example_preferences').select('hidden,guide_seen').eq('user_id',currentUser.id).maybeSingle()
       ]);
       if(handle.error||pref.error)throw handle.error||pref.error;
-      handleProfile=handle.data;examplesHidden=!!pref.data?.hidden;
+      await window.RBGov?.refresh?.();
+      handleProfile=handle.data;examplesHidden=!!pref.data?.hidden;guideSeen=!!pref.data?.guide_seen;
       await db.from('rb_profiles').upsert({user_id:currentUser.id,display_name:currentUser.user_metadata?.display_name||''},{onConflict:'user_id'});
       const hasCircle=await ensureCircle();
       if(!hasCircle){
@@ -629,6 +597,7 @@
       else openCloud('manage');
       emitAccess();
       renderExamplesGuide();
+      window.RBGov?.refresh?.().then(()=>window.RBGov.renderPendingLink()).catch(()=>{});
     }catch(error){
       console.error('Relations Bank cloud session',error);
       setMsg('cloudManageMsg','تعذر فتح الحساب السحابي.');
@@ -661,18 +630,24 @@
   function renderExamplesGuide(){
     if(!currentCircle)return;
     let banner=document.getElementById('rbExamplesGuide');
-    if(!banner){banner=document.createElement('section');banner.id='rbExamplesGuide';banner.className='rb-examples-guide';document.querySelector('main')?.prepend(banner);}
-    banner.innerHTML=`<div><span class="rb-example-label">${examplesHidden?'مساحة عملك':'جرّب المنصة'}</span><h2>${examplesHidden?'الأمثلة ممسوحة من عرض حسابك':'من علاقة إلى فرصة'}</h2><p>${examplesHidden?'إضافاتك الحقيقية محفوظة. يمكنك إعادة الأمثلة في أي وقت.':'اختر دائرة تحمل كلمة «مثال» من أعلى الصفحة. جميع الأسماء والجهات فيها افتراضية للتوضيح.'}</p></div><div class="rb-example-steps"><span><b>1</b> افتح ملف شخص وعلاقاته</span><span><b>2</b> جرّب طلبًا وشاهد سبب الترشيح</span><span><b>3</b> تابع التعارف حتى يتحول إلى فرصة</span></div><button class="cloud-btn" id="rbExamplesAction" type="button">${examplesHidden?'إعادة الأمثلة':'مسح الأمثلة'}</button><div id="rbExamplesMsg" class="cloud-msg" role="status" aria-live="polite"></div>`;
+    if(!banner){banner=document.createElement('section');banner.id='rbExamplesGuide';banner.className='rb-quick-guide';document.querySelector('main')?.prepend(banner);}
+    banner.innerHTML='<details id="rbGuideDetails" '+(!guideSeen&&!examplesHidden?'open':'')+'><summary>دليل سريع للمنصة</summary><div class="rb-guide-body"><p>اختر دائرة تحمل كلمة «مثال» لتتعرف على المنصة. الأسماء والجهات فيها افتراضية.</p><ol><li><strong>افتح ملف شخص</strong><span>شاهد مجاله وعلاقاته وما يستطيع المساعدة فيه.</span></li><li><strong>جرّب طلبًا</strong><span>راجع المرشحين وسبب ترشيح كل شخص.</span></li><li><strong>تابع الفرصة</strong><span>التعارف والمكافأة يداران وفق الصلاحيات والموافقات.</span></li></ol><button class="cloud-btn" id="rbGuideDone" type="button">فهمت</button></div></details><div class="rb-guide-tools"><button class="cloud-btn" id="rbExamplesAction" type="button">'+(examplesHidden?'إعادة الأمثلة':'مسح الأمثلة')+'</button>'+(examplesHidden?'<span>إضافاتك محفوظة</span>':'')+'</div><p id="rbExamplesMsg" role="status" aria-live="polite"></p>';
+    const markSeen=async()=>{
+      if(guideSeen)return;
+      const saved=await db.from('rb_example_preferences').upsert({user_id:currentUser.id,hidden:examplesHidden,guide_seen:true},{onConflict:'user_id'});
+      if(!saved.error)guideSeen=true;
+    };
+    document.getElementById('rbGuideDone').onclick=()=>{document.getElementById('rbGuideDetails').open=false;markSeen();};
+    document.getElementById('rbGuideDetails').addEventListener('toggle',e=>{if(!e.target.open)markSeen();});
     document.getElementById('rbExamplesAction').onclick=async()=>{
       const button=document.getElementById('rbExamplesAction');button.disabled=true;
       try{
         clearTimeout(syncTimer);await syncRaw(localStorage.getItem(STORAGE_KEY)||'');
         const next=!examplesHidden;
-        const result=await db.from('rb_example_preferences').upsert({user_id:currentUser.id,hidden:next},{onConflict:'user_id'});
+        const result=await db.from('rb_example_preferences').upsert({user_id:currentUser.id,hidden:next,guide_seen:true},{onConflict:'user_id'});
         if(result.error)throw result.error;
-        examplesHidden=next;
-        await ensureCircle();
-        await hydrateFromCloud(true);
+        examplesHidden=next;guideSeen=true;
+        await ensureCircle();await hydrateFromCloud(true);
       }catch{setMsg('rbExamplesMsg','تعذر تحديث الأمثلة الآن. حاول مجددًا.');button.disabled=false;}
     };
   }

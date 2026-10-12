@@ -76,3 +76,22 @@ body.rb-access-locked main,body.rb-access-locked footer{visibility:hidden}
 .rb-ai-live{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(70vw,720px);color:rgba(255,255,255,.52)}
 .rb-gate-card p,.rb-gate-invite{display:none}
 @media(max-width:650px){.rb-ai-mic{min-height:124px}.rb-ai-mic-orbit{width:64px;height:64px}.rb-ai-secondary{grid-template-columns:1fr}}
+
+/* Compact assistant, independent of page content. */
+.rb-ai-card.rb-ai-float{position:fixed;inset-inline-end:16px;bottom:calc(max(14px,env(safe-area-inset-bottom)) + var(--rb-keyboard-offset,0px));z-index:1200;width:auto;max-width:calc(100vw - 28px);margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;color:#0d3656}
+.rb-ai-card.rb-ai-float:after{display:none}.rb-ai-float [hidden],.rb-access-locked .rb-ai-float{display:none!important}
+.rb-ai-player{display:flex;align-items:center;gap:7px;padding:5px;border:1px solid #9ab3c4;border-radius:18px;background:#0d3656;box-shadow:0 10px 30px rgba(7,31,51,.18);color:#fff}
+.rb-ai-float .rb-ai-toggle{display:flex;align-items:center;gap:8px;min-height:42px;padding:7px 12px;margin:0;border:0;background:transparent;color:#fff;font-size:12px;white-space:nowrap}.rb-ai-toggle>span{color:#e9b979;font-size:21px}
+.rb-ai-active{display:flex;align-items:center;gap:8px;min-width:0;padding-inline-end:4px}.rb-ai-active #rbAiStatus{font-size:10px;max-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rb-ai-float .rb-ai-core-wave{display:flex!important;align-items:center;gap:3px;width:32px;height:25px;flex-shrink:0}.rb-ai-core-wave i{display:block;width:4px;height:15px;border-radius:4px;background:#e9b979;transform:scaleY(.25);transform-origin:center}.rb-ai-core-wave i:nth-child(2),.rb-ai-core-wave i:nth-child(4){height:21px}.rb-ai-core-wave i:nth-child(3){height:25px}
+.rb-ai-float .rb-ai-stop{min-height:36px;padding:6px 8px;border-color:#c7a58a;background:rgba(255,255,255,.08);color:#fff;font-size:10px}.rb-ai-float[data-state="listening"] .rb-ai-core-wave i{background:#b0dcc2}.rb-ai-float[data-state="error"] #rbAiStatus{color:#ffd1ca}
+.rb-ai-float .rb-ai-panel{position:absolute;bottom:calc(100% + 10px);inset-inline-end:0;width:min(340px,calc(100vw - 28px));max-height:var(--rb-panel-max-height,470px);overflow:auto;margin:0;padding:17px;border:1px solid #beced7;border-radius:20px;background:#fffefc;box-shadow:0 16px 48px rgba(7,31,51,.2)}
+.rb-ai-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.rb-ai-panel-head h2{font-size:20px!important;color:#0d3656;margin:0!important}.rb-ai-panel-head button{width:36px;height:36px;border:1px solid #dce4e8;border-radius:11px;background:#f4f7f8;color:#0d3656;font-size:20px}
+.rb-ai-float .rb-ai-live{min-height:0;max-width:none;margin:9px 0;color:#58707e;font-size:12px;white-space:normal;line-height:1.7}
+.rb-ai-float .rb-ai-mic{width:100%;min-width:0;min-height:42px;margin:8px 0 12px;padding:9px 12px;border-radius:12px;background:#0d3656;color:#fff;text-align:center;font-size:12px;display:block}
+.rb-ai-float .rb-ai-chat{max-height:220px;margin:0;padding:0;display:grid;gap:8px}.rb-ai-float .rb-ai-msg{font-size:12px;line-height:1.7;color:#203e52;background:#eef4f6;border-color:#dbe6eb}.rb-ai-float .rb-ai-msg.user{background:#fff4e6;color:#725330;border-color:#eed8b9}.rb-ai-float .rb-ai-msg.system{color:#805d32;background:#fff8ef}
+.rb-ai-float .rb-ai-input{display:flex;gap:7px;margin-top:12px}.rb-ai-float .rb-ai-input input{width:100%;min-width:0;padding:10px;border:1px solid #c8d6de;border-radius:11px;background:#fff;color:#173b53;font-size:13px}.rb-ai-float .rb-ai-send{padding:8px 11px;border:0;border-radius:11px;background:#0d3656;color:#fff;font-size:12px}
+.rb-ai-float button:focus-visible,.rb-ai-float input:focus-visible{outline:3px solid #c9853c;outline-offset:3px}.rb-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:650px){.rb-ai-card.rb-ai-float{inset-inline-end:12px;max-width:calc(100vw - 24px)}.rb-ai-float .rb-ai-panel{width:min(340px,calc(100vw - 24px))}.rb-ai-float .rb-ai-toggle{padding:7px 9px}.rb-ai-active #rbAiStatus{max-width:90px}.rb-ai-player{gap:3px}.rb-ai-active{gap:5px}}
+@media print{.rb-ai-float{display:none!important}}
+
