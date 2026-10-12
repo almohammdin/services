@@ -46,3 +46,11 @@ export function analyze(text,meter='auto',ending='saturate'){
 }
 const joins='بتثجحخسشصضطظعغفقكلمنهيئ';
 export function extendWord(word,count){let clusters=Array.from(word.matchAll(/[\u0621-\u064A][\u064B-\u065F\u0670]*/g));if(clusters.map(x=>x[0]).join('')!==word)return word;const slots=[];for(let i=0;i<clusters.length-1;i++){const c=clusters[i][0][0],n=clusters[i+1][0][0];if(joins.includes(c)&&n!=='ء'&&!(c==='ل'&&'اأإآ'.includes(n)))slots.push(i);}if(!slots.length)return word;const additions={};for(let i=0;i<Math.min(40,Math.max(0,count));i++){const slot=slots[(slots.length-1)-(i%slots.length)];additions[slot]=(additions[slot]||0)+1;}return clusters.map((m,i)=>m[0]+'ـ'.repeat(additions[i]||0)).join('');}
+
+// Rank one shared meter for the entire poem, not a separate guess per line.
+export function inferPoem(poem,ending='saturate'){
+ const lines=splitPoem(poem).flat().filter(Boolean),readings=lines.map(s=>scan(s,ending));
+ if(!lines.length||readings.some(s=>s.unknown.length||!s.pattern||s.pattern.length>200))return {ready:false,candidates:[],lines:lines.length};
+ const candidates=METERS.map(m=>{const results=lines.map(s=>analyze(s,m.name,ending));return {name:m.name,matched:results.filter(r=>r.exact).length,total:lines.length,distance:results.reduce((a,r)=>a+(r.best?.distance??200),0),score:results.reduce((a,r)=>a+(r.best?.distance??200)/Math.max(1,r.pattern.length),0)/lines.length,results};}).sort((a,b)=>a.score-b.score||b.matched-a.matched);
+ const [first,second]=candidates;return {ready:true,candidates:candidates.slice(0,3),best:first,ambiguous:!!second&&Math.abs(second.score-first.score)<.025,lines:lines.length};
+}

@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {planLayout,wrapText} from '../layout.js';
+import {inferPoem} from '../prosody.js';
+const verses=[['على قدر أهل العزم تأتي العزائم','وتأتي على قدر الكرام المكارم']];
+const plan=n=>planLayout({verses,fontSize:n,measure:s=>s.length*n*.45,format:'content'});
+assert.equal(plan(40).font,40);assert.equal(plan(80).font,80,'size slider must not be canceled by fitting');
+assert.ok(plan(40).H<1080,'short poem should not create a blank square');
+assert.ok(plan(80).H>plan(40).H,'adaptive canvas grows with text');
+const words='أهلا وسهلا بكم في نبرة';assert.equal(wrapText(words,s=>s.length*10,70).join(' '),words,'wrapping must preserve every word');
+const p=planLayout({verses:Array(40).fill(verses[0]),fontSize:70,measure:s=>s.length*30,format:'square'});assert.equal(p.font,70);assert.equal(p.overflow,true);
+const full='عَلَى قَدْرِ أَهْلِ الْعَزْمِ تَأْتِي الْعَزَائِمُ * وَتَأْتِي عَلَى قَدْرِ الْكِرَامِ الْمَكَارِمُ';const r=inferPoem(full);assert.equal(r.best.name,'الطويل');assert.equal(r.best.matched,2);
+assert.equal(inferPoem('على قدر أهل العزم تأتي العزائم').ready,false,'unvocalized words need a reading, not invented certainty');
+console.log('PASS: adaptive dimensions, actual font growth, preserved text, overflow and poem-wide meter inference');
