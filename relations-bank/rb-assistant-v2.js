@@ -1,149 +1,47 @@
-import {executeRBTool} from './rb-assistant-tools.js?v=1';
-import {start as startVoice,stop as stopVoice} from './rb-voice.js?v=2';
-import {getNameState,saveMemberName} from './rb-name-tool.js?v=1';
-
-const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-let history=[],busy=false,card=null,lastTranscript='',nameState=null;
-
-function addGate(){
- if(document.getElementById('rbAccessGate'))return;
- document.body.classList.add('rb-access-locked');
- const gate=document.createElement('section');gate.id='rbAccessGate';gate.className='rb-access-gate';
- gate.innerHTML='<div class="rb-gate-card"><div class="rb-gate-mark">✦</div><h1 id="rbGateTitle">بنك العلاقات والفرص</h1><div class="rb-gate-actions"><button class="rb-gate-primary" id="rbGatePrimary">دخول</button><button class="rb-gate-soft" id="rbGateSecondary">دعوة</button></div></div>';
- document.body.appendChild(gate);
- $('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openAuth?.();
-  $('#rbGateSecondary').textContent='عندي دعوة';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openSignup?.();
+import {executeAITool} from './rb-assistant-tools.js?v=20261012-5';
+import {confirm,taskNames} from './rb-assistant-context.js?v=20261012-5';
+import {publicContext,consentKey} from './rb-assistant-privacy.js?v=20261012-5';
+import {start as startVoice,stop as stopVoice} from './rb-voice.js?v=20261012-5';
+const $=(s,r=document)=>r.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const micSvg='<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="11" y="3" width="10" height="17" rx="5"/><path d="M6 14v2a10 10 0 0 0 20 0v-2M16 26v4M11 30h10"/></svg>';
+let card=null,entry=null,history=[],busy=false,identity='',entryVisible=true,minimized=false,epoch=0,tour=null,speech='',speechTimer=0,waveRAF=0,waveLevel=0,consentResolve=null;
+function append(role,text,local=false){const value=String(text||'').trim();if(!value||!card)return;if(!local){history.push({role,text:value.slice(0,2200)});history=history.slice(-20);}const el=document.createElement('div');el.className='rb-ai-msg '+role;el.textContent=value;$('#rbAiChat').append(el);$('#rbAiChat').scrollTop=$('#rbAiChat').scrollHeight;}
+function dock(){if(!card)return;const active=!!window.RelationsBankVoice?.active;card.hidden=!(active||!entryVisible||minimized||!$('#rbAiPanel').hidden);entry?.classList.toggle('is-active',active);}
+function panel(open){if(!card)return;$('#rbAiPanel').hidden=!open;$('#rbAiToggle').setAttribute('aria-expanded',String(open));minimized=!open;dock();if(open)$('#rbAiText').focus();}
+async function consent(){if(localStorage.getItem(consentKey())==='yes')return true;panel(true);$('#rbAiConsent').hidden=false;return new Promise(resolve=>{consentResolve=resolve;});}
+function consentAnswer(yes){if(yes)localStorage.setItem(consentKey(),'yes');$('#rbAiConsent').hidden=true;consentResolve?.(yes);consentResolve=null;}
+function state(value,label,detail=''){if(!card)return;card.dataset.state=value;$('#rbAiStatus').textContent=label||'جاهز';const active=!!window.RelationsBankVoice?.active;$('#rbAiStop').hidden=!active;$('#rbAiEntryMic').setAttribute('aria-pressed',String(active));$('#rbAiMic').textContent=active?'إنهاء الصوت':'ابدأ بالصوت';$('#rbAiActive').hidden=!active;$('#rbAiEntryStatus').textContent=active?label:'جاهز للصوت والكتابة';if(detail)$('#rbAiLive').textContent=detail;dock();}
+async function voice(){try{if(window.RelationsBankVoice?.active){await stopVoice();return;}if(!await consent())return;panel(false);minimized=true;await startVoice();}catch{append('system','تعذر بدء الصوت. يمكنك الكتابة للمساعد.',true);state('error','تعذر الصوت');panel(true);}}
+function goals(){const canManage=window.RBGov?.isChair?.()||window.RBGov?.state?.is_platform_owner;$('#rbAiGoals').innerHTML=Object.entries(taskNames).filter(([k])=>k!=='manage'||canManage).map(([k,v])=>`<button type="button" data-ai-task="${k}">${v}</button>`).join('');$('#rbAiGoals').querySelectorAll('button').forEach(b=>b.onclick=()=>{window.RBAssistantContext.setTask(b.dataset.aiTask);append('assistant',b.dataset.aiTask==='profile'?'نبني ملفك المهني باختيارك. في أي مجال تقدر تساعد الآخرين؟':b.dataset.aiTask==='request'?'وش الحاجة اللي تبحث عن مساعدة فيها؟':b.dataset.aiTask==='person'?'هل تريد إضافة شخص جديد، أو علاقة لشخص موجود؟':b.dataset.aiTask==='manage'?'وش تبي تدير في دائرتك؟':'أقدر أشرح الأمثلة أو أفتح لك القسم الذي تريد فهمه.',true);});}
+function pending(){if(!card)return;const item=window.RBAssistantContext.pending,box=$('#rbAiPending');box.hidden=!item;if(!item)return;box.innerHTML=`<strong>راجع قبل الحفظ</strong><p>${esc(item.title)}</p><small>الدائرة: ${esc(item.circleName)} · المشاركة: ${esc(item.scope)}</small><div><button type="button" id="rbAiConfirm">حفظ</button><button type="button" id="rbAiCancel">إلغاء</button></div>`;$('#rbAiConfirm').onclick=save;$('#rbAiCancel').onclick=()=>{window.RBAssistantContext.cancel();append('system','أُلغيت المسودة.',true);};panel(true);}
+async function save(){if(busy)return;busy=true;const capture=epoch;try{const r=await confirm();if(capture===epoch)append('system',r.ok?'تم الحفظ في '+r.circle+'. '+r.summary:r.error,true);return r;}catch(e){if(capture===epoch)append('system',e.message||'تعذر الحفظ.',true);return {ok:false};}finally{busy=false;}}
+const confirmWords=text=>/^(نعم\s+)?(احفظ|احفظها|احفظه|احفظ الطلب|احفظ الشخص|احفظ التعديل|احفظ المعلومات|أكد الحفظ|تأكيد الحفظ|موافق احفظ)[.!؟\s]*$/.test(String(text||'').trim());
+function confirmFromSpeech(text){if(!window.RBAssistantContext.pending)return;speech=(speech+' '+text).slice(-160);clearTimeout(speechTimer);speechTimer=setTimeout(async()=>{if(confirmWords(speech)){speech='';const r=await save();window.dispatchEvent(new CustomEvent('relationsbank:voice-save-result',{detail:{ok:!!r?.ok,persisted:!!r?.persisted}}));}else speech='';},650);}
+async function sendText(text){const value=String(text||'').trim();if(!value||busy)return;if(!await consent())return;$('#rbAiText').value='';append('user',value);if(window.RBAssistantContext.pending&&confirmWords(value)){await save();return;}
+ const capture=epoch;busy=true;state('working','أفهم طلبك…');try{const ctx=await publicContext();if(!window.RelationsBankAssistantAI)await import('./rb-text-ai.js?v=20261012-5');const result=await window.RelationsBankAssistantAI.ask({message:value,context:ctx,history:history.slice(-10)});if(capture!==epoch)return;
+  for(const call of result.tool_calls||[]){if(capture!==epoch)return;await executeAITool(call.name,call.arguments||{});}if(window.RBAssistantContext.pending)append('assistant','جهزت الإضافة. راجع الشخص والدائرة والمشاركة، ثم اضغط حفظ أو قل احفظ.',true);else if(result.reply)append('assistant',result.reply.replace(/تم (الحفظ|حفظ المعلومات|حفظ البيانات)/g,'يمكنك مراجعة النتيجة داخل المنصة'));
+ }catch{if(capture===epoch)append('system','تعذر تشغيل المساعد الآن. يمكنك متابعة استخدام المنصة.',true);}finally{if(capture===epoch){busy=false;state('ready','جاهز');}}}
+const tourSteps=[{title:'تعرف على شخص وعلاقاته',section:'people',text:'هذه أسماء افتراضية. افتح شخصًا لترى مجاله، وما يستطيع المساعدة فيه، وطريق الوصول إليه.'},{title:'ابدأ من طلب',section:'requests',text:'الطلب يصف الحاجة. تظهر أسماء مرشحين وسبب ترشيح كل شخص، اعتمادًا على المعلومات والعلاقات المتاحة.'},{title:'تابع التعارف والفرصة',section:'opportunities',text:'بعد موافقة صاحب العلاقة يبدأ التعارف. يتابع الرئيس الفرصة، وتحدد المكافأة باتفاق معتمد والحدث المتفق عليه.'},{title:'شاهد كيف تتحرك الدوائر',section:'circles',text:'الرسومات توضح حسابًا بأدوار متعددة، وشخصًا بلا حساب، وفرصة مشتركة مع بقاء بيانات الدوائر مستقلة.'}];
+function endTour(){tour=null;$('#rbAiTour').hidden=true;}
+function renderTour(){const s=tourSteps[tour.index],box=$('#rbAiTour');box.hidden=false;box.innerHTML=`<small>شرح الأمثلة ${tour.index+1} من ${tourSteps.length}</small><strong>${s.title}</strong><p>${s.text}</p><div><button type="button" id="rbAiTourBack" ${tour.index?'':'disabled'}>السابق</button><button type="button" id="rbAiTourNext">${tour.index===tourSteps.length-1?'إنهاء الشرح':'التالي'}</button><button type="button" id="rbAiTourClose">إغلاق</button></div>`;$('#rbAiTourBack').onclick=()=>{tour.index--;visitTour();};$('#rbAiTourNext').onclick=()=>{if(tour.index===tourSteps.length-1){endTour();return;}tour.index++;visitTour();};$('#rbAiTourClose').onclick=endTour;}
+function visitTour(){window.RBAssistantContext.navigate({section:tourSteps[tour.index].section});if(tour.index===3)window.RBCircleScenes?.show('opportunity');renderTour();}
+function startTour(){mount();panel(false);minimized=true;window.RBAssistantContext.setTask('help');$('#rbAiWelcome').hidden=true;const a=window.relationsBankCloud.getAccess();
+ if(!a.circle?.is_example){const select=$('#cloudCircleSelect'),options=[...(select?.options||[])].filter(o=>o.textContent.includes('مثال'));const box=$('#rbAiTour');box.hidden=false;box.innerHTML='<strong>اختر دائرة أمثلة لبدء الشرح</strong><p>الشرح يستخدم أسماء افتراضية. إضافاتك محفوظة.</p>'+options.map(o=>`<button type="button" data-tour-circle="${esc(o.value)}">${esc(o.textContent)}</button>`).join('')+'<button type="button" id="rbAiTourClose">إغلاق</button>';$('#rbAiTourClose').onclick=endTour;box.querySelectorAll('[data-tour-circle]').forEach(b=>b.onclick=()=>{tour={index:0,waiting:b.dataset.tourCircle};select.value=b.dataset.tourCircle;select.dispatchEvent(new Event('change',{bubbles:true}));});if(!options.length)box.querySelector('p').textContent='الأمثلة مخفية. استخدم إعادة الأمثلة من الدليل ثم افتح الشرح.';dock();return;}
+ tour={index:0};visitTour();dock();}
+async function welcome(){const a=window.relationsBankCloud?.getAccess?.();if(!a?.member||!a.ready)return;const id=identity;if(await window.relationsBankCloud.claimWelcome?.()){if(id!==identity)return;$('#rbAiWelcome').hidden=false;$('#rbAiWelcome').innerHTML='<strong>تحب أشرح لك المنصة بالأمثلة؟</strong><span>جولة قصيرة تساعدك تبدأ. هذا العرض يظهر مرة واحدة.</span><div><button type="button" id="rbAiWelcomeStart">اشرح لي</button><button type="button" id="rbAiWelcomeLater">لاحقًا</button></div>';$('#rbAiWelcomeStart').onclick=startTour;$('#rbAiWelcomeLater').onclick=()=>$('#rbAiWelcome').hidden=true;}}
+function mount(){if(card)return;entry=document.createElement('section');entry.id='rbAiEntry';entry.className='rb-ai-entry';entry.innerHTML=`<div class="rb-ai-entry-copy"><span>مساعد العلاقات والفرص</span><h2>قل وش تحتاج… والمساعد يرتبها معك</h2><p>اطلب بالصوت أو الكتابة. أفتح لك الأقسام، وأبحث في دائرتك، وأجهز الإضافات لتراجعها.</p><div class="rb-ai-entry-actions"><button type="button" id="rbAiEntryText">اكتب للمساعد</button><button type="button" id="rbAiExamples">شرح الأمثلة</button></div></div><button type="button" id="rbAiEntryMic" aria-label="ابدأ المحادثة الصوتية" aria-pressed="false"><span class="rb-ai-orb">${micSvg}<i>✦</i></span><strong>اضغط وابدأ الحديث</strong><small id="rbAiEntryStatus">جاهز للصوت والكتابة</small></button><div id="rbAiWelcome" class="rb-ai-welcome" hidden></div>`;
+ document.querySelector('main')?.prepend(entry);card=document.createElement('section');card.id='rbAiCard';card.className='rb-ai-float';card.hidden=true;
+ card.innerHTML=`<div class="rb-ai-player"><button type="button" id="rbAiToggle" aria-expanded="false" aria-controls="rbAiPanel" aria-label="فتح مساعد العلاقات">${micSvg}<span>المساعد</span></button><div id="rbAiActive" hidden><span id="rbAiWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span id="rbAiStatus" role="status" aria-live="polite">جاهز</span><button type="button" id="rbAiStop" hidden>إنهاء</button></div></div><section class="rb-ai-panel" id="rbAiPanel" role="dialog" aria-labelledby="rbAiHeading" hidden><div class="rb-ai-panel-head"><h2 id="rbAiHeading">وش تبي ننجز الآن؟</h2><button type="button" id="rbAiMinimize" aria-label="تصغير المساعد">×</button></div><p class="rb-ai-context" id="rbAiContext"></p><div id="rbAiGoals" class="rb-ai-goals"></div><button type="button" id="rbAiMic">ابدأ بالصوت</button><div id="rbAiConsent" class="rb-ai-pending" hidden><strong>قبل استخدام المساعد</strong><p>ما تكتبه أو تقوله بالصوت يرسل إلى Google Gemini. نرسل معه الهدف والقسم والصلاحية فقط. أسماء الأشخاص وتفاصيل ملفات الدائرة تبقى داخل المنصة ولا تُضاف تلقائيًا إلى سياق الخدمة.</p><button type="button" id="rbAiConsentYes">أوافق وأبدأ</button><button type="button" id="rbAiConsentNo">العودة للمنصة</button></div><div id="rbAiLive" class="rb-ai-live" role="status"></div><div class="rb-ai-chat" id="rbAiChat" role="log" aria-live="polite"></div><div id="rbAiPending" class="rb-ai-pending" hidden></div><form id="rbAiForm" class="rb-ai-input"><label class="rb-sr-only" for="rbAiText">طلبك للمساعد</label><input id="rbAiText" autocomplete="off" placeholder="اكتب وش تحتاج"><button type="submit">إرسال</button></form><p class="rb-ai-provider-note">Google Gemini للصوت والكتابة. يمكنك إيقاف المساعد أو استخدام المنصة يدويًا.</p></section><section class="rb-ai-tour" id="rbAiTour" aria-label="شرح الأمثلة" hidden></section>`;
+ document.body.append(card);$('#rbAiToggle').onclick=()=>panel($('#rbAiPanel').hidden);$('#rbAiEntryText').onclick=()=>panel(true);$('#rbAiEntryMic').onclick=voice;$('#rbAiMic').onclick=voice;$('#rbAiStop').onclick=()=>stopVoice();$('#rbAiExamples').onclick=startTour;$('#rbAiMinimize').onclick=()=>panel(false);$('#rbAiConsentYes').onclick=()=>consentAnswer(true);$('#rbAiConsentNo').onclick=()=>consentAnswer(false);$('#rbAiForm').onsubmit=e=>{e.preventDefault();sendText($('#rbAiText').value);};card.addEventListener('keydown',e=>{if(e.key==='Escape')panel(false);});
+ new IntersectionObserver(entries=>{entryVisible=entries[0].isIntersecting;dock();},{threshold:.1}).observe(entry);
+ const position=()=>{const vv=window.visualViewport;if(!vv)return;card.style.setProperty('--rb-keyboard-offset',Math.max(0,innerHeight-vv.height-vv.offsetTop)+'px');card.style.setProperty('--rb-panel-max-height',Math.max(180,Math.min(570,vv.height-110))+'px');};window.visualViewport?.addEventListener('resize',position);position();goals();
 }
-function accessState(detail){
- const gate=$('#rbAccessGate');if(!gate)return;
- if(detail?.member){
-   gate.hidden=true;document.body.classList.remove('rb-access-locked');ensureAssistant();if(card)card.hidden=false;return;
- }
- gate.hidden=false;document.body.classList.add('rb-access-locked');
- if(card)card.hidden=true;if(window.RelationsBankVoice?.active)stopVoice().catch(()=>{});
- if(detail?.authenticated){
-   $('#rbGateTitle').textContent='بنك العلاقات والفرص';
-   $('#rbGatePrimary').textContent=window.RBGov?.state?.can_create_circle?'إنشاء دائرة':'الدائرة والدعوة';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openManage?.();
-   $('#rbGateSecondary').textContent='تسجيل الخروج';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.db?.auth?.signOut?.().then(()=>location.reload());
- }else{
-   $('#rbGateTitle').textContent='بنك العلاقات والفرص';
-   $('#rbGatePrimary').textContent='دخول';$('#rbGatePrimary').onclick=()=>window.relationsBankCloud?.openAuth?.();
-    $('#rbGateSecondary').textContent='عندي دعوة';$('#rbGateSecondary').onclick=()=>window.relationsBankCloud?.openSignup?.();
- }
-}
-function append(role,text){
- const value=String(text||'').trim();if(!value)return;
- history.push({role,text:value.slice(0,1800)});history=history.slice(-20);
- const host=$('#rbAiChat');if(!host)return;
- const el=document.createElement('div');el.className='rb-ai-msg '+role;el.textContent=value;host.appendChild(el);host.scrollTop=host.scrollHeight;
-}
-function setState(state,label,detail=''){
- if(!card)return;card.dataset.state=state||'ready';
- const s=$('#rbAiStatus');if(s)s.textContent=label||'جاهز';
- const active=$('#rbAiActive'),speaking=['connecting','listening','speaking'].includes(state)||!!window.RelationsBankVoice?.active;
- if(active)active.hidden=!speaking&&state!=='error';
- const stop=$('#rbAiStop');if(stop)stop.hidden=!speaking;
- const mic=$('#rbAiMic');if(mic)mic.textContent=speaking?'إنهاء الصوت':'ابدأ بالصوت';
- const live=$('#rbAiLive');if(live&&detail)live.textContent=detail.replace(/^(أنت:|الوكيل:)\s*/,'').trim();
-}
-async function primeName(){
- try{
-   nameState=await getNameState();
-   if(nameState?.confirmed)return;
-   const prompt=(nameState?.name&&nameState.name!=='عضو')?('اسمك '+nameState.name+'، صحيح؟'):'وش اسمك؟';
-   append('assistant',prompt);
- }catch(e){console.error(e)}
-}
-function extractNameReply(value){
- const text=String(value||'').trim();
- if(nameState?.name&&nameState.name!=='عضو'&&/^(اي|ايوه|أيوه|نعم|صح|صحيح|تمام|يب|yes)$/i.test(text))return nameState.name;
- const m=text.match(/(?:اسمي|أنا|انا)\s+(.{2,80})$/);
- return (m?.[1]||text).replace(/[.!؟]+$/,'').trim();
-}
-function setPanel(open){
- const panel=$('#rbAiPanel');if(!panel)return;panel.hidden=!open;
- $('#rbAiToggle').setAttribute('aria-expanded',String(open));
- if(open)setTimeout(()=>$('#rbAiText')?.focus(),0);
-}
-function ensureAssistant(){
- if(document.getElementById('rbAiCard'))return;
- card=document.createElement('section');card.id='rbAiCard';card.className='rb-ai-card rb-ai-float';card.dataset.state='ready';
- card.innerHTML='<div class="rb-ai-player"><button class="rb-ai-toggle" id="rbAiToggle" type="button" aria-expanded="false" aria-controls="rbAiPanel"><span aria-hidden="true">✦</span><strong>المساعد</strong></button><div class="rb-ai-active" id="rbAiActive" hidden><span class="rb-ai-core-wave" id="rbAiWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span id="rbAiStatus" role="status" aria-live="polite">جاهز</span><button class="rb-ai-stop" id="rbAiStop" type="button" aria-label="إنهاء المحادثة الصوتية" hidden>إنهاء</button></div></div><div class="rb-ai-panel" id="rbAiPanel" role="dialog" aria-labelledby="rbAiHeading" hidden><div class="rb-ai-panel-head"><h2 id="rbAiHeading">وكيل العلاقات</h2><button id="rbAiMinimize" type="button" aria-label="تصغير المساعد">×</button></div><p class="rb-ai-live" id="rbAiLive"></p><button class="rb-ai-mic" id="rbAiMic" type="button">ابدأ بالصوت</button><div class="rb-ai-chat" id="rbAiChat"></div><form class="rb-ai-input" id="rbAiForm"><label class="rb-sr-only" for="rbAiText">اكتب للوكيل</label><input id="rbAiText" autocomplete="off" placeholder="أو اكتب هنا"><button class="rb-ai-send" type="submit">إرسال</button></form></div>';
- document.body.appendChild(card);
- const position=()=>{const vv=window.visualViewport;if(!vv)return;card.style.setProperty('--rb-keyboard-offset',Math.max(0,innerHeight-vv.height-vv.offsetTop)+'px');card.style.setProperty('--rb-panel-max-height',Math.max(160,Math.min(470,vv.height-100))+'px');};
- window.visualViewport?.addEventListener('resize',position);window.visualViewport?.addEventListener('scroll',position);position();
- $('#rbAiForm').onsubmit=e=>{e.preventDefault();sendText($('#rbAiText').value)};
- $('#rbAiToggle').onclick=()=>setPanel($('#rbAiPanel').hidden);
- $('#rbAiMinimize').onclick=()=>setPanel(false);
- $('#rbAiMic').onclick=async()=>{try{if(window.RelationsBankVoice?.active){await stopVoice();return;}setPanel(false);setState('connecting','أجهز المحادثة…');await startVoice();}catch(e){console.error(e);setState('error','تعذر تشغيل الصوت');setPanel(true);}};
- $('#rbAiStop').onclick=()=>stopVoice().catch(()=>{});
- card.addEventListener('keydown',e=>{if(e.key==='Escape'){setPanel(false);$('#rbAiToggle').focus();}});
- primeName();
-}
-async function sendText(text){
- const value=String(text||'').trim();if(!value||busy)return;$('#rbAiText').value='';append('user',value);busy=true;setState('working','أفهم كلامك…');
- try{
-   const ctx=(await executeRBTool('get_member_context',{}))?.context||{};
-   if(!window.RelationsBankAssistantAI)await import('./rb-text-ai.js?v=1');
-   const result=await window.RelationsBankAssistantAI.ask({message:value,context:ctx,history:history.slice(-10)});
-   let saved=0,failed=0;
-   for(const call of result?.tool_calls||[]){
-     const out=await executeRBTool(call.name,call.arguments||{});if(out?.ok){if(out.persisted)saved++}else failed++;
-   }
-   if(result?.reply)append('assistant',result.reply);
-   if(saved)append('system','تم تحديث ملفك الداخلي بـ '+saved+' معلومة.');
-   if(failed)append('system','في معلومة احتاجت توضيح وما حفظتها.');
-   const gap=await executeRBTool('get_next_gap',{});
-   if(!result?.reply&&gap?.next?.prompt)append('assistant',gap.next.prompt);
-   setState('ready','جاهز');
- }catch(e){console.error(e);append('system','تعذر تشغيل الذكاء الآن. بياناتك الحالية بقيت كما هي.');setState('error','تعذر تشغيل الذكاء')}
- finally{busy=false}
-}
-window.addEventListener('relationsbank:voice-state',e=>{const d=e.detail||{};setState(d.state,d.label,d.detail)});
-window.addEventListener('relationsbank:assistant-saved',()=>{try{window.RBV3Dashboard?.render?.()}catch{}});
-window.addEventListener('relationsbank:access',e=>accessState(e.detail));
-
-function installVoiceOrb(){
- document.querySelector('.v2-toolbar')?.remove();
- const kicker=document.querySelector('.v2-kicker');if(kicker&&/V2|V3/.test(kicker.textContent||''))kicker.textContent='بنك العلاقات والفرص';
-}
-let rbWakeLock=null,rbWakeTimer=null,rbVoiceSession=false,rbWavePhase=0;
-async function rbReleaseWake(){clearTimeout(rbWakeTimer);rbWakeTimer=null;if(rbWakeLock){try{await rbWakeLock.release()}catch{}rbWakeLock=null}}
-async function rbAcquireWake(){if(!rbVoiceSession||document.visibilityState!=='visible'||!('wakeLock' in navigator))return;if(rbWakeLock&&!rbWakeLock.released)return;try{rbWakeLock=await navigator.wakeLock.request('screen');rbWakeLock.addEventListener('release',()=>{rbWakeLock=null})}catch{}}
-function rbSpeechActivity(){if(!rbVoiceSession)return;rbAcquireWake();clearTimeout(rbWakeTimer);rbWakeTimer=setTimeout(()=>rbReleaseWake(),120000)}
-let rbWaveTarget=0,rbWaveCurrent=0,rbWaveSource='user',rbWaveRAF=null;
-function rbAnimateWave(){
-  const bars=[...document.querySelectorAll('#rbAiWave i')];
-  rbWaveCurrent+=(rbWaveTarget-rbWaveCurrent)*.3;
-  if(rbWaveTarget<.02)rbWaveCurrent*=.86;
-  if(bars.length){
-    rbWavePhase+=.18;
-    const patterns=[.68,.88,1,.88,.68];
-    bars.forEach((bar,i)=>{
-      const organic=.45+.55*Math.abs(Math.sin(rbWavePhase+i*.9));
-      const energy=Math.min(1,.08+rbWaveCurrent*patterns[i]*organic*1.35);
-      bar.style.transform='scaleY('+(.24+energy*.95)+')';
-      bar.style.opacity=String(.58+energy*.42);
-    });
-  }
-  if(rbVoiceSession||rbWaveCurrent>.01)rbWaveRAF=requestAnimationFrame(rbAnimateWave);
-  else{rbWaveRAF=null;bars.forEach(b=>{b.style.transform='scaleY(.16)';b.style.opacity='.45'})}
-}
-function rbSetWave(level,source='user'){
-  rbWaveTarget=Math.max(0,Math.min(1,Number(level)||0));rbWaveSource=source;
-  const orb=document.getElementById('rbAiMic');if(orb)orb.dataset.voiceSource=source;
-  if(!rbWaveRAF)rbWaveRAF=requestAnimationFrame(rbAnimateWave);
-}
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&rbVoiceSession&&rbWakeTimer)rbAcquireWake()});
-window.addEventListener('relationsbank:voice-state',e=>{
-  const d=e.detail||{},state=d.state||'';
-  if(['connecting','listening','speaking','working'].includes(state)){rbVoiceSession=true;if(state==='speaking'||d.detail)rbSpeechActivity();else if(state==='connecting')rbSpeechActivity()}
-  if(['stopped','error'].includes(state)){rbVoiceSession=false;rbReleaseWake();rbSetWave(0)}
-});
-window.addEventListener('relationsbank:voice-level',e=>{
-  const d=e.detail||{};rbVoiceSession=true;rbSetWave(d.level||0,d.source||'user');
-  if((d.level||0)>.035)rbSpeechActivity();
-});
-installVoiceOrb();
-addGate();
-setTimeout(()=>{const a=window.relationsBankCloud?.getAccess?.();if(a)accessState({authenticated:a.authenticated,member:a.member,circle:a.circle,user:a.user})},600);
+function accessState(){const a=window.relationsBankCloud?.getAccess?.()||{},gate=$('#rbAccessGate');if(gate)gate.hidden=!a.loading;document.body.classList.toggle('rb-access-locked',!a.member);const next=(a.user?.id||'')+':'+(a.circle?.id||'');
+ if(next!==identity){identity=next;epoch++;history=[];busy=false;speech='';clearTimeout(speechTimer);consentResolve?.(false);consentResolve=null;if(window.RelationsBankVoice?.active)stopVoice();if(card){$('#rbAiChat').replaceChildren();$('#rbAiPending').hidden=true;$('#rbAiPanel').hidden=true;$('#rbAiWelcome').hidden=true;$('#rbAiConsent').hidden=true;}}
+ if(!a.member){if(entry)entry.hidden=true;if(card)card.hidden=true;return;}mount();entry.hidden=false;$('#rbAiContext').textContent=a.circle.name+' · '+(window.RBGov?.isChair?.()?'رئيس الدائرة':'مستخدم');goals();dock();welcome();if(tour?.waiting===a.circle.id&&a.ready){tour.waiting='';visitTour();}}
+function animateWave(t){if(!window.RelationsBankVoice?.active){waveRAF=0;return;}$('#rbAiWave')?.querySelectorAll('i').forEach((b,i)=>{b.style.transform='scaleY('+(.2+waveLevel*(.6+.4*Math.abs(Math.sin(t/190+i))))+')';});waveLevel*=.92;waveRAF=requestAnimationFrame(animateWave);}
+window.addEventListener('relationsbank:voice-level',e=>{waveLevel=Math.max(waveLevel,Number(e.detail?.level)||0);if(!waveRAF&&window.RelationsBankVoice?.active)waveRAF=requestAnimationFrame(animateWave);});
+window.addEventListener('relationsbank:voice-state',e=>state(e.detail?.state,e.detail?.label,e.detail?.detail));window.addEventListener('relationsbank:assistant-context',pending);window.addEventListener('relationsbank:access',accessState);
+window.addEventListener('relationsbank:assistant-tool-result',e=>{const out=e.detail;if(out?.candidates)append('assistant',out.candidates.length?out.candidates.map((x,i)=>(i+1)+'. '+x.name+': '+x.reason.join('، ')).join('\n'):'لم أجد مسارًا مناسبًا من المعلومات المتاحة.',true);if(out&&!out.ok)append('system',out.error,true);});
+window.RBAssistant={startTour,endTour,confirmFromSpeech,getContext:publicContext,get tourStep(){return tour?tourSteps[tour.index]:null;},open:()=>panel(true)};
+const gate=document.createElement('section');gate.id='rbAccessGate';gate.className='rb-access-gate';gate.innerHTML='<div class="rb-gate-card"><div class="rb-gate-mark">✦</div><h1>بنك العلاقات والفرص</h1><p class="rb-loading-message" role="status">جارٍ فتح المنصة…</p></div>';document.body.append(gate);accessState();

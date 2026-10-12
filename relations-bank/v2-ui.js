@@ -7,7 +7,7 @@ function openLayer(html){
   const l=$('#v2ModalLayer');l.innerHTML=html;l.hidden=false;document.body.style.overflow='hidden';
   l.onclick=e=>{if(e.target===l||e.target.closest('[data-v2-close]'))closeLayer()};
 }
-function closeLayer(){const l=$('#v2ModalLayer');if(l){l.hidden=true;l.innerHTML=''}document.body.style.overflow=''}
+function closeLayer(){window.dispatchEvent(new CustomEvent('relationsbank:focus',{detail:null}));const l=$('#v2ModalLayer');if(l){l.hidden=true;l.innerHTML=''}document.body.style.overflow=''}
 
 function buildUI(){
   $('.hero')?.setAttribute('hidden','');$('.dashboard-section')?.setAttribute('hidden','');
@@ -58,6 +58,7 @@ function renderProfiles(){
   $$('[data-v2-open-person]',el).forEach(b=>b.onclick=()=>openPersonDetail(b.dataset.v2OpenPerson));
 }
 function openPersonDetail(id){
+  window.dispatchEvent(new CustomEvent('relationsbank:focus',{detail:{type:'person',id,circle_id:window.RBV2.circleId}}));
   const p=RB.person(id),c=RB.completeness(id),rs=RB.rels(id),am=RB.answerMap(id),secs=RB.usefulSectors(id);
   openLayer(`<section class="v2-modal"><div class="v2-modal-head"><div><span class="v2-label">ملف الذكاء العلاقاتية</span><h2>${RB.esc(p.name)}</h2><div style="color:#6A7780;font-size:12px">${RB.esc([p.company,p.role_title||p.role,p.field||p.sector,p.city].filter(Boolean).join(' · '))}</div></div><button class="v2-close" data-v2-close>×</button></div><div class="v2-person-detail"><div class="v2-metric"><b>${c.score}%</b><span>اكتمال الملف</span></div><div class="v2-metric"><b>${rs.length}</b><span>علاقات موثقة</span></div><div class="v2-metric"><b>${secs.length?RB.esc(secs.join('، ')):'لم تتضح بعد'}</b><span>أين يمكن أن يفيد</span></div><div class="v2-metric"><b>${RB.pastScore(id)>0?'له سجل سابق':'لم يسجل بعد'}</b><span>ذاكرة النجاح</span></div></div><div class="v2-gaps" style="margin:14px 0">${c.gaps.map(g=>'<span class="v2-gap">السؤال التالي: '+RB.esc(g)+'</span>').join('')}</div><div class="v2-actions" style="justify-content:flex-start"><button class="v2-btn primary" id="v2UpdatePerson">أضف معلومة للشخص</button><button class="v2-btn" id="v2AddRelManual">أضف علاقة يدويا</button></div><h3 style="color:#0D3656;margin:18px 0 8px">العلاقات المثبتة</h3><div class="v2-list">${rs.length?rs.map(r=>{const s=RB.relationshipStrength(r);return `<div class="v2-rel"><strong>${RB.esc(r.target_org)} ${r.target_role?'· '+RB.esc(r.target_role):''}</strong><span>${RB.esc([r.sector,r.city,RB.strengthWord(s.score),...s.factors].filter(Boolean).join(' · '))}</span></div>`}).join(''):'<div class="v2-note">لم تسجل علاقات مفصلة بعد.</div>'}</div><h3 style="color:#0D3656;margin:18px 0 8px">ما الذي نعرفه عنه؟</h3><div class="v2-list">${Object.entries(am).length?Object.entries(am).map(([k,v])=>`<div class="v2-rel"><strong>${RB.esc(RB.questionLabel(k))}</strong><span>${RB.esc(typeof v==='string'?v:JSON.stringify(v))}</span></div>`).join(''):'<div class="v2-note">المقابلة الذاتية لم تبدأ بعد.</div>'}</div></section>`);
   window.RBGov?.renderPerson?.(id);

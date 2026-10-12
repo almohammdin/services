@@ -1,6 +1,6 @@
-#cloudAuthPane>p,
-#cloudAuthPane #cloudAuthMsg + .cloud-section,
-#rbGateText,
-#rbGateInvite{display:none!important}
-#rbGateTitle{margin-bottom:14px}
-.rb-gate-card{max-width:480px}
+#cloudAuthPane>p:not(.cloud-invitation){display:none}#rbGateText,#rbGateInvite{display:none!important}
+.cloud-auth-page{background:radial-gradient(ellipse at 30% 20%,#174F76,#071F33);z-index:150}.cloud-auth-page .cloud-card{width:min(440px,100%);padding:30px;max-height:calc(100dvh - 32px)}
+.cloud-auth-brand{font-size:12px;font-weight:900;color:#9B672E}#cloudTitle{margin:5px 0 18px}.cloud-password{display:flex;align-items:center;gap:5px}.cloud-password input{min-width:0;flex:1}.cloud-password button{flex:none;border:0;background:#EEF3F6;border-radius:9px;min-height:40px;padding:8px;color:#0D3656;font-size:11px}
+.cloud-auth-page .cloud-actions{display:grid;gap:8px}.cloud-auth-page .cloud-actions button{width:100%;min-height:46px}.cloud-auth-page .cloud-hint{font-size:11px;line-height:1.8}.cloud-text-button{border:0;background:transparent;color:#0D3656;font-size:12px;text-decoration:underline;padding:12px 0}.cloud-invitation{padding:10px;border-radius:12px;background:#EAF3EE;color:#165A3D;font-size:12px}.cloud-invitation[hidden],#cloudRecovery[hidden],#cloudAuthForm[hidden]{display:none}#cloudRecovery p{font-size:13px;line-height:1.9;color:#5E6C76}
+#cloudInviteCode{display:none}.rb-gate-card{max-width:440px}.rb-loading-message{font-size:14px;color:#5E6C76}
+@media(max-width:600px){.cloud-auth-page{padding:16px}.cloud-auth-page .cloud-card{padding:24px 20px;border-radius:22px}.top-actions{gap:5px;flex-wrap:wrap}.cloud-password button{min-height:44px}}

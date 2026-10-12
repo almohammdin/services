@@ -23,13 +23,14 @@
   let syncTimer = null;
   let examplesHidden = false;
   let guideSeen = false;
+  let sessionLoading=true,inviteLabel='',welcomeClaimed=false;
   let handleProfile = null;
   let lastCloudFocus = null;
   const owners = { people: new Map(), knowledge: new Map(), introductions: new Map() };
   const nativeSetItem = Storage.prototype.setItem;
 
   function emitAccess(){
-    window.dispatchEvent(new CustomEvent('relationsbank:access',{detail:{authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle?{id:currentCircle.id,name:currentCircle.name}:null,user:currentUser?{id:currentUser.id,email:currentUser.email||''}:null,invite_pending:!!localStorage.getItem(PENDING_INVITE_KEY)}}));
+    window.dispatchEvent(new CustomEvent('relationsbank:access',{detail:{authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle?{id:currentCircle.id,name:currentCircle.name}:null,user:currentUser?{id:currentUser.id,email:currentUser.email||''}:null,loading:sessionLoading,ready:cloudReady,invite_pending:!!localStorage.getItem(PENDING_INVITE_KEY)}}));
   }
 
   const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -91,19 +92,19 @@
       <section class="cloud-card" role="dialog" aria-modal="true" aria-labelledby="cloudTitle">
         <button class="cloud-close" id="cloudCloseBtn" type="button" aria-label="إغلاق">×</button>
         <div id="cloudAuthPane">
-          <h2 id="cloudTitle">بنك العلاقات والفرص</h2>
+          <span class="cloud-auth-brand">بنك العلاقات والفرص</span><h2 id="cloudTitle">تسجيل الدخول</h2><p id="cloudInvitationTitle" class="cloud-invitation" hidden></p>
           <form id="cloudAuthForm" class="cloud-form">
             <label id="cloudNameField" hidden><span>الاسم</span><input name="display_name" type="text" autocomplete="name" placeholder="الاسم"></label>
-            <label><span id="cloudIdentifierLabel">اسم المستخدم أو البريد الإلكتروني</span><input name="identifier" type="text" autocomplete="username" dir="ltr" maxlength="320" required></label>
+            <label><span id="cloudIdentifierLabel">اسم المستخدم</span><input name="identifier" type="text" autocomplete="username" dir="ltr" maxlength="320" required></label>
             <label id="cloudContactField" hidden><span>البريد الإلكتروني (اختياري)</span><input name="contact_email" type="email" autocomplete="email" dir="ltr" maxlength="320"></label>
             <label id="cloudInviteField" hidden><span>كود الدعوة</span><input name="invite_code" type="text" dir="ltr" maxlength="12" pattern="[a-fA-F0-9]{12}" placeholder="الصق كود الدعوة هنا"></label>
-            <label><span>كلمة المرور</span><input name="password" type="password" autocomplete="current-password" required></label>
+            <label><span>كلمة المرور</span><span class="cloud-password"><input name="password" type="password" autocomplete="current-password" required><button id="cloudShowPassword" type="button" aria-label="إظهار كلمة المرور" aria-pressed="false">إظهار</button></span></label>
             <p id="cloudAuthHint" class="cloud-hint">استخدم بيانات حسابك للدخول.</p>
             <div class="cloud-actions">
               <button class="cloud-btn primary" id="cloudAuthSubmit" type="submit">دخول</button>
-              <button class="cloud-btn" id="cloudSignupBtn" type="button">إنشاء حساب</button>
+              <button class="cloud-btn" id="cloudSignupBtn" type="button">لدي دعوة لإنشاء حساب</button>
             </div>
-          </form>
+          </form><button class="cloud-text-button" type="button" id="cloudForgotBtn">نسيت كلمة المرور؟</button><div id="cloudRecovery" hidden><p>استعادة الحساب بالبريد تحتاج بريدًا موثقًا وخدمة إرسال. الخدمة غير مفعلة حاليًا. تواصل مع مالك المنصة لمساعدتك في استعادة حسابك.</p><button type="button" class="cloud-btn" id="cloudRecoveryBack">العودة للدخول</button></div>
           <div class="cloud-msg" id="cloudAuthMsg" role="status" aria-live="polite"></div>
         </div>
         <div id="cloudManagePane" hidden>
@@ -132,8 +133,8 @@
             </form>
           </details>
           <div class="cloud-section">
-            <strong>كود دعوة الدائرة الحالية</strong>
-            <div class="invite-row"><div class="invite-code" id="cloudInviteCode">غير متاح</div><button class="cloud-btn" id="cloudCopyInvite" type="button">نسخ</button></div>
+            <strong>دعوة شخص إلى الدائرة</strong>
+            <div class="invite-row"><div class="invite-code" id="cloudInviteCode">غير متاح</div><button class="cloud-btn" id="cloudCopyInvite" type="button">نسخ رابط الدعوة</button></div>
           </div>
           <div class="cloud-section">
             <strong>الانضمام إلى دائرة</strong>
@@ -159,6 +160,9 @@
     document.getElementById('cloudProfileForm')?.addEventListener('submit', saveProfile);
     document.getElementById('cloudPasswordForm')?.addEventListener('submit', savePassword);
     document.getElementById('cloudSignupBtn')?.addEventListener('click', toggleAuthMode);
+    document.getElementById('cloudShowPassword').onclick=e=>{const input=document.querySelector('#cloudAuthForm input[name="password"]'),show=input.type==='password';input.type=show?'text':'password';e.currentTarget.textContent=show?'إخفاء':'إظهار';e.currentTarget.setAttribute('aria-pressed',String(show));};
+    document.getElementById('cloudForgotBtn').onclick=()=>{document.getElementById('cloudRecovery').hidden=false;document.getElementById('cloudAuthForm').hidden=true;document.getElementById('cloudForgotBtn').hidden=true;};
+    document.getElementById('cloudRecoveryBack').onclick=()=>setAuthMode('signin');
     document.getElementById('cloudLogoutBtn')?.addEventListener('click', async () => { await db.auth.signOut(); closeCloud(); location.reload(); });
     document.getElementById('cloudRefreshBtn')?.addEventListener('click', async () => { await hydrateFromCloud(true); });
     document.getElementById('cloudCopyInvite')?.addEventListener('click', copyInvite);
@@ -176,6 +180,8 @@
     if (!overlay) return;
     if(overlay.hidden)lastCloudFocus=document.activeElement;
     overlay.hidden = false;
+    overlay.classList.toggle('cloud-auth-page',mode==='auth'&&!currentUser);
+    document.getElementById('cloudCloseBtn').hidden=mode==='auth'&&!currentUser;
     document.getElementById('cloudAuthPane').hidden = mode !== 'auth';
     document.getElementById('cloudManagePane').hidden = mode !== 'manage';
     if (mode === 'auth') setAuthMode('signin');
@@ -183,7 +189,7 @@
     overlay.querySelector('[role="dialog"]').setAttribute('aria-labelledby',mode==='manage'?'cloudManageTitle':'cloudTitle');
     document.querySelector(mode==='manage'?'#cloudCloseBtn':'#cloudAuthForm input[name="identifier"]')?.focus();
   }
-  function closeCloud(){ const o=document.getElementById('cloudOverlay'); if(o)o.hidden=true;lastCloudFocus?.focus?.(); }
+  function closeCloud(){ if(!currentUser)return;const o=document.getElementById('cloudOverlay'); if(o)o.hidden=true;lastCloudFocus?.focus?.(); }
 
   function setMsg(id, msg){ const el=document.getElementById(id); if(el)el.textContent=msg||''; }
 
@@ -197,20 +203,24 @@
     const submit=document.getElementById('cloudAuthSubmit');
     const toggle=document.getElementById('cloudSignupBtn');
     const password=form.elements.password;
-    if(nameField)nameField.hidden=!signup;
-    if(nameInput){nameInput.required=signup;if(!signup)nameInput.value=''}
+    if(nameField)nameField.hidden=true;
+    if(nameInput){nameInput.required=false;if(!signup)nameInput.value=''}
     if(submit)submit.textContent=signup?'إنشاء الحساب':'دخول';
-    if(toggle)toggle.textContent=signup?'لدي حساب':'إنشاء حساب';
+    if(toggle)toggle.textContent=signup?'لدي حساب بالفعل':'لدي دعوة لإنشاء حساب';
     if(password)password.autocomplete=signup?'new-password':'current-password';
     if(password){password.minLength=signup?12:1;password.maxLength=256;}
     const identifier=form.elements.identifier;
     if(identifier){identifier.maxLength=signup?30:320;identifier.pattern=signup?'[a-zA-Z][a-zA-Z0-9_]{2,29}':'.*';}
-    document.getElementById('cloudIdentifierLabel').textContent=signup?'اسم المستخدم':'اسم المستخدم أو البريد الإلكتروني';
-    document.getElementById('cloudContactField').hidden=!signup;
-    document.getElementById('cloudInviteField').hidden=!signup;
-    form.elements.invite_code.required=signup;
+    document.getElementById('cloudIdentifierLabel').textContent='اسم المستخدم';
+    document.getElementById('cloudContactField').hidden=true;
+    const personInvite=new URLSearchParams(location.search).get('person_invite')||'';
+    const hasInvitation=!!localStorage.getItem(PENDING_INVITE_KEY)||/^[a-f0-9]{64}$/.test(personInvite);
+    document.getElementById('cloudInviteField').hidden=!signup||hasInvitation;
+    form.elements.invite_code.required=signup&&!hasInvitation;
     form.elements.invite_code.value=localStorage.getItem(PENDING_INVITE_KEY)||form.elements.invite_code.value||'';
-    document.getElementById('cloudAuthHint').textContent=signup?'إنشاء الحساب يتطلب دعوة. اختر اسم مستخدم وكلمة مرور من 12 حرفًا على الأقل.':'استخدم بيانات حسابك للدخول.';
+    document.getElementById('cloudAuthHint').textContent=signup?'اختر اسم مستخدم يبدأ بحرف إنجليزي، وكلمة مرور من 12 حرفًا على الأقل. تكمل بياناتك لاحقًا.':'اكتب اسم المستخدم وكلمة المرور للدخول إلى دائرتك.';
+    document.getElementById('cloudAuthForm').hidden=false;document.getElementById('cloudRecovery').hidden=true;document.getElementById('cloudForgotBtn').hidden=signup;
+    const invitation=document.getElementById('cloudInvitationTitle');invitation.hidden=!inviteLabel;invitation.textContent=inviteLabel?'دعوة إلى '+inviteLabel:'';
     const title=document.getElementById('cloudTitle');
     if(title)title.textContent=signup?'إنشاء حساب':'تسجيل الدخول';
     setMsg('cloudAuthMsg','');
@@ -251,7 +261,7 @@
   async function signUp(){
     const form = document.getElementById('cloudAuthForm');
     const fd = new FormData(form);
-    const name = String(fd.get('display_name')||'').trim();
+    const name = String(fd.get('display_name')||fd.get('identifier')||'').trim();
     const username = String(fd.get('identifier')||'').trim().toLowerCase();
     const contact_email = String(fd.get('contact_email')||'').trim();
     const password = String(fd.get('password')||'');
@@ -260,10 +270,11 @@
 
     setMsg('cloudAuthMsg','جارٍ إنشاء الحساب...');
     const pendingInvite=String(fd.get('invite_code')||'').trim().toLowerCase();
-    if(!/^[a-f0-9]{12}$/.test(pendingInvite)){setMsg('cloudAuthMsg','أدخل كود دعوة صالحًا لإنشاء الحساب.');return;}
+    const personInvite=new URLSearchParams(location.search).get('person_invite')||'';
+    if(!/^[a-f0-9]{12}$/.test(pendingInvite)&&!/^[a-f0-9]{64}$/.test(personInvite)){setMsg('cloudAuthMsg','افتح رابط الدعوة الذي أرسله لك رئيس الدائرة، أو أدخل كود الدعوة.');return;}
     localStorage.setItem(PENDING_INVITE_KEY,pendingInvite);
     const {data,error}=await db.functions.invoke('rb-invite-signup',{body:{
-      display_name:name,username,contact_email,password,invite_code:pendingInvite
+      display_name:name,username,contact_email,password,invite_code:pendingInvite,person_invite:personInvite
     }});
 
     if(error||!data?.ok){
@@ -271,10 +282,13 @@
       if(code==='invite_required'||code==='invalid_invite'){setMsg('cloudAuthMsg','الدعوة غير صالحة.');return}
       if(code==='exists'){setMsg('cloudAuthMsg','البريد مسجل مسبقا. استخدم تسجيل الدخول.');return}
       if(code==='username_taken'){setMsg('cloudAuthMsg','اسم المستخدم مستخدم. اختر اسمًا آخر.');return;}
+      if(code==='rate_limit'){setMsg('cloudAuthMsg','محاولات كثيرة. انتظر قليلًا ثم حاول مجددًا.');return;}
       setMsg('cloudAuthMsg','تعذر إنشاء الحساب الآن.');return;
     }
 
     if(data.circle_id) nativeSetItem.call(localStorage,CIRCLE_KEY,data.circle_id);
+    localStorage.removeItem(PENDING_INVITE_KEY);
+    const signupUrl=new URL(location.href);signupUrl.searchParams.delete('invite');history.replaceState(null,'',signupUrl);
     const signed=await invokeAccount({action:'signin',identifier:username,password});
     if(signed.error){setMsg('cloudAuthMsg','تم إنشاء الحساب. حاول تسجيل الدخول.');return;}
     const sessionResult=await db.auth.setSession(signed.session);
@@ -380,7 +394,7 @@
       const keep=new Set((real.data||[]).map(x=>x.circle_id));
       circles=circles.filter(c=>!c.is_example||keep.has(c.id));
     }
-    if (!circles?.length) return false;
+    if (!circles?.length) {currentCircle=null;return false;}
 
     const select=document.getElementById('cloudCircleSelect');
     if(select){
@@ -399,7 +413,7 @@
   async function selectCircle(id, reload){
     const { data, error }=await db.from('rb_circles').select('id,name,invite_code,created_by,active,is_example,partnerships_enabled').eq('id',id).single();
     if(error) throw error;
-    currentCircle=data;
+    currentCircle=data;cloudReady=false;emitAccess();
     nativeSetItem.call(localStorage,CIRCLE_KEY,id);
     updateChrome();
     await hydrateFromCloud(reload);
@@ -448,8 +462,9 @@
       updateChrome();
       if(forceReload || prev!==next){
         sessionStorage.setItem('rb_cloud_hydrated','1');
-        location.reload();
+        window.dispatchEvent(new CustomEvent('relationsbank:cloud-data',{detail:remote}));
       }
+      await window.RBV2?.load?.();emitAccess();
     }catch(error){
       console.error('Relations Bank hydrate',error);
       cloudReady=false;
@@ -570,7 +585,7 @@
   async function handleSession(session){
     currentUser=session?.user||null;
     cloudReady=false;
-    if(!currentUser){ currentCircle=null; updateChrome(); emitAccess(); return; }
+    if(!currentUser){ currentCircle=null;sessionLoading=false;updateChrome();emitAccess();openCloud('auth');if(localStorage.getItem(PENDING_INVITE_KEY)||new URLSearchParams(location.search).has('person_invite'))setAuthMode('signup');return; }
     try{
       const [handle,pref]=await Promise.all([
         db.from('rb_login_handles').select('user_id,username,contact_email').eq('user_id',currentUser.id).maybeSingle(),
@@ -592,15 +607,15 @@
           }
         }
       }
-      updateChrome();
-      if(currentCircle) await hydrateFromCloud(false);
+      sessionLoading=false;updateChrome();
+      if(currentCircle) {await hydrateFromCloud(false);closeCloud();}
       else openCloud('manage');
       emitAccess();
       renderExamplesGuide();
       window.RBGov?.refresh?.().then(()=>window.RBGov.renderPendingLink()).catch(()=>{});
     }catch(error){
       console.error('Relations Bank cloud session',error);
-      setMsg('cloudManageMsg','تعذر فتح الحساب السحابي.');
+      sessionLoading=false;emitAccess();openCloud('manage');setMsg('cloudManageMsg','تعذر تحميل دائرتك. اضغط تحديث البيانات للمحاولة مجددًا.');
     }
   }
 
@@ -609,7 +624,9 @@
     if(/^[a-f0-9]{12}$/i.test(invite)){
       localStorage.setItem(PENDING_INVITE_KEY,invite);
     }
-    buildUi();
+    buildUi();emitAccess();
+    const personInvite=new URLSearchParams(location.search).get('person_invite')||'';
+    if(invite||personInvite){try{const r=await db.functions.invoke('rb-invite-signup',{body:{action:'inspect_invite',invite_code:invite,person_invite:personInvite}});inviteLabel=r.data?.circle_name||'';}catch{}}
     const joinInput=document.getElementById('cloudJoinCode');
     if(joinInput&&invite)joinInput.value=invite;
     updateChrome();
@@ -631,7 +648,7 @@
     if(!currentCircle)return;
     let banner=document.getElementById('rbExamplesGuide');
     if(!banner){banner=document.createElement('section');banner.id='rbExamplesGuide';banner.className='rb-quick-guide';document.querySelector('main')?.prepend(banner);}
-    banner.innerHTML='<details id="rbGuideDetails" '+(!guideSeen&&!examplesHidden?'open':'')+'><summary>دليل سريع للمنصة</summary><div class="rb-guide-body"><p>اختر دائرة تحمل كلمة «مثال» لتتعرف على المنصة. الأسماء والجهات فيها افتراضية.</p><ol><li><strong>افتح ملف شخص</strong><span>شاهد مجاله وعلاقاته وما يستطيع المساعدة فيه.</span></li><li><strong>جرّب طلبًا</strong><span>راجع المرشحين وسبب ترشيح كل شخص.</span></li><li><strong>تابع الفرصة</strong><span>التعارف والمكافأة يداران وفق الصلاحيات والموافقات.</span></li></ol><button class="cloud-btn" id="rbGuideDone" type="button">فهمت</button></div></details><div class="rb-guide-tools"><button class="cloud-btn" id="rbExamplesAction" type="button">'+(examplesHidden?'إعادة الأمثلة':'مسح الأمثلة')+'</button>'+(examplesHidden?'<span>إضافاتك محفوظة</span>':'')+'</div><p id="rbExamplesMsg" role="status" aria-live="polite"></p>';
+    banner.innerHTML='<details id="rbGuideDetails" '+''+'><summary>دليل سريع للمنصة</summary><div class="rb-guide-body"><p>اختر دائرة تحمل كلمة «مثال» لتتعرف على المنصة. الأسماء والجهات فيها افتراضية.</p><ol><li><strong>افتح ملف شخص</strong><span>شاهد مجاله وعلاقاته وما يستطيع المساعدة فيه.</span></li><li><strong>جرّب طلبًا</strong><span>راجع المرشحين وسبب ترشيح كل شخص.</span></li><li><strong>تابع الفرصة</strong><span>التعارف والمكافأة يداران وفق الصلاحيات والموافقات.</span></li></ol><button class="cloud-btn" id="rbGuideDone" type="button">فهمت</button></div></details><div class="rb-guide-tools"><button class="cloud-btn" id="rbExamplesAction" type="button">'+(examplesHidden?'إعادة الأمثلة':'مسح الأمثلة')+'</button>'+(examplesHidden?'<span>إضافاتك محفوظة</span>':'')+'</div><p id="rbExamplesMsg" role="status" aria-live="polite"></p>';
     const markSeen=async()=>{
       if(guideSeen)return;
       const saved=await db.from('rb_example_preferences').upsert({user_id:currentUser.id,hidden:examplesHidden,guide_seen:true},{onConflict:'user_id'});
@@ -651,6 +668,15 @@
       }catch{setMsg('rbExamplesMsg','تعذر تحديث الأمثلة الآن. حاول مجددًا.');button.disabled=false;}
     };
   }
-  window.relationsBankCloud={db,filterExamples,examplesVisible:()=>!examplesHidden,hydrate:()=>hydrateFromCloud(true),getAccess:()=>({authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle,user:currentUser}),openAuth:()=>openCloud('auth'),openSignup:()=>{openCloud('auth');setAuthMode('signup');},openManage:()=>openCloud('manage')};
+  async function claimWelcome(){
+    if(!currentUser||guideSeen||welcomeClaimed)return false;
+    const key='rb_welcome_seen:'+currentUser.id;if(localStorage.getItem(key))return false;
+    welcomeClaimed=true;localStorage.setItem(key,'1');
+    const inserted=await db.from('rb_example_preferences').upsert({user_id:currentUser.id,hidden:examplesHidden,guide_seen:false},{onConflict:'user_id',ignoreDuplicates:true});
+    if(inserted.error)return false;
+    const result=await db.from('rb_example_preferences').update({guide_seen:true}).eq('user_id',currentUser.id).eq('guide_seen',false).select('user_id');
+    guideSeen=true;return !result.error&&!!result.data?.length;
+  }
+  window.relationsBankCloud={claimWelcome,db,filterExamples,examplesVisible:()=>!examplesHidden,hydrate:()=>hydrateFromCloud(true),getAccess:()=>({authenticated:!!currentUser,member:!!currentCircle,circle:currentCircle,user:currentUser,loading:sessionLoading,ready:cloudReady}),openAuth:()=>openCloud('auth'),openSignup:()=>{openCloud('auth');setAuthMode('signup');},openManage:()=>openCloud('manage')};
   init();
 })();
