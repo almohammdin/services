@@ -7,7 +7,7 @@
   const db=window.relationsBankCloud?.db;if(!db)throw Error('الاتصال غير جاهز.');
   const {data,error}=await db.functions.invoke('rb-governance',{body:{action,...body}});
   let code=data?.error;
-  if(error){console.warn('تعذر الاتصال بخدمة الصلاحيات',{type:error.name,status:error.context?.status});try{code=(await error.context.json()).error}catch{code='operation_failed';}}
+  if(error){console.warn('تعذر الاتصال بخدمة الصلاحيات '+JSON.stringify({type:error.name,status:error.context?.status}));try{code=(await error.context.json()).error}catch{code='operation_failed';}}
   if(error||code)throw Error(labels[code]||'تعذر إكمال العملية. حاول مجددًا.');
   return data||{};
  };

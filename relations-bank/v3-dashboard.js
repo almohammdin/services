@@ -22,7 +22,7 @@ function build(){
 }
 function renderStats(){
   const el=$('#v3Stats');if(!el)return;
-  $('[data-stage-count]').forEach(n=>{n.textContent=R3.opportunities.filter(x=>x.stage===n.dataset.stageCount).length+' فرصة'});
+  $$('[data-stage-count]').forEach(n=>{n.textContent=R3.opportunities.filter(x=>x.stage===n.dataset.stageCount).length+' فرصة'});
   if(!window.RBGov?.isChair()&&!window.RBGov?.state?.is_platform_owner){el.innerHTML='<div class="v3-value"><b>'+R3.opportunities.filter(x=>!['lost','closed'].includes(x.stage)).length+'</b><span>فرص نشطة</span></div><div class="v3-value"><span>تفاصيل المكافآت لرؤساء الدوائر والمنصة</span></div>';return;}
   const vals=[[R3.opportunities.filter(x=>!['lost','closed'].includes(x.stage)).length,'فرص نشطة'],[R3.agreements.filter(x=>x.reward_type!=='none').length,'فرص بمكافأة'],[R3.agreements.filter(x=>x.status==='earned').length,'استحقاقات تحققت'],[R3.nominations.filter(x=>['suggested','review'].includes(x.status)).length,'ترشيحات للمراجعة']];
   el.innerHTML=vals.map(x=>'<div class="v3-value"><b>'+x[0]+'</b><span>'+x[1]+'</span></div>').join('');
