@@ -13,7 +13,8 @@
   }
 
   const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+    global:{fetch:async(input,options={})=>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);const abort=()=>controller.abort();options.signal?.addEventListener('abort',abort,{once:true});try{return await fetch(input,{...options,signal:controller.signal});}finally{clearTimeout(timer);options.signal?.removeEventListener('abort',abort);}}}
   });
 
   let currentUser = null;
@@ -104,7 +105,7 @@
               <button class="cloud-btn primary" id="cloudAuthSubmit" type="submit">دخول</button>
               <button class="cloud-btn" id="cloudSignupBtn" type="button">لدي دعوة لإنشاء حساب</button>
             </div>
-          </form><button class="cloud-text-button" type="button" id="cloudForgotBtn">نسيت كلمة المرور؟</button><div id="cloudRecovery" hidden><p>استعادة الحساب بالبريد تحتاج بريدًا موثقًا وخدمة إرسال. الخدمة غير مفعلة حاليًا. تواصل مع مالك المنصة لمساعدتك في استعادة حسابك.</p><button type="button" class="cloud-btn" id="cloudRecoveryBack">العودة للدخول</button></div>
+          </form><button class="cloud-text-button" type="button" id="cloudLegacyLogin">حساب قديم بالبريد</button><button class="cloud-text-button" type="button" id="cloudForgotBtn">نسيت كلمة المرور؟</button><div id="cloudRecovery" hidden><p>استعادة الحساب بالبريد تحتاج بريدًا موثقًا وخدمة إرسال. الخدمة غير مفعلة حاليًا. تواصل مع مالك المنصة لمساعدتك في استعادة حسابك.</p><button type="button" class="cloud-btn" id="cloudRecoveryBack">العودة للدخول</button></div>
           <div class="cloud-msg" id="cloudAuthMsg" role="status" aria-live="polite"></div>
         </div>
         <div id="cloudManagePane" hidden>
@@ -161,6 +162,7 @@
     document.getElementById('cloudPasswordForm')?.addEventListener('submit', savePassword);
     document.getElementById('cloudSignupBtn')?.addEventListener('click', toggleAuthMode);
     document.getElementById('cloudShowPassword').onclick=e=>{const input=document.querySelector('#cloudAuthForm input[name="password"]'),show=input.type==='password';input.type=show?'text':'password';e.currentTarget.textContent=show?'إخفاء':'إظهار';e.currentTarget.setAttribute('aria-pressed',String(show));};
+    document.getElementById('cloudLegacyLogin').onclick=()=>{document.getElementById('cloudIdentifierLabel').textContent='بريد الحساب القديم';document.getElementById('cloudAuthHint').textContent='بعد الدخول يمكنك اختيار اسم مستخدم من إعدادات الحساب.';};
     document.getElementById('cloudForgotBtn').onclick=()=>{document.getElementById('cloudRecovery').hidden=false;document.getElementById('cloudAuthForm').hidden=true;document.getElementById('cloudForgotBtn').hidden=true;};
     document.getElementById('cloudRecoveryBack').onclick=()=>setAuthMode('signin');
     document.getElementById('cloudLogoutBtn')?.addEventListener('click', async () => { await db.auth.signOut(); closeCloud(); location.reload(); });
@@ -219,7 +221,7 @@
     form.elements.invite_code.required=signup&&!hasInvitation;
     form.elements.invite_code.value=localStorage.getItem(PENDING_INVITE_KEY)||form.elements.invite_code.value||'';
     document.getElementById('cloudAuthHint').textContent=signup?'اختر اسم مستخدم يبدأ بحرف إنجليزي، وكلمة مرور من 12 حرفًا على الأقل. تكمل بياناتك لاحقًا.':'اكتب اسم المستخدم وكلمة المرور للدخول إلى دائرتك.';
-    document.getElementById('cloudAuthForm').hidden=false;document.getElementById('cloudRecovery').hidden=true;document.getElementById('cloudForgotBtn').hidden=signup;
+    document.getElementById('cloudLegacyLogin').hidden=signup;document.getElementById('cloudAuthForm').hidden=false;document.getElementById('cloudRecovery').hidden=true;document.getElementById('cloudForgotBtn').hidden=signup;
     const invitation=document.getElementById('cloudInvitationTitle');invitation.hidden=!inviteLabel;invitation.textContent=inviteLabel?'دعوة إلى '+inviteLabel:'';
     const title=document.getElementById('cloudTitle');
     if(title)title.textContent=signup?'إنشاء حساب':'تسجيل الدخول';
@@ -592,8 +594,8 @@
         db.from('rb_example_preferences').select('hidden,guide_seen').eq('user_id',currentUser.id).maybeSingle()
       ]);
       if(handle.error||pref.error)throw handle.error||pref.error;
-      await window.RBGov?.refresh?.();
       handleProfile=handle.data;examplesHidden=!!pref.data?.hidden;guideSeen=!!pref.data?.guide_seen;
+      try{await window.RBGov?.refresh?.();}catch(error){if(window.RBGov){window.RBGov.state={};window.RBGov.renderRole();}console.warn('تعذر تحديث صلاحيات الإدارة. ستبقى الإجراءات المحمية تحت تحقق الخادم.');}
       await db.from('rb_profiles').upsert({user_id:currentUser.id,display_name:currentUser.user_metadata?.display_name||''},{onConflict:'user_id'});
       const hasCircle=await ensureCircle();
       if(!hasCircle){

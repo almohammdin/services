@@ -1,5 +1,6 @@
+import {corsHeaders} from 'npm:@supabase/supabase-js@2.95.0/cors';
 import {createClient} from 'npm:@supabase/supabase-js@2.95.0';
-const headers={'Access-Control-Allow-Origin':'https://almohammdin.github.io','Access-Control-Allow-Headers':'content-type, apikey, authorization, x-client-info','Access-Control-Allow-Methods':'POST, OPTIONS','Content-Type':'application/json','Cache-Control':'no-store'};
+const headers={'Access-Control-Allow-Origin':'https://almohammdin.github.io','Access-Control-Allow-Headers':corsHeaders['Access-Control-Allow-Headers'],'Access-Control-Allow-Methods':'POST, OPTIONS','Content-Type':'application/json','Cache-Control':'no-store'};
 const reply=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers});
 const clean=(v:unknown,max=320)=>String(v??'').trim().slice(0,max);
 async function hash(v:string){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)))).map(n=>n.toString(16).padStart(2,'0')).join('');}
@@ -32,3 +33,4 @@ Deno.serve(async req=>{
   createdId='';return reply({ok:true,circle_id:circle.id,role:'member'});
  }catch(e){if(admin&&createdId)await admin.auth.admin.deleteUser(createdId);console.error('rb-invite-signup',e);return reply({ok:false,error:'server'},500);}
 });
+

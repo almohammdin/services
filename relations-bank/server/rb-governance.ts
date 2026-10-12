@@ -1,5 +1,6 @@
+import {corsHeaders} from 'npm:@supabase/supabase-js@2.95.0/cors';
 import {createClient} from 'npm:@supabase/supabase-js@2.95.0';
-const headers={'Access-Control-Allow-Origin':'https://almohammdin.github.io','Access-Control-Allow-Headers':'authorization, x-client-info, apikey, content-type','Access-Control-Allow-Methods':'POST, OPTIONS','Content-Type':'application/json','Cache-Control':'no-store'};
+const headers={'Access-Control-Allow-Origin':'https://almohammdin.github.io','Access-Control-Allow-Headers':corsHeaders['Access-Control-Allow-Headers'],'Access-Control-Allow-Methods':'POST, OPTIONS','Content-Type':'application/json','Cache-Control':'no-store'};
 const reply=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers});
 const clean=(v:unknown,max=300)=>String(v??'').trim().slice(0,max);
 const uuid=(v:unknown)=>/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(v||''));

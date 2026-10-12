@@ -1,9 +1,10 @@
+import {corsHeaders} from 'npm:@supabase/supabase-js@2.95.0/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2.95.0';
 
 const origin = 'https://almohammdin.github.io';
 const headers = {
   'Access-Control-Allow-Origin': origin,
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers':corsHeaders['Access-Control-Allow-Headers'],
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Content-Type': 'application/json',
   'Cache-Control': 'no-store'

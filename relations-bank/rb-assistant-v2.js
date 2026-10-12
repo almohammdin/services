@@ -1,7 +1,7 @@
 import {executeAITool} from './rb-assistant-tools.js?v=20261012-5';
 import {confirm,taskNames} from './rb-assistant-context.js?v=20261012-5';
 import {publicContext,consentKey} from './rb-assistant-privacy.js?v=20261012-5';
-import {start as startVoice,stop as stopVoice} from './rb-voice.js?v=20261012-5';
+let voiceModule;async function startVoice(){voiceModule=voiceModule||await import('./rb-voice.js?v=20261012-6');return voiceModule.start();}async function stopVoice(){return voiceModule?.stop?.();}
 const $=(s,r=document)=>r.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const micSvg='<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="11" y="3" width="10" height="17" rx="5"/><path d="M6 14v2a10 10 0 0 0 20 0v-2M16 26v4M11 30h10"/></svg>';
 let card=null,entry=null,history=[],busy=false,identity='',entryVisible=true,minimized=false,epoch=0,tour=null,speech='',speechTimer=0,waveRAF=0,waveLevel=0,consentResolve=null;
