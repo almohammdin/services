@@ -17,7 +17,7 @@
  async function testLive(target){
   const r=await request('/api/live-token',{target});
   await new Promise((resolve,reject)=>{
-   const ws=new WebSocket('wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?access_token='+encodeURIComponent(r.token));
+   const ws=new WebSocket('wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token='+encodeURIComponent(r.token));
    let done=false;const finish=error=>{if(done)return;done=true;clearTimeout(timer);ws.close();error?reject(error):resolve();};
    const timer=setTimeout(()=>finish(Error('لم يستجب اتصال الترجمة. حاول مجددًا.')),15000);
    ws.onopen=()=>ws.send(JSON.stringify({setup:{model:'models/gemini-3.5-live-translate-preview',inputAudioTranscription:{},outputAudioTranscription:{},generationConfig:{responseModalities:['AUDIO'],translationConfig:{targetLanguageCode:target,echoTargetLanguage:false}}}}));
