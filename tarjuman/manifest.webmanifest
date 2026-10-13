@@ -1,0 +1,19 @@
+{
+  "name": "تَرجُمان",
+  "short_name": "تَرجُمان",
+  "lang": "ar-SA",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f5f1",
+  "theme_color": "#0D3656",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
