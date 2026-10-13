@@ -130,7 +130,7 @@
   }
   function addRound() {
     const c=candidate(selectedCandidate);if(!c){message('workspace-message','أضف مرشحًا أولًا.');return;}
-    const r={id:uid(),label:'المقابلة '+(c.interviews.length+1),interviewer:'',actualAt:c.scheduledAt||'',criteria:clone(job().criteria),scores:{},evidence:{},decision:'لم تحدد',summary:'',nextStep:'',createdAt:new Date().toISOString()};
+    const r={id:uid(),label:'المقابلة '+(c.interviews.length+1),interviewer:'',actualAt:'',criteria:clone(job().criteria),scores:{},evidence:{},decision:'لم تحدد',summary:'',nextStep:'',createdAt:new Date().toISOString()};
     c.interviews.push(r);selectedRound=r.id;changed();renderInterviews();
   }
   function renderAd() {
@@ -162,7 +162,7 @@
       const base=job(), criteria=[];
       for(const section of $('editor-fields').querySelectorAll('[data-criterion-index]')){const i=section.dataset.criterionIndex;criteria.push({id:section.dataset.id,name:get('cr'+i+'name'),weight:Number(get('cr'+i+'weight')),question:get('cr'+i+'question'),weak:get('cr'+i+'weak'),adequate:get('cr'+i+'adequate'),strong:get('cr'+i+'strong')});}
       if(!criteria.length||criteria.some(cr=>!cr.name||!cr.question||!Number.isFinite(cr.weight)||cr.weight<0)||!criteria.some(cr=>cr.weight>0)){message('editor-message','أكمل أسماء المحاور والأسئلة، واستخدم أوزانًا غير سالبة ومجموعًا أكبر من صفر.');return;}
-      const requirements=get('requirements').split('\n').map(s=>s.trim()).filter(Boolean).map((name,i)=>({id:base?.requirements.find(r=>name.replace(/\s*\(مفضّل\)/g,'')===r.name)?.id||'req-'+uid(),name:name.replace(/\s*\(مفضّل\)/g,''),required:!name.includes('مفضّل')&&!name.includes('مفضل')}));
+      const requirements=get('requirements').split('\n').map(s=>s.trim()).filter(Boolean).map((name,i)=>({id:base?.requirements.find(r=>name.replace(/\s*\(مفضّل\)/g,'').trim()===r.name.replace(/\s*\(مفضّل\)/g,'').trim())?.id||'req-'+uid(),name:name.replace(/\s*\(مفضّل\)/g,''),required:!name.includes('مفضّل')&&!name.includes('مفضل')}));
       let j=base;if(editKind==='newjob'){j={id:uid(),candidates:[]};doc.jobs.push(j);currentJobId=j.id;}
       for(const key of ['title','titleEn','company','location','employment','status','deadline','sourceUrl','description'])j[key]=get(key);j.criteria=criteria;j.requirements=requirements;
     }
