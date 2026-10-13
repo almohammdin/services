@@ -8,11 +8,11 @@
   const uid = () => crypto.randomUUID();
   const clone = v => JSON.parse(JSON.stringify(v));
   const stages = {shortlisted:'قائمة مختصرة',screening:'فرز أولي',qualified:'مؤهل',interview:'مقابلة',assessment:'تقييم عملي',offer:'عرض',hired:'تم التعيين',closed:'مغلق'};
-  const statuses = ['مقترح','بانتظار تأكيد','مؤكد','تمت المقابلة','إعادة جدولة'];
+  const schedule = window.HiringSchedule;
   const seedElement = $('offline-data');
   const offline = !!seedElement;
   const demo = !!seedElement && JSON.parse(seedElement.textContent).demo === true;
-  let db, user = null, doc = null, currentJobId = '', currentView = 'candidates', selectedCandidate = '', selectedRound = '';
+  let db, user = null, doc = null, currentJobId = '', currentView = 'schedule', selectedCandidate = '', selectedRound = '';
   let revision = 0, dirtyVersion = 0, savedVersion = 0, saveTimer, saving = null, loading = false, editKind = '', editId = '';
   const offlineKey = 'hiring-offline-v1-' + (seedElement ? (JSON.parse(seedElement.textContent).demo ? 'demo' : JSON.parse(seedElement.textContent).createdAt) : '');
   const job = () => doc?.jobs.find(j => j.id === currentJobId);
@@ -59,12 +59,14 @@
     $('auth').hidden = true; $('workspace').hidden = false; $('logout').hidden = offline;
     $('account-label').textContent = demo ? 'معاينة ببيانات افتراضية · التعديلات لا ترفع للسحابة' : offline ? 'نسخة HTML محلية · البيانات: 13 أكتوبر 2026' : user.email;
     currentJobId = currentJobId || doc.jobs[0]?.id || '';
-    renderAll();
+    const migrated = schedule.ensure(doc);
+    renderAll(); if (migrated) changed();
   }
   function clearWorkspace() {
+    schedule.clear(); if ($('date-picker')?.open) $('date-picker').close(); if ($('editor').open) $('editor').close(); $('editor-fields').replaceChildren();
     clearTimeout(saveTimer); doc = null; user = null; dirtyVersion = savedVersion = 0;
     $('workspace').hidden = true; $('auth').hidden = false; $('logout').hidden = true;
-    for (const id of ['candidate-list','qualification-list','interview-editor','ad-content','stats']) $(id).replaceChildren();
+    for (const id of ['candidate-list','qualification-list','interview-editor','ad-content','stats','job-select','interview-candidate','round-select','pipeline']) $(id).replaceChildren();
     $('account-label').textContent = ''; $('sync-status').textContent = 'تسجيل دخول مطلوب';
   }
   async function loadWorkspace(authUser) {
@@ -91,19 +93,21 @@
     if (!doc.jobs.some(j=>j.id===currentJobId)) currentJobId = doc.jobs[0]?.id || '';
     $('job-select').innerHTML = doc.jobs.map(j=>`<option value="${esc(j.id)}" ${j.id===currentJobId?'selected':''}>${esc(j.title)}</option>`).join('');
     $('stage-filter').innerHTML = '<option value="all">جميع المراحل</option>'+stageOptions('');
-    renderStats(); renderCandidates(); renderQualification(); renderInterviews(); renderAd(); switchView(currentView);
+    renderStats(); renderCandidates(); renderQualification(); renderInterviews(); renderAd(); schedule.render(); switchView(currentView);
   }
   function switchView(view) {
     currentView=view;
-    for (const v of ['candidates','qualification','interviews','ad','guide']) $('view-'+v).hidden=v!==view;
+    document.querySelector('.job-picker').hidden = view === 'schedule'; $('stats').hidden = view === 'schedule';
+    if (view === 'schedule') schedule.render();
+    for (const v of ['schedule','candidates','qualification','interviews','ad','guide']) $('view-'+v).hidden=v!==view;
     document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
   }
   function renderCandidates() {
     const query=$('candidate-search').value.trim().toLocaleLowerCase(), cls=$('class-filter').value, stage=$('stage-filter').value;
     $('candidate-list').innerHTML = sortedCandidates().map((c,i)=>({c,i})).filter(({c})=>(cls==='all'||c.classification===cls)&&(stage==='all'||c.stage===stage)&&(!query||(c.nameAr+' '+c.nameEn+' '+c.sourceName).toLocaleLowerCase().includes(query))).map(({c,i})=>{
-      const score=latestScore(c), suspicious=!!c.phoneNote;
+      const score=latestScore(c), suspicious=!!c.phoneNote, appointment=schedule.primary(c);
       const phoneHtml=/^\+[1-9]\d{6,14}$/.test(c.phone)&&!suspicious?`<a class="ltr" href="tel:${esc(c.phone)}">${esc(c.phone)}</a>`:`<bdi dir="ltr" class="ltr">${esc(c.phone||'غير متوفر')}</bdi>`;
-      return `<article class="candidate" data-id="${esc(c.id)}"><div class="candidate-top"><span class="number">${i+1}</span><div class="candidate-name"><h3>${esc(c.nameAr||'اسم عربي يحتاج تأكيدًا')}</h3><div class="english" lang="en" dir="ltr">${esc(c.nameEn)}</div><small>${esc(c.city)}</small></div><span class="badge ${c.classification==='suitable'?'suitable':'maybe'}">${c.classification==='suitable'?'مناسب':'ربما'}</span></div><div class="candidate-body"><div><span class="cell-label">الجوال</span>${phoneHtml}${c.phoneNote?`<div class="phone-note">${esc(c.phoneNote)}</div>`:''}</div><div><span class="cell-label">البريد الإلكتروني</span>${/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)?`<a href="mailto:${esc(c.email)}" class="ltr">${esc(c.email)}</a>`:`<span class="ltr">${esc(c.email||'غير متوفر')}</span>`}<div class="candidate-links">${link(c.profileUrl,'الملف الشخصي')}${link(c.applicationUrl,'طلب LinkedIn')}</div></div><div><label>موعد المقابلة المقترح${dates.field(c.scheduledAt,'data-candidate=\"'+esc(c.id)+'\" data-field=\"scheduledAt\"')}</label><small>${esc(displayDate(c.scheduledAt))}</small></div></div><div class="candidate-footer"><label>حالة الموعد<select data-candidate="${esc(c.id)}" data-field="meetingStatus">${selectOptions(statuses,c.meetingStatus)}</select></label><span class="result">${esc(stages[c.stage]||c.stage)} · ${score==null?'لم يكتمل تقييم المقابلة':score+' / 100'}</span><div class="actions"><button data-action="edit-candidate" data-id="${esc(c.id)}">تحرير</button><button data-action="qualify" data-id="${esc(c.id)}">تأهيل</button><button class="primary" data-action="assess" data-id="${esc(c.id)}">تقييم المقابلة</button></div></div></article>`;
+      return `<article class="candidate" data-id="${esc(c.id)}"><div class="candidate-top"><span class="number">${i+1}</span><div class="candidate-name"><h3>${esc(c.nameAr||'اسم عربي يحتاج تأكيدًا')}</h3><div class="english" lang="en" dir="ltr">${esc(c.nameEn)}</div><small>${esc(c.city)}</small></div><span class="badge ${c.classification==='suitable'?'suitable':'maybe'}">${c.classification==='suitable'?'مناسب':'ربما'}</span></div><div class="candidate-body"><div><span class="cell-label">الجوال</span>${phoneHtml}${c.phoneNote?`<div class="phone-note">${esc(c.phoneNote)}</div>`:''}</div><div><span class="cell-label">البريد الإلكتروني</span>${/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email)?`<a href="mailto:${esc(c.email)}" class="ltr">${esc(c.email)}</a>`:`<span class="ltr">${esc(c.email||'غير متوفر')}</span>`}<div class="candidate-links">${link(c.profileUrl,'الملف الشخصي')}${link(c.applicationUrl,'طلب LinkedIn')}</div></div><div><span class="cell-label">موعد المقابلة</span><bdi dir="ltr">${appointment?esc(dates.format(appointment.start)):"لم يحدد موعد"}</bdi><small>${appointment?esc(schedule.labels[appointment.status]):"اقترح موعدًا من إدارة المواعيد"}</small></div></div><div class="candidate-footer"><button data-action="schedule-candidate" data-id="${esc(c.id)}">إدارة المواعيد (${c.appointments.length})</button><span class="result">${esc(stages[c.stage]||c.stage)} · ${score==null?'لم يكتمل تقييم المقابلة':score+' / 100'}</span><div class="actions"><button data-action="edit-candidate" data-id="${esc(c.id)}">تحرير</button><button data-action="qualify" data-id="${esc(c.id)}">تأهيل</button><button class="primary" data-action="assess" data-id="${esc(c.id)}">تقييم المقابلة</button></div></div></article>`;
     }).join('') || '<div class="empty">لا يوجد مرشحون مطابقون للفلاتر. يمكنك إضافة مرشح لهذا الإعلان.</div>';
   }
   function renderQualification() {
@@ -148,7 +152,7 @@
     editKind=kind;editId=id;message('editor-message','');
     if(kind==='candidate') {
       const c=candidate(id)||{};$('editor-title').textContent=id?'تحرير المرشح':'إضافة مرشح';
-      $('editor-fields').innerHTML=input('nameAr','الاسم بالعربية',c.nameAr)+input('nameEn','الاسم بالإنجليزية / المصدر',c.nameEn)+input('city','الموقع',c.city)+`<label>التصنيف<select name="classification"><option value="suitable" ${c.classification==='suitable'?'selected':''}>مناسب</option><option value="maybe" ${c.classification!=='suitable'?'selected':''}>ربما</option></select></label>`+input('phone','الجوال كما ورد',c.phone)+input('email','البريد',c.email,'email')+input('profileUrl','رابط الملف الشخصي',c.profileUrl,'url')+input('applicationUrl','رابط طلب التقديم',c.applicationUrl,'url')+input('scheduledAt','موعد المقابلة المقترح — الرياض',c.scheduledAt,'datetime-local')+input('phoneNote','ملاحظة التحقق من الرقم',c.phoneNote)+`<label class="span-all">ملاحظات<textarea name="notes">${esc(c.notes)}</textarea></label>${c.sourcePhone?`<small class="span-all">البيانات الأصلية محفوظة: <bdi dir="ltr">${esc(c.sourcePhone)} · ${esc(c.sourceEmail)}</bdi></small>`:''}`;
+      $('editor-fields').innerHTML=input('nameAr','الاسم بالعربية',c.nameAr)+input('nameEn','الاسم بالإنجليزية / المصدر',c.nameEn)+input('city','الموقع',c.city)+`<label>التصنيف<select name="classification"><option value="suitable" ${c.classification==='suitable'?'selected':''}>مناسب</option><option value="maybe" ${c.classification!=='suitable'?'selected':''}>ربما</option></select></label>`+input('phone','الجوال كما ورد',c.phone)+input('email','البريد',c.email,'email')+input('profileUrl','رابط الملف الشخصي',c.profileUrl,'url')+input('applicationUrl','رابط طلب التقديم',c.applicationUrl,'url')+input('phoneNote','ملاحظة التحقق من الرقم',c.phoneNote)+`<label class="span-all">ملاحظات<textarea name="notes">${esc(c.notes)}</textarea></label>${c.sourcePhone?`<small class="span-all">البيانات الأصلية محفوظة: <bdi dir="ltr">${esc(c.sourcePhone)} · ${esc(c.sourceEmail)}</bdi></small>`:''}`;
     } else {
       const original=job();const j=kind==='newjob'?{title:'',titleEn:'',company:original?.company||'',location:'',employment:'',status:'مسودة',deadline:'',sourceUrl:'',description:'',criteria:clone(original?.criteria||[]),requirements:clone(original?.requirements||[])}:original;
       $('editor-title').textContent=kind==='newjob'?'إعلان جديد':'تحرير الإعلان والمعايير';
@@ -161,8 +165,8 @@
     if(editKind==='candidate') {
       if(!get('nameEn')&&!get('nameAr')){message('editor-message','أدخل اسم المرشح.');return;}
       let c=candidate(editId);
-      if(!c){c={id:uid(),sourceName:get('nameEn'),sourcePhone:get('phone'),sourceEmail:get('email'),nameNote:'بإدخال المستخدم',stage:'shortlisted',meetingStatus:'مقترح',qualifications:{},qualificationNotes:'',interviews:[],history:[]};job().candidates.push(c);}
-      for(const key of ['nameAr','nameEn','city','classification','phone','email','profileUrl','applicationUrl','scheduledAt','phoneNote','notes'])c[key]=get(key);
+      if(!c){c={id:uid(),sourceName:get('nameEn'),sourcePhone:get('phone'),sourceEmail:get('email'),nameNote:'بإدخال المستخدم',stage:'shortlisted',meetingStatus:'مقترح',qualifications:{},qualificationNotes:'',interviews:[],appointments:[],history:[]};job().candidates.push(c);}
+      for(const key of ['nameAr','nameEn','city','classification','phone','email','profileUrl','applicationUrl','phoneNote','notes'])c[key]=get(key);
     } else {
       if(!get('title')){message('editor-message','أدخل المسمى الوظيفي.');return;}
       const base=job(), criteria=[];
@@ -210,6 +214,7 @@
   $('editor-form').addEventListener('submit',applyEditor);
   for(const id of ['close-editor','cancel-editor'])$(id).addEventListener('click',()=>$('editor').close());
   document.addEventListener('click',event=>{const button=event.target.closest('[data-action]');if(!button)return;const id=button.dataset.id,action=button.dataset.action;
+    if(action==='schedule-candidate'){const a=schedule.primary(candidate(id));schedule.open(currentJobId,id,a?.id);}
     if(action==='edit-candidate')openEditor('candidate',id);
     if(action==='edit-job')openEditor('job');
     if(action==='qualify'){renderQualification();switchView('qualification');const el=$('qualification-'+id);el.open=true;el.scrollIntoView({behavior:'smooth',block:'start'});}
@@ -228,6 +233,7 @@
   $('round-select').addEventListener('change',()=>{selectedRound=$('round-select').value;renderInterviews();});
   $('new-round').addEventListener('click',addRound);
   window.addEventListener('beforeunload',event=>{if(dirtyVersion!==savedVersion){event.preventDefault();event.returnValue='';}});
+  schedule.bind({doc:()=>doc,changed,refresh:()=>{schedule.render();renderCandidates();},message:text=>message('workspace-message',text),assess:r=>{currentJobId=r.job.id;selectedCandidate=r.candidate.id;const existing=r.candidate.interviews.find(v=>v.appointmentId===r.a.id);if(existing)selectedRound=existing.id;else{selectedRound='';addRound();const assessment=round();assessment.appointmentId=r.a.id;assessment.label=r.a.title;assessment.interviewer=r.a.interviewer;assessment.actualAt=r.a.arrivedAt?new Date(Date.parse(r.a.arrivedAt)+10800000).toISOString().slice(0,16):'';}renderAll();switchView('interviews');$('view-interviews').scrollIntoView({behavior:'smooth',block:'start'});}});
   async function init() {
     if(offline){doc=JSON.parse(seedElement.textContent);try{const saved=JSON.parse(localStorage.getItem(offlineKey));if(validDocument(saved))doc=saved;}catch{}$('sync-status').textContent='نسخة محلية';showWorkspace();return;}
     if(!window.supabase?.createClient){message('auth-message','تعذر تحميل خدمة الحساب. تحقق من الاتصال ثم حدّث الصفحة.');return;}

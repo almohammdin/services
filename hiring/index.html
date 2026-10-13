@@ -5,11 +5,12 @@
 <meta name="theme-color" content="#0d3656"><meta name="robots" content="noindex,nofollow">
 <meta name="description" content="مساحة خاصة لإدارة الإعلانات الوظيفية والمرشحين والتأهيل والمقابلات.">
 <title>مساحة التوظيف | نايف المحمدي</title>
-<link id="styles-source" rel="stylesheet" href="styles.css?v=20261013-compact">
+<link id="styles-source" rel="stylesheet" href="styles.css?v=20261013-schedule">
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script id="scoring-source" defer src="scoring.js"></script>
 <script id="dates-source" defer src="dates.js?v=20261013-compact"></script>
-<script id="app-source" defer src="app.js?v=20261013-private"></script>
+<script id="schedule-source" defer src="schedule.js?v=20261013-schedule"></script>
+<script id="app-source" defer src="app.js?v=20261013-schedule"></script>
 </head>
 <body>
 <header class="topbar"><div class="shell topbar-inner"><a class="brand" href="../">نـايف <span>مساحة التوظيف</span></a><div class="actions"><span id="sync-status" role="status">تسجيل دخول مطلوب</span><button id="logout" hidden>خروج</button></div></div></header>
@@ -19,8 +20,9 @@
 <div class="workspace-heading"><div><h1>التوظيف والمقابلات</h1><p id="account-label" dir="ltr"></p></div></div>
 <div class="job-picker panel"><label>الإعلان الوظيفي<select id="job-select"></select></label><div class="actions"><button id="new-job" class="primary">إعلان جديد</button><button id="clone-job">نسخ الإعلان كقالب</button><button id="edit-job">تحرير الإعلان والمعايير</button></div></div>
 <div id="stats" class="stats"></div>
-<nav class="tabs" aria-label="أقسام التوظيف"><button data-view="candidates" class="active">المرشحون</button><button data-view="qualification">الفرز والتأهيل</button><button data-view="interviews">المقابلات</button><button data-view="ad">الإعلان</button><button data-view="guide">دليل التقييم</button></nav>
-<section id="view-candidates" class="view"><div class="section-head"><div><h2>قائمة المرشحين</h2><p>«مناسب» أولًا، ثم «ربما»، وفق تصنيفك في المصدر. الترقيم للتنظيم.</p></div><button id="add-candidate" class="primary">إضافة مرشح</button></div><div class="filters"><label>ابحث بالاسم<input id="candidate-search" type="search" placeholder="الاسم بالعربية أو الإنجليزية"></label><label>التصنيف<select id="class-filter"><option value="all">الجميع</option><option value="suitable">مناسب</option><option value="maybe">ربما</option></select></label><label>المرحلة<select id="stage-filter"><option value="all">جميع المراحل</option></select></label></div><details class="source-notes"><summary>ملاحظات البيانات والمواعيد</summary><p class="notice">الأسماء العربية المنقولة من أسماء لاتينية كتابة تقريبية تحتاج تأكيد المرشح. الأرقام الأصلية محفوظة كما وردت. المواعيد مقترحة بتوقيت الرياض، ولم تُرسل دعوات.</p></details><div id="candidate-list" class="candidate-list"></div></section>
+<nav class="tabs" aria-label="أقسام التوظيف"><button data-view="schedule" class="active">لوحة المواعيد</button><button data-view="candidates">المرشحون</button><button data-view="qualification">الفرز والتأهيل</button><button data-view="interviews">المقابلات</button><button data-view="ad">الإعلان</button><button data-view="guide">دليل التقييم</button></nav>
+<section id="view-schedule" class="view"><div id="schedule-dashboard"></div></section>
+<section id="view-candidates" class="view" hidden><div class="section-head"><div><h2>قائمة المرشحين</h2><p>«مناسب» أولًا، ثم «ربما»، وفق تصنيفك في المصدر. الترقيم للتنظيم.</p></div><button id="add-candidate" class="primary">إضافة مرشح</button></div><div class="filters"><label>ابحث بالاسم<input id="candidate-search" type="search" placeholder="الاسم بالعربية أو الإنجليزية"></label><label>التصنيف<select id="class-filter"><option value="all">الجميع</option><option value="suitable">مناسب</option><option value="maybe">ربما</option></select></label><label>المرحلة<select id="stage-filter"><option value="all">جميع المراحل</option></select></label></div><details class="source-notes"><summary>ملاحظات البيانات والمواعيد</summary><p class="notice">الأسماء العربية المنقولة من أسماء لاتينية كتابة تقريبية تحتاج تأكيد المرشح. الأرقام الأصلية محفوظة كما وردت. المواعيد بتوقيت الرياض. راجع مرحلة كل موعد في لوحة المواعيد.</p></details><div id="candidate-list" class="candidate-list"></div></section>
 <section id="view-qualification" class="view" hidden><div class="section-head"><div><h2>الفرز والتأهيل</h2><p>وثّق تحقق متطلبات الإعلان والأدلة قبل نقل المرشح إلى المرحلة التالية.</p></div></div><div id="pipeline" class="pipeline"></div><div id="qualification-list"></div></section>
 <section id="view-interviews" class="view" hidden><div class="section-head"><div><h2>تقييم أثناء المقابلة</h2><p>لكل مقابلة سجل مستقل باسم المقابل، ودرجات، وأدلة، وتوصية بشرية.</p></div></div><div class="filters"><label>المرشح<select id="interview-candidate"></select></label><label>المقابلة<select id="round-select"></select></label><button id="new-round" class="primary">إضافة مقابلة</button></div><div id="interview-editor"></div></section>
 <section id="view-ad" class="view" hidden><div id="ad-content" class="panel"></div></section>
@@ -48,4 +50,6 @@
 </div>
 </footer>
 <dialog id="editor"><form id="editor-form"><div class="section-head"><h2 id="editor-title"></h2><button type="button" id="close-editor" aria-label="إغلاق">×</button></div><div id="editor-fields" class="form-grid"></div><p id="editor-message" class="message" role="status"></p><div class="actions"><button class="primary" type="submit">حفظ</button><button type="button" id="cancel-editor">إلغاء</button></div></form></dialog>
+<dialog id="schedule-editor" aria-label="إدارة موعد المقابلة"></dialog>
+<dialog id="invitation-editor" aria-label="دعوة المقابلة"></dialog>
 </body></html>
