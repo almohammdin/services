@@ -1,11 +1,15 @@
-# Hiring workspace
+# Private owner hiring workspace
 
-Static Arabic-first hiring workspace published at /services/hiring/.
+This static application is published at /services/hiring/. Public source contains no candidate records, owner activation token, or administrative secret. There is no public signup route in the application.
 
-Public source includes the application shell and a synthetic demo only. Candidate records must never be committed to this repository. Live records are stored in public.hiring_workspaces in the existing Supabase project, protected by row-level security and authenticated verified email ownership. The first update claims ownership with the authenticated user ID. Optimistic revision checks prevent overwriting another browser session.
+The dedicated hiring-owner-auth Edge Function accepts only the configured owner identity. Initial account activation requires a 256-bit invitation delivered privately to the owner, expires after 24 hours, and is consumed once. The owner chooses the password in the site. The temporary bootstrap route was removed. Other application accounts in the shared Supabase project cannot access hiring data.
 
-Features: multiple advertisements and reusable templates; numbered bilingual candidates and source links; schedule proposals in Asia/Riyadh; manual qualification and pipeline stages; independent interview rounds with criterion snapshots, evidence, and reviewer recommendations; normalized complete-only weighted scores; local HTML and JSON export.
+Data access requires both the immutable owner user ID and a server-created session grant. Only the auth gateway can create a session grant after checking owner credentials. Grants are checked by row-level security and are revoked on logout.
 
-Scoring normalization adapted from AgentATS TalentRubric.gs (MIT). See LICENSE-AgentATS.txt. Workflow design references Odoo recruitment and Frappe HRMS. Interview guidance references OPM and CIPD.
+Autosave is the primary persistence flow. Save/export/import toolbar controls were removed at the owner request. The local HTML companion is generated separately and kept outside this public repository.
 
-Validation: JavaScript syntax, incomplete/complete/invalid scoring, Unicode and public-source privacy scan, and transactional RLS ownership/cross-account/anonymous/revision checks. Browser verification is performed on the published app and synthetic demo. Actual account confirmation and initial private-data import require the owner.
+The footer follows the canonical services footer: a single Naif logo and the existing X, LinkedIn, Snapchat, and Linktree icons.
+
+All visible numbers use Latin digits. Date and time inputs use a custom Gregorian calendar and text fields, avoiding native browser date controls that can substitute Arabic-Indic digits.
+
+Scoring normalization is adapted from AgentATS (MIT); see LICENSE-AgentATS.txt. Validation covers date parsing and leap dates, incomplete scoring, source privacy, JavaScript syntax, owner-only session grants, rejection of other-account signup, and rejection of invalid activation tokens.
