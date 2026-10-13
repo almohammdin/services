@@ -21,7 +21,7 @@
    const ws=new WebSocket('wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?access_token='+encodeURIComponent(r.token));
    let done=false;const finish=error=>{if(done)return;done=true;clearTimeout(timer);ws.close();error?reject(error):resolve();};
    const timer=setTimeout(()=>finish(Error('لم يستجب اتصال الترجمة. حاول مجددًا.')),15000);
-   ws.onopen=()=>ws.send(JSON.stringify({setup:{model:'models/gemini-3.5-live-translate-preview',generationConfig:{responseModalities:['AUDIO'],inputAudioTranscription:{},outputAudioTranscription:{},translationConfig:{targetLanguageCode:target,echoTargetLanguage:false}}}}));
+   ws.onopen=()=>ws.send(JSON.stringify({setup:{model:'models/gemini-3.5-live-translate-preview',inputAudioTranscription:{},outputAudioTranscription:{},generationConfig:{responseModalities:['AUDIO'],translationConfig:{targetLanguageCode:target,echoTargetLanguage:false}}}}));
    ws.onmessage=async e=>{try{const d=JSON.parse(typeof e.data==='string'?e.data:await e.data.text());if(d.setupComplete)finish();else if(d.error)finish(Error('تعذر تشغيل نموذج الترجمة في هذا الحساب.'));}catch{}};
    ws.onerror=()=>finish(Error('تعذر الاتصال بترجمة Google.'));ws.onclose=()=>{if(!done)finish(Error('انتهى اختبار الترجمة قبل أن يكتمل.'));};
   });return true;
