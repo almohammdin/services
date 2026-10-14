@@ -8,3 +8,58 @@
 .schedule-metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:12px}.schedule-metric{display:flex;align-items:center;gap:10px;padding:10px 13px;border:1px solid var(--line);border-radius:9px;background:#fff}.schedule-metric b{font:700 23px Arial;color:var(--navy)}.schedule-metric span{font-size:11px;color:var(--muted)}.schedule-metric.danger{background:#fff4ef;border-color:#e6bda5}.schedule-metric.danger b{color:var(--danger)}.schedule-filters{display:grid;grid-template-columns:180px auto 1.5fr 1fr;align-items:end;gap:8px;margin-bottom:10px}.day-navigation{padding-bottom:2px;flex-wrap:nowrap}.day-navigation button{font-size:10px;white-space:nowrap}.timeline-scroll{overflow-x:auto}.schedule-timeline{display:block;width:100%;min-width:760px;font-family:Craft,Tahoma,Arial,sans-serif}.schedule-timeline g[role=button]{cursor:pointer}.schedule-timeline g:focus{outline:2px solid var(--gold)}.chart-time{font:12px Arial;fill:var(--muted)}.chart-name{font-size:13px;fill:var(--ink)}.schedule-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:9px;margin-top:5px}.schedule-legend span{display:flex;align-items:center;gap:5px}.schedule-legend i{width:8px;height:8px;border-radius:3px}.schedule-bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-block:10px}.week-bars{display:flex;align-items:end;justify-content:space-between;gap:5px;margin-top:10px;min-height:95px}.week-bars button{border:0;border-radius:6px;background:#f4f4ef;display:flex;flex:1;align-items:center;flex-direction:column;gap:4px;padding:6px;min-width:0}.week-bars b{font:12px Arial}.week-bar{display:block;background:#307595;width:22px;border-radius:3px 3px 0 0}.week-bars small{font:10px Arial}.status-bars{display:grid;gap:4px;margin-top:8px}.status-bars>div{display:grid;grid-template-columns:125px 1fr 25px;align-items:center;font-size:10px;gap:7px}.status-bars i{height:7px;border-radius:4px}.status-bars b{font:11px Arial}.conflict-panel{padding:10px 13px;background:#fff6ee;border:1px solid #e5b68f;border-radius:9px;margin-top:9px}.conflict-panel h3{color:#875135;font-size:14px;margin-bottom:5px}.conflict-panel>div{display:flex;align-items:center;gap:8px;font-size:11px;margin-top:4px}.conflict-panel button{font-size:10px;min-height:27px;white-space:nowrap}.conflict-text{color:var(--danger)!important}.appointment-list{display:grid;gap:7px;margin-block:12px}.appointment-row{display:grid;grid-template-columns:1.5fr 1fr .9fr auto;gap:12px;align-items:center;padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:#fff}.appointment-row h3{font-size:14px}.appointment-row h3 small{font:10px Arial;display:block;direction:ltr;text-align:right}.appointment-row p{font-size:10px}.appointment-row>div>small{display:block;font-size:10px}.appointment-row bdi{font:12px Arial;white-space:nowrap}.appointment-row button{font-size:10px;min-height:30px}.appointment-status{display:inline-block;color:var(--status-color);font-size:10px;font-weight:700;border:1px solid currentColor;border-radius:20px;padding:3px 9px;white-space:nowrap}.appointment-progress{display:flex;gap:5px;flex-wrap:wrap;margin-block:12px}.appointment-progress span{display:flex;gap:5px;align-items:center;font-size:10px;background:#f0ede7;padding:5px 8px;border-radius:7px;color:var(--muted)}.appointment-progress span.current{background:#e4eef1;color:var(--navy);font-weight:700}.appointment-progress b{font:11px Arial}.appointment-fields{border:0;padding:0;margin-block:12px}.appointment-fields input[type=number]{font-family:Arial,sans-serif}.appointment-actions{padding-top:9px;border-top:1px solid var(--line)}.appointment-actions button{font-size:11px}.appointment-history{margin-top:12px;font-size:11px}.appointment-history summary{cursor:pointer;color:var(--navy)}.appointment-history p{padding-block:5px;border-bottom:1px solid var(--line)}.appointment-history bdi{font:10px Arial}.button-link{display:inline-flex;align-items:center;min-height:36px;border:1px solid var(--line);border-radius:8px;padding:6px 11px;text-decoration:none;font-size:12px}#invitation-editor label{margin-block:10px}#invitation-text{min-height:260px;font-size:12px}#appointment-conflicts{white-space:pre-line}
 @media(max-width:1000px){.schedule-filters{grid-template-columns:180px 1fr}.appointment-row{grid-template-columns:1.5fr 1fr 1fr}.appointment-row .actions{grid-column:1/-1}.schedule-metric{gap:7px;padding:8px}.schedule-metric span{font-size:10px}.schedule-metric b{font-size:20px}}
 @media(max-width:620px){.schedule-metrics{grid-template-columns:repeat(3,1fr);gap:5px}.schedule-metric{display:block;padding:7px 9px}.schedule-metric b{display:block;font-size:19px}.schedule-filters{grid-template-columns:1fr 1fr;gap:6px}.day-navigation{justify-content:space-between;gap:3px}.day-navigation button{font-size:9px;padding:5px}.schedule-bottom{grid-template-columns:1fr}.appointment-row{grid-template-columns:1fr 1fr;gap:8px}.appointment-row>div:first-child{grid-column:1/-1}.appointment-row .actions{grid-column:1/-1}.conflict-panel>div{align-items:start}.appointment-progress span{font-size:9px;padding:4px 6px}.schedule-legend{gap:5px 10px}.week-bar{width:18px}}
+/* Desktop agenda and consistent interaction states. */
+.shell{width:min(1440px,calc(100% - 48px))}
+button,.button-link{transition:background-color 140ms ease,border-color 140ms ease,box-shadow 140ms ease}
+button:active:not(:disabled){transform:scale(.98)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+.panel{box-shadow:0 1px 3px #0d365608}
+.tabs{background:#e5eaf0;padding:5px;gap:5px}
+.tabs button.active{background:var(--navy);color:#fff;box-shadow:0 1px 3px #0d365620}
+.schedule-filters{padding:12px;background:#fff;border:1px solid var(--line);border-radius:10px;grid-template-columns:180px auto minmax(160px,1.5fr) minmax(160px,1fr)}
+.timeline-scroll{max-height:330px;overflow:auto;overscroll-behavior:contain;border:1px solid #e1e7ee;border-radius:8px;scrollbar-gutter:stable}
+.schedule-timeline{min-width:900px}
+.schedule-legend{font-size:11px;padding-block:9px 2px;gap:7px 16px}
+.schedule-legend b{font:14px Arial;color:var(--ink)}
+.schedule-legend i{width:10px;height:10px}
+.day-agenda{margin-top:16px}
+.agenda-count{display:inline-grid;place-items:center;min-width:28px;padding:2px 7px;margin-inline-start:6px;background:#e6edf4;border-radius:6px;font:700 13px Arial}
+.appointment-columns,.appointment-row{grid-template-columns:minmax(200px,1.5fr) minmax(150px,.8fr) minmax(160px,.9fr) minmax(250px,auto)}
+.appointment-columns{display:grid;gap:12px;padding:10px 16px;font-size:11px;color:#526579;background:#e5eaf0;border:1px solid #d9e1e9;border-radius:9px 9px 0 0}
+.appointment-list{gap:0;margin:0;border:1px solid #d9e1e9;border-top:0;border-radius:0 0 9px 9px;overflow:hidden}
+.appointment-row{padding:12px 16px;border:0;border-bottom:1px solid #d9e1e9;border-radius:0;min-height:78px;background:#fff;gap:12px}
+.appointment-row:nth-child(even){background:#edf2f7}
+.appointment-row:last-child{border-bottom:0}
+.appointment-row>div{min-width:0}
+.appointment-row h3,.appointment-row p{overflow-wrap:anywhere}
+.appointment-row h3{font-size:15px}
+.appointment-row h3 small{font-size:11px;margin-top:2px}
+.appointment-row p{font-size:11px;margin-top:3px}
+.appointment-row .actions{gap:5px;justify-content:flex-end;flex-wrap:nowrap}
+.appointment-row button{font-size:11px;min-height:36px;white-space:nowrap}
+.appointment-time bdi{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.time-end{font-size:12px;font-weight:400;color:#526579}
+.appointment-time small{margin-top:4px}
+.appointment-row.has-conflict{border-inline-start:3px solid #be123c}
+.appointment-status{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--status-color);background:#fff;font-size:11px;padding:4px 9px;color:var(--status-color)}
+.status-symbol{font:700 14px Arial}
+.appointment-status[data-status=proposed]{border-style:dashed;background:#f1f5f9}
+.appointment-status[data-status=invited]{background:#eff6ff}
+.appointment-status[data-status=confirmed]{background:#f0fdf4}
+.appointment-status[data-status=arrived]{background:#ecfeff}
+.appointment-status[data-status=completed]{background:#e2e8f0}
+.appointment-status[data-status=reschedule_requested]{background:#fffbeb}
+.appointment-status[data-status=rescheduled]{background:#faf5ff}
+.appointment-status[data-status=no_show]{background:#fff1f2}
+.appointment-status[data-status=cancelled]{background:#f4f4f5;border-style:dotted}
+.schedule-insights{margin-block:14px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:11px 14px}
+.schedule-insights>summary{cursor:pointer;font-size:13px;color:var(--navy);font-weight:700}
+.schedule-insights .schedule-bottom{margin-bottom:0}
+.candidate:nth-child(even){background:#edf2f7}
+.criterion:nth-of-type(even){background:#f1f5f9;border-radius:8px;padding-inline:12px}
+@media(hover:hover) and (pointer:fine){.appointment-row:hover{background:#e2ebf4}.candidate:hover{border-color:#9db2c5}button:hover:not(:disabled){box-shadow:0 1px 3px #0d365618}}
+@media(min-width:1101px){.appointment-list{max-height:520px;overflow:auto;scrollbar-gutter:stable;overscroll-behavior:contain}}
+@media(max-width:1100px){.appointment-columns{display:none}.appointment-list{border-top:1px solid #d9e1e9}.appointment-row{grid-template-columns:minmax(180px,1.5fr) 1fr 1fr}.appointment-row .actions{grid-column:1/-1;justify-content:flex-start}.schedule-filters{grid-template-columns:180px 1fr}}
+@media(max-width:620px){.shell{width:calc(100% - 22px)}.schedule-filters{grid-template-columns:1fr 1fr;padding:9px}.schedule-legend{font-size:10px;gap:6px 12px}.appointment-row{grid-template-columns:1fr 1fr;padding:12px;gap:9px}.appointment-row>div:first-child{grid-column:1/-1}.appointment-row .actions{flex-wrap:wrap}.appointment-row button{min-height:40px}.appointment-status{font-size:10px;white-space:normal}.timeline-scroll{max-height:260px}.appointment-time bdi{font-size:15px}.tabs button{min-height:40px}.day-navigation{flex-wrap:wrap}.schedule-filters label{min-width:0}}
+@media(prefers-reduced-motion:reduce){button,.button-link{transition:none}button:active:not(:disabled){transform:none}}
+@media print{.timeline-scroll,.appointment-list{max-height:none;overflow:visible}.schedule-insights,.appointment-columns{display:none}.shell{width:100%}.appointment-row{break-inside:avoid}.appointment-row .actions{display:none}.appointment-row{grid-template-columns:1.5fr 1fr 1fr}}
