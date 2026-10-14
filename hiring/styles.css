@@ -63,3 +63,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:620px){.shell{width:calc(100% - 22px)}.schedule-filters{grid-template-columns:1fr 1fr;padding:9px}.schedule-legend{font-size:10px;gap:6px 12px}.appointment-row{grid-template-columns:1fr 1fr;padding:12px;gap:9px}.appointment-row>div:first-child{grid-column:1/-1}.appointment-row .actions{flex-wrap:wrap}.appointment-row button{min-height:40px}.appointment-status{font-size:10px;white-space:normal}.timeline-scroll{max-height:260px}.appointment-time bdi{font-size:15px}.tabs button{min-height:40px}.day-navigation{flex-wrap:wrap}.schedule-filters label{min-width:0}}
 @media(prefers-reduced-motion:reduce){button,.button-link{transition:none}button:active:not(:disabled){transform:none}}
 @media print{.timeline-scroll,.appointment-list{max-height:none;overflow:visible}.schedule-insights,.appointment-columns{display:none}.shell{width:100%}.appointment-row{break-inside:avoid}.appointment-row .actions{display:none}.appointment-row{grid-template-columns:1.5fr 1fr 1fr}}
+
+/* Calendar-only fullscreen, with a viewport-sized fallback. */
+.calendar-panel>.section-head button{display:inline-flex;align-items:center;justify-content:center;min-width:105px;white-space:nowrap}
+.schedule-legend span{gap:6px}
+.schedule-legend i{flex:none;width:10px;height:10px;border-radius:3px}
+.calendar-fullscreen,.calendar-fullscreen:fullscreen{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;border-radius:0;padding:20px;background:var(--soft);overflow:hidden}
+.calendar-fullscreen::backdrop{background:var(--soft)}
+.calendar-fullscreen .calendar-panel{display:flex;flex-direction:column;width:100%;height:100%;margin:0;padding:18px}
+.calendar-fullscreen .calendar-panel>.section-head{flex:none;margin-bottom:12px}
+.calendar-fullscreen .timeline-scroll{flex:1;min-height:0;max-height:none;overflow:auto}
+.calendar-fullscreen .schedule-legend{flex:none;padding-top:14px}
+@media(max-width:620px){.calendar-fullscreen,.calendar-fullscreen:fullscreen{padding:8px}.calendar-fullscreen .calendar-panel{padding:10px}.calendar-fullscreen .section-head h3{font-size:13px}.calendar-panel>.section-head button{font-size:11px;min-height:40px;min-width:90px}}
+
+.calendar-panel:fullscreen{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;border-radius:0;padding:20px;background:var(--paper)}
