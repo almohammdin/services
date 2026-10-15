@@ -1,3 +1,4 @@
+@font-face{font-family:"Thmanyah Sans";src:url("./fonts/sans-medium.woff2") format("woff2");font-weight:500 600;font-style:normal;font-display:swap}
 @font-face{font-family:"Thmanyah Sans";src:url("./fonts/sans-regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Thmanyah Sans";src:url("./fonts/sans-bold.woff2") format("woff2");font-weight:700 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Thmanyah Serif Display";src:url("./fonts/serif-bold.woff2") format("woff2");font-weight:700 900;font-style:normal;font-display:swap}
@@ -46,3 +47,20 @@ h1,h2,.knowledge-product h3,.case-study-content h3,.cta-title{font-variant-ligat
 #audience .audience-card span:not(.audience-dot){display:block;font-size:15px;line-height:1.9;color:#46516a}
 @media(max-width:560px){#audience .audience-grid{grid-template-columns:1fr;gap:12px}#audience .audience-card{padding:20px 18px;gap:12px}#audience .audience-card b{font-size:17px}#audience .audience-card span:not(.audience-dot){font-size:14px}}
 @media print{#audience .audience-card{break-inside:avoid;border-color:#b6c3d5}}
+
+/* Hatta brand guide: role 02, Thmanyah Sans stylistic alternates.
+   Keep display headings in Serif and body/controls in default Sans. */
+body{font-feature-settings:"salt" 0}
+main :is(h3,.model-title,.pos-card b,.value-card b,.result-card b,.audience-card b,.why-card b,.case-study-badge strong),
+main #audience .audience-card b{
+  font-family:"Thmanyah Sans",Tahoma,Arial,sans-serif;
+  font-feature-settings:"salt" 1;
+  font-weight:500;
+  font-size:24px;
+  line-height:1.5;
+  letter-spacing:normal;
+  font-variant-ligatures:common-ligatures contextual;
+  overflow-wrap:break-word;
+}
+main .model-title>span,main .svc-top h3{min-width:0}
+main .model-title i{flex-shrink:0}
