@@ -47,7 +47,7 @@ function render(a,t=-1,kind='axis',updateHash=false){
  $('detail').innerHTML=row?'<h2>'+escapeText(kind==='practice'?row[2]:row[0])+'</h2><p>'+row[1]+'</p><h3>المخرج التطبيقي</h3><div class="application">'+row[2]+'</div><h3>مثال</h3><p>'+row[3]+'</p><p class="axis-description">ضمن محور <b>'+ax[0]+'</b></p>':'<h2>'+ax[0]+'</h2><p>'+ax[1]+'</p><h3>موضوعات المحور</h3><p>'+rows.slice(ax[3],ax[3]+ax[2]).map(r=>r[0]).join(' · ')+'</p><div class="application">اختر موضوعا لاستكشاف شرحه وتطبيقه</div>';
  $('topicButtons').replaceChildren(...rows.slice(ax[3],ax[3]+ax[2]).map((r,i)=>{const b=document.createElement('button');b.type='button';b.textContent=r[0];b.setAttribute('aria-pressed',String(t===ax[3]+i));b.dataset.topicChoice=ax[3]+i;b.onclick=()=>{setPin(true);render(a,ax[3]+i,'topic',true);[...$('topicButtons').children].find(x=>Number(x.dataset.topicChoice)===ax[3]+i)?.focus();};return b}));
  for(const p of parts){const same=Number(p.dataset.axis)===a&&(t<0?Number(p.dataset.topic)===-1:Number(p.dataset.topic)===t);p.classList.toggle('active',same);p.setAttribute('aria-pressed',String(same));}
- if(updateHash)history.replaceState(null,'','#axis-'+(a+1)+(t>=0?'-topic-'+(t-ax[3]+1):''));
+ if(updateHash)history.replaceState(null,'',location.pathname+location.search+'#axis-'+(a+1)+(t>=0?'-topic-'+(t-ax[3]+1):''));
 }
 function setPin(value){pinned=value;$('unpin').hidden=!value;}
 axes.forEach((a,i)=>{$('axisSelect').add(new Option(String(i+1).padStart(2,'0')+' · '+a[0],i));});
