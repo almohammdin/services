@@ -43,9 +43,9 @@ function escapeText(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','
 function render(a,t=-1,kind='axis',updateHash=false){
  currentAxis=a;currentTopic=t;const ax=axes[a],row=t<0?null:rows[t];
  $('axisSelect').value=a;
- $('level').textContent=(kind==='practice'?'التطبيق':row?'الموضوع':'المحور')+' · '+String(a+1).padStart(2,'0')+' / 08';
+ $('level').textContent=(kind==='practice'?'التطبيق':row?'الموضوع':'المحور')+' · '+String(a+1).padStart(2,'0')+' / '+String(axes.length).padStart(2,'0');
  $('detail').innerHTML=row?'<h2>'+escapeText(kind==='practice'?row[2]:row[0])+'</h2><p>'+row[1]+'</p><h3>المخرج التطبيقي</h3><div class="application">'+row[2]+'</div><h3>مثال</h3><p>'+row[3]+'</p><p class="axis-description">ضمن محور <b>'+ax[0]+'</b></p>':'<h2>'+ax[0]+'</h2><p>'+ax[1]+'</p><h3>موضوعات المحور</h3><p>'+rows.slice(ax[3],ax[3]+ax[2]).map(r=>r[0]).join(' · ')+'</p><div class="application">اختر موضوعا لاستكشاف شرحه وتطبيقه</div>';
- $('topicButtons').replaceChildren(...rows.slice(ax[3],ax[3]+ax[2]).map((r,i)=>{const b=document.createElement('button');b.type='button';b.textContent=r[0];b.setAttribute('aria-pressed',String(t===ax[3]+i));b.onclick=()=>{setPin(true);render(a,ax[3]+i,'topic',true)};return b}));
+ $('topicButtons').replaceChildren(...rows.slice(ax[3],ax[3]+ax[2]).map((r,i)=>{const b=document.createElement('button');b.type='button';b.textContent=r[0];b.setAttribute('aria-pressed',String(t===ax[3]+i));b.dataset.topicChoice=ax[3]+i;b.onclick=()=>{setPin(true);render(a,ax[3]+i,'topic',true);[...$('topicButtons').children].find(x=>Number(x.dataset.topicChoice)===ax[3]+i)?.focus();};return b}));
  for(const p of parts){const same=Number(p.dataset.axis)===a&&(t<0?Number(p.dataset.topic)===-1:Number(p.dataset.topic)===t);p.classList.toggle('active',same);p.setAttribute('aria-pressed',String(same));}
  if(updateHash)history.replaceState(null,'','#axis-'+(a+1)+(t>=0?'-topic-'+(t-ax[3]+1):''));
 }
@@ -53,20 +53,24 @@ function setPin(value){pinned=value;$('unpin').hidden=!value;}
 axes.forEach((a,i)=>{$('axisSelect').add(new Option(String(i+1).padStart(2,'0')+' · '+a[0],i));});
 parts.forEach((p,i)=>{const a=Number(p.dataset.axis),t=Number(p.dataset.topic),k=p.dataset.kind;const label=t<0?axes[a][0]:rows[t][k==='practice'?2:0];p.setAttribute('aria-label',label);const title=document.createElementNS('http://www.w3.org/2000/svg','title');title.textContent=label;p.append(title);
  p.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!pinned)render(a,t,k)});
- p.addEventListener('focus',()=>{if(!pinned)render(a,t,k)});
+ p.addEventListener('focus',()=>{parts.forEach(x=>x.setAttribute('tabindex',x===p?'0':'-1'));if(!pinned)render(a,t,k)});
  p.addEventListener('click',()=>{setPin(true);render(a,t,k,true)});
  p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();p.click();}if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();setPin(false);parts[(i+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+parts.length)%parts.length].focus();}});
 });
 $('axisSelect').onchange=e=>{setPin(false);render(Number(e.target.value),-1,'axis',true)};
 $('unpin').onclick=()=>setPin(false);
-$('previous').onclick=()=>{setPin(false);render((currentAxis+7)%8,-1,'axis',true)};
-$('next').onclick=()=>{setPin(false);render((currentAxis+1)%8,-1,'axis',true)};
+$('previous').onclick=()=>{setPin(false);render((currentAxis+axes.length-1)%axes.length,-1,'axis',true)};
+$('next').onclick=()=>{setPin(false);render((currentAxis+1)%axes.length,-1,'axis',true)};
 function changeZoom(v){zoom=Math.max(1,Math.min(3,v));$('drawing').style.width=zoom===1?'':(zoom*100)+'%';$('zoomLabel').textContent=Math.round(zoom*100)+'%';$('zoomOut').disabled=zoom===1;$('zoomIn').disabled=zoom===3;}
 $('zoomIn').onclick=()=>changeZoom(zoom+.25);$('zoomOut').onclick=()=>changeZoom(zoom-.25);
-$('reset').onclick=()=>{setPin(false);changeZoom(1);$('canvas').scrollTo(0,0);render(0,-1,'axis',true)};
-const explorer=$('explorer');function syncFullscreen(){const expanded=!!document.fullscreenElement||explorer.classList.contains('expanded');$('fullscreen').textContent=expanded?'إنهاء ملء الشاشة ×':'ملء الشاشة ⛶';$('fullscreen').setAttribute('aria-pressed',String(expanded));}
+$('reset').onclick=()=>{setPin(false);changeZoom(1);$('canvas').scrollTo(0,0);render(0,-1,'axis',true);$('axisSelect').focus()};
+const explorer=$('explorer');function syncFullscreen(){const expanded=!!document.fullscreenElement||explorer.classList.contains('expanded');$('fullscreen').querySelector('span').textContent=expanded?'إنهاء ملء الشاشة':'ملء الشاشة';$('fullscreen').setAttribute('aria-pressed',String(expanded));}
 function closeFallback(){explorer.classList.remove('expanded');document.body.classList.remove('has-expanded');syncFullscreen();}
 $('fullscreen').onclick=async()=>{if(document.fullscreenElement){await document.exitFullscreen();return;}if(explorer.classList.contains('expanded')){closeFallback();return;}try{if(!explorer.requestFullscreen)throw Error('fallback');await explorer.requestFullscreen();}catch{explorer.classList.add('expanded');document.body.classList.add('has-expanded');}syncFullscreen();};
 document.addEventListener('fullscreenchange',syncFullscreen);document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeFallback();setPin(false);}});
 function fromHash(){const m=location.hash.match(/^#axis-([1-8])(?:-topic-([1-4]))?$/);if(m){const a=Number(m[1])-1,t=m[2]?Number(m[2])-1:-1;render(a,t>=0&&t<axes[a][2]?axes[a][3]+t:-1);setPin(true);}else render(0);}
 window.addEventListener('hashchange',fromHash);fromHash();changeZoom(1);syncFullscreen();
+
+function setView(map){explorer.classList.toggle('show-map',map);$('showMap').setAttribute('aria-pressed',String(map));$('showDetails').setAttribute('aria-pressed',String(!map));}
+$('showMap').onclick=()=>setView(true);$('showDetails').onclick=()=>setView(false);$('printPage').onclick=()=>window.print();
+document.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(e.target?.tagName)||!explorer.contains(e.target))return;if(e.key==='+'||e.key==='='){e.preventDefault();changeZoom(zoom+.25)}if(e.key==='-'){e.preventDefault();changeZoom(zoom-.25)}if(e.key==='0'){e.preventDefault();changeZoom(1);$('canvas').scrollTo(0,0)}});
