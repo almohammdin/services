@@ -74,3 +74,6 @@ window.addEventListener('hashchange',fromHash);fromHash();changeZoom(1);syncFull
 function setView(map){explorer.classList.toggle('show-map',map);$('showMap').setAttribute('aria-pressed',String(map));$('showDetails').setAttribute('aria-pressed',String(!map));}
 $('showMap').onclick=()=>setView(true);$('showDetails').onclick=()=>setView(false);$('printPage').onclick=()=>window.print();
 document.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(e.target?.tagName)||!explorer.contains(e.target))return;if(e.key==='+'||e.key==='='){e.preventDefault();changeZoom(zoom+.25)}if(e.key==='-'){e.preventDefault();changeZoom(zoom-.25)}if(e.key==='0'){e.preventDefault();changeZoom(1);$('canvas').scrollTo(0,0)}});
+
+
+$('languageSwitch').addEventListener('click',()=>{$('languageSwitch').href=(document.documentElement.lang==='en'?'./':'en/')+location.hash;});
