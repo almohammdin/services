@@ -83,3 +83,33 @@ header .back span{margin-inline-start:8px}
  .usage-note{grid-column:1;grid-row:3;font-size:12px}
 }
 @media print{.intro{padding:0 0 12px}}
+
+/* Single title row: brand alongside the map name, navigation in context. */
+.intro{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 0}
+.intro h1{min-width:0}
+.intro-brand{flex:0 0 132px;display:flex;align-items:center;justify-content:center;min-height:44px}
+.intro-brand img{display:block;width:132px;height:48px;object-fit:contain}
+.display-actions{display:inline-flex;align-items:stretch;gap:6px;flex:none}
+.controls .language-switch{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin:0;padding:5px 12px;font-size:12px;background:#fff;border-radius:7px}
+.controls #fullscreen{margin-inline-start:0}
+.footer-brand{gap:12px}
+.footer-tools{font-size:12px;white-space:nowrap;color:#e6d2ae}
+.footer-tools>span{display:inline-block;margin-inline-start:4px}
+@media(max-width:720px){
+ .intro{display:flex;gap:12px;padding:10px 0}.intro h1{font-size:clamp(20px,5.5vw,26px)}
+ .intro-brand{flex-basis:92px}.intro-brand img{width:92px;height:44px}
+ .display-actions{margin-inline-start:auto}
+ .footer-brand{flex-direction:column;align-items:flex-start;gap:0}
+ .site-footer .footer-brand img{height:42px}
+}
+@media(max-width:380px){.intro-brand{flex-basis:64px}.intro-brand img{width:64px;height:40px}.intro{gap:10px}}
+@media print{.intro-brand{display:none}}
+
+.reset-icon{display:none}
+@media(max-width:720px){
+ .controls #reset .reset-label,.controls #fullscreen>span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+ .controls #reset,.controls #fullscreen,.controls #zoomIn,.controls #zoomOut{min-width:44px;width:44px;min-height:44px;padding:4px;justify-content:center}
+ .controls #fullscreen .fullscreen-icon{margin:0}
+ .controls #reset .reset-icon{display:inline;font-size:24px;line-height:1}
+ .controls output{min-width:32px}
+}
