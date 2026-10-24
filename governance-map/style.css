@@ -135,3 +135,18 @@ body.has-expanded .page-header{display:none}
 }
 @media(max-width:380px){.header-actions{gap:5px}.page-header .intro-brand img{width:50px}.tools-card{padding-inline:6px}}
 @media print{header.page-header{position:static;display:block;width:100%;min-height:0;padding:0 0 12px;border:0}.header-actions{display:none}}
+
+/* Axis colors mirror the eight inner sectors of the map. */
+.axis-color-picker{position:relative;min-width:0}
+.axis-picker-trigger{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;padding:10px 12px;background:#fff;border:1px solid #d7dbe2;border-radius:8px;text-align:start;font-size:13px}
+.axis-picker-value,.axis-picker-option{display:flex;align-items:center;gap:10px;min-width:0}
+.axis-swatch{display:inline-block;flex:0 0 13px;width:13px;height:13px;border-radius:3px;box-shadow:inset 0 0 0 1px #00000015}
+.axis-name{min-width:0;line-height:1.65}
+.axis-chevron{flex:none;font-size:19px;line-height:1}
+.axis-picker-list{position:absolute;z-index:40;inset-inline:0;top:calc(100% + 6px);max-height:min(380px,55dvh);overflow-y:auto;overscroll-behavior:contain;padding:5px;background:#fff;border:1px solid #d7dbe2;border-radius:10px;box-shadow:0 12px 28px #061f5620}
+.axis-picker-list[hidden]{display:none}
+.axis-picker-option{min-height:44px;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:13px;color:#061f56;background:#fff}
+.axis-picker-option[aria-selected=true]{background:#f4eee3;font-weight:700}
+.axis-picker-option:hover,.axis-picker-option.is-active{background:#eef2f8;outline:1px solid #d7dbe2;outline-offset:-1px}
+@media(max-width:720px){.axis-picker-trigger,.axis-picker-option{font-size:14px}.axis-picker-list{max-height:min(380px,50dvh)}}
+@media print{.axis-color-picker{display:none}}
