@@ -29,7 +29,7 @@ $('saveMatrix').onclick=async()=>{
  setBusy(true);message('جارٍ حفظ المصفوفة في حسابك بمسار…');
  await saveAuthorityMatrix(user,{clientId:client.id,matrixJson,memory,status,expectedRevision:expected});
  if(requestEpoch!==epoch)return;activeClient=client.id;privateLoaded=true;revision=expected+1;
- dirty=JSON.stringify(api.snapshot())!==matrixJson||$('clientMemory').value!==memory||$('matrixState').value!==status;
+ dirty=JSON.stringify(MatrixData.parse(JSON.stringify(api.snapshot())))!==matrixJson||$('clientMemory').value!==memory||$('matrixState').value!==status;
  message(`تم حفظ النسخة ${revision} وربطها بالعميل ${client.name}${dirty?'؛ توجد تعديلات أحدث لم تحفظ.':''}`);
  }catch(e){message(safeError(e))}finally{setBusy(false)}
 };
