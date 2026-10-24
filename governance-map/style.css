@@ -113,3 +113,25 @@ header .back span{margin-inline-start:8px}
  .controls #reset .reset-icon{display:inline;font-size:24px;line-height:1}
  .controls output{min-width:32px}
 }
+
+/* Persistent compact title row and Hatta tools navigation. */
+header.page-header{position:sticky;top:0;z-index:20;width:min(1440px,calc(100% - 64px));margin-inline:auto;min-height:72px;padding:10px 0;align-items:center;background:#fbfaf7;border-bottom:1px solid #e1dfd8;gap:20px}
+.header-actions{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.page-header .intro-brand{flex:0 0 auto;min-height:44px}
+.page-header .intro-brand img{width:112px;height:44px}
+.tools-card{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:7px 12px;border:1px solid #d5c5aa;border-radius:9px;background:#f4eee3;color:#061f56;font-size:13px;font-weight:700;white-space:nowrap}
+.tools-card svg{width:18px;height:18px;flex:none}
+.tools-card:hover{background:#eaddc7;border-color:#b47a2d}
+#explorer{scroll-margin-top:90px}
+body.has-expanded .page-header{display:none}
+@media(max-width:1000px){header.page-header{width:calc(100% - 36px)}}
+@media(max-width:720px){
+ header.page-header{width:calc(100% - 28px);min-height:64px;padding:8px 0;gap:10px}
+ .page-header h1{font-size:clamp(18px,4.7vw,24px);line-height:1.45}
+ .header-actions{gap:8px}
+ .page-header .intro-brand img{width:64px;height:40px}
+ .tools-card{font-size:11px;padding:6px 8px;gap:5px}
+ .tools-card svg{width:15px;height:15px}
+}
+@media(max-width:380px){.header-actions{gap:5px}.page-header .intro-brand img{width:50px}.tools-card{padding-inline:6px}}
+@media print{header.page-header{position:static;display:block;width:100%;min-height:0;padding:0 0 12px;border:0}.header-actions{display:none}}
