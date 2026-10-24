@@ -55,17 +55,32 @@
     .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').trim().toLocaleLowerCase('ar-SA');
   const texts = cards.map(card => normalize(card.textContent));
   let activeCategory = 'all';
+  let expanded = false;
+  const toggle = document.getElementById('tools-toggle');
+  const previewLimit = 6;
   function filter() {
     const words = normalize(search.value).split(/\s+/).filter(Boolean);
+    const filtering = words.length > 0 || activeCategory !== 'all';
+    const matches = cards.map((card, index) =>
+      (activeCategory === 'all' || card.dataset.category === activeCategory)
+      && words.every(word => texts[index].includes(word)));
+    const totalMatches = matches.filter(Boolean).length;
     let visible = 0;
     cards.forEach((card, index) => {
-      const matches = (activeCategory === 'all' || card.dataset.category === activeCategory)
-        && words.every(word => texts[index].includes(word));
-      card.hidden = !matches;
-      if (matches) visible++;
+      card.hidden = !matches[index] || (toggle && !filtering && !expanded && index >= previewLimit);
+      if (!card.hidden) visible++;
     });
-    count.textContent = `${visible} من ${cards.length} أداة`;
-    empty.hidden = visible !== 0;
+    count.textContent = filtering
+      ? `${totalMatches} من ${cards.length} أداة`
+      : `معروض ${visible} من ${cards.length} أداة`;
+    empty.hidden = totalMatches !== 0;
+    if (toggle) {
+      toggle.hidden = filtering || cards.length <= previewLimit;
+      toggle.setAttribute('aria-expanded', String(expanded));
+      toggle.querySelector('.tools-toggle-label').textContent = expanded ? 'طي الأدوات الإضافية' : 'عرض بقية الأدوات';
+      toggle.querySelector('.tools-toggle-count').textContent = expanded ? 'العودة لعرض 6 أدوات' : `${cards.length - previewLimit} أدوات إضافية`;
+      toggle.querySelector('.tools-toggle-icon').textContent = expanded ? '−' : '+';
+    }
     clear.hidden = search.value.length === 0 && activeCategory === 'all';
     filters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === activeCategory)));
   }
@@ -79,6 +94,14 @@
     activeCategory = 'all';
     filter();
     search.focus();
+  });
+  if (toggle) toggle.addEventListener('click', () => {
+    expanded = !expanded;
+    filter();
+    if (!expanded) {
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      toggle.scrollIntoView({block: 'center', behavior: reduceMotion ? 'instant' : 'smooth'});
+    }
   });
   controls.hidden = false;
   filter();
