@@ -7,7 +7,7 @@ let currentAxis=0,currentTopic=-1,pinned=false,zoom=1;
 function escapeText(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function render(a,t=-1,kind='axis',updateHash=false){
  currentAxis=a;currentTopic=t;const ax=axes[a],row=t<0?null:rows[t];
- $('axisSelect').value=a;
+ $('axisSelect').value=a;syncAxisPicker(a);
  $('level').textContent=(kind==='practice'?'Practical output':row?'Topic':'Axis')+' · '+String(a+1).padStart(2,'0')+' / '+String(axes.length).padStart(2,'0');
  $('detail').innerHTML=row?'<h2>'+escapeText(kind==='practice'?row[2]:row[0])+'</h2><p>'+row[1]+'</p><h3>Practical output</h3><div class="application">'+row[2]+'</div><h3>Example</h3><p>'+row[3]+'</p><p class="axis-description">Within axis <b>'+ax[0]+'</b></p>':'<h2>'+ax[0]+'</h2><p>'+ax[1]+'</p><h3>Axis topics</h3><p>'+rows.slice(ax[3],ax[3]+ax[2]).map(r=>r[0]).join(' · ')+'</p><div class="application">Choose a topic to explore its explanation and practical output</div>';
  $('topicButtons').replaceChildren(...rows.slice(ax[3],ax[3]+ax[2]).map((r,i)=>{const b=document.createElement('button');b.type='button';b.textContent=r[0];b.setAttribute('aria-pressed',String(t===ax[3]+i));b.dataset.topicChoice=ax[3]+i;b.onclick=()=>{setPin(true);render(a,ax[3]+i,'topic',true);[...$('topicButtons').children].find(x=>Number(x.dataset.topicChoice)===ax[3]+i)?.focus();};return b}));
@@ -16,6 +16,51 @@ function render(a,t=-1,kind='axis',updateHash=false){
 }
 function setPin(value){pinned=value;$('unpin').hidden=!value;}
 axes.forEach((a,i)=>{$('axisSelect').add(new Option(String(i+1).padStart(2,'0')+' · '+a[0],i));});
+/* Color-linked axis picker; native select remains the no-script fallback. */
+const axisColors=['#061f56','#123675','#204884','#315c93','#8b5b1f','#926326','#72522d','#3c557b'];
+const axisSelect=$('axisSelect'),axisChoice=axisSelect.parentElement;
+const axisLabel=axisChoice.querySelector('label');axisLabel.id='axisPickerLabel';
+const axisPicker=document.createElement('div');axisPicker.className='axis-color-picker';
+const axisTrigger=document.createElement('button');axisTrigger.type='button';axisTrigger.id='axisPickerButton';axisTrigger.className='axis-picker-trigger';
+axisTrigger.setAttribute('role','combobox');axisTrigger.setAttribute('aria-haspopup','listbox');axisTrigger.setAttribute('aria-expanded','false');axisTrigger.setAttribute('aria-controls','axisPickerList');axisTrigger.setAttribute('aria-labelledby','axisPickerLabel axisPickerValue');
+const axisValue=document.createElement('span');axisValue.id='axisPickerValue';axisValue.className='axis-picker-value';
+const axisSwatch=document.createElement('span');axisSwatch.className='axis-swatch';axisSwatch.setAttribute('aria-hidden','true');
+const axisName=document.createElement('span');axisName.className='axis-name';axisValue.append(axisSwatch,axisName);
+const axisChevron=document.createElement('span');axisChevron.className='axis-chevron';axisChevron.setAttribute('aria-hidden','true');axisChevron.textContent='⌄';axisTrigger.append(axisValue,axisChevron);
+const axisList=document.createElement('div');axisList.id='axisPickerList';axisList.className='axis-picker-list';axisList.hidden=true;axisList.setAttribute('role','listbox');axisList.setAttribute('aria-labelledby','axisPickerLabel');
+let axisMenuIndex=0;
+const axisOptions=axes.map((axis,i)=>{
+ const option=document.createElement('div');option.id='axis-option-'+i;option.className='axis-picker-option';option.setAttribute('role','option');option.setAttribute('aria-selected','false');option.dataset.axisIndex=i;
+ const swatch=document.createElement('span');swatch.className='axis-swatch';swatch.style.backgroundColor=axisColors[i];swatch.setAttribute('aria-hidden','true');
+ const name=document.createElement('span');name.className='axis-name';name.textContent=String(i+1).padStart(2,'0')+' · '+axis[0];
+ option.append(swatch,name);option.addEventListener('click',()=>chooseAxis(i));axisList.append(option);return option;
+});
+axisPicker.append(axisTrigger,axisList);axisSelect.after(axisPicker);axisSelect.hidden=true;axisLabel.htmlFor='axisPickerButton';
+axisLabel.addEventListener('click',()=>axisTrigger.focus());
+function syncAxisPicker(index){
+ axisName.textContent=String(index+1).padStart(2,'0')+' · '+axes[index][0];axisSwatch.style.backgroundColor=axisColors[index];
+ axisOptions.forEach((option,i)=>option.setAttribute('aria-selected',String(i===index)));if(!axisList.hidden)markAxisOption(index);
+}
+function markAxisOption(index){
+ axisMenuIndex=index;axisOptions.forEach((option,i)=>option.classList.toggle('is-active',i===index));
+ axisTrigger.setAttribute('aria-activedescendant',axisOptions[index].id);axisOptions[index].scrollIntoView({block:'nearest'});
+}
+function openAxisMenu(){axisList.hidden=false;axisTrigger.setAttribute('aria-expanded','true');markAxisOption(Number(axisSelect.value));}
+function closeAxisMenu(){axisList.hidden=true;axisTrigger.setAttribute('aria-expanded','false');axisTrigger.removeAttribute('aria-activedescendant');}
+function chooseAxis(index){closeAxisMenu();axisSelect.value=String(index);setPin(false);render(index,-1,'axis',true);axisTrigger.focus();}
+axisTrigger.addEventListener('click',()=>axisList.hidden?openAxisMenu():closeAxisMenu());
+axisTrigger.addEventListener('keydown',event=>{
+ const key=event.key;
+ if(['ArrowDown','ArrowUp','Home','End'].includes(key)){
+  event.preventDefault();const wasClosed=axisList.hidden;if(wasClosed)openAxisMenu();
+  const next=key==='Home'?0:key==='End'?axes.length-1:wasClosed?axisMenuIndex:(axisMenuIndex+(key==='ArrowDown'?1:-1)+axes.length)%axes.length;markAxisOption(next);
+ }else if(key==='Enter'||key===' '){event.preventDefault();if(axisList.hidden)openAxisMenu();else chooseAxis(axisMenuIndex);}
+ else if(key==='Escape'){event.preventDefault();event.stopPropagation();closeAxisMenu();}
+ else if(key==='Tab')closeAxisMenu();
+});
+document.addEventListener('click',event=>{if(!axisPicker.contains(event.target))closeAxisMenu();});
+axisPicker.addEventListener('focusout',event=>{if(!axisPicker.contains(event.relatedTarget))closeAxisMenu();});
+
 parts.forEach((p,i)=>{const a=Number(p.dataset.axis),t=Number(p.dataset.topic),k=p.dataset.kind;const label=t<0?axes[a][0]:rows[t][k==='practice'?2:0];p.setAttribute('aria-label',label);const title=document.createElementNS('http://www.w3.org/2000/svg','title');title.textContent=label;p.append(title);
  p.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!pinned)render(a,t,k)});
  p.addEventListener('focus',()=>{parts.forEach(x=>x.setAttribute('tabindex',x===p?'0':'-1'));if(!pinned)render(a,t,k)});
@@ -37,7 +82,7 @@ function fitDrawing(){
 }
 function changeZoom(v){zoom=Math.max(1,Math.min(3,v));$('zoomLabel').textContent=Math.round(zoom*100)+'%';$('zoomOut').disabled=zoom===1;$('zoomIn').disabled=zoom===3;fitDrawing();}
 $('zoomIn').onclick=()=>changeZoom(zoom+.25);$('zoomOut').onclick=()=>changeZoom(zoom-.25);
-$('reset').onclick=()=>{setPin(false);changeZoom(1);$('canvas').scrollTo(0,0);render(0,-1,'axis',true);$('axisSelect').focus()};
+$('reset').onclick=()=>{setPin(false);changeZoom(1);$('canvas').scrollTo(0,0);render(0,-1,'axis',true);axisTrigger.focus()};
 const explorer=$('explorer');let wasExpanded=false;function syncFullscreen(){const expanded=isExpanded();$('fullscreen').querySelector('span').textContent=expanded?'Exit fullscreen':'Fullscreen';$('fullscreen').setAttribute('aria-pressed',String(expanded));if(expanded&&!wasExpanded){setView(true);changeZoom(1);$('canvas').scrollTo(0,0);}wasExpanded=expanded;fitDrawing();requestAnimationFrame(fitDrawing);}
 function closeFallback(){explorer.classList.remove('expanded');document.body.classList.remove('has-expanded');syncFullscreen();}
 $('fullscreen').onclick=async()=>{if(document.fullscreenElement){await document.exitFullscreen();return;}if(explorer.classList.contains('expanded')){closeFallback();return;}try{if(!explorer.requestFullscreen)throw Error('fallback');await explorer.requestFullscreen();}catch{explorer.classList.add('expanded');document.body.classList.add('has-expanded');}syncFullscreen();};
