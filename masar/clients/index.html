@@ -19,18 +19,19 @@
 <style>body:not(.ready) .shell{display:none}.ready .auth{display:none}.auth{min-height:100vh;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,#101828,#263349)}.auth-card{width:min(410px,100%);padding:28px;border-radius:26px;background:#fff;text-align:center;box-shadow:0 26px 65px rgba(0,0,0,.22)}.auth-card h1{font-size:24px}.auth-card p{font-size:13px;color:var(--muted)}.auth-card .btn{width:100%;margin-top:12px}.auth-message{min-height:24px;color:#b42318;font-size:12px}</style>
 <style>.client-contact{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.client-contact a{border:1px solid #d8dee8;background:#fff;border-radius:10px;padding:3px 8px;color:#163a70;font-size:12px;unicode-bidi:isolate}</style>
 <style>html{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button,.btn{transition:transform 140ms cubic-bezier(.23,1,.32,1)}button:active,.btn:active{transform:scale(.98)}@media(pointer:coarse){input,textarea{font-size:16px}}@media(prefers-reduced-motion:reduce){button,.btn{transition:none}}</style>
-<link rel="stylesheet" href="/services/masar/hatta-ui.css?v=20261024">
+<link rel="stylesheet" href="/services/masar/hatta-ui.css?v=20261024e">
 </head>
 <body><section class="auth"><div class="auth-card"><h1>العملاء</h1><p>جارٍ فتح بيانات العملاء…</p></div></section><main class="shell">
 <section class="top"><div><img src="/services/masar/assets/masar-wordmark.jpg" alt="مسار" style="display:block;width:120px;max-width:100%;border-radius:8px;margin-bottom:8px"><h1>العملاء</h1></div><nav class="actions" aria-label="أقسام مسار"><a class="btn" href="/services/masar/">الرئيسية</a><a class="btn gold" href="/services/masar/tool/">إعداد عرض</a><a class="btn" href="/services/masar/offers/">العروض</a></nav></section>
 <p id="message" class="notice">جارٍ تحميل بيانات الحساب…</p>
-<section class="grid"><div class="card"><h2 id="formTitle">إضافة عميل</h2><div class="field"><label for="cName">اسم العميل</label><input id="cName" autocomplete="organization"></div><div class="field"><label for="cPerson">الشخص المسؤول</label><input id="cPerson"></div><div class="field"><label for="cEmail">البريد الإلكتروني</label><input id="cEmail" type="email" inputmode="email" autocomplete="email" dir="ltr"></div><div class="field"><label for="cMobile">الجوال</label><input id="cMobile" type="tel" inputmode="tel" autocomplete="tel" dir="ltr"></div><div class="field"><label for="cWhatsapp">رقم واتساب</label><input id="cWhatsapp" type="tel" inputmode="tel" dir="ltr" placeholder="05xxxxxxxx"></div><div class="field"><label for="cNotes">ملاحظات</label><textarea id="cNotes"></textarea></div><div class="form-actions"><button class="btn dark" id="addBtn">حفظ العميل</button><button class="btn" id="cancelBtn" type="button" hidden>إلغاء التعديل</button></div></div><div class="card"><h2>قائمة العملاء</h2><div id="clients" class="list"></div></div></section>
+<section class="grid"><div class="card"><h2 id="formTitle">إضافة عميل</h2><div class="field"><label for="cName">اسم العميل</label><input id="cName" autocomplete="organization"></div><div class="field"><label for="cPerson">الشخص المسؤول</label><input id="cPerson"></div><div class="field"><label for="cEmail">البريد الإلكتروني</label><input id="cEmail" type="email" inputmode="email" autocomplete="email" dir="ltr"></div><div class="field"><label for="cMobile">الجوال</label><input id="cMobile" type="tel" inputmode="tel" autocomplete="tel" dir="ltr"></div><div class="field"><label for="cWhatsapp">رقم واتساب</label><input id="cWhatsapp" type="tel" inputmode="tel" dir="ltr" placeholder="05xxxxxxxx"></div><div class="field"><label for="cNotes">ملاحظات</label><textarea id="cNotes"></textarea></div><div class="form-actions"><button class="btn dark" id="addBtn">حفظ العميل</button><button class="btn" id="cancelBtn" type="button" hidden>إلغاء التعديل</button></div></div><div class="card"><div class="client-filter"><h2 id="listTitle">قائمة العملاء</h2><a class="btn" id="showAllClients" href="/services/masar/clients/" hidden>كل العملاء</a></div><div id="clients" class="list"></div></div></section>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,loadWorkspace,saveClient,updateClient,clientKey,quoteKey,quoteSeriesKey,quoteVersion,serviceLabel} from '../data.js?v=20261024c';
+import {auth,authReady,onAuthStateChanged,loadWorkspace,saveClient,updateClient,clientKey,quoteKey,quoteSeriesKey,quoteVersion,serviceLabel} from '../data.js?v=20261024e';
 const $=id=>document.getElementById(id),fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0});
 const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 let user=null,clients=[],quotes=[],editingName=null;
+const requestedClientId=new URLSearchParams(location.search).get('clientId');
 function message(text){$('message').textContent=text}
 function resetForm(){editingName=null;$('formTitle').textContent='إضافة عميل';$('addBtn').textContent='حفظ العميل';$('cancelBtn').hidden=true;for(const id of ['cName','cPerson','cEmail','cMobile','cWhatsapp','cNotes'])$(id).value=''}
 function phoneHref(value){const raw=String(value||'').trim(),digits=raw.replace(/[^\d]/g,'');return digits.length>=7&&digits.length<=15?'tel:'+(raw.startsWith('+')?'+':'')+digits:''}
@@ -38,7 +39,9 @@ function whatsappHref(value){let digits=String(value||'').replace(/[^\d]/g,'');i
 function render(){
  const map=new Map(clients.map(c=>[clientKey(c.name),{...c,offers:[]}]));
  for(const q of quotes){const key=clientKey(q.client);if(!key)continue;const c=map.get(key)||{name:q.client,offers:[]};c.offers.push(q);map.set(key,c)}
- const rows=[...map.values()].sort((a,b)=>a.name.localeCompare(b.name,'ar'));
+ const selected=[...map.values()].find(c=>c.id===requestedClientId);
+ const rows=(selected?[selected]:[...map.values()]).sort((a,b)=>a.name.localeCompare(b.name,'ar'));
+ $('listTitle').textContent=selected?'ملف '+selected.name:'قائمة العملاء';$('showAllClients').hidden=!selected;
  $('clients').innerHTML=rows.map(c=>{
   const groups=new Map();for(const q of c.offers){const key=quoteSeriesKey(q);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(q)}
   const series=[...groups.values()].map(versions=>versions.sort((a,b)=>quoteVersion(b)-quoteVersion(a)||String(b.updatedAtIso||'').localeCompare(String(a.updatedAtIso||''))));
@@ -46,7 +49,7 @@ function render(){
   const summary=fmt.format(series.length)+' '+(series.length===1?'عرض':'عروض')+(c.offers.length>series.length?' · '+fmt.format(c.offers.length)+' نسخ':'');
   const offerLines=series.map(versions=>'<div class="offer-line"><span>'+esc(serviceLabel(versions[0]))+'</span><div class="offer-links">'+versions.map(q=>'<a class="offer-link" href="/services/masar/tool/?quote='+encodeURIComponent(quoteKey(q))+'">فتح '+(versions.length>1?'النسخة '+fmt.format(quoteVersion(q)):'العرض')+'</a>').join('')+'</div></div>').join('');
    const contact='<div class="client-contact">'+(c.email?'<a href="mailto:'+encodeURIComponent(c.email)+'" title="إرسال بريد إلكتروني">✉ '+esc(c.email)+'</a>':'')+(phoneHref(c.mobile)?'<a href="'+phoneHref(c.mobile)+'" title="اتصال">☎ '+esc(c.mobile)+'</a>':'')+(whatsappHref(c.whatsapp)?'<a href="'+whatsappHref(c.whatsapp)+'" target="_blank" rel="noopener noreferrer" title="فتح واتساب">واتساب: '+esc(c.whatsapp)+'</a>':'')+'</div>';
-   return '<article class="client"><div class="client-head"><div><b>'+esc(c.name)+'</b><small>'+(c.person?esc(c.person)+' · ':'')+summary+'</small><small>'+esc(c.notes||'')+'</small>'+contact+'</div><div class="client-actions"><span title="إجمالي قيمة العروض، وليس صافي أتعابك">قيمة العروض: '+fmt.format(value)+' ر.س</span><a class="btn" href="/services/masar/tools/?clientId='+encodeURIComponent(c.id)+'">أدوات العميل</a><button class="btn" type="button" data-edit-client="'+esc(c.name)+'">تعديل البيانات</button></div></div>'+(offerLines?'<div class="client-offers">'+offerLines+'</div>':'')+'</article>';
+   return '<article class="client" id="client-'+esc(c.id)+'"><div class="client-head"><div><b>'+esc(c.name)+'</b><small>'+(c.person?esc(c.person)+' · ':'')+summary+'</small><small class="client-notes">'+esc(c.notes||'')+'</small>'+contact+'</div><div class="client-actions"><span title="إجمالي قيمة العروض، وليس صافي أتعابك">قيمة العروض: '+fmt.format(value)+' ر.س</span><a class="btn" href="/services/masar/consultation/?clientId='+encodeURIComponent(c.id)+'">'+(c.consultation?'إجابات الاستبيان · '+fmt.format(c.consultation.answerCount||0):'استبيان الأعمال')+'</a><a class="btn" href="/services/masar/tools/?clientId='+encodeURIComponent(c.id)+'">أدوات العميل</a><button class="btn" type="button" data-edit-client="'+esc(c.name)+'">تعديل البيانات</button></div></div>'+(offerLines?'<div class="client-offers">'+offerLines+'</div>':'')+'</article>';
  }).join('')||'<div class="empty">لا يوجد عملاء بعد.</div>';
 }
 $('clients').onclick=e=>{const btn=e.target.closest('[data-edit-client]');if(!btn)return;const c=clients.find(x=>clientKey(x.name)===clientKey(btn.dataset.editClient));if(!c)return;editingName=c.name;$('formTitle').textContent='تعديل بيانات العميل';$('addBtn').textContent='حفظ التعديلات';$('cancelBtn').hidden=false;$('cName').value=c.name;$('cPerson').value=c.person||'';$('cEmail').value=c.email||'';$('cMobile').value=c.mobile||'';$('cWhatsapp').value=c.whatsapp||'';$('cNotes').value=c.notes||'';$('cName').focus();window.scrollTo({top:0,behavior:'smooth'})};
@@ -71,5 +74,5 @@ onAuthStateChanged(auth,async u=>{
  try{const workspace=await loadWorkspace(u);clients=workspace.clients;quotes=workspace.quotes;render();message('')}
  catch(e){console.error(e);message('تعذر تحميل بيانات الحساب. حاول تحديث الصفحة.')}
 });
-</script><script src="/services/masar/shell.js?v=20261024c"></script></body></html>
+</script><script src="/services/masar/shell.js?v=20261024e"></script></body></html>
 

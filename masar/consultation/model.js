@@ -1,0 +1,39 @@
+export const GROUPS=[
+{title:'الهدف والأولوية',intro:'ابدأ بما يهمك الآن. اكتب بطريقتك، والتقديرات الأولية مقبولة.',fields:[
+['business','اسم المنشأة أو العلامة التجارية (Brand)','input'],['activity','ما نشاط المنشأة ومرحلة عملها الحالية؟','input'],['name','اسم مقدم الإجابات وصفته','input'],['size','ما الشكل الحالي للمنشأة وعدد الملاك والموظفين؟','input'],['trigger','ما الموضوع الذي ترغب أن نعمل عليه معا؟','text'],['priorities','ما أهم 3 تحديات تواجهك، بالترتيب؟','text'],['goal','ما النتيجة الأهم التي ترغب أن يحققها تعاوننا؟','text'],['decision','ما القرار الذي تحتار فيه حاليا؟ وهل له موعد محدد؟','text'],['example','اذكر مثال يوضح الموضوع الذي ترغب أن نعمل عليه وأثره على أعمالك.','text'],['attempts','ما الخطوات التي جربتها للتعامل مع هذا الموضوع؟ وما النتيجة؟','text'],['success','كيف ستعرف أن المهمة الاستشارية حققت النتيجة المطلوبة؟','text']]},
+{title:'النشاط والملكية',intro:'وضح لنا كيف بدأ النشاط وكيف توزعت الملكية والحقوق.',fields:[
+['history','متى بدأ النشاط؟ وما أبرز محطات تطوره؟','text'],['hasBranches','هل لدى المنشأة فروع؟','select',['اختر الإجابة','نعم','لا']],['units','ما عدد الفروع العاملة ومواقعها؟ وهل توجد فروع متوقفة؟','text'],['hasFactory','هل لدى المنشأة معمل أو وحدة إنتاج أو مطبخ مركزي؟','select',['اختر الإجابة','نعم','لا']],['ownership','باسم من تسجل المنشأة الحالية والعلامة والأصول وعقود الإيجار والحسابات؟','text'],['transition','هل تغيرت الجهة المسجلة للنشاط؟ وضح السبب والتاريخ وكيف تم ترتيب الأصول والعقود والالتزامات.','text'],['rights','من له حقوق ملكية أو مساهمات أو وعود بحصص؟ وما الاتفاقات القائمة مع المالك المسجل؟','text']]},
+{title:'الالتزامات والسيولة',intro:'اكتب وصف مختصر للالتزامات وأثرها على العمل، مع تجنب أرقام الهويات والحسابات وتفاصيل القضايا.',fields:[
+['debts','ما الالتزامات الشخصية والتجارية التي تؤثر على النشاط، وعلى من تسجل؟','text'],['urgent','ما المتأخرات أو المطالبات العاجلة ومواعيدها وأثرها على التشغيل؟','text'],['oldDebts','هل تستخدم إيرادات النشاط الحالي لسداد التزامات أنشطة سابقة؟','select',['اختر الإجابة','نعم','لا','غير متأكد','أفضل مناقشتها في الجلسة']],['cash','كيف تتابع التدفق النقدي (Cash Flow)؟ وهل تغطي الإيرادات المصروفات والأقساط في مواعيدها؟ وكيف تعالج أي نقص؟','text'],['cashSource','ما أساس معلومات الالتزامات والسيولة؟','select',['اختر الإجابة','تقارير ومستندات محدثة','مستندات جزئية مع تقديرات','تقدير شخصي','غير متوفرة حاليا']]]},
+{title:'الأداء والتشغيل',intro:'اكتب بيانات آخر 12 شهر، وحدد الفترة التي تغطيها إجابتك. اكتب المبالغ بالريال السعودي والأرقام الإنجليزية.',fields:[
+['performance','ما مبيعات وربحية النشاط؟ اذكر الفترة، أو ما يتوفر لديك حاليا.','text'],['branchPerformance','ما مبيعات وربحية كل فرع؟ وكيف توزع التكاليف المشتركة بينها؟','text'],['branchManagement','كيف تدار الفروع وتتابع نتائجها وجودة العمل فيها؟','text'],['costs','ما التكاليف المحتسبة في الربح؟ وهل تشمل الإدارة والإنتاج ومقابل عملك الشخصي؟','text'],['factory','ماذا ينتج المعمل أو وحدة الإنتاج؟ ومن يخدم؟ وما طاقته المتاحة وقدرته على خدمة التوسع؟','text'],['factoryCosts','ما مبيعات وتكاليف وربحية المعمل أو وحدة الإنتاج؟ وكيف تحمل تكاليفه على الجهات التي يخدمها؟','text'],['roles','كيف تتوزع مسؤوليات الإدارة؟ ومن يتابع النقد والمشتريات والمخزون والجودة؟','text'],['absence','إذا غبت لمدة شهر، ما الأعمال أو القرارات التي تتوقف؟','text'],['data','ما مستوى البيانات المالية والتشغيلية المتاحة؟','select',['اختر الإجابة','تقارير مفصلة ومحدثة لوحدات النشاط','تقارير مجمعة للنشاط','بيانات مبيعات ومصروفات جزئية','تقديرات شخصية','غير متوفرة حاليا']]]},
+{title:'الاستثمار والتوسع',intro:'اشرح تصورك الحالي، حتى لو كانت بعض الخيارات ما زالت قيد التفكير.',fields:[
+['hasInvestment','هل تفكر في تمويل أو دخول شريك أو مستثمر؟','select',['اختر الإجابة','نعم','لا','ما زلت أدرس الخيارات']],['capital','ما حجم التمويل المستهدف؟ وعلى أي أساس قدرت المبلغ؟','text'],['uses','إذا توفر المبلغ اليوم، كيف ستوزعه بين التزامات سابقة وتشغيل وتوسع؟','text'],['partner','ما الإضافة التي تتطلع إليها من الشريك؟','select',['اختر الإجابة','تمويل','خبرة تشغيل وإدارة','تمويل وخبرة تشغيل','علاقات وفتح أسواق','ما زلت أدرس دور الشريك المناسب']],['offer','ما تصورك لما يحصل عليه المستثمر ودوره؟ وهل توجد مفاوضات أو وعود أو اتفاقات قائمة؟','text'],['hasExpansion','هل تخطط للتوسع في مدينة أو سوق جديد؟','select',['اختر الإجابة','نعم','لا','ما زلت أدرس الخيارات']],['jeddah','ما المدينة أو السوق المستهدف؟ ولماذا اخترته؟ وما نموذج الدخول والموعد المستهدف؟','text'],['readiness','من سيدير التوسع؟ وكيف ستخدمه بالإنتاج والإمداد؟ وما الذي ترغب اختباره قبل الالتزام؟','text']]},
+{title:'التعاون والخطوة القادمة',intro:'تساعد هذه الإجابات على تحديد نطاق مناسب للمساندة وترتيب الجلسة.',fields:[
+['support','ما المساندة التي تتوقعها من حتى؟','select',['اختر الإجابة','تشخيص وتوصية','تصميم الملكية والشراكة والحوكمة','تنظيم الإدارة والصلاحيات','تجهيز ملف الاستثمار والتوسع','متابعة التنفيذ','نحدد نطاق التعاون بعد مراجعة الإجابات']],['budget','ما الميزانية التقريبية (Budget) التي تخصصها للاستشارة في هذه المرحلة؟','input'],['approval','من يعتمد التعاقد والقرارات المتعلقة بالنشاط؟ ومن المناسب حضوره الجلسة؟','text'],['documents','ما المستندات والتقارير المتوفرة لديك للمراجعة لاحقا؟','text'],['extra','ما المعلومات الأخرى التي ترغب في إضافتها؟','text']]}
+];
+export const ANSWER_FIELDS=Object.freeze(GROUPS.flatMap(g=>g.fields.map(f=>f[0])));
+export function parseSurvey(sourceJson){
+ if(typeof sourceJson!=='string'||new TextEncoder().encode(sourceJson).length>200000)throw new Error('حجم ملف الإجابات يتجاوز الحد المسموح.');
+ let source;try{source=JSON.parse(sourceJson)}catch{throw new Error('ملف الإجابات ليس JSON صالح.')}
+ if(source?.schema!=='kalma-answers-1'||!source.answers||typeof source.answers!=='object'||Array.isArray(source.answers))throw new Error('اختر نسخة الاستكمال الصادرة من استبيان حتى.');
+ for(const [key,value] of Object.entries(source.answers)){
+  if(!ANSWER_FIELDS.includes(key)||typeof value!=='string'||value.length>5000)throw new Error('صيغة إحدى الإجابات غير صالحة. لم تحفظ أي تغييرات.');
+ }
+ const answerCount=Object.values(source.answers).filter(value=>value.trim()).length;
+ if(!answerCount)throw new Error('الملف خال من الإجابات.');
+ return {source,answerCount};
+}
+export function mergeClientSurvey(data,clientId,{sourceJson,sourceFile,sentDate='',receivedDate='',status='received'},expectedRevision,now){
+ const {answerCount}=parseSurvey(sourceJson);
+ if(typeof sourceFile!=='string'||!sourceFile.trim()||sourceFile.length>180)throw new Error('اسم ملف الإجابات غير صالح.');
+ if(!['received','reviewed'].includes(status)||!Number.isInteger(expectedRevision)||expectedRevision<0)throw new Error('حالة الاستبيان غير صالحة.');
+ for(const date of [sentDate,receivedDate])if(date&&(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date+'T00:00:00Z'))))throw new Error('تحقق من التاريخ.');
+ const box=data.pricingClients_v1||{},clients=Array.isArray(box.clients)?box.clients:[],client=clients.find(c=>c.id===clientId);
+ if(!client)throw new Error('العميل غير موجود. حدّث الصفحة.');
+ if((client.consultation?.revision||0)!==expectedRevision)throw new Error('توجد نسخة أحدث للاستبيان. حدّث الصفحة قبل استبدالها.');
+ const previous=client.consultation,record={sourceJson,sourceFile,answerCount,sentDate,receivedDate,status,revision:expectedRevision+1,createdAtIso:previous?.createdAtIso||now,updatedAtIso:now};
+ const nextBox={...box,clients:clients.map(c=>c.id===clientId?{...c,consultation:record}:c),updatedAtIso:now};
+ if(new TextEncoder().encode(JSON.stringify({...data,pricingClients_v1:nextBox})).length>850000)throw new Error('مساحة سجل مسار الحالية ممتلئة. احتفظ بملف الإجابات الأصلي.');
+ return {record,pricingClients_v1:nextBox};
+}

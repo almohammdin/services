@@ -1,3 +1,4 @@
+import {mergeClientSurvey} from './consultation/model.js?v=20261024e';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js';
 import {getAuth,setPersistence,browserLocalPersistence,GoogleAuthProvider,signInWithPopup,onAuthStateChanged as watchAuth,signOut} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
 import {getFirestore,doc,getDoc,setDoc,runTransaction,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js';
@@ -177,6 +178,10 @@ export async function loadToolWorkspace(user,tools){
  const workspace=await loadWorkspace(user),snap=await getDoc(doc(db,'users',user.uid)),data=snap.data()||{};
  const records=[];
  for(const tool of tools){
+  if(tool.workspaceKind==='client-consultation'){
+   for(const client of workspace.clients){const record=client.consultation;if(record)records.push({toolId:tool.id,clientId:client.id,clientName:client.name,revision:record.revision||1,updatedAtIso:record.updatedAtIso||'',status:record.status||'received'});}
+   continue;
+  }
   const matrices=data[tool.workspaceField]?.matrices||{};
   for(const [clientId,record] of Object.entries(matrices)){
    const client=workspace.clients.find(c=>c.id===clientId);
@@ -184,4 +189,15 @@ export async function loadToolWorkspace(user,tools){
   }
  }
  return {clients:workspace.clients,records:records.sort((a,b)=>b.updatedAtIso.localeCompare(a.updatedAtIso))};
+}
+
+export async function saveClientSurvey(user,clientId,payload,expectedRevision=0){
+ requireOwner(user);
+ return runTransaction(db,async tx=>{
+  requireOwner(user);
+  const ref=doc(db,'users',user.uid),snap=await tx.get(ref),data=snap.data()||{};
+  const result=mergeClientSurvey(data,clientId,payload,expectedRevision,new Date().toISOString());
+  tx.set(ref,{pricingClients_v1:result.pricingClients_v1,updatedAt:serverTimestamp()},{merge:true});
+  return result.record;
+ });
 }

@@ -1,0 +1,22 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>إجابات الاستبيان | مسار</title><link rel="icon" href="../assets/masar-icon-32.png?v=2"><link rel="stylesheet" href="../hatta-ui.css?v=20261024e"><link rel="stylesheet" href="./survey.css?v=20261024e"></head><body>
+<main class="survey-shell">
+<header class="survey-intro"><div><span class="eyebrow">مسار · استكشاف الأعمال وأولويات التعاون</span><h1>إجابات الاستبيان</h1><p>ملف إجابات العميل وتواريخ الإرسال والاستلام.</p></div><a class="btn" href="../tools/">الأدوات</a></header>
+<p id="accountMessage" role="status" aria-live="polite">جار فتح حسابك…</p>
+<div id="workspace" hidden>
+<section class="survey-card no-print">
+<label for="clientSelect">العميل</label><select id="clientSelect"><option value="">اختر العميل</option></select>
+<div class="survey-actions"><a class="btn" href="/services/consultation/" target="_blank" rel="noopener">فتح الاستبيان العام</a><button class="btn" id="copyLink" type="button">نسخ رابط الاستبيان</button><a class="btn" id="clientLink" href="../clients/">ملف العميل</a><button class="btn" id="logout" type="button">تسجيل الخروج</button></div>
+<p class="helper">يرسل العميل نسخة الاستكمال بصيغة JSON، ثم تحفظها هنا ضمن ملفه.</p>
+</section>
+<section id="clientWorkspace" hidden>
+<section class="survey-card">
+<div class="survey-heading"><div><h2 id="clientName"></h2><p id="contactName"></p></div><span class="status-pill" id="recordStatus">بانتظار الإجابات</span></div>
+<p id="recordMeta"></p>
+<div class="survey-dates no-print"><div><label for="sentDate">تاريخ إرسال الاستبيان</label><input id="sentDate" type="date" dir="ltr"></div><div><label for="receivedDate">تاريخ وصول الإجابات</label><input id="receivedDate" type="date" dir="ltr"></div><div><label for="reviewStatus">حالة الاستبيان</label><select id="reviewStatus"><option value="received">وصلت الإجابات</option><option value="reviewed">تمت مراجعتها</option></select></div></div>
+<div class="survey-actions no-print"><button id="saveSurvey" class="btn primary" type="button" disabled>حفظ الاستبيان في ملف العميل</button><button id="downloadSurvey" class="btn" type="button" disabled>تنزيل ملف الإجابات</button><button id="printSurvey" class="btn" type="button" disabled>طباعة / PDF</button></div>
+<p id="saveMessage" role="status" aria-live="polite"></p>
+</section>
+<details class="survey-card no-print" id="importBox"><summary>استيراد إجابات العميل</summary><p class="helper">اختر ملف نسخة الاستكمال أو الصق محتواه. راجع الإجابات قبل حفظها.</p><label for="answerFile">ملف الإجابات</label><input type="file" id="answerFile" accept=".json,application/json"><label for="sourceFile">اسم الملف</label><input id="sourceFile" value="hatta-consulting-draft.json" dir="ltr" maxlength="180"><label for="sourceJson">محتوى ملف الإجابات JSON</label><textarea id="sourceJson" dir="ltr" spellcheck="false" rows="8" maxlength="200000"></textarea><button class="btn" id="previewSurvey" type="button">معاينة الإجابات</button><p id="importMessage" role="status"></p></details>
+<div id="answers"></div>
+</section></div></main>
+<script src="../shell.js?v=20261024e"></script><script type="module" src="./survey.js?v=20261024e"></script></body></html>
