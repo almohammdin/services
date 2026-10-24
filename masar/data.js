@@ -1,5 +1,5 @@
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js';
-import {getAuth,setPersistence,browserLocalPersistence,GoogleAuthProvider,signInWithPopup,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
+import {getAuth,setPersistence,browserLocalPersistence,GoogleAuthProvider,signInWithPopup,onAuthStateChanged as watchAuth,signOut} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
 import {getFirestore,doc,getDoc,setDoc,runTransaction,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js';
 
 const config={apiKey:'AIzaSyAAvC9y5jQ_7fAwmkCqBtgFDrBRF5t4uI0',authDomain:'mesraah-a2dfc.firebaseapp.com',projectId:'mesraah-a2dfc',storageBucket:'mesraah-a2dfc.firebasestorage.app',messagingSenderId:'986043593957',appId:'1:986043593957:web:b848313ef8cf83a5f3500c'};
@@ -7,13 +7,17 @@ const app=initializeApp(config);
 export const auth=getAuth(app);
 export const db=getFirestore(app);
 export const authReady=setPersistence(auth,browserLocalPersistence);
-export {onAuthStateChanged};
+export const OWNER_EMAIL='naif123456@gmail.com';
+export const isOwner=user=>Boolean(user&&user.email?.toLowerCase()===OWNER_EMAIL&&user.emailVerified&&user.providerData?.some(p=>p.providerId==='google.com'));
+export function onAuthStateChanged(instance,callback){return watchAuth(instance,user=>callback(isOwner(user)?user:null))}
+function requireOwner(user){if(!isOwner(user)||auth.currentUser?.uid!==user.uid)throw new Error('هذه المساحة خاصة بمالك الحساب')}
+
 
 export async function signIn(){
   await authReady;
   const provider=new GoogleAuthProvider();
   provider.setCustomParameters({prompt:'select_account'});
-  return (await signInWithPopup(auth,provider)).user;
+  const user=(await signInWithPopup(auth,provider)).user;if(!isOwner(user)){await signOut(auth);throw new Error('الدخول الخاص متاح لحساب نايف المعتمد فقط')}return user;
 }
 
 export const clientKey=name=>String(name||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('ar');
@@ -58,30 +62,38 @@ function distinctClients(rows){
   }
   return [...map.values()];
 }
-export async function loadWorkspace(user){
-  const snap=await getDoc(doc(db,'users',user.uid));
-  const data=snap.exists()?snap.data():{};
-  const deleted=new Set(data.pricingTool_v1?.deletedQuoteIds||[]);
-  const quotes=(Array.isArray(data.pricingTool_v1?.quotes)?data.pricingTool_v1.quotes:[]).filter(q=>!deleted.has(quoteKey(q)));
-  const stored=Array.isArray(data.pricingClients_v1?.clients)?data.pricingClients_v1.clients:[];
-  const clients=distinctClients([...quotes.map(q=>({name:q.client})),...(stored.length?[]:localClients()),...stored]);
-  if(clients.length!==stored.length||clients.some(c=>!stored.some(s=>clientKey(s.name)===clientKey(c.name)))){
-    await setDoc(doc(db,'users',user.uid),{pricingClients_v1:{clients,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
-  }
-  return {quotes,clients,currentQuoteId:data.pricingTool_v1?.currentQuoteId||null};
+// Stable opaque IDs survive client renaming. Migration and saves read the latest document.
+function workspaceData(data){
+ const deleted=new Set(data.pricingTool_v1?.deletedQuoteIds||[]);
+ const quotes=(data.pricingTool_v1?.quotes||[]).filter(q=>!deleted.has(quoteKey(q)));
+ const stored=Array.isArray(data.pricingClients_v1?.clients)?data.pricingClients_v1.clients:[];
+ const clients=distinctClients([...quotes.map(q=>({name:q.client})),...stored]).map(c=>({...c,id:c.id||crypto.randomUUID()}));
+ return {quotes,clients,currentQuoteId:data.pricingTool_v1?.currentQuoteId||null};
 }
-export async function saveClient(user,client,knownClients=[]){
-  const name=String(client.name||'').trim().replace(/\s+/g,' ');
-  if(!name)throw new Error('اسم العميل مطلوب');
-  const current=knownClients.length?knownClients:(await loadWorkspace(user)).clients;
-  const key=clientKey(name);
-  const old=current.find(c=>clientKey(c.name)===key)||{};
-  const clients=distinctClients([...current.filter(c=>clientKey(c.name)!==key),{...old,...client,name}]);
-  await setDoc(doc(db,'users',user.uid),{pricingClients_v1:{clients,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
+export async function loadWorkspace(user){
+ requireOwner(user);
+ return runTransaction(db,async tx=>{
+  const ref=doc(db,'users',user.uid),snap=await tx.get(ref),data=snap.data()||{};
+  const result=workspaceData(data),stored=data.pricingClients_v1?.clients||[];
+  if(result.clients.length!==stored.length||stored.some(c=>!c.id))tx.set(ref,{pricingClients_v1:{clients:result.clients,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
+  return result;
+ });
+}
+export async function saveClient(user,client){
+ requireOwner(user);
+ const name=String(client.name||'').trim().replace(/\s+/g,' ');
+ if(!name)throw new Error('اسم العميل مطلوب');
+ return runTransaction(db,async tx=>{
+  const ref=doc(db,'users',user.uid),snap=await tx.get(ref),data=snap.data()||{};
+  const current=workspaceData(data).clients,key=clientKey(name),old=current.find(c=>clientKey(c.name)===key)||{};
+  const clients=distinctClients([...current.filter(c=>clientKey(c.name)!==key),{...old,...client,name,id:old.id||crypto.randomUUID()}]);
+  tx.set(ref,{pricingClients_v1:{clients,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
   return clients;
+ });
 }
 
 export async function updateClient(user,originalName,changes){
+  requireOwner(user);
   const oldKey=clientKey(originalName);
   const name=String(changes.name||'').trim().replace(/\s+/g,' ');
   if(!oldKey||!name)throw new Error('اسم العميل مطلوب');
@@ -115,6 +127,7 @@ export async function updateClient(user,originalName,changes){
 }
 
 export async function deleteQuoteVersion(user,id){
+  requireOwner(user);
   const key=String(id||'');
   if(!key)throw new Error('معرّف النسخة غير صالح');
   return runTransaction(db,async tx=>{
@@ -129,3 +142,4 @@ export async function deleteQuoteVersion(user,id){
     return nextQuotes;
   });
 }
+

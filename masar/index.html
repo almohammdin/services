@@ -32,13 +32,14 @@ body:not(.ready) .shell{display:none}.ready .auth{display:none}
 @media(max-width:900px){.actions{grid-template-columns:1fr}}
 </style>
 <style>html{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button,.action{transition:transform 140ms cubic-bezier(.23,1,.32,1)}button:active,.action:active{transform:scale(.98)}@media(hover:none){.action:hover{transform:none}}@media(prefers-reduced-motion:reduce){button,.action{transition:none}}</style>
+<link rel="stylesheet" href="/services/masar/hatta-ui.css?v=20261024">
 </head>
 <body>
-<section class="auth" id="authScreen"><div class="auth-card"><img class="auth-logo" src="/services/masar/assets/masar-wordmark.jpg" alt="مسار"><h1 class="sr-only">مسار</h1><p id="authDescription">جارٍ فتح حسابك…</p><button class="login" id="loginBtn" type="button" hidden>الدخول بحساب Google</button><div class="auth-message" id="authMessage" role="status"></div></div></section>
+<section class="auth" id="authScreen"><div class="auth-card"><img class="auth-logo" src="/services/masar/assets/masar-wordmark.jpg" alt="مسار"><h1 class="sr-only">مسار</h1><p id="authDescription">جارٍ فتح حسابك…</p><button class="login" id="loginBtn" type="button" hidden>الدخول بحساب Google</button><div class="auth-message" id="authMessage" role="status"></div><a class="btn" href="/services/masar/authority-matrix/">فتح مصفوفة الصلاحيات العامة</a></div></section>
 <main class="shell">
 <section class="hero">
-  <div class="top"><div class="brand"><img class="brand-logo" src="/services/masar/assets/masar-wordmark.jpg" alt="مسار"><div><h1 class="sr-only">مسار</h1><p>الرئيسية · العروض والعملاء والمالية</p></div></div><button class="logout" id="logoutBtn" type="button">تسجيل الخروج</button></div>
-  <nav class="actions" aria-label="أقسام مسار"><a class="action main" href="/services/masar/tool/"><div><b>إعداد عرض</b><span>إنشاء عرض جديد</span></div><div class="arrow">←</div></a><a class="action" href="/services/masar/offers/"><div><b>العروض</b><span>النسخ والحالات والمتابعة</span></div><div class="arrow">←</div></a><a class="action" href="/services/masar/clients/"><div><b>العملاء</b><span>بيانات العملاء وعروضهم</span></div><div class="arrow">←</div></a></nav>
+  <div class="top"><div class="brand"><img class="brand-logo" src="/services/masar/assets/masar-wordmark.jpg" alt="مسار"><div><h1 class="sr-only">مسار</h1><p>العملاء والعروض والمخرجات في مساحة واحدة</p></div></div><button class="logout" id="logoutBtn" type="button">تسجيل الخروج</button></div>
+  <nav class="actions" aria-label="أقسام مسار"><a class="action main" href="/services/masar/tool/"><div><b>إعداد عرض</b><span>إنشاء عرض جديد</span></div><div class="arrow">←</div></a><a class="action" href="/services/masar/offers/"><div><b>العروض</b><span>النسخ والحالات والمتابعة</span></div><div class="arrow">←</div></a><a class="action" href="/services/masar/clients/"><div><b>العملاء</b><span>بيانات العملاء وعروضهم</span></div><div class="arrow">←</div></a><a class="action" href="/services/masar/authority-matrix/"><div><b>مصفوفة الصلاحيات</b><span>إعداد الصلاحيات وربطها بملف العميل</span></div><div class="arrow">←</div></a></nav>
 </section>
 <section class="grid"><div class="card metric"><small>إجمالي العروض</small><strong id="mTotal">0</strong></div><div class="card metric"><small>عروض مفتوحة</small><strong id="mOpen">0</strong></div><div class="card metric"><small>معتمدة</small><strong id="mWon">0</strong></div><div class="card metric"><small>قيمة مفتوحة</small><strong id="mValue">0</strong></div></section>
 <section class="grid" aria-label="ملخص العقود المعتمدة"><div class="card metric"><small>قيمة العقود المعتمدة</small><strong id="mContracts">0</strong></div><div class="card metric"><small>أتعاب الشركاء المحددة</small><strong id="mPartners">0</strong></div><div class="card metric"><small>المتبقي لك قبل المصاريف</small><strong id="mOwn">0</strong></div><div class="card metric"><small>المحصّل المسجّل من العملاء</small><strong id="mCollected">0</strong></div></section>
@@ -46,7 +47,7 @@ body:not(.ready) .shell{display:none}.ready .auth{display:none}
 <section class="section"><div class="card"><h2>آخر العروض</h2><table class="table"><thead><tr><th>العميل</th><th>الخدمة</th><th>قيمة العرض</th><th>الحالة</th></tr></thead><tbody id="recent"></tbody></table></div></section>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,latestQuotes,quoteFinances} from './data.js?v=20260926b';
+import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,latestQuotes,quoteFinances} from './data.js?v=20261024';
 import {signOut} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
 const fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0}),$=id=>document.getElementById(id);
 const sarSvg='<svg viewBox="0 0 1124 1256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M700 1113c-20 44-33 93-38 143l425-90c20-45 33-93 38-144l-425 91Z"/><path d="M1086 896c20-45 33-93 38-144l-331 70V688l292-62c20-45 33-94 38-144l-330 70V66c-51 28-96 66-132 111v403l-132 28V0c-51 28-96 66-132 111v526L101 700c-20 44-33 93-38 143l334-71v170l-358 76c-20 45-33 93-38 144l375-80c31-6 57-24 74-49l69-102c7-10 11-23 11-37V744l132-28v270l424-90Z"/></svg>';
@@ -68,7 +69,7 @@ function render(allRows=[]){
  $('financeNote').textContent=alerts.join(' · ');$('financeNote').hidden=!alerts.length;
  $('recent').innerHTML=rows.slice(0,6).map(x=>'<tr><td><b>'+esc(x.client||'—')+'</b></td><td>'+esc(x.serviceName||names[x.service]||x.service||'—')+'</td><td>'+money(Number(x.amount)||0)+'</td><td>'+esc(x.status||'مسودة')+(x.status==='مقبول'?'<br><small>'+esc(x.executionStatus||'بانتظار المتطلبات')+'</small>':'')+'</td></tr>').join('')||'<tr><td colspan="4"><div class="empty">لا توجد عروض محفوظة بعد.</div></td></tr>';
 }
-$('loginBtn').onclick=async()=>{try{$('authMessage').textContent='';await signIn()}catch(e){console.error(e);$('authMessage').textContent='تعذر تسجيل الدخول. حاول مرة أخرى.'}};
+$('loginBtn').onclick=async()=>{try{$('authMessage').textContent='';await signIn()}catch(e){console.error(e);$('authMessage').textContent=e.message||'تعذر تسجيل الدخول. حاول مرة أخرى.'}};
 $('logoutBtn').onclick=()=>signOut(auth);
 await authReady.catch(console.error);
 await auth.authStateReady();
@@ -76,10 +77,11 @@ onAuthStateChanged(auth,async user=>{
  const requested=new URLSearchParams(location.search).get('next');
  if(user&&requested){try{const target=new URL(requested,location.origin);if(target.origin===location.origin&&/^\/services\/masar\/(tool|offers|clients)\/?$/.test(target.pathname)){location.replace(target.pathname+target.search+target.hash);return}}catch(error){console.warn('Invalid return path',error)}}
  document.body.classList.toggle('ready',Boolean(user));
- if(!user){$('authDescription').textContent='سجّل الدخول للوصول إلى عروضك وعملائك.';$('loginBtn').hidden=false;render();return}
+ if(!user){$('authDescription').textContent='مساحة خاصة لإدارة العملاء والعروض. المصفوفة العامة متاحة للجميع.';$('loginBtn').hidden=false;render();return}
  try{const data=await loadWorkspace(user);render(data.quotes)}
  catch(e){console.error(e);$('recent').innerHTML='<tr><td colspan="4"><div class="empty">تعذر تحميل البيانات. حدّث الصفحة للمحاولة مرة أخرى.</div></td></tr>'}
 });
 </script>
-</body>
+<script src="/services/masar/shell.js?v=20261024"></script></body>
 </html>
+
