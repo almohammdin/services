@@ -1,4 +1,4 @@
-import {auth,authReady,onAuthStateChanged,signIn,isOwner,loadWorkspace,loadAuthorityMatrix,saveAuthorityMatrix} from '../data.js?v=20261024b';
+import {auth,authReady,onAuthStateChanged,signIn,isOwner,loadWorkspace,loadAuthorityMatrix,saveAuthorityMatrix} from '../data.js?v=20261024c';
 import {signOut} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
 const $=id=>document.getElementById(id),message=text=>{$('cloudMessage').textContent=text};
 let user=null,clients=[],revision=0,activeClient='',dirty=false,busy=false,epoch=0,privateLoaded=false;

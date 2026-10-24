@@ -171,3 +171,17 @@ export async function saveAuthorityMatrix(user,{clientId,matrixJson,memory='',st
   return next;
  });
 }
+
+export async function loadToolWorkspace(user,tools){
+ requireOwner(user);
+ const workspace=await loadWorkspace(user),snap=await getDoc(doc(db,'users',user.uid)),data=snap.data()||{};
+ const records=[];
+ for(const tool of tools){
+  const matrices=data[tool.workspaceField]?.matrices||{};
+  for(const [clientId,record] of Object.entries(matrices)){
+   const client=workspace.clients.find(c=>c.id===clientId);
+   records.push({toolId:tool.id,clientId,clientName:client?.name||record.clientName||'عميل محفوظ',revision:record.revision||1,updatedAtIso:record.updatedAtIso||'',status:record.status||'draft'});
+  }
+ }
+ return {clients:workspace.clients,records:records.sort((a,b)=>b.updatedAtIso.localeCompare(a.updatedAtIso))};
+}
