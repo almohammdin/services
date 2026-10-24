@@ -143,3 +143,31 @@ export async function deleteQuoteVersion(user,id){
   });
 }
 
+
+// Authority matrices share the existing private Masar user document and its rules.
+// Transactions preserve quotes/clients and reject overwriting a newer matrix.
+export async function loadAuthorityMatrix(user,clientId){
+ requireOwner(user);
+ const snap=await getDoc(doc(db,'users',user.uid));
+ return snap.data()?.authorityMatrices_v1?.matrices?.[clientId]||null;
+}
+export async function saveAuthorityMatrix(user,{clientId,matrixJson,memory='',status='draft',expectedRevision=0}){
+ requireOwner(user);
+ if(typeof matrixJson!=='string'||new TextEncoder().encode(matrixJson).length>700000)throw new Error('حجم المصفوفة كبير؛ صدّر JSON للاحتفاظ بها.');
+ if(typeof memory!=='string'||memory.length>12000||!['draft','review','approved'].includes(status))throw new Error('تحقق من سياق العميل وحالة المصفوفة');
+ return runTransaction(db,async tx=>{
+  requireOwner(user);
+  const ref=doc(db,'users',user.uid),snap=await tx.get(ref),data=snap.data()||{};
+  const client=(data.pricingClients_v1?.clients||[]).find(c=>c.id===clientId);
+  if(!client)throw new Error('العميل غير موجود. حدّث قائمة العملاء ثم حاول مجددًا.');
+  const box=data.authorityMatrices_v1||{},matrices=box.matrices||{},old=matrices[clientId];
+  if((old?.revision||0)!==expectedRevision)throw new Error('توجد نسخة أحدث. صدّر تعديلاتك ثم افتح النسخة الجديدة قبل الحفظ.');
+  const now=new Date().toISOString();
+  const next={clientId,clientName:client.name,matrixJson,memory,status,revision:expectedRevision+1,createdAtIso:old?.createdAtIso||now,updatedAtIso:now};
+  const nextBox={...box,matrices:{...matrices,[clientId]:next},updatedAtIso:now};
+  // Keep a safety margin below Firestore's document-size limit. Never trim client data.
+  if(new TextEncoder().encode(JSON.stringify({...data,authorityMatrices_v1:nextBox})).length>850000)throw new Error('مساحة سجل مسار الحالية ممتلئة. لم نحذف أو نختصر أي بيانات؛ صدّر المصفوفة JSON لحفظ عملك.');
+  tx.set(ref,{authorityMatrices_v1:nextBox,updatedAt:serverTimestamp()},{merge:true});
+  return next;
+ });
+}

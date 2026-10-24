@@ -47,7 +47,7 @@ body:not(.ready) .shell{display:none}.ready .auth{display:none}
 <section class="section"><div class="card"><h2>آخر العروض</h2><table class="table"><thead><tr><th>العميل</th><th>الخدمة</th><th>قيمة العرض</th><th>الحالة</th></tr></thead><tbody id="recent"></tbody></table></div></section>
 </main>
 <script type="module">
-import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,latestQuotes,quoteFinances} from './data.js?v=20261024';
+import {auth,authReady,onAuthStateChanged,signIn,loadWorkspace,latestQuotes,quoteFinances} from './data.js?v=20261024b';
 import {signOut} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
 const fmt=new Intl.NumberFormat('en-US',{maximumFractionDigits:0}),$=id=>document.getElementById(id);
 const sarSvg='<svg viewBox="0 0 1124 1256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M700 1113c-20 44-33 93-38 143l425-90c20-45 33-93 38-144l-425 91Z"/><path d="M1086 896c20-45 33-93 38-144l-331 70V688l292-62c20-45 33-94 38-144l-330 70V66c-51 28-96 66-132 111v403l-132 28V0c-51 28-96 66-132 111v526L101 700c-20 44-33 93-38 143l334-71v170l-358 76c-20 45-33 93-38 144l375-80c31-6 57-24 74-49l69-102c7-10 11-23 11-37V744l132-28v270l424-90Z"/></svg>';
