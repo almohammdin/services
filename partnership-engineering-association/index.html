@@ -227,6 +227,38 @@ body{font-size:18px;background:var(--paper)}.topbar{height:auto;min-height:58px;
  .capital-loss{margin-top:20px}.capital-loss>span{font-size:17px}.capital-loss strong{font-size:44px}
 }
 
+/* Revision 2.3: statutory text separated from workshop interpretation */
+.legal-layout{grid-template-columns:.88fr 1.3fr;gap:48px}
+.legal-reading{justify-content:center}
+.article-reference strong{font-size:54px}
+.legal-rule{margin-top:16px}
+.legal-rule>span{font-size:19px;line-height:1.5;color:var(--gold)}
+.legal-rule blockquote{margin:13px 0 0;padding:0 22px 0 0;border-right:3px solid #b47a2d66;font-size:30px;line-height:1.9;color:var(--navy)}
+.legal-rule blockquote p{margin:0;font:inherit}
+.legal-rule .law-clause{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:baseline}
+.legal-rule .law-clause+.law-clause{margin-top:15px}
+.law-clause-number{font-size:20px;color:var(--gold);text-align:right}
+.legal-slide[data-step="2"] .legal-rule blockquote{font-size:25px;line-height:1.8}
+.legal-slide .scene-caption{min-height:125px;margin-top:20px;padding-top:12px;padding-bottom:0}
+.legal-effect-label{display:block;font-size:17px;line-height:1.5;color:var(--gold);margin-bottom:2px}
+.legal-slide .scene-caption h3{font-size:29px;line-height:1.5}
+.legal-slide .scene-caption p{font-size:23px;line-height:1.65;margin-top:3px}
+@media(max-width:760px) and (orientation:portrait){
+ .legal-layout{grid-template-columns:1fr;gap:25px}
+ .legal-reading{order:-1}
+ .article-reference strong{font-size:49px}
+ .legal-rule{margin-top:12px}.legal-rule>span{font-size:16px}
+ .legal-rule blockquote{font-size:23px;line-height:1.85;margin-top:10px;padding-right:15px}
+ .legal-slide[data-step="2"] .legal-rule blockquote{font-size:20px;line-height:1.85}
+ .legal-rule .law-clause{grid-template-columns:20px minmax(0,1fr);gap:7px}
+ .legal-rule .law-clause+.law-clause{margin-top:13px}
+ .law-clause-number{font-size:17px}
+ .legal-slide .scene-caption{min-height:0;margin-top:23px;padding-top:15px}
+ .legal-effect-label{font-size:15px}
+ .legal-slide .scene-caption h3{font-size:24px;line-height:1.5}
+ .legal-slide .scene-caption p{font-size:18px;line-height:1.8}
+}
+
 </style>
 </head>
 <body data-version="20261025.2">
@@ -308,10 +340,10 @@ body{font-size:18px;background:var(--paper)}.topbar{height:auto;min-height:58px;
 <article data-legal-example="1"><span class="example-eyebrow">اتفاق مقترح بين شريكين</span><p class="agreement-line">«الدفاتر للمدير وحده»</p><div class="records-visual" aria-hidden="true"><svg class="icon"><use href="#i-file"/></svg><svg class="records-eye" viewBox="0 0 80 50"><path d="M4 25Q40-15 76 25Q40 65 4 25Z"/><circle cx="40" cy="25" r="12"/></svg></div><div class="legal-alternative"><span>تصميم حق الاطلاع</span><p>تقارير دورية · مستندات متاحة<br><small>صلاحيات وصول ومسؤولية حفظ</small></p></div></article>
 <article data-legal-example="2"><span class="example-eyebrow">مضاربة تعرضت لخسارة تجارية</span><div class="capital-example"><div><span>رأس المال</span><b class="num sar" aria-label="500,000 ريال سعودي">500,000</b></div><span class="capital-arrow" aria-hidden="true">←</span><div><span>المتبقي</span><b class="num sar" aria-label="450,000 ريال سعودي">450,000</b></div></div><div class="capital-loss"><span>نقص رأس المال</span><strong class="num sar" aria-label="50,000 ريال سعودي">50,000</strong></div><div class="legal-alternative"><span>تصميم المسؤولية</span><p>حدود التصرف · متابعة المخاطر<br><small>توثيق الأداء والتعدي أو التقصير</small></p></div></article>
 </div>
-<div class="legal-reading"><a class="article-reference" id="legalArticleLink" href="https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/655fdb42-8c96-422b-b8c4-b04f0095c94c/1" target="_blank" rel="noopener"><span>المادة</span><strong class="num" id="legalArticleNumber">535</strong><span class="article-chapter" id="legalChapter">عقد الشركة</span></a><div class="legal-rule"><span>حكم المادة</span><h3 id="legalRuleTitle">نصيب الربح يرتبط بالربح</h3><p id="legalRuleText">المادة تستبعد تخصيص مبلغ ثابت بوصفه نصيب الشريك من الربح، أو حرمانه منه، أو إعفاءه من الخسارة.</p></div><div class="legal-design"><span>أثرها في الاتفاق</span><p id="legalDesignText">نحدد نسبة الربح وأساس احتسابه، ونفصلها عن مقابل العمل والإدارة.</p></div></div>
+<div class="legal-reading"><a class="article-reference" id="legalArticleLink" href="https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/655fdb42-8c96-422b-b8c4-b04f0095c94c/1" target="_blank" rel="noopener"><span>المادة</span><strong class="num" id="legalArticleNumber">535</strong><span class="article-chapter" id="legalChapter">عقد الشركة</span></a><div class="legal-rule"><span id="legalQuoteLabel">نص المادة</span><blockquote id="legalRuleText" cite="https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/655fdb42-8c96-422b-b8c4-b04f0095c94c/1" aria-labelledby="legalQuoteLabel"><p>«لا يصح اشتراط أن يكون نصيب الشريك من الربح مبلغا محددا، أو أنه لا يستفيد من الربح أو يعفى من الخسارة.»</p></blockquote></div></div>
 </div>
-<div class="scene-caption" aria-live="polite"><span class="caption-no" id="legalCaptionNo">01</span><div><h3 id="legalQuestion">نوع المقابل يغير صياغة الاتفاق</h3><p id="legalCaption" data-money-copy>نصيب الربح وأتعاب العمل لكل منهما أساسه وشروطه.</p></div></div>
-<div class="slide-foot"><a href="https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/655fdb42-8c96-422b-b8c4-b04f0095c94c/1" target="_blank" rel="noopener">نظام المعاملات المدنية · عقود المشاركة</a><span class="page">04</span></div>
+<div class="scene-caption" aria-live="polite"><span class="caption-no" id="legalCaptionNo">01</span><div><span class="legal-effect-label">أثر المادة في الاتفاق</span><h3 id="legalQuestion">نسبة للربح، ومقابل مستقل للعمل</h3><p id="legalCaption" data-money-copy>نحدد نسبة الشريك من الربح وطريقة احتسابه وتوزيعه، وأتعاب الإدارة لها اتفاقها وشروطها.</p></div></div>
+<div class="slide-foot"><a href="https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/655fdb42-8c96-422b-b8c4-b04f0095c94c/1" target="_blank" rel="noopener">النص الرسمي · نظام المعاملات المدنية</a><span class="page">04</span></div>
 </section>
 
 <section class="slide" data-title="المال والعمل" data-steps="4" aria-labelledby="title1" hidden inert>
@@ -535,13 +567,20 @@ function animateLawCounters(){
 }
 function legalExample(step){
  const numbers=['535','538','557'],chapters=['عقد الشركة','عقد الشركة','عقد المضاربة'];
- const titles=['نصيب الربح يرتبط بالربح','حق الاطلاع محفوظ للشريك','سبب الخسارة يحدد المسؤولية'];
- const rules=['المادة تستبعد تخصيص مبلغ ثابت بوصفه نصيب الشريك من الربح، أو حرمانه منه، أو إعفاءه من الخسارة.','للشريك أو من يفوضه الاطلاع على الدفاتر والمستندات. الاتفاق على منعه يخالف حكم المادة.','نقص رأس المال بلا تعد أو تقصير يتحمله رب المال. ويعوض المضارب عن الضرر الناتج عن تعديه أو تقصيره.'];
- const design=['نحدد نسبة الربح وأساس احتسابه، ونفصلها عن مقابل العمل والإدارة.','نرتب التقارير والوصول إلى المستندات، ونحدد المسؤول عن تقديمها وحفظها.','نحدد الصلاحيات وحدود المخاطر، ونوثق ما يميز الخسارة التجارية عن الإخلال.'];
- const questions=['نوع المقابل يغير صياغة الاتفاق','الحق يحتاج آلية تمكّن من ممارسته','حماية المال تبدأ بتصميم الصلاحيات والرقابة'];
- const captions=['نصيب الربح وأتعاب العمل لكل منهما أساسه وشروطه.','حوكمة المعلومات تجعل العلاقة قابلة للمتابعة والمساءلة.','في المثال: النقص التجاري 50,000 ريال، والمسؤولية تتبع سببه.'];
+ const clauses=[["لا يصح اشتراط أن يكون نصيب الشريك من الربح مبلغا محددا، أو أنه لا يستفيد من الربح أو يعفى من الخسارة."],["لكل شريك أو من يفوضه الاطلاع على دفاتر الشركة ومستنداتها، ويقع باطلا كل اتفاق على خلاف ذلك."],["يتحمل رب المال وحده نقص رأس المال، ويقع باطلا كل شرط يقضي بخلاف ذلك.","إذا نقص رأس المال في يد المضارب من غير تعد ولا تقصير منه فلا يلزمه تعويض رب المال عن النقص.","إذا وقع من المضارب تعد أو تقصير لزمه تعويض رب المال عن نقص رأس المال وعن كل ما يترتب على ذلك من ضرر."]];
+ const questions=['نسبة للربح، ومقابل مستقل للعمل','حق الاطلاع يحتاج آلية للتنفيذ','الخسارة التجارية والتعدي لهما أثر مختلف'];
+ const captions=['نحدد نسبة الشريك من الربح وطريقة احتسابه وتوزيعه، وأتعاب الإدارة لها اتفاقها وشروطها.','نحدد مواعيد التقارير وطريقة الوصول إلى المستندات والمسؤول عن تقديمها وحفظها.','نحدد صلاحيات المضارب وحدود تصرفه وآلية المتابعة، ونوثق سبب النقص لتحديد المسؤولية.'];
  setText('legalArticleNumber',numbers[step]);setText('legalChapter',chapters[step]);
- setText('legalRuleTitle',titles[step]);setText('legalRuleText',rules[step]);setText('legalDesignText',design[step]);
+ const quote=document.getElementById('legalRuleText');quote.replaceChildren();
+ clauses[step].forEach((text,index)=>{
+  const p=document.createElement('p');
+  if(clauses[step].length>1){
+   p.className='law-clause';
+   const number=document.createElement('span');number.className='law-clause-number num';number.textContent=String(index+1)+'.';
+   const wording=document.createElement('span');wording.textContent=text;p.append(number,wording);
+  }else p.textContent='«'+text+'»';
+  quote.append(p);
+ });
  setText('legalCaptionNo','0'+(step+1));setText('legalQuestion',questions[step]);setText('legalCaption',captions[step]);
 }
 
