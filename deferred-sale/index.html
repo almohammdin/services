@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>حاسبة البيع الآجل</title>
-<meta name="description" content="حاسبة للبائعين والممولين لحساب ربح البيع الآجل والعائد السنوي الفعلي مع دفعات متساوية أو مخصصة.">
+<title>����� ���� �除�</title>
+<meta name="description" content="���� �� ���� �除� ���� ��㟢 ���� �� ��� ��視 �蠩? �� ��㟢 ꢫ��� �ꦭ��? ����� �馭 ���� ����.">
 <meta name="theme-color" content="#0D3656">
 <link rel="canonical" href="https://almohammdin.github.io/services/deferred-sale/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230D3656'/%3E%3Cpath d='M18 20h28v24H18z' fill='none' stroke='%23E2A45E' stroke-width='4'/%3E%3Cpath d='M24 28h16M24 36h5m6 0h5' stroke='%23fff' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -21,81 +21,282 @@
 </style>
 <style>
 [hidden]{display:none!important}h1{font-family:"Thmanyah Serif Display",serif;font-weight:800}h2,h3,.result-product{font-family:"Thmanyah Sans",sans-serif;font-feature-settings:"salt" 1;font-weight:700;line-height:1.5}.latin,[lang=en]{font-family:"El Messiri",sans-serif}.yield{font-family:"Thmanyah Sans",sans-serif;font-size:clamp(2rem,5vw,3.1rem);letter-spacing:0;margin-top:10px}.yield .sar-icon{width:.65em}.extra{margin:16px 0;padding:14px;border:1px solid var(--line);border-radius:14px}.extra summary{cursor:pointer;color:var(--navy);font-weight:600}.extra .field{margin-top:12px}.extra small,.calculation-help{font-size:.76rem;color:var(--muted)}.results>.extra{margin:0 19px 19px}.result-schedule{padding-top:18px}input[readonly]{background:#eeeae4;color:#65727D}.shell{padding-top:16px}.panel{box-shadow:0 8px 28px rgba(13,54,86,.06);border-radius:18px}.bismillah{margin-bottom:8px}.top{margin-bottom:22px}#mobileTotal{display:none}@media(max-width:860px){#mobileTotal{display:flex;position:sticky;top:0;z-index:20;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--navy);color:white;font-size:.8rem}#mobileTotal strong{font-size:1.05rem}.panel-head h2{font-size:24px}.yield-line{flex-direction:row}}
+</style><style>
+.mode{grid-template-columns:1fr 1fr}.mode button{line-height:1.6;padding:10px 8px}.mode button[data-mode=periodic]{grid-column:1/-1}.mode button[data-mode=custom]{grid-column:1/-1}.pay-labels{display:grid;grid-template-columns:34px 1fr 1.25fr 34px;gap:7px;text-align:center;font-size:.68rem;color:var(--muted);margin-bottom:7px}.pay-row input{direction:ltr}.pay-row input[readonly]{background:#f0ece6;color:var(--navy);border-color:transparent}.pay-row .remove:disabled{visibility:hidden}.pay-row:last-child{padding:7px 0;border-top:1px solid #d7c9b8}.schedule-top{align-items:flex-start;flex-wrap:wrap}.sum{display:flex;align-items:center;gap:5px}.validation{font-size:.8rem;color:var(--red);background:#fcedea;border-radius:12px;padding:12px;line-height:1.7}.calculate:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}.last-payment td{background:#fff3df;color:#70491b;font-weight:800}.last-payment td:first-child{border-radius:0 9px 9px 0}.last-payment td:last-child{border-radius:9px 0 0 9px}.result-schedule small{display:block;color:var(--muted);font-size:.72rem;margin-top:10px}.footnote{max-width:680px;margin:18px auto 0;line-height:1.8}.metric .money-value{display:inline-flex;color:inherit;font-size:inherit}.metric .money-value bdi{font-weight:800}.result-table th:last-child,.result-table td:last-child{text-align:left}.result-table td{font-size:.83rem}.share-dialog{border:1px solid var(--line);border-radius:22px;padding:0;background:var(--paper);color:var(--ink);width:min(600px,calc(100% - 24px));max-height:92dvh;box-shadow:var(--shadow);overflow:auto}.share-dialog::backdrop{background:rgba(7,31,51,.72)}.dialog-top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:var(--paper);z-index:2;border-bottom:1px solid var(--line)}.dialog-top h2{margin:0;font-size:1.1rem;color:var(--navy)}.dialog-close{border:0;background:var(--soft);color:var(--navy);border-radius:50%;width:36px;height:36px;font:24px Arial;cursor:pointer}.share-preview{padding:16px;background:#ece8e1;min-height:100px}.share-preview img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 4px 20px #071f3314}.share-nav{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:12px;font-size:.85rem}.share-nav button{font:inherit;border:1px solid #cbbca8;background:white;border-radius:8px;padding:5px 12px;color:var(--navy);cursor:pointer}.share-nav button:disabled{opacity:.4;cursor:default}.share-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px 20px 10px;position:sticky;bottom:0;background:var(--paper)}.share-buttons button{width:100%;font-size:.88rem}.share-status{font-size:.8rem;color:var(--muted);padding:0 20px 16px;margin:0;line-height:1.8}.share-status.error{color:var(--red)}button:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}body:has(dialog[open]){overflow:hidden}@media(max-width:560px){.pay-labels{grid-template-columns:28px 1fr 1.15fr 30px}.mode{grid-template-columns:1fr 1fr}.share-dialog{max-height:94dvh}.share-preview{padding:10px}.dialog-top{padding:12px 15px}.share-buttons{padding:12px 14px}.share-buttons .calculate,.share-buttons .reset{height:45px}.metrics .metric strong{font-size:1.12rem}}
+
 </style></head>
 <body>
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><symbol id="sar-mark" viewBox="0 0 1124 1256"><path d="M700 1113c-20 44-33 93-38 143l425-90c20-45 33-93 38-144l-425 91Z"/><path d="M1086 896c20-45 33-93 38-144l-331 70V688l292-62c20-45 33-94 38-144l-330 70V66c-51 28-96 66-132 111v403l-132 28V0c-51 28-96 66-132 111v526L101 700c-20 44-33 93-38 143l334-71v170l-358 76c-20 45-33 93-38 144l375-80c31-6 57-24 74-49l69-102c7-10 11-23 11-37V744l132-28v270l424-90Z"/></symbol></svg>
 <div id="mobileTotal" aria-live="polite"></div><main class="shell">
-  <div class="bismillah">بسم الله الرحمن الرحيم</div>
+  <div class="bismillah">��� ���� �驥�� �驥��</div>
   <header class="top">
-    <div class="title-wrap"><span class="eyebrow">تقدير الربح وترتيب السداد</span><h1>حاسبة البيع الآجل</h1></div>
+    <div class="title-wrap"><span class="eyebrow">��� �驠� ����� �髧��</span><h1>����� ���� �除�</h1></div>
   </header>
   <div class="workspace">
     <section class="panel" aria-labelledby="calc-title">
-      <div class="panel-head"><h2 id="calc-title">بيانات العملية</h2><p>حدد تكلفة السلعة وهامش الربح السنوي ورتب الدفعات.</p></div>
+      <div class="panel-head"><h2 id="calc-title">��럢 ������</h2><p>��� ���� ���� ��� �驠� ����� ���� ���㟢.</p></div>
       <form class="form" id="calculator">
         <div class="fields">
 
-          <div class="field"><label for="cash">تكلفة شراء السلعة</label><div class="input-wrap"><input class="money-input" id="cash" type="text" value="100,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
-          <div class="field"><label for="deferred">سعر البيع الآجل</label><div class="input-wrap"><input class="money-input" id="deferred" readonly type="text" value="154,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
-          <div class="field"><label for="duration">مدة السداد</label><div class="duration-control"><div class="input-wrap"><input id="duration" type="number" min="0.1" max="360" step="0.5" value="3" inputmode="decimal" style="padding-left:14px"></div><select id="durationUnit" aria-label="وحدة مدة السداد"><option value="years" selected>سنوات</option><option value="months">أشهر</option></select></div><div class="quick" id="quickDuration"><button type="button" data-value="12" data-unit="months">12 شهر</button><button type="button" data-value="18" data-unit="months">18 شهر</button><button type="button" data-value="24" data-unit="months">24 شهر</button><button type="button" data-value="3" data-unit="years" class="active">3 سنوات</button></div></div>
-          <div class="field"><label for="target">هامش الربح السنوي</label><div class="input-wrap"><input id="target" type="number" min="0" max="500" step="0.1" value="18" inputmode="decimal"><span class="suffix">%</span></div></div>
-          <div class="rate-tools" hidden><button class="apply-rate" type="button" id="applyRate">تطبيق النسبة على السعر والدفعات</button><button class="undo-rate" type="button" id="undoRate" disabled>تراجع</button><small class="auto-note" id="autoNote">تحافظ الحاسبة على نسب الدفعات الحالية، وتصحح فرق التقريب في الدفعة الأخيرة.</small></div>
-          <div class="field full"><small class="calculation-help">هامش سنوي بسيط على تكلفة السلعة الأصلية × مدة السداد. يمكنك رفعه أو خفضه.</small></div><div class="field full"><label>طريقة السداد</label><div class="mode" id="mode"><button type="button" data-mode="bullet">دفعة في النهاية</button><button type="button" data-mode="equal">دفعات متساوية</button><button type="button" data-mode="custom" class="active">دفعات غير متساوية</button></div></div>
-          <div class="field" id="countField" hidden><label for="count">عدد الدفعات</label><div class="input-wrap"><input id="count" type="number" min="1" max="120" step="1" value="3" inputmode="numeric"><span class="suffix">دفعة</span></div></div>
+          <div class="field"><label for="cash">���� ���� ����</label><div class="input-wrap"><input class="money-input" id="cash" type="text" value="100,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
+          <div class="field"><label for="deferred">�� ���� �除�</label><div class="input-wrap"><input class="money-input" id="deferred" readonly type="text" value="154,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
+          <div class="field"><label for="duration">ꧡ �髧��</label><div class="duration-control"><div class="input-wrap"><input id="duration" type="text" min="0.1" max="30" step="any" value="3" inputmode="decimal" style="padding-left:14px"></div><select id="durationUnit" aria-label="���� ꧡ �髧��"><option value="years" selected>��ퟢ</option><option value="months">���</option></select></div><div class="quick" id="quickDuration"><button type="button" data-value="12" data-unit="months">12 ��</button><button type="button" data-value="18" data-unit="months">18 ��</button><button type="button" data-value="24" data-unit="months">24 ��</button><button type="button" data-value="3" data-unit="years" class="active">3 ��ퟢ</button></div></div>
+          <div class="field"><label for="target">�� �驠� �����</label><div class="input-wrap"><input id="target" type="text" min="0" max="500" step="0.1" value="18" inputmode="decimal"><span class="suffix">%</span></div></div>
+          <div class="field full"><small class="calculation-help">뫠� ���� ���� ��� ���� ���� �隭�� 饫�� ��� ���� �� �韢��.</small></div><div class="field full"><label>��� �髧��</label><div class="mode" id="mode"><button type="button" data-mode="periodic" class="active" aria-pressed="true">��㟢 ���� ���� ��視 �蠩</button><button type="button" data-mode="equal" aria-pressed="false">��㟢 ꢫ���</button><button type="button" data-mode="bullet" aria-pressed="false">��� �� �����</button><button type="button" data-mode="custom" aria-pressed="false">��㟢 ꦭ��</button></div></div>
+          <div class="field full" id="periodField"><label for="period">�詟� ���㟢</label><select id="period"><option value="12">����</option><option value="6">�� 6 ���</option><option value="3">�� 3 ���</option><option value="1">���</option></select><small class="calculation-help">���� ���� ���� ��� ���� �隦視? �� ��� ��墩� �隦視.</small></div>
+          <div class="field" id="countField" hidden><label for="count">㧧 ���㟢</label><div class="input-wrap"><input id="count" type="text" min="1" max="120" step="1" value="3" inputmode="numeric"><span class="suffix">���</span></div></div>
         </div>
-<details class="extra"><summary>تفاصيل السلعة وإعادة البيع</summary>          <div class="field full"><label for="product">اسم المنتج</label><div class="input-wrap"><input id="product" type="text" placeholder="مثال: زيت، مواشي، أسهم…" autocomplete="off" style="direction:rtl;text-align:right;padding-left:14px"></div></div><div class="field"><label for="resale">قيمة إعادة البيع نقدا</label><div class="input-wrap"><input id="resale" class="money-input" type="text" inputmode="numeric" placeholder="أدخل القيمة المتوقعة"></div><small>تقدير مستقل عن تكلفة شراء السلعة.</small></div></details>
-        <div class="schedule" id="schedule"><div class="schedule-top"><b>جدول الدفعات</b><span class="sum" id="scheduleSum"></span></div><div class="pay-list" id="payList"></div><button class="add" id="addPayment" type="button">+ إضافة دفعة</button></div>
-        <div class="actions"><button class="calculate" type="button" id="share">مشاركة ملخص العرض</button><button class="reset" type="button" id="reset">إعادة</button></div>
+<details class="extra"><summary>�埭�� ���� �㟧� ����</summary>          <div class="field full"><label for="product">��� ���뢤</label><div class="input-wrap"><input id="product" type="text" maxlength="160" placeholder="꣟�: �� ������ ��� 2026" autocomplete="off" style="direction:rtl;text-align:right;padding-left:14px"></div></div><div class="field"><label for="resale">��� �㟧� ���� �租</label><div class="input-wrap"><input id="resale" class="money-input" type="text" inputmode="numeric" placeholder="���� ����� ������"></div><small>��� ꫢ�� �� ���� ���� ����.</small></div></details>
+        <div class="schedule" id="schedule"><div class="schedule-top"><b>���� ���㟢</b><span class="sum" id="scheduleSum"></span></div><div class="pay-labels"><span>����</span><span id="termLabel">�� (��)</span><span>����� �����</span><span></span></div><div class="pay-list" id="payList"></div><button class="add" id="editPayments" type="button">���� ���㟢</button><button class="add" id="addPayment" type="button" hidden>+ ���� ���</button><button class="add" id="balancePayment" type="button" hidden>�� ���� �隦視 ���� ����</button></div><p class="validation" id="validation" role="status" hidden></p>
+        <div class="actions"><button class="calculate" type="button" id="share">꬟�� ���馭 ����</button><button class="reset" type="button" id="reset">�㟧�</button></div>
       </form>
     </section>
     <section class="panel results" aria-live="polite" id="results"></section>
   </div>
-  <div class="footnote">حساب مالي استرشادي يعتمد على البيانات المدخلة.</div>
+  <div class="footnote">���� �������� ��� ���� ����� �����. ���� ���㟢 ����� �� ��� ���� ����� ����.</div>
 </main>
-<script>
-const $=s=>document.querySelector(s), fmt=n=>new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(Math.round(n||0)), pct=n=>Number.isFinite(n)?new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n):'—', esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])), SAR='<svg class="sar-icon" aria-hidden="true"><use href="#sar-mark"></use></svg>', val=el=>Number(String(el.value).replace(/,/g,''))||0, money=n=>'<span class="money-value">'+SAR+'<bdi>'+fmt(n)+'</bdi></span>',percentage=n=>'<bdi dir="ltr">'+pct(n)+'%</bdi>';
-let mode='custom',undoState=null;
-const product=$('#product'),cash=$('#cash'),deferred=$('#deferred'),duration=$('#duration'),durationUnit=$('#durationUnit'),target=$('#target'),count=$('#count'),payList=$('#payList'),schedule=$('#schedule'),countField=$('#countField'),addPayment=$('#addPayment'),results=$('#results'),applyRate=$('#applyRate'),undoRate=$('#undoRate'),autoNote=$('#autoNote');
-function formatMoneyInput(el){const raw=String(el.value).replace(/[^0-9]/g,'');el.value=raw?Number(raw).toLocaleString('en-US'):''}
-function unitWord(n){return durationUnit.value==='years'?(n===1?'سنة':'سنوات'):(n===1?'شهر':'أشهر')}
-function paymentRow(term,amount){const row=document.createElement('div');row.className='pay-row';row.innerHTML='<span class="n"></span><input class="term" type="number" min="0.1" step="0.5" value="'+term+'" aria-label="موعد الاستحقاق"><div class="pay-amount"><input class="amount" type="text" value="'+fmt(amount)+'" inputmode="numeric" aria-label="مبلغ الدفعة">'+SAR+'</div><button class="remove" type="button" aria-label="حذف الدفعة">×</button>';row.querySelector('.remove').onclick=()=>{row.remove();renumber();calculate()};row.querySelector('.term').addEventListener('input',()=>{updateSum();calculate()});row.querySelector('.amount').addEventListener('input',e=>{formatMoneyInput(e.target);updateSum();calculate()});return row}
-function renumber(){[...payList.children].forEach((r,i)=>r.querySelector('.n').textContent=i+1);updateSum()}
-function buildSchedule(){const total=val(deferred),principal=val(cash),term=Math.max(.1,+duration.value||1);payList.innerHTML='';if(mode==='bullet'){payList.append(paymentRow(term,total))}else if(mode==='equal'){const n=Math.max(1,Math.min(120,+count.value||1));for(let i=1;i<=n;i++){const due=+(term*i/n).toFixed(2);const amount=i===n?total-(Math.round(total/n)*(n-1)):Math.round(total/n);payList.append(paymentRow(due,amount))}}else{const profit=Math.max(0,total-principal),presets=[[(term/3).toFixed(2),Math.round(profit/2)],[(term*2/3).toFixed(2),Math.round(profit/2)],[term,Math.max(0,total-Math.round(profit/2)*2)]],sane=total>=principal?presets:[[(term/3).toFixed(2),Math.round(total*.15)],[(term*2/3).toFixed(2),Math.round(total*.15)],[term,Math.round(total*.70)]];sane.forEach(p=>payList.append(paymentRow(p[0],p[1])))}renumber()}
-function updateSum(){const total=[...payList.querySelectorAll('.amount')].reduce((s,i)=>s+val(i),0),due=val(deferred),el=$('#scheduleSum');el.innerHTML='الإجمالي '+money(total)+' من '+money(due);el.classList.toggle('bad',Math.abs(total-due)>.5)}
-function payments(){const factor=durationUnit.value==='years'?12:1;return [...payList.children].map(r=>{const term=Math.max(.1,+r.querySelector('.term').value||1);return{month:term*factor,term,amount:Math.max(0,val(r.querySelector('.amount')))}}).filter(p=>p.amount>0).sort((a,b)=>a.month-b.month)}
-function rawPayments(){return[...payList.children].map(r=>({term:+r.querySelector('.term').value||1,amount:Math.max(0,val(r.querySelector('.amount')))}))}
-function setPayments(list){payList.innerHTML='';list.forEach(p=>payList.append(paymentRow(p.term,p.amount)));renumber()}
-function captureState(){return{deferred:val(deferred),payments:rawPayments()}}
-function scalePayments(newTotal){const rows=rawPayments(),oldTotal=rows.reduce((s,p)=>s+p.amount,0);if(!rows.length||oldTotal<=0){deferred.value=fmt(newTotal);buildSchedule();return}let used=0;const scaled=rows.map((p,i)=>{const amount=i===rows.length-1?newTotal-used:Math.round(p.amount/oldTotal*newTotal);used+=amount;return{term:p.term,amount}});deferred.value=fmt(newTotal);setPayments(scaled)}
-function correctSchedule(){const due=val(deferred),rows=rawPayments(),sum=rows.reduce((s,p)=>s+p.amount,0);if(!rows.length||Math.abs(sum-due)<1)return false;const corrected=[...rows],last=corrected.length-1,difference=due-sum;if(corrected[last].amount+difference>=0){corrected[last].amount+=difference;setPayments(corrected)}else{scalePayments(due)}autoNote.textContent='تم تصحيح مجموع الدفعات ليتطابق مع سعر البيع الآجل.';autoNote.classList.add('done');return true}
-function npv(rate,principal,pays){return -principal+pays.reduce((s,p)=>s+p.amount/Math.pow(1+rate,p.month),0)}
-function monthlyIrr(principal,pays){if(principal<=0||!pays.length)return NaN;let lo=-.999999,hi=1;while(npv(hi,principal,pays)>0&&hi<1000)hi*=2;if(npv(lo,principal,pays)*npv(hi,principal,pays)>0)return NaN;for(let i=0;i<180;i++){const mid=(lo+hi)/2;if(npv(mid,principal,pays)>0)lo=mid;else hi=mid}return(lo+hi)/2}
-function requiredTotal(principal,pays,targetAnnual){const sum=pays.reduce((s,p)=>s+p.amount,0);if(principal<=0||sum<=0)return NaN;const monthly=Math.pow(1+targetAnnual/100,1/12)-1;const pvUnit=pays.reduce((s,p)=>s+(p.amount/sum)/Math.pow(1+monthly,p.month),0);return principal/pvUnit}
-function calculate(){const principal=val(cash),total=val(deferred),term=Math.max(.1,+duration.value||1),durationMonths=term*(durationUnit.value==='years'?12:1),goal=+target.value||0,pays=payments(),paid=pays.reduce((s,p)=>s+p.amount,0),profit=total-principal,totalPct=principal?profit/principal*100:NaN,simple=principal?totalPct/(durationMonths/12):NaN,monthly=monthlyIrr(principal,pays),annual=Number.isFinite(monthly)?(Math.pow(1+monthly,12)-1)*100:NaN,delta=simple-goal,valid=principal>0&&total>0&&pays.length&&Math.abs(paid-total)<1,productName=esc(product.value.trim()),targetProfit=principal*(goal/100)*(durationMonths/12),targetPrice=Math.round(principal+targetProfit),suggested=valid?Math.max(total,targetPrice):NaN,suggestedProfit=suggested-principal,suggestionNote=valid?(total>=targetPrice?'السعر الحالي يحقق النسبة المستهدفة':'الزيادة المطلوبة '+money(suggested-total)):'—';
-const status=!valid?'أكمل جدول الدفعات ليطابق سعر البيع':delta>=0?'أعلى من المستهدف بـ '+percentage(delta):'أقل من المستهدف بـ '+percentage(Math.abs(delta));
-const resale=val($('#resale'));
-results.innerHTML='<div class="result-hero"><span class="result-product">'+(productName?productName:'ملخص العرض المبدئي')+'</span><span class="result-label">إجمالي البيع الآجل</span><div class="yield">'+(valid?money(total):'—')+'</div><div class="deal-summary">تكلفة السلعة '+money(principal)+' · مدة السداد '+term+' '+unitWord(term)+'</div></div><div class="metrics"><div class="metric"><span>ربح البيع</span><strong>'+money(profit)+'</strong></div><div class="metric"><span>هامش الربح السنوي</span><strong>'+percentage(goal)+'</strong></div><div class="metric"><span>عدد الدفعات</span><strong>'+pays.length+'</strong></div><div class="metric"><span>قيمة إعادة البيع نقدا</span><strong>'+(resale?money(resale):'تحدد عند البيع')+'</strong></div></div><div class="result-schedule"><h3>جدول السداد</h3><table class="result-table"><thead><tr><th>الدفعة</th><th>موعدها</th><th>المبلغ</th></tr></thead><tbody>'+pays.map((p,i)=>'<tr><td>'+(i+1)+'</td><td>بعد '+p.term+' '+unitWord(p.term)+'</td><td>'+money(p.amount)+'</td></tr>').join('')+'</tbody></table></div><details class="extra"><summary>تفاصيل العائد</summary><p>الربح على كامل المدة: '+percentage(totalPct)+'</p><p>العائد السنوي الفعلي حسب توقيت الدفعات: '+(valid?percentage(annual):'—')+'</p><small>الهامش السنوي البسيط يحتسب على التكلفة الأصلية، أما العائد الفعلي فيراعي توقيت كل دفعة.</small></details>'+(valid?'':'<div class="notice" style="display:block">مجموع الدفعات يجب أن يساوي سعر البيع الآجل.</div>');
-$('#mobileTotal').innerHTML='إجمالي البيع الآجل <strong>'+(valid?money(total):'—')+'</strong>';
-}
+<dialog id="shareDialog" class="share-dialog" aria-labelledby="shareTitle">
+  <div class="dialog-top"><h2 id="shareTitle">�馭 �� ���� �除�</h2><button id="closeShare" class="dialog-close" type="button" aria-label="���� ������">?</button></div>
+  <div class="share-preview"><img id="sharePreview" alt="�馭 �� ���� �除� ����� ���㟢" hidden><div id="shareNav" class="share-nav" hidden><button type="button" id="prevImage">�髟��</button><span id="imageNumber"></span><button type="button" id="nextImage">�颟��</button></div></div>
+  <div class="share-buttons"><button type="button" id="shareImage" class="calculate" disabled>꬟�� �����</button><button type="button" id="saveImage" class="reset" disabled>��� �����</button></div>
+  <p id="shareStatus" class="share-status" role="status">��� ���� �����...</p>
+</dialog>
 
-$('#mode').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;mode=b.dataset.mode;document.querySelectorAll('#mode button').forEach(x=>x.classList.toggle('active',x===b));countField.hidden=mode!=='equal';schedule.hidden=mode==='bullet';addPayment.hidden=mode!=='custom';buildSchedule();calculate()});
-$('#quickDuration').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;duration.value=b.dataset.value;durationUnit.value=b.dataset.unit;document.querySelectorAll('#quickDuration button').forEach(x=>x.classList.toggle('active',x===b));changeDuration()});
-addPayment.onclick=()=>{payList.append(paymentRow(+duration.value||1,0));renumber()};
-product.addEventListener('input',calculate);
-$('#resale').addEventListener('input',e=>{formatMoneyInput(e.target);calculate()});
-cash.addEventListener('input',e=>{formatMoneyInput(e.target);applyRate.onclick()});
-target.addEventListener('input',()=>applyRate.onclick());
-let previousTerm=+duration.value;
-function changeDuration(){const next=Math.max(.1,+duration.value||1);if(mode==='custom'){setPayments(rawPayments().map(p=>({...p,term:+(p.term*next/previousTerm).toFixed(4)})))}else{buildSchedule()}previousTerm=next;applyRate.onclick()}
-duration.addEventListener('input',changeDuration);
-count.addEventListener('input',()=>{buildSchedule();calculate()});
-durationUnit.addEventListener('change',()=>applyRate.onclick());
-applyRate.onclick=()=>{const principal=val(cash),goal=+target.value||0,term=Math.max(.1,+duration.value||1),years=term*(durationUnit.value==='years'?1:1/12);if(principal<=0||goal<0)return;undoState=captureState();undoRate.disabled=false;const newTotal=Math.round(principal+principal*(goal/100)*years);scalePayments(newTotal);autoNote.innerHTML='تم تطبيق '+percentage(goal)+' وتعديل السعر والدفعات بنفس توزيعها السابق.';autoNote.classList.add('done');calculate()};
-undoRate.onclick=()=>{if(!undoState)return;deferred.value=fmt(undoState.deferred);setPayments(undoState.payments);undoState=null;undoRate.disabled=true;autoNote.textContent='تمت استعادة السعر والدفعات السابقة.';autoNote.classList.add('done');calculate()};
-$('#calculator').addEventListener('submit',e=>{e.preventDefault();correctSchedule();calculate()});
-$('#reset').onclick=()=>{product.value='';$('#resale').value='';previousTerm=3;cash.value='100,000';deferred.value='154,000';duration.value=3;durationUnit.value='years';target.value=18;count.value=3;mode='custom';undoState=null;undoRate.disabled=true;autoNote.textContent='تحافظ الحاسبة على نسب الدفعات الحالية، وتصحح فرق التقريب في الدفعة الأخيرة.';autoNote.classList.remove('done');document.querySelectorAll('#mode button').forEach(x=>x.classList.toggle('active',x.dataset.mode===mode));countField.hidden=true;schedule.hidden=false;addPayment.hidden=false;document.querySelectorAll('#quickDuration button').forEach(x=>x.classList.toggle('active',x.dataset.value==='3'&&x.dataset.unit==='years'));buildSchedule();calculate()};
-buildSchedule();calculate();
-$('#share').onclick=async()=>{const text='ملخص عرض البيع الآجل\nتكلفة السلعة: '+fmt(val(cash))+' ريال\nهامش الربح السنوي: '+target.value+'%\nربح البيع: '+fmt(val(deferred)-val(cash))+' ريال\nإجمالي البيع الآجل: '+fmt(val(deferred))+' ريال\n'+payments().map((p,i)=>'الدفعة '+(i+1)+': '+fmt(p.amount)+' ريال بعد '+p.term+' '+unitWord(p.term)).join('\n');try{if(navigator.share){await navigator.share({title:'ملخص العرض المبدئي',text})}else{await navigator.clipboard.writeText(text);$('#share').textContent='تم نسخ الملخص'}}catch(e){if(e.name!=='AbortError')$('#share').textContent='تعذرت المشاركة؛ حاول مرة أخرى'}};
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const numeric = value => String(value).replace(/[?-??-?]/g, c => String(c.charCodeAt(0) >= 1776 ? c.charCodeAt(0) - 1776 : c.charCodeAt(0) - 1632)).replace(/?|,/g, '').replace(/?/g, '.');
+const number = value => Number(numeric(value));
+const fmt = value => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(value);
+const pct = value => Number.isFinite(value) ? fmt(Math.round(value * 100) / 100) : '?';
+const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const SAR = '<svg class="sar-icon" aria-hidden="true"><use href="#sar-mark"></use></svg>';
+const money = value => '<span class="money-value">' + SAR + '<bdi>' + fmt(value) + '</bdi></span>';
+const percentage = value => '<bdi dir="ltr">% ' + pct(value) + '</bdi>';
+const cash = $('#cash'), deferred = $('#deferred'), duration = $('#duration'), durationUnit = $('#durationUnit'), target = $('#target'), count = $('#count'), product = $('#product'), period = $('#period'), payList = $('#payList');
+let mode = 'periodic', previousMonths = 36, currentDeal = null;
+function unitLabel(n, unit) { return unit === 'years' ? (n >= 3 && n <= 10 ? '��ퟢ' : '��') : (n >= 3 && n <= 10 ? '���' : '��'); }
+function dueText(month) {
+  const years = month / 12;
+  return Math.abs(years - Math.round(years)) < 0.000001 ? '��� ��� ' + fmt(Math.round(years)) : '�� ' + fmt(month) + ' ' + unitLabel(month, 'months');
+}
+function durationText(months) {
+  const amount = durationUnit.value === 'years' ? months / 12 : months;
+  return fmt(amount) + ' ' + unitLabel(amount, durationUnit.value);
+}
+function baseValues() {
+  const principal = Math.round(number(cash.value) * 100), rate = number(target.value), term = number(duration.value), months = term * (durationUnit.value === 'years' ? 12 : 1);
+  if (!cash.value.trim() || !Number.isSafeInteger(principal) || principal <= 0 || principal > 1e13) return { error: '���� ���� ��� �蠩 �� �� ���� ��� 100 �� ���.' };
+  if (target.value === '' || !Number.isFinite(rate) || rate < 0 || rate > 500) return { error: '���� �� ��� ���� ��� 0 �500%.' };
+  if (!Number.isFinite(months) || months <= 0 || months > 360) return { error: '���� ꧡ ���� �蠩 �� �� ���� ��� 30 ��.' };
+  const profit = Math.round(principal * rate / 100 * months / 12);
+  return { principal, rate, months, profit, total: principal + profit };
+}
+// All money is held in halalas; cumulative rounding keeps every schedule equal to the sale price.
+function presetPayments(base, selectedMode, frequency, numberOfPayments) {
+  if (selectedMode === 'bullet' || base.profit === 0 && selectedMode === 'periodic') return [{ month: base.months, cents: base.total }];
+  if (selectedMode === 'equal') {
+    const n = numberOfPayments, share = Math.floor(base.total / n);
+    return Array.from({ length: n }, (_, i) => ({ month: base.months * (i + 1) / n, cents: i === n - 1 ? base.total - share * (n - 1) : share }));
+  }
+  const payments = [];
+  let previousProfit = 0;
+  for (let month = frequency; month < base.months - 0.0000001; month += frequency) {
+    const cumulativeProfit = Math.round(base.profit * month / base.months);
+    const cents = cumulativeProfit - previousProfit;
+    if (cents > 0) payments.push({ month, cents });
+    previousProfit = cumulativeProfit;
+  }
+  payments.push({ month: base.months, cents: base.total - previousProfit });
+  return payments;
+}
+function rawPayments() {
+  const factor = durationUnit.value === 'years' ? 12 : 1;
+  return [...payList.children].map(row => ({ month: number(row.querySelector('.term').value) * factor, cents: Math.round(number(row.querySelector('.amount').value) * 100) }));
+}
+function paymentRow(payment, index) {
+  const factor = durationUnit.value === 'years' ? 12 : 1;
+  const row = document.createElement('div'); row.className = 'pay-row';
+  // Extra precision prevents equal instalment dates from drifting when expressed in years.
+  const term = Number((payment.month / factor).toFixed(8));
+  row.innerHTML = '<span class="n">' + (index + 1) + '</span><input class="term" type="text" min="0.00000001" step="any" value="' + term + '" aria-label="��� ���� ' + (index + 1) + '"><div class="pay-amount"><input class="amount" type="text" value="' + fmt(payment.cents / 100) + '" inputmode="decimal" aria-label="��� ���� ' + (index + 1) + '">' + SAR + '</div><button class="remove" type="button" aria-label="��� ���� ' + (index + 1) + '">?</button>';
+  row.querySelectorAll('input').forEach(input => { input.type = 'text'; input.inputMode = 'decimal'; input.lang = 'en'; input.dir = 'ltr'; input.readOnly = mode !== 'custom'; input.addEventListener('input', () => { input.value = numeric(input.value); calculate(); }); });
+  row.querySelector('.remove').disabled = mode !== 'custom';
+  row.querySelector('.remove').onclick = () => { row.remove(); renumber(); calculate(); };
+  return row;
+}
+function renderPayments(payments) { payList.replaceChildren(...payments.map(paymentRow)); }
+function renumber() { [...payList.children].forEach((row, index) => { row.querySelector('.n').textContent = index + 1; row.querySelector('.term').setAttribute('aria-label', '��� ���� ' + (index + 1)); row.querySelector('.amount').setAttribute('aria-label', '��� ���� ' + (index + 1)); row.querySelector('.remove').setAttribute('aria-label', '��� ���� ' + (index + 1)); }); }
+function syncControls() {
+  $('#periodField').hidden = mode !== 'periodic'; $('#countField').hidden = mode !== 'equal';
+  $('#addPayment').hidden = mode !== 'custom'; $('#balancePayment').hidden = mode !== 'custom'; $('#editPayments').hidden = mode === 'custom';
+  $('#termLabel').textContent = '�� (' + (durationUnit.value === 'years' ? '��' : '��') + ')';
+  $('#addPayment').disabled = payList.children.length >= 120;
+  $('#mode').querySelectorAll('button').forEach(button => { const active = button.dataset.mode === mode; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
+  $('#quickDuration').querySelectorAll('button').forEach(button => button.classList.toggle('active', button.dataset.unit === durationUnit.value && number(button.dataset.value) === number(duration.value)));
+}
+function rebuild() {
+  const base = baseValues();
+  if (!base.error) {
+    if (mode === 'equal' && (!Number.isInteger(number(count.value)) || number(count.value) < 1 || number(count.value) > 120)) { calculate(); return; }
+    if (mode === 'custom') {
+      const old = rawPayments(), sum = old.reduce((total, p) => total + p.cents, 0); let used = 0;
+      if (old.length && Number.isFinite(sum) && sum > 0) renderPayments(old.map((p, index) => { const cents = index === old.length - 1 ? base.total - used : Math.floor(p.cents / sum * base.total); used += cents; return { month: p.month, cents }; }));
+      else renderPayments(presetPayments(base, 'periodic', number(period.value), 3));
+    } else renderPayments(presetPayments(base, mode, number(period.value), number(count.value)));
+    previousMonths = base.months;
+  }
+  calculate();
+}
+function annualIrr(principal, payments) {
+  const npv = rate => -principal + payments.reduce((sum, p) => sum + p.cents / Math.pow(1 + rate, p.month / 12), 0);
+  let low = -0.9999, high = 1;
+  while (npv(high) > 0 && high < 1e12) high *= 2;
+  if (npv(high) > 0) return NaN;
+  for (let i = 0; i < 140; i++) { const middle = (low + high) / 2; if (npv(middle) > 0) low = middle; else high = middle; }
+  return (low + high) * 50;
+}
+function calculate() {
+  syncControls();
+  const base = baseValues(), pays = rawPayments().sort((a, b) => a.month - b.month), sum = pays.reduce((total, p) => total + p.cents, 0);
+  let error = base.error || '';
+  if (!error && mode === 'equal' && (!Number.isInteger(number(count.value)) || number(count.value) < 1 || number(count.value) > 120)) error = '���� 㧧 ��㟢 ��� ��� 1 �120.';
+  if (!error && (!pays.length || pays.some(p => !Number.isFinite(p.month) || p.month <= 0 || p.month > base.months + 0.000001 || !Number.isSafeInteger(p.cents) || p.cents <= 0))) error = '���� ��� �蠩 �� �� ��� ���? ���� ���� ��� ꧡ �髧��.';
+  if (!error && sum !== base.total) error = sum < base.total ? '���� ' + fmt((base.total - sum) / 100) + ' ��� ���� ��� ����. �� ���㟢 �� ��� ���� �隦視.' : '���� ���㟢 �� ��� ��� ���� ���� ' + fmt((sum - base.total) / 100) + ' ���.';
+  deferred.value = base.error ? '' : fmt(base.total / 100);
+  $('#validation').hidden = !error; $('#validation').textContent = error; $('#share').disabled = Boolean(error);
+  $('#scheduleSum').innerHTML = base.error ? '' : '�靤��� ' + money(Number.isFinite(sum) ? sum / 100 : 0) + ' / ' + money(base.total / 100);
+  $('#scheduleSum').classList.toggle('bad', Boolean(error));
+  currentDeal = error ? null : { ...base, payments: pays, product: product.value.trim(), duration: durationText(base.months), resale: number($('#resale').value) || 0 };
+  $('#mobileTotal').innerHTML = '����� ���� �除� <strong>' + (error ? '?' : money(base.total / 100)) + '</strong>';
+  if (base.error) { $('#results').innerHTML = '<div class="empty"><b>�馭 �� ���� �除�</b>���� ��럢 ������ ��� �饫��.</div>'; return; }
+  const validRows = pays.filter(p => Number.isFinite(p.month) && Number.isFinite(p.cents)), resale = number($('#resale').value);
+  $('#results').innerHTML = '<div class="result-hero"><span class="result-product">' + esc(product.value.trim() || '�馭 �� ���� �除�') + '</span><span class="result-label">����� ��� ����</span><div class="yield">' + money(base.total / 100) + '</div><div class="deal-summary">���� ���� ' + money(base.principal / 100) + ' � ꧡ �髧�� ' + esc(durationText(base.months)) + '</div></div><div class="metrics"><div class="metric"><span>����� ��� ����</span><strong>' + money(base.profit / 100) + '</strong></div><div class="metric"><span>�� �驠� �����</span><strong>' + percentage(base.rate) + '</strong></div><div class="metric"><span>㧧 ���㟢</span><strong>' + pays.length + '</strong></div><div class="metric"><span>���� �隦視</span><strong>' + (!error ? money(pays[pays.length - 1].cents / 100) : '?') + '</strong></div></div><div class="result-schedule"><h3>���� �髧��</h3><table class="result-table"><thead><tr><th>����</th><th>����</th><th>�����</th></tr></thead><tbody>' + validRows.map((p, i) => '<tr' + (i === validRows.length - 1 ? ' class="last-payment"' : '') + '><td>' + (i + 1) + '</td><td>' + dueText(p.month) + '</td><td>' + money(p.cents / 100) + '</td></tr>').join('') + '</tbody></table><small>���� ���㟢 ����� �� ��� ����.' + (mode === 'periodic' ? ' ���� �隦視 ���� ���� ���� ���� ��墩� �隦視.' : '') + '</small></div><details class="extra"><summary>�埭�� �饫��</summary><p>�驠� ��� ��� ��ꧡ: ' + percentage(base.profit / base.principal * 100) + '</p><p>��㟞� ����� ������ ��� ���� ���㟢: ' + (!error ? percentage(annualIrr(base.principal, pays)) : '?') + '</p>' + (Number.isFinite(resale) && resale > 0 ? '<p>��� �㟧� ���� �租: ' + money(resale) + '</p>' : '') + '<small>���� ����� �頫�� 異�� ��� ����� �隭��. ��㟞� ������ 著�� ���� �� ���.</small></details>';
+}
+function changeMode(next) { const old = rawPayments(); mode = next; if (mode === 'custom' && old.length) { renderPayments(old); calculate(); } else rebuild(); }
+$('#mode').addEventListener('click', event => { const button = event.target.closest('button'); if (button) changeMode(button.dataset.mode); });
+$('#editPayments').onclick = () => changeMode('custom');
+$('#addPayment').onclick = () => { const base = baseValues(); if (base.error || payList.children.length >= 120) return; payList.append(paymentRow({ month: base.months, cents: 0 }, payList.children.length)); calculate(); payList.lastChild.querySelector('.amount').focus(); };
+$('#balancePayment').onclick = () => {
+  const base = baseValues(), pays = rawPayments().sort((a, b) => a.month - b.month);
+  if (base.error || !pays.length) return;
+  const remaining = base.total - pays.slice(0, -1).reduce((sum, p) => sum + p.cents, 0);
+  if (!Number.isSafeInteger(remaining) || remaining <= 0) { $('#validation').hidden = false; $('#validation').textContent = '��� ���㟢 �髟�� ��� �� ��� ���� �隦視.'; return; }
+  pays[pays.length - 1].cents = remaining; renderPayments(pays); calculate();
+};
+cash.addEventListener('input', rebuild); target.addEventListener('input', rebuild); period.addEventListener('change', rebuild); count.addEventListener('input', rebuild);
+cash.addEventListener('blur', () => { const n = number(cash.value); if (cash.value.trim() && Number.isFinite(n) && n >= 0) cash.value = fmt(n); });
+product.addEventListener('input', calculate); $('#resale').addEventListener('input', calculate);
+let previousUnit = durationUnit.value;
+function changeDuration() {
+  const base = baseValues();
+  if (!base.error && mode === 'custom' && previousMonths > 0) {
+    const oldFactor = previousUnit === 'years' ? 12 : 1;
+    const rows = [...payList.children].map(row => ({ month: number(row.querySelector('.term').value) * oldFactor * base.months / previousMonths, cents: Math.round(number(row.querySelector('.amount').value) * 100) }));
+    renderPayments(rows);
+  }
+  duration.max = durationUnit.value === 'years' ? '30' : '360'; previousUnit = durationUnit.value; rebuild();
+}
+duration.addEventListener('input', changeDuration); durationUnit.addEventListener('change', changeDuration);
+$('#quickDuration').addEventListener('click', event => { const button = event.target.closest('button'); if (!button) return; duration.value = button.dataset.value; durationUnit.value = button.dataset.unit; changeDuration(); });
+$('#calculator').addEventListener('submit', event => { event.preventDefault(); calculate(); });
+$('#reset').onclick = () => { cash.value = '100,000'; target.value = '18'; duration.value = '3'; durationUnit.value = 'years'; duration.max = '30'; count.value = '3'; period.value = '12'; product.value = ''; $('#resale').value = ''; mode = 'periodic'; previousMonths = 36; previousUnit = 'years'; rebuild(); };
+
+// Render with the page's local fonts, without screenshot services or external image libraries.
+async function makeSummaryPages(deal) {
+  await Promise.all([document.fonts.load('700 48px "Thmanyah Serif Display"'), document.fonts.load('700 40px "Thmanyah Sans"'), document.fonts.load('400 32px "Thmanyah Sans"')]);
+  if (!document.fonts.check('700 48px "Thmanyah Serif Display"') || !document.fonts.check('700 40px "Thmanyah Sans"')) throw new Error('Font loading failed');
+  const pages = [], perPage = 12, pageCount = Math.ceil(deal.payments.length / perPage);
+  for (let pageIndex = 0; pageIndex < pageCount; pageIndex++) {
+    const rows = deal.payments.slice(pageIndex * perPage, (pageIndex + 1) * perPage), canvas = document.createElement('canvas');
+    canvas.width = 1080; canvas.height = 1016 + rows.length * 88;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Canvas unavailable');
+    const navy = '#0D3656', gold = '#C9853C', ink = '#18232D', muted = '#65727D';
+    function box(x, y, width, height, radius, color) { ctx.fillStyle = color; ctx.beginPath(); ctx.roundRect(x, y, width, height, radius); ctx.fill(); }
+    function text(value, x, y, size = 32, color = ink, weight = 400, align = 'right', maxWidth = 880, family = 'Thmanyah Sans') {
+      ctx.fillStyle = color; ctx.textAlign = align; ctx.textBaseline = 'alphabetic'; ctx.direction = 'rtl';
+      let fontSize = size; ctx.font = weight + ' ' + fontSize + 'px "' + family + '"';
+      while (ctx.measureText(String(value)).width > maxWidth && fontSize > 22) { fontSize--; ctx.font = weight + ' ' + fontSize + 'px "' + family + '"'; }
+      ctx.fillText(String(value), x, y, maxWidth);
+    }
+    function wrap(value, width, size = 32) {
+      ctx.font = '700 ' + size + 'px "Thmanyah Sans"'; const lines = []; let line = '';
+      for (const word of value.split(/\s+/)) { const trial = line ? line + ' ' + word : word; if (ctx.measureText(trial).width > width && line) { lines.push(line); line = word; } else line = trial; }
+      if (line) lines.push(line); return lines;
+    }
+    ctx.fillStyle = '#F6F2EC'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    box(32, 32, 1016, canvas.height - 64, 32, '#FFFEFC');
+    box(32, 32, 1016, 374, 32, navy);
+    box(944, 70, 48, 6, 3, '#E2A45E');
+    text('�馭 �� ���� �除�', 992, 139, 52, '#FFFFFF', 700, 'right', 890, 'Thmanyah Serif Display');
+    let productSize = 32, productLines = wrap(deal.product || '�� ꠧ��', 890, productSize);
+    while (productLines.length > 2 && productSize > 22) { productSize--; productLines = wrap(deal.product || '�� ꠧ��', 890, productSize); }
+    productLines.slice(0, 2).forEach((line, index) => text(line, 992, 186 + index * 38, productSize, '#D7E1E8', 700));
+    text('����� ��� ����', 992, 268, 28, '#E7B77C', 700);
+    text(fmt(deal.total / 100) + ' ���', 992, 338, 66, '#FFFFFF', 700, 'right', 890);
+    text('ꧡ �髧��: ' + deal.duration, 992, 380, 28, '#D7E1E8');
+    const cards = [ ['���� ���� ����', fmt(deal.principal / 100) + ' ���'], ['����� ��� ����', fmt(deal.profit / 100) + ' ���'], ['�� �驠� �����', '\u200e% ' + pct(deal.rate)], ['㧧 ���㟢', String(deal.payments.length)] ];
+    cards.forEach(([label, value], i) => { const x = i % 2 === 0 ? 552 : 72, y = 432 + Math.floor(i / 2) * 120; box(x, y, 456, 104, 16, '#F6F2EC'); text(label, x + 428, y + 35, 26, muted); text(value, x + 428, y + 80, 40, navy, 700, 'right', 404); });
+    text('���� �髧��', 992, 720, 38, navy, 700);
+    if (pageCount > 1) text('����� ' + (pageIndex + 1) + ' / ' + pageCount, 88, 718, 25, muted, 400, 'left', 320);
+    text('����', 978, 767, 27, muted); text('����', 766, 767, 27, muted); text('����� �����', 100, 767, 27, muted, 400, 'left');
+    rows.forEach((p, i) => {
+      const index = pageIndex * perPage + i, last = index === deal.payments.length - 1, y = 790 + i * 88;
+      box(72, y, 936, 76, 13, last ? '#FFF0D8' : i % 2 ? '#F8F6F2' : '#FFFFFF');
+      text(String(index + 1), 971, y + 50, 35, last ? '#87561E' : navy, 700, 'right', 90);
+      text(dueText(p.month), 766, y + 50, 32, ink, 400, 'right', 330);
+      text(fmt(p.cents / 100), 100, y + 51, 43, last ? '#87561E' : navy, 700, 'left', 350);
+    });
+    const foot = 822 + rows.length * 88;
+    ctx.strokeStyle = '#E3DED6'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(88, foot); ctx.lineTo(992, foot); ctx.stroke();
+    text('���� ���㟢 ����� �� ��� ���� ����� ����.', 992, foot + 49, 27, muted);
+    text('�� ꠧ�� ����笡', 992, foot + 95, 26, gold, 700);
+    ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.font = '22px "Thmanyah Sans"'; ctx.fillStyle = muted; ctx.fillText('almohammdin.github.io', 88, foot + 95);
+    const blob = await new Promise((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('PNG export failed')), 'image/png'));
+    pages.push(new File([blob], 'deferred-sale-summary' + (pageCount > 1 ? '-' + (pageIndex + 1) : '') + '.png', { type: 'image/png' }));
+  }
+  return pages;
+}
+const shareDialog = $('#shareDialog');
+let imageFiles = [], imageIndex = 0, previewUrl = '', generation = 0;
+function shareStatus(message, error = false) { $('#shareStatus').textContent = message; $('#shareStatus').classList.toggle('error', error); }
+function showPreview() {
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = URL.createObjectURL(imageFiles[imageIndex]); $('#sharePreview').src = previewUrl; $('#sharePreview').hidden = false;
+  $('#shareNav').hidden = imageFiles.length <= 1; $('#imageNumber').textContent = '����� ' + (imageIndex + 1) + ' �� ' + imageFiles.length;
+  $('#prevImage').disabled = imageIndex === 0; $('#nextImage').disabled = imageIndex === imageFiles.length - 1;
+  $('#shareImage').disabled = false; $('#saveImage').disabled = false;
+  shareStatus(imageFiles.length > 1 ? '�� �餧�� ��� ' + imageFiles.length + ' ��� ���� ��� ��� ���. ���� �� ���� �� ����.' : '����� ��쪡 ��꬟�� �� ����.');
+}
+$('#share').onclick = async () => {
+  calculate(); if (!currentDeal) return;
+  const deal = structuredClone(currentDeal), request = ++generation;
+  imageFiles = []; imageIndex = 0; $('#sharePreview').hidden = true; $('#shareNav').hidden = true; $('#shareImage').disabled = true; $('#saveImage').disabled = true;
+  shareStatus('��� ���� �����...'); shareDialog.showModal();
+  try { const files = await makeSummaryPages(deal); if (generation !== request || !shareDialog.open) return; imageFiles = files; showPreview(); }
+  catch (error) { if (generation === request) shareStatus('�㨩 ���� �����. ��� �� ���� ����� ��奡 �� �� ��꥟��.', true); }
+};
+$('#closeShare').onclick = () => shareDialog.close();
+shareDialog.addEventListener('close', () => { generation++; imageFiles = []; if (previewUrl) URL.revokeObjectURL(previewUrl); previewUrl = ''; $('#sharePreview').removeAttribute('src'); });
+$('#prevImage').onclick = () => { if (imageIndex > 0) { imageIndex--; showPreview(); } };
+$('#nextImage').onclick = () => { if (imageIndex < imageFiles.length - 1) { imageIndex++; showPreview(); } };
+function saveCurrentImage() {
+  const file = imageFiles[imageIndex]; if (!file) return;
+  const url = URL.createObjectURL(file), link = document.createElement('a'); link.href = url; link.download = file.name; document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000); shareStatus('�� �� ��� �����. ��� �쩢 �� �娡 ꫢ��? ���� ���� ���� ����.');
+}
+$('#saveImage').onclick = saveCurrentImage;
+$('#shareImage').onclick = async () => {
+  const file = imageFiles[imageIndex]; if (!file) return;
+  try {
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: '�馭 �� ���� �除�' }); shareStatus('�� ꬟�� �����.'); }
+    else { saveCurrentImage(); shareStatus('��꬟�� ��ꠟ��� �� ꢟ�� �� 쨟 ��ꢭ�. �� �� ��� ����� 颬����.'); }
+  } catch (error) { if (error.name !== 'AbortError') shareStatus('�㨩� ��꬟�� ��ꠟ���. ������ �� ��� �����.', true); }
+};
+document.querySelectorAll('input:not(#product)').forEach(input => { input.lang = 'en'; input.dir = 'ltr'; input.addEventListener('input', () => { input.value = numeric(input.value); }); });
+rebuild();
+
 </script>
 </body>
 </html>
