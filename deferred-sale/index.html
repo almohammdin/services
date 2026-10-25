@@ -252,7 +252,6 @@ async function makeSummaryPages(deal) {
     ctx.strokeStyle = '#E3DED6'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(88, foot); ctx.lineTo(992, foot); ctx.stroke();
     text('جميع الدفعات أجزاء من ثمن البيع المتفق عليه.', 992, foot + 49, 27, muted);
     text('عرض مبدئي للمناقشة', 992, foot + 95, 26, gold, 700);
-    ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.font = '22px "Thmanyah Sans"'; ctx.fillStyle = muted; ctx.fillText('almohammdin.github.io', 88, foot + 95);
     const blob = await new Promise((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('PNG export failed')), 'image/png'));
     pages.push(new File([blob], 'deferred-sale-summary' + (pageCount > 1 ? '-' + (pageIndex + 1) : '') + '.png', { type: 'image/png' }));
   }
