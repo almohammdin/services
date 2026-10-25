@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>����� ���� �除�</title>
-<meta name="description" content="���� �� ���� �除� ���� ��㟢 ���� �� ��� ��視 �蠩? �� ��㟢 ꢫ��� �ꦭ��? ����� �馭 ���� ����.">
+<title>حاسبة البيع الآجل</title>
+<meta name="description" content="احسب سعر البيع الآجل ورتب دفعات دورية مع دفعة أخيرة أكبر، أو دفعات متساوية ومخصصة، وشارك ملخص العرض كصورة.">
 <meta name="theme-color" content="#0D3656">
 <link rel="canonical" href="https://almohammdin.github.io/services/deferred-sale/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230D3656'/%3E%3Cpath d='M18 20h28v24H18z' fill='none' stroke='%23E2A45E' stroke-width='4'/%3E%3Cpath d='M24 28h16M24 36h5m6 0h5' stroke='%23fff' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -28,57 +28,57 @@
 <body>
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><symbol id="sar-mark" viewBox="0 0 1124 1256"><path d="M700 1113c-20 44-33 93-38 143l425-90c20-45 33-93 38-144l-425 91Z"/><path d="M1086 896c20-45 33-93 38-144l-331 70V688l292-62c20-45 33-94 38-144l-330 70V66c-51 28-96 66-132 111v403l-132 28V0c-51 28-96 66-132 111v526L101 700c-20 44-33 93-38 143l334-71v170l-358 76c-20 45-33 93-38 144l375-80c31-6 57-24 74-49l69-102c7-10 11-23 11-37V744l132-28v270l424-90Z"/></symbol></svg>
 <div id="mobileTotal" aria-live="polite"></div><main class="shell">
-  <div class="bismillah">��� ���� �驥�� �驥��</div>
+  <div class="bismillah">بسم الله الرحمن الرحيم</div>
   <header class="top">
-    <div class="title-wrap"><span class="eyebrow">��� �驠� ����� �髧��</span><h1>����� ���� �除�</h1></div>
+    <div class="title-wrap"><span class="eyebrow">تقدير الربح وترتيب السداد</span><h1>حاسبة البيع الآجل</h1></div>
   </header>
   <div class="workspace">
     <section class="panel" aria-labelledby="calc-title">
-      <div class="panel-head"><h2 id="calc-title">��럢 ������</h2><p>��� ���� ���� ��� �驠� ����� ���� ���㟢.</p></div>
+      <div class="panel-head"><h2 id="calc-title">بيانات العملية</h2><p>حدد تكلفة السلعة وهامش الربح السنوي ورتب الدفعات.</p></div>
       <form class="form" id="calculator">
         <div class="fields">
 
-          <div class="field"><label for="cash">���� ���� ����</label><div class="input-wrap"><input class="money-input" id="cash" type="text" value="100,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
-          <div class="field"><label for="deferred">�� ���� �除�</label><div class="input-wrap"><input class="money-input" id="deferred" readonly type="text" value="154,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
-          <div class="field"><label for="duration">ꧡ �髧��</label><div class="duration-control"><div class="input-wrap"><input id="duration" type="text" min="0.1" max="30" step="any" value="3" inputmode="decimal" style="padding-left:14px"></div><select id="durationUnit" aria-label="���� ꧡ �髧��"><option value="years" selected>��ퟢ</option><option value="months">���</option></select></div><div class="quick" id="quickDuration"><button type="button" data-value="12" data-unit="months">12 ��</button><button type="button" data-value="18" data-unit="months">18 ��</button><button type="button" data-value="24" data-unit="months">24 ��</button><button type="button" data-value="3" data-unit="years" class="active">3 ��ퟢ</button></div></div>
-          <div class="field"><label for="target">�� �驠� �����</label><div class="input-wrap"><input id="target" type="text" min="0" max="500" step="0.1" value="18" inputmode="decimal"><span class="suffix">%</span></div></div>
-          <div class="field full"><small class="calculation-help">뫠� ���� ���� ��� ���� ���� �隭�� 饫�� ��� ���� �� �韢��.</small></div><div class="field full"><label>��� �髧��</label><div class="mode" id="mode"><button type="button" data-mode="periodic" class="active" aria-pressed="true">��㟢 ���� ���� ��視 �蠩</button><button type="button" data-mode="equal" aria-pressed="false">��㟢 ꢫ���</button><button type="button" data-mode="bullet" aria-pressed="false">��� �� �����</button><button type="button" data-mode="custom" aria-pressed="false">��㟢 ꦭ��</button></div></div>
-          <div class="field full" id="periodField"><label for="period">�詟� ���㟢</label><select id="period"><option value="12">����</option><option value="6">�� 6 ���</option><option value="3">�� 3 ���</option><option value="1">���</option></select><small class="calculation-help">���� ���� ���� ��� ���� �隦視? �� ��� ��墩� �隦視.</small></div>
-          <div class="field" id="countField" hidden><label for="count">㧧 ���㟢</label><div class="input-wrap"><input id="count" type="text" min="1" max="120" step="1" value="3" inputmode="numeric"><span class="suffix">���</span></div></div>
+          <div class="field"><label for="cash">تكلفة شراء السلعة</label><div class="input-wrap"><input class="money-input" id="cash" type="text" value="100,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
+          <div class="field"><label for="deferred">سعر البيع الآجل</label><div class="input-wrap"><input class="money-input" id="deferred" readonly type="text" value="154,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
+          <div class="field"><label for="duration">مدة السداد</label><div class="duration-control"><div class="input-wrap"><input id="duration" type="text" min="0.1" max="30" step="any" value="3" inputmode="decimal" style="padding-left:14px"></div><select id="durationUnit" aria-label="وحدة مدة السداد"><option value="years" selected>سنوات</option><option value="months">أشهر</option></select></div><div class="quick" id="quickDuration"><button type="button" data-value="12" data-unit="months">12 شهر</button><button type="button" data-value="18" data-unit="months">18 شهر</button><button type="button" data-value="24" data-unit="months">24 شهر</button><button type="button" data-value="3" data-unit="years" class="active">3 سنوات</button></div></div>
+          <div class="field"><label for="target">هامش الربح السنوي</label><div class="input-wrap"><input id="target" type="text" min="0" max="500" step="0.1" value="18" inputmode="decimal"><span class="suffix">%</span></div></div>
+          <div class="field full"><small class="calculation-help">نسبة سنوية بسيطة على تكلفة السلعة الأصلية لحساب ثمن البيع قبل الاتفاق.</small></div><div class="field full"><label>طريقة السداد</label><div class="mode" id="mode"><button type="button" data-mode="periodic" class="active" aria-pressed="true">دفعات دورية ودفعة أخيرة أكبر</button><button type="button" data-mode="equal" aria-pressed="false">دفعات متساوية</button><button type="button" data-mode="bullet" aria-pressed="false">دفعة في النهاية</button><button type="button" data-mode="custom" aria-pressed="false">دفعات مخصصة</button></div></div>
+          <div class="field full" id="periodField"><label for="period">تكرار الدفعات</label><select id="period"><option value="12">سنوي</option><option value="6">كل 6 أشهر</option><option value="3">كل 3 أشهر</option><option value="1">شهري</option></select><small class="calculation-help">تضاف تكلفة السلعة إلى الدفعة الأخيرة، مع مبلغ الفترة الأخيرة.</small></div>
+          <div class="field" id="countField" hidden><label for="count">عدد الدفعات</label><div class="input-wrap"><input id="count" type="text" min="1" max="120" step="1" value="3" inputmode="numeric"><span class="suffix">دفعة</span></div></div>
         </div>
-<details class="extra"><summary>�埭�� ���� �㟧� ����</summary>          <div class="field full"><label for="product">��� ���뢤</label><div class="input-wrap"><input id="product" type="text" maxlength="160" placeholder="꣟�: �� ������ ��� 2026" autocomplete="off" style="direction:rtl;text-align:right;padding-left:14px"></div></div><div class="field"><label for="resale">��� �㟧� ���� �租</label><div class="input-wrap"><input id="resale" class="money-input" type="text" inputmode="numeric" placeholder="���� ����� ������"></div><small>��� ꫢ�� �� ���� ���� ����.</small></div></details>
-        <div class="schedule" id="schedule"><div class="schedule-top"><b>���� ���㟢</b><span class="sum" id="scheduleSum"></span></div><div class="pay-labels"><span>����</span><span id="termLabel">�� (��)</span><span>����� �����</span><span></span></div><div class="pay-list" id="payList"></div><button class="add" id="editPayments" type="button">���� ���㟢</button><button class="add" id="addPayment" type="button" hidden>+ ���� ���</button><button class="add" id="balancePayment" type="button" hidden>�� ���� �隦視 ���� ����</button></div><p class="validation" id="validation" role="status" hidden></p>
-        <div class="actions"><button class="calculate" type="button" id="share">꬟�� ���馭 ����</button><button class="reset" type="button" id="reset">�㟧�</button></div>
+<details class="extra"><summary>تفاصيل السلعة وإعادة البيع</summary>          <div class="field full"><label for="product">اسم المنتج</label><div class="input-wrap"><input id="product" type="text" maxlength="160" placeholder="مثال: سيارة تويوتا كامري 2026" autocomplete="off" style="direction:rtl;text-align:right;padding-left:14px"></div></div><div class="field"><label for="resale">قيمة إعادة البيع نقدا</label><div class="input-wrap"><input id="resale" class="money-input" type="text" inputmode="numeric" placeholder="أدخل القيمة المتوقعة"></div><small>تقدير مستقل عن تكلفة شراء السلعة.</small></div></details>
+        <div class="schedule" id="schedule"><div class="schedule-top"><b>جدول الدفعات</b><span class="sum" id="scheduleSum"></span></div><div class="pay-labels"><span>الدفعة</span><span id="termLabel">بعد (سنة)</span><span>المبلغ بالريال</span><span></span></div><div class="pay-list" id="payList"></div><button class="add" id="editPayments" type="button">تعديل الدفعات</button><button class="add" id="addPayment" type="button" hidden>+ إضافة دفعة</button><button class="add" id="balancePayment" type="button" hidden>ضبط الدفعة الأخيرة لإكمال الثمن</button></div><p class="validation" id="validation" role="status" hidden></p>
+        <div class="actions"><button class="calculate" type="button" id="share">مشاركة الملخص كصورة</button><button class="reset" type="button" id="reset">إعادة</button></div>
       </form>
     </section>
     <section class="panel results" aria-live="polite" id="results"></section>
   </div>
-  <div class="footnote">���� �������� ��� ���� ����� �����. ���� ���㟢 ����� �� ��� ���� ����� ����.</div>
+  <div class="footnote">حساب استرشادي لثمن البيع وجدول سداده. جميع الدفعات أجزاء من ثمن البيع المتفق عليه.</div>
 </main>
 <dialog id="shareDialog" class="share-dialog" aria-labelledby="shareTitle">
-  <div class="dialog-top"><h2 id="shareTitle">�馭 �� ���� �除�</h2><button id="closeShare" class="dialog-close" type="button" aria-label="���� ������">?</button></div>
-  <div class="share-preview"><img id="sharePreview" alt="�馭 �� ���� �除� ����� ���㟢" hidden><div id="shareNav" class="share-nav" hidden><button type="button" id="prevImage">�髟��</button><span id="imageNumber"></span><button type="button" id="nextImage">�颟��</button></div></div>
-  <div class="share-buttons"><button type="button" id="shareImage" class="calculate" disabled>꬟�� �����</button><button type="button" id="saveImage" class="reset" disabled>��� �����</button></div>
-  <p id="shareStatus" class="share-status" role="status">��� ���� �����...</p>
+  <div class="dialog-top"><h2 id="shareTitle">ملخص عرض البيع الآجل</h2><button id="closeShare" class="dialog-close" type="button" aria-label="إغلاق المعاينة">×</button></div>
+  <div class="share-preview"><img id="sharePreview" alt="ملخص عرض البيع الآجل وجدول الدفعات" hidden><div id="shareNav" class="share-nav" hidden><button type="button" id="prevImage">السابق</button><span id="imageNumber"></span><button type="button" id="nextImage">التالي</button></div></div>
+  <div class="share-buttons"><button type="button" id="shareImage" class="calculate" disabled>مشاركة الصورة</button><button type="button" id="saveImage" class="reset" disabled>حفظ الصورة</button></div>
+  <p id="shareStatus" class="share-status" role="status">جار تجهيز الصورة...</p>
 </dialog>
 
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
-const numeric = value => String(value).replace(/[?-??-?]/g, c => String(c.charCodeAt(0) >= 1776 ? c.charCodeAt(0) - 1776 : c.charCodeAt(0) - 1632)).replace(/?|,/g, '').replace(/?/g, '.');
+const numeric = value => String(value).replace(/[٠-٩۰-۹]/g, c => String(c.charCodeAt(0) >= 1776 ? c.charCodeAt(0) - 1776 : c.charCodeAt(0) - 1632)).replace(/٬|,/g, '').replace(/٫/g, '.');
 const number = value => Number(numeric(value));
 const fmt = value => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(value);
-const pct = value => Number.isFinite(value) ? fmt(Math.round(value * 100) / 100) : '?';
+const pct = value => Number.isFinite(value) ? fmt(Math.round(value * 100) / 100) : '—';
 const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const SAR = '<svg class="sar-icon" aria-hidden="true"><use href="#sar-mark"></use></svg>';
 const money = value => '<span class="money-value">' + SAR + '<bdi>' + fmt(value) + '</bdi></span>';
 const percentage = value => '<bdi dir="ltr">% ' + pct(value) + '</bdi>';
 const cash = $('#cash'), deferred = $('#deferred'), duration = $('#duration'), durationUnit = $('#durationUnit'), target = $('#target'), count = $('#count'), product = $('#product'), period = $('#period'), payList = $('#payList');
 let mode = 'periodic', previousMonths = 36, currentDeal = null;
-function unitLabel(n, unit) { return unit === 'years' ? (n >= 3 && n <= 10 ? '��ퟢ' : '��') : (n >= 3 && n <= 10 ? '���' : '��'); }
+function unitLabel(n, unit) { return unit === 'years' ? (n >= 3 && n <= 10 ? 'سنوات' : 'سنة') : (n >= 3 && n <= 10 ? 'أشهر' : 'شهر'); }
 function dueText(month) {
   const years = month / 12;
-  return Math.abs(years - Math.round(years)) < 0.000001 ? '��� ��� ' + fmt(Math.round(years)) : '�� ' + fmt(month) + ' ' + unitLabel(month, 'months');
+  return Math.abs(years - Math.round(years)) < 0.000001 ? 'نهاية السنة ' + fmt(Math.round(years)) : 'بعد ' + fmt(month) + ' ' + unitLabel(month, 'months');
 }
 function durationText(months) {
   const amount = durationUnit.value === 'years' ? months / 12 : months;
@@ -86,9 +86,9 @@ function durationText(months) {
 }
 function baseValues() {
   const principal = Math.round(number(cash.value) * 100), rate = number(target.value), term = number(duration.value), months = term * (durationUnit.value === 'years' ? 12 : 1);
-  if (!cash.value.trim() || !Number.isSafeInteger(principal) || principal <= 0 || principal > 1e13) return { error: '���� ���� ��� �蠩 �� �� ���� ��� 100 �� ���.' };
-  if (target.value === '' || !Number.isFinite(rate) || rate < 0 || rate > 500) return { error: '���� �� ��� ���� ��� 0 �500%.' };
-  if (!Number.isFinite(months) || months <= 0 || months > 360) return { error: '���� ꧡ ���� �蠩 �� �� ���� ��� 30 ��.' };
+  if (!cash.value.trim() || !Number.isSafeInteger(principal) || principal <= 0 || principal > 1e13) return { error: 'أدخل تكلفة سلعة أكبر من صفر وبحد أقصى 100 مليار ريال.' };
+  if (target.value === '' || !Number.isFinite(rate) || rate < 0 || rate > 500) return { error: 'أدخل هامش ربح سنوي بين 0 و500%.' };
+  if (!Number.isFinite(months) || months <= 0 || months > 360) return { error: 'أدخل مدة سداد أكبر من صفر وبحد أقصى 30 سنة.' };
   const profit = Math.round(principal * rate / 100 * months / 12);
   return { principal, rate, months, profit, total: principal + profit };
 }
@@ -119,18 +119,18 @@ function paymentRow(payment, index) {
   const row = document.createElement('div'); row.className = 'pay-row';
   // Extra precision prevents equal instalment dates from drifting when expressed in years.
   const term = Number((payment.month / factor).toFixed(8));
-  row.innerHTML = '<span class="n">' + (index + 1) + '</span><input class="term" type="text" min="0.00000001" step="any" value="' + term + '" aria-label="��� ���� ' + (index + 1) + '"><div class="pay-amount"><input class="amount" type="text" value="' + fmt(payment.cents / 100) + '" inputmode="decimal" aria-label="��� ���� ' + (index + 1) + '">' + SAR + '</div><button class="remove" type="button" aria-label="��� ���� ' + (index + 1) + '">?</button>';
+  row.innerHTML = '<span class="n">' + (index + 1) + '</span><input class="term" type="text" min="0.00000001" step="any" value="' + term + '" aria-label="موعد الدفعة ' + (index + 1) + '"><div class="pay-amount"><input class="amount" type="text" value="' + fmt(payment.cents / 100) + '" inputmode="decimal" aria-label="مبلغ الدفعة ' + (index + 1) + '">' + SAR + '</div><button class="remove" type="button" aria-label="حذف الدفعة ' + (index + 1) + '">×</button>';
   row.querySelectorAll('input').forEach(input => { input.type = 'text'; input.inputMode = 'decimal'; input.lang = 'en'; input.dir = 'ltr'; input.readOnly = mode !== 'custom'; input.addEventListener('input', () => { input.value = numeric(input.value); calculate(); }); });
   row.querySelector('.remove').disabled = mode !== 'custom';
   row.querySelector('.remove').onclick = () => { row.remove(); renumber(); calculate(); };
   return row;
 }
 function renderPayments(payments) { payList.replaceChildren(...payments.map(paymentRow)); }
-function renumber() { [...payList.children].forEach((row, index) => { row.querySelector('.n').textContent = index + 1; row.querySelector('.term').setAttribute('aria-label', '��� ���� ' + (index + 1)); row.querySelector('.amount').setAttribute('aria-label', '��� ���� ' + (index + 1)); row.querySelector('.remove').setAttribute('aria-label', '��� ���� ' + (index + 1)); }); }
+function renumber() { [...payList.children].forEach((row, index) => { row.querySelector('.n').textContent = index + 1; row.querySelector('.term').setAttribute('aria-label', 'موعد الدفعة ' + (index + 1)); row.querySelector('.amount').setAttribute('aria-label', 'مبلغ الدفعة ' + (index + 1)); row.querySelector('.remove').setAttribute('aria-label', 'حذف الدفعة ' + (index + 1)); }); }
 function syncControls() {
   $('#periodField').hidden = mode !== 'periodic'; $('#countField').hidden = mode !== 'equal';
   $('#addPayment').hidden = mode !== 'custom'; $('#balancePayment').hidden = mode !== 'custom'; $('#editPayments').hidden = mode === 'custom';
-  $('#termLabel').textContent = '�� (' + (durationUnit.value === 'years' ? '��' : '��') + ')';
+  $('#termLabel').textContent = 'بعد (' + (durationUnit.value === 'years' ? 'سنة' : 'شهر') + ')';
   $('#addPayment').disabled = payList.children.length >= 120;
   $('#mode').querySelectorAll('button').forEach(button => { const active = button.dataset.mode === mode; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); });
   $('#quickDuration').querySelectorAll('button').forEach(button => button.classList.toggle('active', button.dataset.unit === durationUnit.value && number(button.dataset.value) === number(duration.value)));
@@ -160,18 +160,18 @@ function calculate() {
   syncControls();
   const base = baseValues(), pays = rawPayments().sort((a, b) => a.month - b.month), sum = pays.reduce((total, p) => total + p.cents, 0);
   let error = base.error || '';
-  if (!error && mode === 'equal' && (!Number.isInteger(number(count.value)) || number(count.value) < 1 || number(count.value) > 120)) error = '���� 㧧 ��㟢 ��� ��� 1 �120.';
-  if (!error && (!pays.length || pays.some(p => !Number.isFinite(p.month) || p.month <= 0 || p.month > base.months + 0.000001 || !Number.isSafeInteger(p.cents) || p.cents <= 0))) error = '���� ��� �蠩 �� �� ��� ���? ���� ���� ��� ꧡ �髧��.';
-  if (!error && sum !== base.total) error = sum < base.total ? '���� ' + fmt((base.total - sum) / 100) + ' ��� ���� ��� ����. �� ���㟢 �� ��� ���� �隦視.' : '���� ���㟢 �� ��� ��� ���� ���� ' + fmt((sum - base.total) / 100) + ' ���.';
+  if (!error && mode === 'equal' && (!Number.isInteger(number(count.value)) || number(count.value) < 1 || number(count.value) > 120)) error = 'أدخل عدد دفعات صحيح بين 1 و120.';
+  if (!error && (!pays.length || pays.some(p => !Number.isFinite(p.month) || p.month <= 0 || p.month > base.months + 0.000001 || !Number.isSafeInteger(p.cents) || p.cents <= 0))) error = 'أدخل مبلغ أكبر من صفر لكل دفعة، وحدد موعدها ضمن مدة السداد.';
+  if (!error && sum !== base.total) error = sum < base.total ? 'باقي ' + fmt((base.total - sum) / 100) + ' ريال لإكمال ثمن البيع. عدل الدفعات أو اضبط الدفعة الأخيرة.' : 'مجموع الدفعات يزيد على ثمن البيع بمبلغ ' + fmt((sum - base.total) / 100) + ' ريال.';
   deferred.value = base.error ? '' : fmt(base.total / 100);
   $('#validation').hidden = !error; $('#validation').textContent = error; $('#share').disabled = Boolean(error);
-  $('#scheduleSum').innerHTML = base.error ? '' : '�靤��� ' + money(Number.isFinite(sum) ? sum / 100 : 0) + ' / ' + money(base.total / 100);
+  $('#scheduleSum').innerHTML = base.error ? '' : 'الإجمالي ' + money(Number.isFinite(sum) ? sum / 100 : 0) + ' / ' + money(base.total / 100);
   $('#scheduleSum').classList.toggle('bad', Boolean(error));
   currentDeal = error ? null : { ...base, payments: pays, product: product.value.trim(), duration: durationText(base.months), resale: number($('#resale').value) || 0 };
-  $('#mobileTotal').innerHTML = '����� ���� �除� <strong>' + (error ? '?' : money(base.total / 100)) + '</strong>';
-  if (base.error) { $('#results').innerHTML = '<div class="empty"><b>�馭 �� ���� �除�</b>���� ��럢 ������ ��� �饫��.</div>'; return; }
+  $('#mobileTotal').innerHTML = 'إجمالي البيع الآجل <strong>' + (error ? '—' : money(base.total / 100)) + '</strong>';
+  if (base.error) { $('#results').innerHTML = '<div class="empty"><b>ملخص عرض البيع الآجل</b>أكمل بيانات العملية لعرض الحساب.</div>'; return; }
   const validRows = pays.filter(p => Number.isFinite(p.month) && Number.isFinite(p.cents)), resale = number($('#resale').value);
-  $('#results').innerHTML = '<div class="result-hero"><span class="result-product">' + esc(product.value.trim() || '�馭 �� ���� �除�') + '</span><span class="result-label">����� ��� ����</span><div class="yield">' + money(base.total / 100) + '</div><div class="deal-summary">���� ���� ' + money(base.principal / 100) + ' � ꧡ �髧�� ' + esc(durationText(base.months)) + '</div></div><div class="metrics"><div class="metric"><span>����� ��� ����</span><strong>' + money(base.profit / 100) + '</strong></div><div class="metric"><span>�� �驠� �����</span><strong>' + percentage(base.rate) + '</strong></div><div class="metric"><span>㧧 ���㟢</span><strong>' + pays.length + '</strong></div><div class="metric"><span>���� �隦視</span><strong>' + (!error ? money(pays[pays.length - 1].cents / 100) : '?') + '</strong></div></div><div class="result-schedule"><h3>���� �髧��</h3><table class="result-table"><thead><tr><th>����</th><th>����</th><th>�����</th></tr></thead><tbody>' + validRows.map((p, i) => '<tr' + (i === validRows.length - 1 ? ' class="last-payment"' : '') + '><td>' + (i + 1) + '</td><td>' + dueText(p.month) + '</td><td>' + money(p.cents / 100) + '</td></tr>').join('') + '</tbody></table><small>���� ���㟢 ����� �� ��� ����.' + (mode === 'periodic' ? ' ���� �隦視 ���� ���� ���� ���� ��墩� �隦視.' : '') + '</small></div><details class="extra"><summary>�埭�� �饫��</summary><p>�驠� ��� ��� ��ꧡ: ' + percentage(base.profit / base.principal * 100) + '</p><p>��㟞� ����� ������ ��� ���� ���㟢: ' + (!error ? percentage(annualIrr(base.principal, pays)) : '?') + '</p>' + (Number.isFinite(resale) && resale > 0 ? '<p>��� �㟧� ���� �租: ' + money(resale) + '</p>' : '') + '<small>���� ����� �頫�� 異�� ��� ����� �隭��. ��㟞� ������ 著�� ���� �� ���.</small></details>';
+  $('#results').innerHTML = '<div class="result-hero"><span class="result-product">' + esc(product.value.trim() || 'ملخص عرض البيع الآجل') + '</span><span class="result-label">إجمالي ثمن البيع</span><div class="yield">' + money(base.total / 100) + '</div><div class="deal-summary">تكلفة السلعة ' + money(base.principal / 100) + ' · مدة السداد ' + esc(durationText(base.months)) + '</div></div><div class="metrics"><div class="metric"><span>إجمالي ربح البيع</span><strong>' + money(base.profit / 100) + '</strong></div><div class="metric"><span>هامش الربح السنوي</span><strong>' + percentage(base.rate) + '</strong></div><div class="metric"><span>عدد الدفعات</span><strong>' + pays.length + '</strong></div><div class="metric"><span>الدفعة الأخيرة</span><strong>' + (!error ? money(pays[pays.length - 1].cents / 100) : '—') + '</strong></div></div><div class="result-schedule"><h3>جدول السداد</h3><table class="result-table"><thead><tr><th>الدفعة</th><th>موعدها</th><th>المبلغ</th></tr></thead><tbody>' + validRows.map((p, i) => '<tr' + (i === validRows.length - 1 ? ' class="last-payment"' : '') + '><td>' + (i + 1) + '</td><td>' + dueText(p.month) + '</td><td>' + money(p.cents / 100) + '</td></tr>').join('') + '</tbody></table><small>جميع الدفعات أجزاء من ثمن البيع.' + (mode === 'periodic' ? ' الدفعة الأخيرة تشمل تكلفة السلعة ومبلغ الفترة الأخيرة.' : '') + '</small></div><details class="extra"><summary>تفاصيل الحساب</summary><p>الربح على كامل المدة: ' + percentage(base.profit / base.principal * 100) + '</p><p>العائد السنوي الفعلي حسب توقيت الدفعات: ' + (!error ? percentage(annualIrr(base.principal, pays)) : '—') + '</p>' + (Number.isFinite(resale) && resale > 0 ? '<p>قيمة إعادة البيع نقدا: ' + money(resale) + '</p>' : '') + '<small>الهامش السنوي البسيط يحتسب على التكلفة الأصلية. العائد الفعلي يراعي توقيت كل دفعة.</small></details>';
 }
 function changeMode(next) { const old = rawPayments(); mode = next; if (mode === 'custom' && old.length) { renderPayments(old); calculate(); } else rebuild(); }
 $('#mode').addEventListener('click', event => { const button = event.target.closest('button'); if (button) changeMode(button.dataset.mode); });
@@ -181,7 +181,7 @@ $('#balancePayment').onclick = () => {
   const base = baseValues(), pays = rawPayments().sort((a, b) => a.month - b.month);
   if (base.error || !pays.length) return;
   const remaining = base.total - pays.slice(0, -1).reduce((sum, p) => sum + p.cents, 0);
-  if (!Number.isSafeInteger(remaining) || remaining <= 0) { $('#validation').hidden = false; $('#validation').textContent = '��� ���㟢 �髟�� ��� �� ��� ���� �隦視.'; return; }
+  if (!Number.isSafeInteger(remaining) || remaining <= 0) { $('#validation').hidden = false; $('#validation').textContent = 'خفف الدفعات السابقة حتى يتبقى مبلغ للدفعة الأخيرة.'; return; }
   pays[pays.length - 1].cents = remaining; renderPayments(pays); calculate();
 };
 cash.addEventListener('input', rebuild); target.addEventListener('input', rebuild); period.addEventListener('change', rebuild); count.addEventListener('input', rebuild);
@@ -229,18 +229,18 @@ async function makeSummaryPages(deal) {
     box(32, 32, 1016, canvas.height - 64, 32, '#FFFEFC');
     box(32, 32, 1016, 374, 32, navy);
     box(944, 70, 48, 6, 3, '#E2A45E');
-    text('�馭 �� ���� �除�', 992, 139, 52, '#FFFFFF', 700, 'right', 890, 'Thmanyah Serif Display');
-    let productSize = 32, productLines = wrap(deal.product || '�� ꠧ��', 890, productSize);
-    while (productLines.length > 2 && productSize > 22) { productSize--; productLines = wrap(deal.product || '�� ꠧ��', 890, productSize); }
+    text('ملخص عرض البيع الآجل', 992, 139, 52, '#FFFFFF', 700, 'right', 890, 'Thmanyah Serif Display');
+    let productSize = 32, productLines = wrap(deal.product || 'عرض مبدئي', 890, productSize);
+    while (productLines.length > 2 && productSize > 22) { productSize--; productLines = wrap(deal.product || 'عرض مبدئي', 890, productSize); }
     productLines.slice(0, 2).forEach((line, index) => text(line, 992, 186 + index * 38, productSize, '#D7E1E8', 700));
-    text('����� ��� ����', 992, 268, 28, '#E7B77C', 700);
-    text(fmt(deal.total / 100) + ' ���', 992, 338, 66, '#FFFFFF', 700, 'right', 890);
-    text('ꧡ �髧��: ' + deal.duration, 992, 380, 28, '#D7E1E8');
-    const cards = [ ['���� ���� ����', fmt(deal.principal / 100) + ' ���'], ['����� ��� ����', fmt(deal.profit / 100) + ' ���'], ['�� �驠� �����', '\u200e% ' + pct(deal.rate)], ['㧧 ���㟢', String(deal.payments.length)] ];
+    text('إجمالي ثمن البيع', 992, 268, 28, '#E7B77C', 700);
+    text(fmt(deal.total / 100) + ' ريال', 992, 338, 66, '#FFFFFF', 700, 'right', 890);
+    text('مدة السداد: ' + deal.duration, 992, 380, 28, '#D7E1E8');
+    const cards = [ ['تكلفة شراء السلعة', fmt(deal.principal / 100) + ' ريال'], ['إجمالي ربح البيع', fmt(deal.profit / 100) + ' ريال'], ['هامش الربح السنوي', '\u200e% ' + pct(deal.rate)], ['عدد الدفعات', String(deal.payments.length)] ];
     cards.forEach(([label, value], i) => { const x = i % 2 === 0 ? 552 : 72, y = 432 + Math.floor(i / 2) * 120; box(x, y, 456, 104, 16, '#F6F2EC'); text(label, x + 428, y + 35, 26, muted); text(value, x + 428, y + 80, 40, navy, 700, 'right', 404); });
-    text('���� �髧��', 992, 720, 38, navy, 700);
-    if (pageCount > 1) text('����� ' + (pageIndex + 1) + ' / ' + pageCount, 88, 718, 25, muted, 400, 'left', 320);
-    text('����', 978, 767, 27, muted); text('����', 766, 767, 27, muted); text('����� �����', 100, 767, 27, muted, 400, 'left');
+    text('جدول السداد', 992, 720, 38, navy, 700);
+    if (pageCount > 1) text('الصورة ' + (pageIndex + 1) + ' / ' + pageCount, 88, 718, 25, muted, 400, 'left', 320);
+    text('الدفعة', 978, 767, 27, muted); text('موعدها', 766, 767, 27, muted); text('المبلغ بالريال', 100, 767, 27, muted, 400, 'left');
     rows.forEach((p, i) => {
       const index = pageIndex * perPage + i, last = index === deal.payments.length - 1, y = 790 + i * 88;
       box(72, y, 936, 76, 13, last ? '#FFF0D8' : i % 2 ? '#F8F6F2' : '#FFFFFF');
@@ -250,8 +250,8 @@ async function makeSummaryPages(deal) {
     });
     const foot = 822 + rows.length * 88;
     ctx.strokeStyle = '#E3DED6'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(88, foot); ctx.lineTo(992, foot); ctx.stroke();
-    text('���� ���㟢 ����� �� ��� ���� ����� ����.', 992, foot + 49, 27, muted);
-    text('�� ꠧ�� ����笡', 992, foot + 95, 26, gold, 700);
+    text('جميع الدفعات أجزاء من ثمن البيع المتفق عليه.', 992, foot + 49, 27, muted);
+    text('عرض مبدئي للمناقشة', 992, foot + 95, 26, gold, 700);
     ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.font = '22px "Thmanyah Sans"'; ctx.fillStyle = muted; ctx.fillText('almohammdin.github.io', 88, foot + 95);
     const blob = await new Promise((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('PNG export failed')), 'image/png'));
     pages.push(new File([blob], 'deferred-sale-summary' + (pageCount > 1 ? '-' + (pageIndex + 1) : '') + '.png', { type: 'image/png' }));
@@ -264,18 +264,18 @@ function shareStatus(message, error = false) { $('#shareStatus').textContent = m
 function showPreview() {
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   previewUrl = URL.createObjectURL(imageFiles[imageIndex]); $('#sharePreview').src = previewUrl; $('#sharePreview').hidden = false;
-  $('#shareNav').hidden = imageFiles.length <= 1; $('#imageNumber').textContent = '����� ' + (imageIndex + 1) + ' �� ' + imageFiles.length;
+  $('#shareNav').hidden = imageFiles.length <= 1; $('#imageNumber').textContent = 'الصورة ' + (imageIndex + 1) + ' من ' + imageFiles.length;
   $('#prevImage').disabled = imageIndex === 0; $('#nextImage').disabled = imageIndex === imageFiles.length - 1;
   $('#shareImage').disabled = false; $('#saveImage').disabled = false;
-  shareStatus(imageFiles.length > 1 ? '�� �餧�� ��� ' + imageFiles.length + ' ��� ���� ��� ��� ���. ���� �� ���� �� ����.' : '����� ��쪡 ��꬟�� �� ����.');
+  shareStatus(imageFiles.length > 1 ? 'قسم الجدول إلى ' + imageFiles.length + ' صور للحفاظ على حجم الخط. شارك أو احفظ كل صورة.' : 'الصورة جاهزة للمشاركة أو الحفظ.');
 }
 $('#share').onclick = async () => {
   calculate(); if (!currentDeal) return;
   const deal = structuredClone(currentDeal), request = ++generation;
   imageFiles = []; imageIndex = 0; $('#sharePreview').hidden = true; $('#shareNav').hidden = true; $('#shareImage').disabled = true; $('#saveImage').disabled = true;
-  shareStatus('��� ���� �����...'); shareDialog.showModal();
+  shareStatus('جار تجهيز الصورة...'); shareDialog.showModal();
   try { const files = await makeSummaryPages(deal); if (generation !== request || !shareDialog.open) return; imageFiles = files; showPreview(); }
-  catch (error) { if (generation === request) shareStatus('�㨩 ���� �����. ��� �� ���� ����� ��奡 �� �� ��꥟��.', true); }
+  catch (error) { if (generation === request) shareStatus('تعذر تجهيز الصورة. تأكد من اكتمال تحميل الصفحة ثم أعد المحاولة.', true); }
 };
 $('#closeShare').onclick = () => shareDialog.close();
 shareDialog.addEventListener('close', () => { generation++; imageFiles = []; if (previewUrl) URL.revokeObjectURL(previewUrl); previewUrl = ''; $('#sharePreview').removeAttribute('src'); });
@@ -284,15 +284,15 @@ $('#nextImage').onclick = () => { if (imageIndex < imageFiles.length - 1) { imag
 function saveCurrentImage() {
   const file = imageFiles[imageIndex]; if (!file) return;
   const url = URL.createObjectURL(file), link = document.createElement('a'); link.href = url; link.download = file.name; document.body.append(link); link.click(); link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 60000); shareStatus('�� �� ��� �����. ��� �쩢 �� �娡 ꫢ��? ���� ���� ���� ����.');
+  setTimeout(() => URL.revokeObjectURL(url), 60000); shareStatus('تم طلب حفظ الصورة. إذا ظهرت في نافذة مستقلة، اضغط عليها مطولا لحفظها.');
 }
 $('#saveImage').onclick = saveCurrentImage;
 $('#shareImage').onclick = async () => {
   const file = imageFiles[imageIndex]; if (!file) return;
   try {
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: '�馭 �� ���� �除�' }); shareStatus('�� ꬟�� �����.'); }
-    else { saveCurrentImage(); shareStatus('��꬟�� ��ꠟ��� �� ꢟ�� �� 쨟 ��ꢭ�. �� �� ��� ����� 颬����.'); }
-  } catch (error) { if (error.name !== 'AbortError') shareStatus('�㨩� ��꬟�� ��ꠟ���. ������ �� ��� �����.', true); }
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'ملخص عرض البيع الآجل' }); shareStatus('تمت مشاركة الصورة.'); }
+    else { saveCurrentImage(); shareStatus('المشاركة المباشرة غير متاحة في هذا المتصفح. تم طلب حفظ الصورة لتشاركها.'); }
+  } catch (error) { if (error.name !== 'AbortError') shareStatus('تعذرت المشاركة المباشرة. استخدم زر حفظ الصورة.', true); }
 };
 document.querySelectorAll('input:not(#product)').forEach(input => { input.lang = 'en'; input.dir = 'ltr'; input.addEventListener('input', () => { input.value = numeric(input.value); }); });
 rebuild();
@@ -300,3 +300,4 @@ rebuild();
 </script>
 </body>
 </html>
+
