@@ -24,6 +24,7 @@
 </style><style>
 .mode{grid-template-columns:1fr 1fr}.mode button{line-height:1.6;padding:10px 8px}.mode button[data-mode=periodic]{grid-column:1/-1}.mode button[data-mode=custom]{grid-column:1/-1}.pay-labels{display:grid;grid-template-columns:34px 1fr 1.25fr 34px;gap:7px;text-align:center;font-size:.68rem;color:var(--muted);margin-bottom:7px}.pay-row input{direction:ltr}.pay-row input[readonly]{background:#f0ece6;color:var(--navy);border-color:transparent}.pay-row .remove:disabled{visibility:hidden}.pay-row:last-child{padding:7px 0;border-top:1px solid #d7c9b8}.schedule-top{align-items:flex-start;flex-wrap:wrap}.sum{display:flex;align-items:center;gap:5px}.validation{font-size:.8rem;color:var(--red);background:#fcedea;border-radius:12px;padding:12px;line-height:1.7}.calculate:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}.last-payment td{background:#fff3df;color:#70491b;font-weight:800}.last-payment td:first-child{border-radius:0 9px 9px 0}.last-payment td:last-child{border-radius:9px 0 0 9px}.result-schedule small{display:block;color:var(--muted);font-size:.72rem;margin-top:10px}.footnote{max-width:680px;margin:18px auto 0;line-height:1.8}.metric .money-value{display:inline-flex;color:inherit;font-size:inherit}.metric .money-value bdi{font-weight:800}.result-table th:last-child,.result-table td:last-child{text-align:left}.result-table td{font-size:.83rem}.share-dialog{border:1px solid var(--line);border-radius:22px;padding:0;background:var(--paper);color:var(--ink);width:min(600px,calc(100% - 24px));max-height:92dvh;box-shadow:var(--shadow);overflow:auto}.share-dialog::backdrop{background:rgba(7,31,51,.72)}.dialog-top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:var(--paper);z-index:2;border-bottom:1px solid var(--line)}.dialog-top h2{margin:0;font-size:1.1rem;color:var(--navy)}.dialog-close{border:0;background:var(--soft);color:var(--navy);border-radius:50%;width:36px;height:36px;font:24px Arial;cursor:pointer}.share-preview{padding:16px;background:#ece8e1;min-height:100px}.share-preview img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 4px 20px #071f3314}.share-nav{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:12px;font-size:.85rem}.share-nav button{font:inherit;border:1px solid #cbbca8;background:white;border-radius:8px;padding:5px 12px;color:var(--navy);cursor:pointer}.share-nav button:disabled{opacity:.4;cursor:default}.share-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px 20px 10px;position:sticky;bottom:0;background:var(--paper)}.share-buttons button{width:100%;font-size:.88rem}.share-status{font-size:.8rem;color:var(--muted);padding:0 20px 16px;margin:0;line-height:1.8}.share-status.error{color:var(--red)}button:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}body:has(dialog[open]){overflow:hidden}@media(max-width:560px){.pay-labels{grid-template-columns:28px 1fr 1.15fr 30px}.mode{grid-template-columns:1fr 1fr}.share-dialog{max-height:94dvh}.share-preview{padding:10px}.dialog-top{padding:12px 15px}.share-buttons{padding:12px 14px}.share-buttons .calculate,.share-buttons .reset{height:45px}.metrics .metric strong{font-size:1.12rem}}
 
+.payment-date{grid-column:2/4;color:var(--navy);font-size:.76rem;padding:0 4px 5px}.payment-date:empty{display:none}
 </style></head>
 <body>
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><symbol id="sar-mark" viewBox="0 0 1124 1256"><path d="M700 1113c-20 44-33 93-38 143l425-90c20-45 33-93 38-144l-425 91Z"/><path d="M1086 896c20-45 33-93 38-144l-331 70V688l292-62c20-45 33-94 38-144l-330 70V66c-51 28-96 66-132 111v403l-132 28V0c-51 28-96 66-132 111v526L101 700c-20 44-33 93-38 143l334-71v170l-358 76c-20 45-33 93-38 144l375-80c31-6 57-24 74-49l69-102c7-10 11-23 11-37V744l132-28v270l424-90Z"/></symbol></svg>
@@ -140,6 +141,7 @@ function paymentRow(payment, index) {
   // Extra precision prevents equal instalment dates from drifting when expressed in years.
   const term = Number((payment.month / factor).toFixed(8));
   row.innerHTML = '<span class="n">' + (index + 1) + '</span><input class="term" type="text" min="0.00000001" step="any" value="' + term + '" aria-label="موعد الدفعة ' + (index + 1) + '"><div class="pay-amount"><input class="amount" type="text" value="' + fmt(payment.cents / 100) + '" inputmode="decimal" aria-label="مبلغ الدفعة ' + (index + 1) + '">' + SAR + '</div><button class="remove" type="button" aria-label="حذف الدفعة ' + (index + 1) + '">×</button>';
+  const dateLabel = document.createElement('small'); dateLabel.className = 'payment-date'; row.append(dateLabel);
   row.querySelectorAll('input').forEach(input => { input.type = 'text'; input.inputMode = 'decimal'; input.lang = 'en'; input.dir = 'ltr'; input.readOnly = mode !== 'custom'; input.addEventListener('input', () => { input.value = numeric(input.value); calculate(); }); });
   row.querySelector('.remove').disabled = mode !== 'custom';
   row.querySelector('.remove').onclick = () => { row.remove(); renumber(); calculate(); };
@@ -180,6 +182,7 @@ function calculate() {
   if (automaticStartMonth) startMonth.value = defaultStartMonth();
   syncControls();
   const base = baseValues(), pays = rawPayments().sort((a, b) => a.month - b.month), sum = pays.reduce((total, p) => total + p.cents, 0);
+  [...payList.children].forEach(row => { const month = number(row.querySelector('.term').value) * (durationUnit.value === 'years' ? 12 : 1); row.querySelector('.payment-date').textContent = 'تاريخ الاستحقاق: ' + dueText(month); });
   let error = base.error || '';
   if (!error && !validStartMonth(startMonth.value)) error = 'حدد شهر بداية الحساب بسنة بين 1900 و9900.';
   if (!error && mode === 'equal' && (!Number.isInteger(number(count.value)) || number(count.value) < 1 || number(count.value) > 120)) error = 'أدخل عدد دفعات صحيح بين 1 و120.';
@@ -193,7 +196,7 @@ function calculate() {
   $('#mobileTotal').innerHTML = 'إجمالي البيع الآجل <strong>' + (error ? '—' : money(base.total / 100)) + '</strong>';
   if (base.error) { $('#results').innerHTML = '<div class="empty"><b>ملخص عرض البيع الآجل</b>أكمل بيانات العملية لعرض الحساب.</div>'; return; }
   const validRows = pays.filter(p => Number.isFinite(p.month) && Number.isFinite(p.cents)), resale = number($('#resale').value);
-  $('#results').innerHTML = '<div class="result-hero"><span class="result-product">' + esc(product.value.trim() || 'ملخص عرض البيع الآجل') + '</span><span class="result-label">إجمالي ثمن البيع</span><div class="yield">' + money(base.total / 100) + '</div><div class="deal-summary">تكلفة السلعة ' + money(base.principal / 100) + ' · مدة السداد ' + esc(durationText(base.months)) + '<br>بداية الحساب: ' + esc(startMonthText(startMonth.value)) + '</div></div><div class="metrics"><div class="metric"><span>إجمالي ربح البيع</span><strong>' + money(base.profit / 100) + '</strong></div><div class="metric"><span>هامش الربح السنوي</span><strong>' + percentage(base.rate) + '</strong></div><div class="metric"><span>عدد الدفعات</span><strong>' + pays.length + '</strong></div><div class="metric"><span>الدفعة الأخيرة</span><strong>' + (!error ? money(pays[pays.length - 1].cents / 100) : '—') + '</strong></div></div><div class="result-schedule"><h3>جدول السداد</h3><table class="result-table"><thead><tr><th>الدفعة</th><th>موعدها</th><th>المبلغ</th></tr></thead><tbody>' + validRows.map((p, i) => '<tr' + (i === validRows.length - 1 ? ' class="last-payment"' : '') + '><td>' + (i + 1) + '</td><td>' + dueText(p.month) + '</td><td>' + money(p.cents / 100) + '</td></tr>').join('') + '</tbody></table><small>تستحق الدفعات في آخر يوم من شهر الاستحقاق. جميع الدفعات أجزاء من ثمن البيع.' + (mode === 'periodic' ? ' الدفعة الأخيرة تشمل تكلفة السلعة ومبلغ الفترة الأخيرة.' : '') + '</small></div><details class="extra"><summary>تفاصيل الحساب</summary><p>الربح على كامل المدة: ' + percentage(base.profit / base.principal * 100) + '</p><p>العائد السنوي الفعلي حسب توقيت الدفعات: ' + (!error ? percentage(annualIrr(base.principal, pays)) : '—') + '</p>' + (Number.isFinite(resale) && resale > 0 ? '<p>قيمة إعادة البيع نقدا: ' + money(resale) + '</p>' : '') + '<small>الهامش السنوي البسيط يحتسب على التكلفة الأصلية. العائد الفعلي يراعي توقيت كل دفعة.</small></details>';
+  $('#results').innerHTML = '<div class="result-hero"><span class="result-product">' + esc(product.value.trim() || 'ملخص عرض البيع الآجل') + '</span><span class="result-label">إجمالي ثمن البيع</span><div class="yield">' + money(base.total / 100) + '</div><div class="deal-summary">تكلفة السلعة ' + money(base.principal / 100) + ' · مدة السداد ' + esc(durationText(base.months)) + '<br>بداية الحساب: ' + esc(startMonthText(startMonth.value)) + '</div></div><div class="metrics"><div class="metric"><span>إجمالي ربح البيع</span><strong>' + money(base.profit / 100) + '</strong></div><div class="metric"><span>هامش الربح السنوي</span><strong>' + percentage(base.rate) + '</strong></div><div class="metric"><span>عدد الدفعات</span><strong>' + pays.length + '</strong></div><div class="metric"><span>الدفعة الأخيرة</span><strong>' + (!error ? money(pays[pays.length - 1].cents / 100) : '—') + '</strong></div></div><div class="result-schedule"><h3>جدول السداد</h3><table class="result-table"><thead><tr><th>الدفعة</th><th>تاريخ الاستحقاق</th><th>المبلغ</th></tr></thead><tbody>' + validRows.map((p, i) => '<tr' + (i === validRows.length - 1 ? ' class="last-payment"' : '') + '><td>' + (i + 1) + '</td><td>' + dueText(p.month) + '</td><td>' + money(p.cents / 100) + '</td></tr>').join('') + '</tbody></table><small>تستحق الدفعات في آخر يوم من شهر الاستحقاق. جميع الدفعات أجزاء من ثمن البيع.' + (mode === 'periodic' ? ' الدفعة الأخيرة تشمل تكلفة السلعة ومبلغ الفترة الأخيرة.' : '') + '</small></div><details class="extra"><summary>تفاصيل الحساب</summary><p>الربح على كامل المدة: ' + percentage(base.profit / base.principal * 100) + '</p><p>العائد السنوي الفعلي حسب توقيت الدفعات: ' + (!error ? percentage(annualIrr(base.principal, pays)) : '—') + '</p>' + (Number.isFinite(resale) && resale > 0 ? '<p>قيمة إعادة البيع نقدا: ' + money(resale) + '</p>' : '') + '<small>الهامش السنوي البسيط يحتسب على التكلفة الأصلية. العائد الفعلي يراعي توقيت كل دفعة.</small></details>';
 }
 function changeMode(next) { const old = rawPayments(); mode = next; if (mode === 'custom' && old.length) { renderPayments(old); calculate(); } else rebuild(); }
 $('#mode').addEventListener('click', event => { const button = event.target.closest('button'); if (button) changeMode(button.dataset.mode); });
@@ -242,6 +245,18 @@ async function makeSummaryPages(deal) {
       while (ctx.measureText(String(value)).width > maxWidth && fontSize > 22) { fontSize--; ctx.font = weight + ' ' + fontSize + 'px "' + family + '"'; }
       ctx.fillText(String(value), x, y, maxWidth);
     }
+    function canvasMoney(value, x, y, size, color, align = 'right', maxWidth = 880) {
+      const label = fmt(value), gap = size * .22, iconHeight = size * .84, iconWidth = iconHeight * 1124 / 1256;
+      ctx.font = '700 ' + size + 'px "Thmanyah Sans"';
+      const numberWidth = ctx.measureText(label).width;
+      const width = numberWidth + gap + iconWidth, scale = Math.min(1, maxWidth / width);
+      const left = align === 'left' ? x : x - width * scale;
+      ctx.save(); ctx.translate(left, y); ctx.scale(scale, scale);
+      ctx.fillStyle = color; ctx.save(); ctx.translate(0, -iconHeight + size * .08); ctx.scale(iconWidth / 1124, iconHeight / 1256);
+      document.querySelectorAll('#sar-mark path').forEach(path => ctx.fill(new Path2D(path.getAttribute('d'))));
+      ctx.restore(); ctx.direction = 'ltr'; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText(label, iconWidth + gap, 0); ctx.restore();
+    }
     function wrap(value, width, size = 32) {
       ctx.font = '700 ' + size + 'px "Thmanyah Sans"'; const lines = []; let line = '';
       for (const word of value.split(/\s+/)) { const trial = line ? line + ' ' + word : word; if (ctx.measureText(trial).width > width && line) { lines.push(line); line = word; } else line = trial; }
@@ -256,19 +271,19 @@ async function makeSummaryPages(deal) {
     while (productLines.length > 2 && productSize > 22) { productSize--; productLines = wrap(deal.product || 'عرض مبدئي', 890, productSize); }
     productLines.slice(0, 2).forEach((line, index) => text(line, 992, 186 + index * 38, productSize, '#D7E1E8', 700));
     text('إجمالي ثمن البيع', 992, 268, 28, '#E7B77C', 700);
-    text(fmt(deal.total / 100) + ' ريال', 992, 338, 66, '#FFFFFF', 700, 'right', 890);
+    canvasMoney(deal.total / 100, 992, 338, 66, '#FFFFFF', 'right', 890);
     text('مدة السداد: ' + deal.duration + ' · بداية الحساب: ' + startMonthText(deal.startMonth), 992, 380, 28, '#D7E1E8');
     const cards = [ ['تكلفة شراء السلعة', fmt(deal.principal / 100) + ' ريال'], ['إجمالي ربح البيع', fmt(deal.profit / 100) + ' ريال'], ['هامش الربح السنوي', '\u200e% ' + pct(deal.rate)], ['عدد الدفعات', String(deal.payments.length)] ];
-    cards.forEach(([label, value], i) => { const x = i % 2 === 0 ? 552 : 72, y = 432 + Math.floor(i / 2) * 120; box(x, y, 456, 104, 16, '#F6F2EC'); text(label, x + 428, y + 35, 26, muted); text(value, x + 428, y + 80, 40, navy, 700, 'right', 404); });
+    cards.forEach(([label, value], i) => { const x = i % 2 === 0 ? 552 : 72, y = 432 + Math.floor(i / 2) * 120; box(x, y, 456, 104, 16, '#F6F2EC'); text(label, x + 428, y + 35, 26, muted); if (i < 2) canvasMoney((i === 0 ? deal.principal : deal.profit) / 100, x + 428, y + 80, 40, navy, 'right', 404); else text(value, x + 428, y + 80, 40, navy, 700, 'right', 404); });
     text('جدول السداد', 992, 720, 38, navy, 700);
     if (pageCount > 1) text('الصورة ' + (pageIndex + 1) + ' / ' + pageCount, 88, 718, 25, muted, 400, 'left', 320);
-    text('الدفعة', 978, 767, 27, muted); text('موعدها', 766, 767, 27, muted); text('المبلغ بالريال', 100, 767, 27, muted, 400, 'left');
+    text('الدفعة', 978, 767, 27, muted); text('تاريخ الاستحقاق', 766, 767, 27, muted); text('المبلغ', 100, 767, 27, muted, 400, 'left');
     rows.forEach((p, i) => {
       const index = pageIndex * perPage + i, last = index === deal.payments.length - 1, y = 790 + i * 88;
       box(72, y, 936, 76, 13, last ? '#FFF0D8' : i % 2 ? '#F8F6F2' : '#FFFFFF');
       text(String(index + 1), 971, y + 50, 35, last ? '#87561E' : navy, 700, 'right', 90);
       text(dueText(p.month, deal.startMonth), 766, y + 50, 32, ink, 400, 'right', 330);
-      text(fmt(p.cents / 100), 100, y + 51, 43, last ? '#87561E' : navy, 700, 'left', 350);
+      canvasMoney(p.cents / 100, 100, y + 51, 43, last ? '#87561E' : navy, 'left', 300);
     });
     const foot = 822 + rows.length * 88;
     ctx.strokeStyle = '#E3DED6'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(88, foot); ctx.lineTo(992, foot); ctx.stroke();
