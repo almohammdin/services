@@ -42,7 +42,7 @@
           <div class="field"><label for="deferred">سعر البيع الآجل</label><div class="input-wrap"><input class="money-input" id="deferred" readonly type="text" value="154,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
           <div class="field"><label for="duration">مدة السداد</label><div class="duration-control"><div class="input-wrap"><input id="duration" type="text" min="0.1" max="30" step="any" value="3" inputmode="decimal" style="padding-left:14px"></div><select id="durationUnit" aria-label="وحدة مدة السداد"><option value="years" selected>سنوات</option><option value="months">أشهر</option></select></div><div class="quick" id="quickDuration"><button type="button" data-value="12" data-unit="months">12 شهر</button><button type="button" data-value="18" data-unit="months">18 شهر</button><button type="button" data-value="24" data-unit="months">24 شهر</button><button type="button" data-value="3" data-unit="years" class="active">3 سنوات</button></div></div>
           <div class="field"><label for="target">هامش الربح السنوي</label><div class="input-wrap"><input id="target" type="text" min="0" max="500" step="0.1" value="18" inputmode="decimal"><span class="suffix">%</span></div></div>
-          <div class="field full"><small class="calculation-help">نسبة سنوية بسيطة على تكلفة السلعة الأصلية لحساب ثمن البيع قبل الاتفاق.</small></div><div class="field full"><label>طريقة السداد</label><div class="mode" id="mode"><button type="button" data-mode="periodic" class="active" aria-pressed="true">دفعات دورية ودفعة أخيرة أكبر</button><button type="button" data-mode="equal" aria-pressed="false">دفعات متساوية</button><button type="button" data-mode="bullet" aria-pressed="false">دفعة في النهاية</button><button type="button" data-mode="custom" aria-pressed="false">دفعات مخصصة</button></div></div>
+          <div class="field full"><small class="calculation-help">نسبة سنوية بسيطة على تكلفة السلعة الأصلية لحساب ثمن البيع قبل الاتفاق.</small></div><div class="field full"><label for="startMonth">شهر بداية الحساب</label><div class="input-wrap"><input id="startMonth" type="month" lang="en" dir="ltr" style="padding-left:14px" aria-describedby="startMonthHelp"></div><small id="startMonthHelp" class="calculation-help">تلقائيا حسب تاريخ جهازك: حتى يوم 15 يعتمد الشهر الحالي، وبعده الشهر التالي. تستحق الدفعات في آخر يوم من شهر الاستحقاق. يمكنك تعديل شهر البداية.</small></div><div class="field full"><label>طريقة السداد</label><div class="mode" id="mode"><button type="button" data-mode="periodic" class="active" aria-pressed="true">دفعات دورية ودفعة أخيرة أكبر</button><button type="button" data-mode="equal" aria-pressed="false">دفعات متساوية</button><button type="button" data-mode="bullet" aria-pressed="false">دفعة في النهاية</button><button type="button" data-mode="custom" aria-pressed="false">دفعات مخصصة</button></div></div>
           <div class="field full" id="periodField"><label for="period">تكرار الدفعات</label><select id="period"><option value="12">سنوي</option><option value="6">كل 6 أشهر</option><option value="3">كل 3 أشهر</option><option value="1">شهري</option></select><small class="calculation-help">تضاف تكلفة السلعة إلى الدفعة الأخيرة، مع مبلغ الفترة الأخيرة.</small></div>
           <div class="field" id="countField" hidden><label for="count">عدد الدفعات</label><div class="input-wrap"><input id="count" type="text" min="1" max="120" step="1" value="3" inputmode="numeric"><span class="suffix">دفعة</span></div></div>
         </div>
@@ -76,10 +76,30 @@ const percentage = value => '<bdi dir="ltr">% ' + pct(value) + '</bdi>';
 const cash = $('#cash'), deferred = $('#deferred'), duration = $('#duration'), durationUnit = $('#durationUnit'), target = $('#target'), count = $('#count'), product = $('#product'), period = $('#period'), payList = $('#payList');
 let mode = 'periodic', previousMonths = 36, currentDeal = null;
 function unitLabel(n, unit) { return unit === 'years' ? (n >= 3 && n <= 10 ? 'سنوات' : 'سنة') : (n >= 3 && n <= 10 ? 'أشهر' : 'شهر'); }
-function dueText(month) {
-  const years = month / 12;
-  return Math.abs(years - Math.round(years)) < 0.000001 ? 'نهاية السنة ' + fmt(Math.round(years)) : 'بعد ' + fmt(month) + ' ' + unitLabel(month, 'months');
+const startMonth = $('#startMonth');
+let automaticStartMonth = true;
+function defaultStartMonth(today = new Date()) {
+  const start = new Date(today.getFullYear(), today.getMonth() + (today.getDate() > 15 ? 1 : 0), 1);
+  return start.getFullYear() + '-' + String(start.getMonth() + 1).padStart(2, '0');
 }
+function validStartMonth(value) {
+  return /^\d{4}-(0[1-9]|1[0-2])$/.test(value) && Number(value.slice(0, 4)) >= 1900 && Number(value.slice(0, 4)) <= 9900;
+}
+function startMonthText(value) {
+  if (!validStartMonth(value)) return '—';
+  const [year, month] = value.split('-').map(Number);
+  return new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-latn', { month: 'long', year: 'numeric' }).format(new Date(year, month - 1, 1));
+}
+function dueText(month, start = startMonth.value) {
+  if (!validStartMonth(start) || !Number.isFinite(month)) return '—';
+  const [year, firstMonth] = start.split('-').map(Number);
+  // Fractional terms retain their elapsed-month calculation; display the last day of the resulting month.
+  const wholeMonths = Math.floor(month + 0.0000001);
+  const due = new Date(year, firstMonth + wholeMonths, 0);
+  return new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-latn', { day: 'numeric', month: 'long', year: 'numeric' }).format(due);
+}
+startMonth.value = defaultStartMonth();
+startMonth.addEventListener('input', () => { automaticStartMonth = false; calculate(); });
 function durationText(months) {
   const amount = durationUnit.value === 'years' ? months / 12 : months;
   return fmt(amount) + ' ' + unitLabel(amount, durationUnit.value);
@@ -157,9 +177,11 @@ function annualIrr(principal, payments) {
   return (low + high) * 50;
 }
 function calculate() {
+  if (automaticStartMonth) startMonth.value = defaultStartMonth();
   syncControls();
   const base = baseValues(), pays = rawPayments().sort((a, b) => a.month - b.month), sum = pays.reduce((total, p) => total + p.cents, 0);
   let error = base.error || '';
+  if (!error && !validStartMonth(startMonth.value)) error = 'حدد شهر بداية الحساب بسنة بين 1900 و9900.';
   if (!error && mode === 'equal' && (!Number.isInteger(number(count.value)) || number(count.value) < 1 || number(count.value) > 120)) error = 'أدخل عدد دفعات صحيح بين 1 و120.';
   if (!error && (!pays.length || pays.some(p => !Number.isFinite(p.month) || p.month <= 0 || p.month > base.months + 0.000001 || !Number.isSafeInteger(p.cents) || p.cents <= 0))) error = 'أدخل مبلغ أكبر من صفر لكل دفعة، وحدد موعدها ضمن مدة السداد.';
   if (!error && sum !== base.total) error = sum < base.total ? 'باقي ' + fmt((base.total - sum) / 100) + ' ريال لإكمال ثمن البيع. عدل الدفعات أو اضبط الدفعة الأخيرة.' : 'مجموع الدفعات يزيد على ثمن البيع بمبلغ ' + fmt((sum - base.total) / 100) + ' ريال.';
@@ -167,11 +189,11 @@ function calculate() {
   $('#validation').hidden = !error; $('#validation').textContent = error; $('#share').disabled = Boolean(error);
   $('#scheduleSum').innerHTML = base.error ? '' : 'الإجمالي ' + money(Number.isFinite(sum) ? sum / 100 : 0) + ' / ' + money(base.total / 100);
   $('#scheduleSum').classList.toggle('bad', Boolean(error));
-  currentDeal = error ? null : { ...base, payments: pays, product: product.value.trim(), duration: durationText(base.months), resale: number($('#resale').value) || 0 };
+  currentDeal = error ? null : { ...base, payments: pays, startMonth: startMonth.value, product: product.value.trim(), duration: durationText(base.months), resale: number($('#resale').value) || 0 };
   $('#mobileTotal').innerHTML = 'إجمالي البيع الآجل <strong>' + (error ? '—' : money(base.total / 100)) + '</strong>';
   if (base.error) { $('#results').innerHTML = '<div class="empty"><b>ملخص عرض البيع الآجل</b>أكمل بيانات العملية لعرض الحساب.</div>'; return; }
   const validRows = pays.filter(p => Number.isFinite(p.month) && Number.isFinite(p.cents)), resale = number($('#resale').value);
-  $('#results').innerHTML = '<div class="result-hero"><span class="result-product">' + esc(product.value.trim() || 'ملخص عرض البيع الآجل') + '</span><span class="result-label">إجمالي ثمن البيع</span><div class="yield">' + money(base.total / 100) + '</div><div class="deal-summary">تكلفة السلعة ' + money(base.principal / 100) + ' · مدة السداد ' + esc(durationText(base.months)) + '</div></div><div class="metrics"><div class="metric"><span>إجمالي ربح البيع</span><strong>' + money(base.profit / 100) + '</strong></div><div class="metric"><span>هامش الربح السنوي</span><strong>' + percentage(base.rate) + '</strong></div><div class="metric"><span>عدد الدفعات</span><strong>' + pays.length + '</strong></div><div class="metric"><span>الدفعة الأخيرة</span><strong>' + (!error ? money(pays[pays.length - 1].cents / 100) : '—') + '</strong></div></div><div class="result-schedule"><h3>جدول السداد</h3><table class="result-table"><thead><tr><th>الدفعة</th><th>موعدها</th><th>المبلغ</th></tr></thead><tbody>' + validRows.map((p, i) => '<tr' + (i === validRows.length - 1 ? ' class="last-payment"' : '') + '><td>' + (i + 1) + '</td><td>' + dueText(p.month) + '</td><td>' + money(p.cents / 100) + '</td></tr>').join('') + '</tbody></table><small>جميع الدفعات أجزاء من ثمن البيع.' + (mode === 'periodic' ? ' الدفعة الأخيرة تشمل تكلفة السلعة ومبلغ الفترة الأخيرة.' : '') + '</small></div><details class="extra"><summary>تفاصيل الحساب</summary><p>الربح على كامل المدة: ' + percentage(base.profit / base.principal * 100) + '</p><p>العائد السنوي الفعلي حسب توقيت الدفعات: ' + (!error ? percentage(annualIrr(base.principal, pays)) : '—') + '</p>' + (Number.isFinite(resale) && resale > 0 ? '<p>قيمة إعادة البيع نقدا: ' + money(resale) + '</p>' : '') + '<small>الهامش السنوي البسيط يحتسب على التكلفة الأصلية. العائد الفعلي يراعي توقيت كل دفعة.</small></details>';
+  $('#results').innerHTML = '<div class="result-hero"><span class="result-product">' + esc(product.value.trim() || 'ملخص عرض البيع الآجل') + '</span><span class="result-label">إجمالي ثمن البيع</span><div class="yield">' + money(base.total / 100) + '</div><div class="deal-summary">تكلفة السلعة ' + money(base.principal / 100) + ' · مدة السداد ' + esc(durationText(base.months)) + '<br>بداية الحساب: ' + esc(startMonthText(startMonth.value)) + '</div></div><div class="metrics"><div class="metric"><span>إجمالي ربح البيع</span><strong>' + money(base.profit / 100) + '</strong></div><div class="metric"><span>هامش الربح السنوي</span><strong>' + percentage(base.rate) + '</strong></div><div class="metric"><span>عدد الدفعات</span><strong>' + pays.length + '</strong></div><div class="metric"><span>الدفعة الأخيرة</span><strong>' + (!error ? money(pays[pays.length - 1].cents / 100) : '—') + '</strong></div></div><div class="result-schedule"><h3>جدول السداد</h3><table class="result-table"><thead><tr><th>الدفعة</th><th>موعدها</th><th>المبلغ</th></tr></thead><tbody>' + validRows.map((p, i) => '<tr' + (i === validRows.length - 1 ? ' class="last-payment"' : '') + '><td>' + (i + 1) + '</td><td>' + dueText(p.month) + '</td><td>' + money(p.cents / 100) + '</td></tr>').join('') + '</tbody></table><small>تستحق الدفعات في آخر يوم من شهر الاستحقاق. جميع الدفعات أجزاء من ثمن البيع.' + (mode === 'periodic' ? ' الدفعة الأخيرة تشمل تكلفة السلعة ومبلغ الفترة الأخيرة.' : '') + '</small></div><details class="extra"><summary>تفاصيل الحساب</summary><p>الربح على كامل المدة: ' + percentage(base.profit / base.principal * 100) + '</p><p>العائد السنوي الفعلي حسب توقيت الدفعات: ' + (!error ? percentage(annualIrr(base.principal, pays)) : '—') + '</p>' + (Number.isFinite(resale) && resale > 0 ? '<p>قيمة إعادة البيع نقدا: ' + money(resale) + '</p>' : '') + '<small>الهامش السنوي البسيط يحتسب على التكلفة الأصلية. العائد الفعلي يراعي توقيت كل دفعة.</small></details>';
 }
 function changeMode(next) { const old = rawPayments(); mode = next; if (mode === 'custom' && old.length) { renderPayments(old); calculate(); } else rebuild(); }
 $('#mode').addEventListener('click', event => { const button = event.target.closest('button'); if (button) changeMode(button.dataset.mode); });
@@ -200,7 +222,7 @@ function changeDuration() {
 duration.addEventListener('input', changeDuration); durationUnit.addEventListener('change', changeDuration);
 $('#quickDuration').addEventListener('click', event => { const button = event.target.closest('button'); if (!button) return; duration.value = button.dataset.value; durationUnit.value = button.dataset.unit; changeDuration(); });
 $('#calculator').addEventListener('submit', event => { event.preventDefault(); calculate(); });
-$('#reset').onclick = () => { cash.value = '100,000'; target.value = '18'; duration.value = '3'; durationUnit.value = 'years'; duration.max = '30'; count.value = '3'; period.value = '12'; product.value = ''; $('#resale').value = ''; mode = 'periodic'; previousMonths = 36; previousUnit = 'years'; rebuild(); };
+$('#reset').onclick = () => { automaticStartMonth = true; startMonth.value = defaultStartMonth(); cash.value = '100,000'; target.value = '18'; duration.value = '3'; durationUnit.value = 'years'; duration.max = '30'; count.value = '3'; period.value = '12'; product.value = ''; $('#resale').value = ''; mode = 'periodic'; previousMonths = 36; previousUnit = 'years'; rebuild(); };
 
 // Render with the page's local fonts, without screenshot services or external image libraries.
 async function makeSummaryPages(deal) {
@@ -235,7 +257,7 @@ async function makeSummaryPages(deal) {
     productLines.slice(0, 2).forEach((line, index) => text(line, 992, 186 + index * 38, productSize, '#D7E1E8', 700));
     text('إجمالي ثمن البيع', 992, 268, 28, '#E7B77C', 700);
     text(fmt(deal.total / 100) + ' ريال', 992, 338, 66, '#FFFFFF', 700, 'right', 890);
-    text('مدة السداد: ' + deal.duration, 992, 380, 28, '#D7E1E8');
+    text('مدة السداد: ' + deal.duration + ' · بداية الحساب: ' + startMonthText(deal.startMonth), 992, 380, 28, '#D7E1E8');
     const cards = [ ['تكلفة شراء السلعة', fmt(deal.principal / 100) + ' ريال'], ['إجمالي ربح البيع', fmt(deal.profit / 100) + ' ريال'], ['هامش الربح السنوي', '\u200e% ' + pct(deal.rate)], ['عدد الدفعات', String(deal.payments.length)] ];
     cards.forEach(([label, value], i) => { const x = i % 2 === 0 ? 552 : 72, y = 432 + Math.floor(i / 2) * 120; box(x, y, 456, 104, 16, '#F6F2EC'); text(label, x + 428, y + 35, 26, muted); text(value, x + 428, y + 80, 40, navy, 700, 'right', 404); });
     text('جدول السداد', 992, 720, 38, navy, 700);
@@ -245,7 +267,7 @@ async function makeSummaryPages(deal) {
       const index = pageIndex * perPage + i, last = index === deal.payments.length - 1, y = 790 + i * 88;
       box(72, y, 936, 76, 13, last ? '#FFF0D8' : i % 2 ? '#F8F6F2' : '#FFFFFF');
       text(String(index + 1), 971, y + 50, 35, last ? '#87561E' : navy, 700, 'right', 90);
-      text(dueText(p.month), 766, y + 50, 32, ink, 400, 'right', 330);
+      text(dueText(p.month, deal.startMonth), 766, y + 50, 32, ink, 400, 'right', 330);
       text(fmt(p.cents / 100), 100, y + 51, 43, last ? '#87561E' : navy, 700, 'left', 350);
     });
     const foot = 822 + rows.length * 88;
@@ -293,10 +315,11 @@ $('#shareImage').onclick = async () => {
     else { saveCurrentImage(); shareStatus('المشاركة المباشرة غير متاحة في هذا المتصفح. تم طلب حفظ الصورة لتشاركها.'); }
   } catch (error) { if (error.name !== 'AbortError') shareStatus('تعذرت المشاركة المباشرة. استخدم زر حفظ الصورة.', true); }
 };
-document.querySelectorAll('input:not(#product)').forEach(input => { input.lang = 'en'; input.dir = 'ltr'; input.addEventListener('input', () => { input.value = numeric(input.value); }); });
+document.querySelectorAll('input:not(#product):not(#startMonth)').forEach(input => { input.lang = 'en'; input.dir = 'ltr'; input.addEventListener('input', () => { input.value = numeric(input.value); }); });
 rebuild();
 
 </script>
 </body>
 </html>
+
 
