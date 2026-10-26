@@ -26,7 +26,9 @@
  document.head.append(css);
  const surfaces = slides.length ? slides : [hero || chart, ...(!hero ? [document.querySelector('.inspector')] : [])].filter(Boolean);
  surfaces.forEach((host, surface) => {
-  const dark = host === hero || host.matches('.cover,.contact-slide'), panel = host.classList.contains('inspector');
+  const rgb = getComputedStyle(host).backgroundColor.match(/[\\d.]+/g);
+  const dark = host === hero || (rgb && rgb.length >= 3 && (Number(rgb[0])*.2126+Number(rgb[1])*.7152+Number(rgb[2])*.0722)<100 && (rgb.length<4 || Number(rgb[3])>0));
+  const panel = host.classList.contains('inspector');
   const canvas = document.createElement('canvas');
   canvas.className = 'hatta-ambient';
   canvas.setAttribute('aria-hidden','true');
