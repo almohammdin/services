@@ -27,6 +27,22 @@
 <link rel="icon" type="image/webp" href="./assets/hatta/logo.webp">
 <link rel="stylesheet" href="./assets/hatta/services.css?v=marketing-20261024">
 <script src="./assets/hatta/services.js?v=marketing-20261024" defer></script>
+<style id="hatta-hero-motion-style">
+/* A decorative, self-contained pilot for the homepage hero. */
+.hero .hero-grid{position:relative;z-index:1}
+.hero .hatta-network{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:0;opacity:.72}
+.hatta-network .network-drift{transform-box:fill-box;transform-origin:center;animation:hatta-drift 22s ease-in-out infinite alternate}
+.hatta-network .network-drift-secondary{animation-duration:29s;animation-delay:-11s}
+.hatta-network .network-flow{stroke-dasharray:3 180;animation:hatta-flow 18s linear infinite}
+.hatta-network .network-light{transform-box:fill-box;transform-origin:center;animation:hatta-light 7s ease-in-out infinite alternate}
+.hero[data-motion-paused] .hatta-network *{animation-play-state:paused}
+@keyframes hatta-drift{from{transform:translate(-5px,7px) rotate(-2deg)}to{transform:translate(12px,-10px) rotate(3deg)}}
+@keyframes hatta-flow{to{stroke-dashoffset:-366}}
+@keyframes hatta-light{from{opacity:.35}to{opacity:1}}
+@media(max-width:820px){.hero .hatta-network{opacity:.48}.hatta-network .network-drift-secondary{display:none}}
+@media(prefers-reduced-motion:reduce){.hero .hatta-network *{animation:none!important}}
+@media print{.hero .hatta-network{display:none!important}}
+</style>
 </head>
 <body id="top">
 <a class="skip-link" href="#main">انتقل للمحتوى</a>
@@ -38,7 +54,11 @@
 </div></header>
 <main id="main" class="wrap">
 <div class="bismillah">بسم الله الرحمن الرحيم</div>
-<section class="hero" aria-labelledby="hero-title"><div class="hero-grid"><div class="hero-copy"><div class="kicker">تنظيم الأعمال · الشراكات · النمو</div>
+<section class="hero" aria-labelledby="hero-title"><svg class="hatta-network" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><linearGradient id="hatta-network-fade"><stop stop-color="white" stop-opacity=".85"/><stop offset=".46" stop-color="white" stop-opacity=".08"/><stop offset=".76" stop-color="white" stop-opacity=".02"/><stop offset="1" stop-color="white" stop-opacity=".4"/></linearGradient><mask id="hatta-network-mask"><rect width="1200" height="500" fill="url(#hatta-network-fade)"/></mask></defs>
+<g mask="url(#hatta-network-mask)" fill="none" stroke="#d2a05a">
+<g class="network-drift"><path d="M10,80 L72,35 M10,80 L42,180 M10,80 L112,146 M72,35 L138,92 M72,35 L112,146 M138,92 L218,28 M138,92 L112,146 M138,92 L190,201 M218,28 L295,66 M295,66 L355,10 M295,66 L270,157 M42,180 L112,146 M42,180 L10,300 M42,180 L90,270 M112,146 L190,201 M190,201 L270,157 M190,201 L90,270 M190,201 L240,287 M270,157 L345,213 M345,213 L390,300 M10,300 L90,270 M90,270 L156,330 M156,330 L240,287 M156,330 L65,415 M156,330 L142,390 M240,287 L315,346 M315,346 L390,300 M315,346 L330,410 M65,415 L142,390 M142,390 L230,440 M230,440 L330,410 M330,410 L405,460" stroke-opacity=".3" stroke-width=".8"/><path class="network-flow" d="M10,80 L72,35 M10,80 L42,180 M10,80 L112,146 M72,35 L138,92 M72,35 L112,146 M138,92 L218,28 M138,92 L112,146 M138,92 L190,201 M218,28 L295,66 M295,66 L355,10 M295,66 L270,157 M42,180 L112,146 M42,180 L10,300 M42,180 L90,270 M112,146 L190,201 M190,201 L270,157 M190,201 L90,270 M190,201 L240,287 M270,157 L345,213 M345,213 L390,300 M10,300 L90,270 M90,270 L156,330 M156,330 L240,287 M156,330 L65,415 M156,330 L142,390 M240,287 L315,346 M315,346 L390,300 M315,346 L330,410 M65,415 L142,390 M142,390 L230,440 M230,440 L330,410 M330,410 L405,460" stroke-opacity=".85" stroke-width="1.2"/><circle class="network-light" cx="10" cy="80" r="2.8" fill="#e6d2ae" stroke="none" style="animation-delay:-0s"/><circle class="network-light" cx="72" cy="35" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-1s"/><circle class="network-light" cx="138" cy="92" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-2s"/><circle class="network-light" cx="218" cy="28" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-3s"/><circle class="network-light" cx="295" cy="66" r="2.8" fill="#e6d2ae" stroke="none" style="animation-delay:-4s"/><circle class="network-light" cx="355" cy="10" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-5s"/><circle class="network-light" cx="42" cy="180" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-6s"/><circle class="network-light" cx="112" cy="146" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-0s"/><circle class="network-light" cx="190" cy="201" r="2.8" fill="#e6d2ae" stroke="none" style="animation-delay:-1s"/><circle class="network-light" cx="270" cy="157" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-2s"/><circle class="network-light" cx="345" cy="213" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-3s"/><circle class="network-light" cx="10" cy="300" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-4s"/><circle class="network-light" cx="90" cy="270" r="2.8" fill="#e6d2ae" stroke="none" style="animation-delay:-5s"/><circle class="network-light" cx="156" cy="330" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-6s"/><circle class="network-light" cx="240" cy="287" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-0s"/><circle class="network-light" cx="315" cy="346" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-1s"/><circle class="network-light" cx="390" cy="300" r="2.8" fill="#e6d2ae" stroke="none" style="animation-delay:-2s"/><circle class="network-light" cx="65" cy="415" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-3s"/><circle class="network-light" cx="142" cy="390" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-4s"/><circle class="network-light" cx="230" cy="440" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-5s"/><circle class="network-light" cx="330" cy="410" r="2.8" fill="#e6d2ae" stroke="none" style="animation-delay:-6s"/><circle class="network-light" cx="405" cy="460" r="1.6" fill="#d2a05a" stroke="none" style="animation-delay:-0s"/></g>
+<g transform="translate(880 0)"><g class="network-drift network-drift-secondary"><path d="M10,80 L72,35 M10,80 L42,180 M10,80 L112,146 M72,35 L138,92 M72,35 L112,146 M138,92 L218,28 M138,92 L112,146 M138,92 L190,201 M218,28 L295,66 M295,66 L355,10 M295,66 L270,157 M42,180 L112,146 M42,180 L10,300 M42,180 L90,270 M112,146 L190,201 M190,201 L270,157 M190,201 L90,270 M190,201 L240,287 M270,157 L345,213 M345,213 L390,300 M10,300 L90,270 M90,270 L156,330 M156,330 L240,287 M156,330 L65,415 M156,330 L142,390 M240,287 L315,346 M315,346 L390,300 M315,346 L330,410 M65,415 L142,390 M142,390 L230,440 M230,440 L330,410 M330,410 L405,460" stroke-opacity=".2" stroke-width=".7"/><circle cx="10" cy="80" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="138" cy="92" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="295" cy="66" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="42" cy="180" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="190" cy="201" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="345" cy="213" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="90" cy="270" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="240" cy="287" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="390" cy="300" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="142" cy="390" r="1.6" fill="#d2a05a" stroke="none"/><circle cx="330" cy="410" r="1.6" fill="#d2a05a" stroke="none"/></g></g></g></svg><div class="hero-grid"><div class="hero-copy"><div class="kicker">تنظيم الأعمال · الشراكات · النمو</div>
 <h1 id="hero-title">قـــرار أفضـــل<br><span>وأعمال تمضي بثقـــة</span></h1>
 <p class="subtitle">نساعد الملاك ومجالس الإدارة والقيادات على تنظيم الشراكات والصلاحيات، ودراسة قرارات النمو، ومتابعة التنفيذ.</p>
 <div class="hero-actions"><a class="btn gold" href="https://wa.me/966506350457?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A7%D8%B7%D9%84%D8%B9%D8%AA%20%D8%B9%D9%84%D9%89%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%AD%D8%AA%D9%89%20%D9%88%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D9%8A." target="_blank" rel="noopener noreferrer">ناقش مشروعك <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#services">استعرض خدماتنا <span aria-hidden="true">↓</span></a></div></div>
@@ -162,4 +182,15 @@
 </div>
 <div class="footer-legal">© حتى لحلول الأعمال <span>جميع الحقوق محفوظة · <bdi>2026</bdi></span></div></footer>
 
+<script>
+(() => {
+  const hero = document.querySelector('.hero');
+  if (!hero || !('IntersectionObserver' in window)) return;
+  let visible = true;
+  const sync = () => hero.toggleAttribute('data-motion-paused', !visible || document.hidden);
+  new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }, {threshold: 0}).observe(hero);
+  document.addEventListener('visibilitychange', sync);
+  sync();
+})();
+</script>
 </body></html>
