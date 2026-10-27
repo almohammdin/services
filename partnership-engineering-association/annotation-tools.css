@@ -18,3 +18,5 @@ body[data-annotation-mode="pen"] .annotation-layer,body[data-annotation-mode="hi
 .tool-expanded .annotation-dock,.tool-expanded .annotation-layer{display:none}
 @media(max-width:600px){.annotation-dock{top:62px;left:8px}.annotation-toggle{font-size:12px;min-height:36px;padding:5px 9px}}
 @media print{.annotation-dock,.annotation-layer,.annotation-pointer{display:none!important}}
+/* Keep the existing navigation within narrow portrait screens. */
+@media(max-width:760px) and (orientation:portrait){.nav .dots{display:none}.nav-middle{min-width:0}#stepCounter{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
