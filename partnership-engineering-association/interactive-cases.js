@@ -1,33 +1,26 @@
 (() => {
 'use strict';
-const rights=document.getElementById('rightsScene');
-const meter=rights.querySelector('.decision-meter');
-meter.innerHTML=`<div class="vote-controls"><label>الموافقة المطلوبة <select id="voteThreshold"><option value="51">51%</option><option value="75" selected>75%</option><option value="100">100%</option></select></label><label>ملكية المؤسس <output id="founderShare">40%</output><input id="equitySlider" type="range" min="1" max="99" value="40" aria-label="نسبة ملكية المؤسس"></label></div><div class="voter-buttons" role="group" aria-label="اختر الأطراف الموافقة"><button type="button" id="founderVote" aria-pressed="false">المؤسس <span>40%</span></button><button type="button" id="investorVote" aria-pressed="true">المستثمر <span>60%</span></button></div><div class="vote-progress" role="meter" aria-label="نسبة الأصوات الموافقة" aria-valuemin="0" aria-valuemax="100"><div id="voteFill"></div><i id="voteTarget"></i></div><div id="voteResult" role="status" aria-live="polite"></div><div class="vote-note"><small>نموذج توضيحي: حقوق تصويت متساوية لكل سهم، والنسبة من إجمالي الأسهم.</small><button type="button" id="voteReset">إعادة المثال</button></div>`;
-let founder=false,investor=true;
 const $=id=>document.getElementById(id);
-function render(){
- const share=Number($('equitySlider').value),other=100-share,threshold=Number($('voteThreshold').value);
- const total=(founder?share:0)+(investor?other:0),passed=total>=threshold;
- $('founderShare').textContent=share+'%';
- rights.querySelectorAll('.equity-labels b').forEach((el,i)=>el.textContent=(i?other:share)+'%');
- rights.querySelectorAll('.equity-bar i').forEach((el,i)=>el.style.width=(i?other:share)+'%');
- $('founderVote').querySelector('span').textContent=share+'%';$('investorVote').querySelector('span').textContent=other+'%';
- $('founderVote').setAttribute('aria-pressed',String(founder));$('investorVote').setAttribute('aria-pressed',String(investor));
- $('voteFill').style.width=total+'%';$('voteTarget').style.right=threshold+'%';
- meter.querySelector('[role="meter"]').setAttribute('aria-valuenow',total);
- $('voteResult').dataset.passed=passed;
- $('voteResult').textContent=`${passed?'تحققت الموافقة':'لم تتحقق الموافقة'} · ${total}% من ${threshold}% المطلوبة`;
- if(rights.dataset.phase==='3'){
- $('rightFocusTitle').textContent='من يستطيع تمرير القرار؟';
- $('rightFocusBody').textContent='اختر الأطراف الموافقة وغيّر النسب لاختبار النتيجة.';
- $('rightsCaption').textContent=total===0?'لم يوافق أي طرف حتى الآن.':passed?`الأصوات الموافقة بلغت ${total}%؛ تحقق الحد المطلوب في هذا النموذج.`:`يلزم ${threshold-total} نقطة مئوية إضافية من الأصوات الموافقة لبلوغ الحد المطلوب.`;
+function mount(root){
+ root.classList.add('share-lab');root.innerHTML=`<div class="share-allocation"><h3>توزيع رأس المال على الأسهم</h3><div class="share-rows"><div class="share-row"><span>عادية</span><output data-out="ordinary"></output><small>النسبة المتبقية</small></div>${[['preferred','ممتازة',30,50],['redeemable','قابلة للاسترداد',20,50],['staff','عادية للموظفين',10,100]].map(([key,title,value,max])=>`<label class="share-row"><span>${title}</span><output data-out="${key}"></output><input data-input="${key}" aria-label="نسبة الأسهم ${title}" type="range" min="0" max="${max}" value="${value}"></label>`).join('')}</div><p class="share-limit"></p></div><div class="share-voting"><h3>الأصوات الموافقة من المساهمين</h3><label class="share-yes"><input data-input="yes" aria-label="عدد الأصوات الموافقة من المساهمين" type="range" min="0" max="50" value="40"><output data-out="yes"></output></label><label class="share-threshold">الموافقة المطلوبة <select aria-label="نسبة الموافقة المطلوبة"><option>51</option><option selected>75</option><option>100</option></select><span>%</span></label><div class="share-track" role="meter" aria-label="نسبة الأصوات الموافقة" aria-valuemin="0" aria-valuemax="100"><i></i><b></b></div><p class="share-result" role="status"></p><p class="share-assumption">صوت لكل سهم عادي. الممتازة والقابلة للاسترداد دون تصويت كأصل عام. النسبة من إجمالي حقوق التصويت مع اكتمال الحضور.</p></div><div class="share-actions"><button data-action="reset">إعادة المثال</button><button data-action="ordinary">مقارنة: أسهم عادية فقط</button><button data-action="rules">ضوابط المثال</button></div>`;
+ const q=s=>root.querySelector(s),input=k=>q(`[data-input="${k}"]`),out=k=>q(`[data-out="${k}"]`),nf=new Intl.NumberFormat('en',{maximumFractionDigits:1});
+ function update(){const p=+input('preferred').value,r=+input('redeemable').value,e=+input('staff').value,o=100-p-r-e,total=100-p-r;
+ input('preferred').max=Math.min(50-r,100-r-e);input('redeemable').max=Math.min(50-p,100-p-e);input('staff').max=100-p-r;input('yes').max=total;
+ const yes=+input('yes').value,pct=100*yes/total,need=+q('select').value,pass=100*yes>=need*total;
+ Object.entries({ordinary:o,preferred:p,redeemable:r,staff:e}).forEach(([k,v])=>out(k).textContent=v+'%');
+ out('yes').textContent=`${yes} من ${total} صوتا`;
+ q('.share-limit').textContent=`المجموع 100% · الممتازة والاسترداد ${p+r}% من حد 50%`;
+ q('.share-result').textContent=`${pass?'تحققت الموافقة':'لم تتحقق الموافقة'} · ${nf.format(pct)}% من ${need}% المطلوبة`;
+ q('.share-result').dataset.passed=pass;q('.share-track i').style.width=pct+'%';q('.share-track b').style.right=need+'%';q('[role="meter"]').setAttribute('aria-valuenow',pct);
  }
+ function preset(values,yes){['preferred','redeemable','staff'].forEach((k,i)=>{input(k).max=100;input(k).value=values[i]});input('yes').max=100;input('yes').value=yes;q('select').value=75;update()}
+ root.querySelectorAll('input').forEach(el=>el.oninput=update);q('select').onchange=update;q('[data-action="reset"]').onclick=()=>preset([30,20,10],40);q('[data-action="ordinary"]').onclick=()=>preset([0,0,0],60);
+ const dialog=document.createElement('dialog');dialog.className='share-rules';dialog.innerHTML=`<button class="share-close" aria-label="إغلاق ضوابط المثال">×</button><h3>ضوابط المثال</h3><p><b>رأس المال:</b> 100 سهم مصدر × 1,000 ريال = 100,000 ريال مدفوعة بالكامل. المصرح به 200,000 ريال، يتيح زيادة المصدر لاحقا وفق الإجراءات النظامية.</p><p><b>الممتازة والقابلة للاسترداد:</b> حدها مجتمعة 50% من رأس المال؛ أي 50 سهما في المثال. الإصدار وفق النظام الأساس والموافقات والضوابط النظامية، مع سداد المصدر وقيمة هذه الأسهم بالكامل.</p><p><b>أسهم الموظفين:</b> تخصيص من الأسهم العادية في المثال، ويبدأ التصويت بها بعد إصدارها وتملكها.</p><p>النسب والحقوق أمثلة تعليمية تصاغ وفق احتياج الشركة ونظامها الأساس.</p>`;document.body.append(dialog);q('[data-action="rules"]').onclick=()=>dialog.showModal();dialog.querySelector('button').onclick=()=>dialog.close();update();
 }
-$('founderVote').onclick=()=>{founder=!founder;render();};$('investorVote').onclick=()=>{investor=!investor;render();};
-$('equitySlider').oninput=render;$('voteThreshold').onchange=render;
-$('voteReset').onclick=()=>{founder=false;investor=true;$('equitySlider').value=40;$('voteThreshold').value=75;render();};
-new MutationObserver(render).observe(rights,{attributes:true,attributeFilter:['data-phase']});render();
-const scene=$('propertyScene'),slide=scene.closest('.slide');
+const rights=$('rightsScene');
+if(rights){const lab=rights.querySelector('.share-lab');mount(lab);function phase(){lab.dataset.mode=rights.dataset.phase==='2'?'allocation':'voting';lab.hidden=!['2','3'].includes(rights.dataset.phase)}new MutationObserver(phase).observe(rights,{attributes:true,attributeFilter:['data-phase']});phase();}
+const preview=$('previewLab');if(preview)mount(preview);
+const scene=$('propertyScene');if(!scene)return;const slide=scene.closest('.slide');
 const controls=document.createElement('div');controls.className='comparison-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label','طريقة عرض الحالة');
 controls.innerHTML='<button type="button" data-comparison="false" aria-pressed="true">الشرح المتدرج</button><button type="button" data-comparison="true" aria-pressed="false">قارن العلاقات</button>';
 scene.before(controls);
