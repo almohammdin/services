@@ -9,6 +9,7 @@
     Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
     return el;
   };
+  let penWidth = 3, highlightWidth = 18;
   let mode = 'browse', color = '#b47a2d', active = null;
   const records = slides.map(slide => {
     const layer = svg('svg', {class: 'annotation-layer', viewBox: '0 0 1000 1000', preserveAspectRatio: 'none', 'aria-hidden': 'true'});
@@ -36,7 +37,7 @@
         <button type="button" data-action="undo" disabled>تراجع</button>
         <button type="button" data-action="clear" disabled>مسح الشريحة</button>
       </div>
-      <p class="annotation-help" role="status">التأشير محفوظ أثناء الجلسة فقط.</p>
+      <label class="annotation-size">سماكة القلم والتظليل <input id="annotationWidth" type="range" min="1" max="40" value="3" aria-label="سماكة أداة التأشير"><output id="annotationWidthValue">3</output></label><p class="annotation-help" role="status">التأشير محفوظ أثناء الجلسة فقط.</p>
     </div>`;
   document.body.append(dock);
   const laser = document.createElement('div');
@@ -67,6 +68,7 @@
   }
   function setMode(value) {
     end(); mode = value;
+    const width=mode==='highlight'?highlightWidth:penWidth;dock.querySelector('#annotationWidth').value=width;dock.querySelector('#annotationWidthValue').textContent=width;
     document.body.dataset.annotationMode = mode;
     dock.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
     help.textContent = mode === 'browse' ? 'التأشير محفوظ أثناء الجلسة فقط.' : 'للتحريك والحاسبات اختر «تصفح». Esc ينهي التأشير.';
@@ -108,7 +110,7 @@
       e.preventDefault(); e.stopPropagation();
       if (mode === 'pointer') {moveLaser(e); layer.setPointerCapture(e.pointerId); return;}
       const [x,y] = point(e, layer);
-      const path = svg('path', {d: `M${x},${y} L${x+.01},${y}`, fill: 'none', stroke: color, 'stroke-width': mode === 'highlight' ? 18 : 3, opacity: mode === 'highlight' ? .28 : 1, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'vector-effect': 'non-scaling-stroke'});
+      const path = svg('path', {d: `M${x},${y} L${x+.01},${y}`, fill: 'none', stroke: color, 'stroke-width': mode === 'highlight' ? highlightWidth : penWidth, opacity: mode === 'highlight' ? .28 : 1, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'vector-effect': 'non-scaling-stroke'});
       layer.append(path); active = {r, path, id: e.pointerId}; layer.setPointerCapture(e.pointerId);
     });
     layer.addEventListener('pointermove', e => {
@@ -135,5 +137,6 @@
   new MutationObserver(() => {
     if (document.body.classList.contains('tool-expanded')) setMode('browse');
   }).observe(document.body, {attributes:true, attributeFilter:['class']});
+  dock.querySelector('#annotationWidth').oninput=e=>{const w=+e.target.value;if(mode==='highlight')highlightWidth=w;else penWidth=w;dock.querySelector('#annotationWidthValue').textContent=w;};
   setMode('browse');
 })();
