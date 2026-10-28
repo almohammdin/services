@@ -20,7 +20,7 @@
   const dock = document.createElement('aside');
   dock.className = 'annotation-dock';
   dock.setAttribute('aria-label', 'أدوات الشرح');
-  dock.innerHTML = `<button type="button" class="annotation-toggle" aria-expanded="false" aria-controls="annotationPanel">✎ <span>أدوات الشرح</span></button>
+  dock.innerHTML = `<button type="button" class="annotation-toggle" aria-label="أدوات الشرح" title="أدوات الشرح" aria-expanded="false" aria-controls="annotationPanel">✎ <span>أدوات الشرح</span></button>
     <div id="annotationPanel" hidden>
       <div class="annotation-modes" role="group" aria-label="أداة الشرح">
         <button type="button" data-mode="browse" aria-pressed="true">تصفح</button>
@@ -39,7 +39,7 @@
       </div>
       <label class="annotation-size">سماكة القلم والتظليل <input id="annotationWidth" type="range" min="1" max="40" value="3" aria-label="سماكة أداة التأشير"><output id="annotationWidthValue">3</output></label><p class="annotation-help" role="status">التأشير محفوظ أثناء الجلسة فقط.</p>
     </div>`;
-  document.body.append(dock);
+  document.querySelector('.nav').append(dock);
   const laser = document.createElement('div');
   laser.className = 'annotation-pointer';
   laser.hidden = true;
