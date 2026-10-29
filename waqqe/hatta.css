@@ -79,3 +79,5 @@ body .tools-panel{top:74px}
 body .footer .footer-main{gap:8px}
 body .footer .footer-social{width:100%;justify-content:space-between}
 }
+
+body:has(#uploadPanel) .footer .footer-bottom>.footer-privacy{font-size:10px!important;line-height:1.5!important;white-space:normal!important;overflow:visible!important}
