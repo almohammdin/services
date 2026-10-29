@@ -1,0 +1,13 @@
+export const today=()=>new Date().toLocaleDateString('en-CA');
+export function addMonths(date,months){const d=new Date(date+'T12:00:00');const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+Number(months));const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last));return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+export function due(rule,vehicle,records,now=today(),leadDays=30,leadKm=1000){
+ const last=records.filter(r=>r.vehicleId===vehicle.id&&r.ruleId===rule.id).sort((a,b)=>b.date.localeCompare(a.date)||b.km-a.km)[0];
+ const baseKm=last?last.km:rule.baseKm; const baseDate=last?last.date:rule.baseDate;
+ const km=rule.km>0&&baseKm!==null&&baseKm!==undefined?Number(baseKm)+Number(rule.km):null;
+ const date=rule.months>0&&baseDate?addMonths(baseDate,rule.months):null;
+ const remainingKm=km===null?null:km-vehicle.km;const days=date?Math.round((new Date(date+'T12:00:00')-new Date(now+'T12:00:00'))/86400000):null;
+ const missing=(rule.km>0&&km===null)||(rule.months>0&&!date);
+ const status=remainingKm!==null&&remainingKm<=0||days!==null&&days<=0?'late':remainingKm!==null&&remainingKm<=leadKm||days!==null&&days<=leadDays?'soon':missing?'unknown':'good';
+ return {km,date,remainingKm,days,status,missing,last};
+}
+export function validateRules(rows){if(!Array.isArray(rows)||!rows.length||rows.length>200)throw Error('الجدول يجب أن يحتوي من 1 إلى 200 بند.');return rows.map((r,i)=>{if(!r||typeof r.name!=='string'||!r.name.trim())throw Error(`البند ${i+1}: اسم الإجراء مطلوب.`);const km=r.km==null||r.km===''?0:Number(r.km),months=r.months==null||r.months===''?0:Number(r.months);if(km<0||months<0||!Number.isFinite(km)||!Number.isFinite(months)||(!km&&!months)||!Number.isInteger(months))throw Error(`البند ${i+1}: أدخل دورية صحيحة بالمسافة أو الأشهر.`);if(r.baseKm!=null&&r.baseKm!==''&&(!Number.isFinite(Number(r.baseKm))||Number(r.baseKm)<0))throw Error('عداد البداية غير صالح.');if(r.baseDate&&(!/^\d{4}-\d{2}-\d{2}$/.test(r.baseDate)||Number.isNaN(Date.parse(r.baseDate))))throw Error('تاريخ البداية غير صالح.');if(r.once)throw Error('هذه النسخة تدعم البنود الدورية. أدخل الاستحقاق الأول المختلف كبند مستقل بعد المراجعة.');return {name:r.name.trim().slice(0,150),action:['فحص','استبدال','تنظيف','تدوير','أخرى'].includes(r.action)?r.action:'فحص',km,months,source:String(r.source||'').slice(0,500),page:String(r.page||'').slice(0,50),condition:String(r.condition||'عادي').slice(0,150),baseKm:r.baseKm===''||r.baseKm==null?null:Number(r.baseKm),baseDate:r.baseDate||''};});}
