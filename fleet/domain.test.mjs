@@ -16,4 +16,7 @@ assert.throws(()=>validateRules([{name:'x',km:0,months:0}]));
 assert.throws(()=>validateRules([{name:'x',months:1.5}]));
 assert.throws(()=>validateRules([{name:'x',months:6,once:true}]));
 assert.equal(validateRules([{name:'x',km:1000}])[0].baseKm,null);
-console.log('14 domain assertions passed');
+assert.throws(()=>validateRules([{name:'x',km:1000,baseDate:'2026-02-31'}]));
+assert.throws(()=>validateRules([{name:'x',months:10000000000}]));
+assert.throws(()=>validateRules([{name:'x',km:'bad',months:6}]));
+console.log('17 domain assertions passed');
