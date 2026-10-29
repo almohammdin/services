@@ -1,0 +1,12 @@
+import {translations} from './translations.mjs';
+export const supportedLanguages=['ar','en','fr'];
+let language='ar';
+try{const selected=globalThis.localStorage?.getItem('hatta-fleet-language');if(supportedLanguages.includes(selected))language=selected;}catch{}
+export const locale=()=>({ar:'ar-SA',en:'en-GB',fr:'fr-FR'}[language]);
+export const currentLanguage=()=>language;
+export function t(key){return language==='ar'?String(key??''):(translations[key]?.[language==='en'?0:1]??String(key??''));}
+// Only authored static text is translated. Never run this on user-entered content.
+const segment=/[\u0600-\u06ff][\u0600-\u06ff\s\dA-Za-z،؛:?!.…()\/+%—–←→·-]*/gu;
+export function ts(value){return String(value).replace(segment,part=>{const key=part.trimEnd();return t(key)+part.slice(key.length);});}
+export function translateStaticDOM(root){const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;while(node=walk.nextNode()){if(!['SCRIPT','STYLE'].includes(node.parentElement?.tagName))node.nodeValue=ts(node.nodeValue);}for(const el of root.querySelectorAll('[aria-label],[alt],[title],meta[content]'))for(const attr of ['aria-label','alt','title','content'])if(el.hasAttribute(attr))el.setAttribute(attr,ts(el.getAttribute(attr)));}
+export function initLanguage(){document.documentElement.lang=language;document.documentElement.dir=language==='ar'?'rtl':'ltr';translateStaticDOM(document.documentElement);const select=document.createElement('select');select.id='language-select';select.className='language-select';select.setAttribute('aria-label',({ar:'لغة العرض',en:'Display language',fr:'Langue d’affichage'})[language]);select.innerHTML='<option value="ar" lang="ar">العربية</option><option value="en" lang="en">English</option><option value="fr" lang="fr">Français</option>';select.value=language;document.querySelector('.topbar').append(select);document.addEventListener('input',e=>{const form=e.target.closest('form');if(form)form.dataset.dirty='true';});select.addEventListener('change',()=>{if([...document.querySelectorAll('form[data-dirty]')].some(form=>form.getClientRects().length>0)&&!confirm(t('ستفقد تغييرات النموذج غير المحفوظة عند تغيير اللغة. هل تريد المتابعة؟'))){select.value=language;return;}try{localStorage.setItem('hatta-fleet-language',select.value);}catch{}location.reload();});}

@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {seedExamples,removeExamples} from './demo.mjs';
+const blank=()=>({settings:{},vehicles:[],rules:[],records:[],people:[],documents:[]});
+const s=blank();assert.equal(seedExamples(s,'2026-10-29'),true);assert.equal(s.vehicles.length,3);assert.equal(s.rules.length,9);assert.equal(s.records.length,6);assert.equal(seedExamples(s,'2026-10-30'),false);
+const first=s.vehicles[0].id,third=s.vehicles[2].id;
+s.records.push({id:'custom-record',vehicleId:first,ruleId:s.rules[0].id,name:'My own note',demo:false});
+s.rules.find(r=>r.vehicleId===third).demo=false;
+s.vehicles.push({id:'own-vehicle',name:'Personal car'});
+removeExamples(s);
+assert.equal(s.vehicles.length,3);assert.equal(s.records.length,1);assert.equal(s.records[0].name,'My own note');assert.equal(s.records[0].ruleId,'');assert.equal(s.rules.length,1);assert.equal(s.vehicles.some(v=>v.demo),false);assert.equal(s.settings.examplesDeleted,true);assert.equal(seedExamples(s,'2026-11-01'),false);
+const restored=JSON.parse(JSON.stringify(s));assert.equal(seedExamples(restored,'2026-11-01'),false);
+const empty=blank();seedExamples(empty,'2026-10-29');removeExamples(empty);assert.equal(empty.vehicles.length,0);assert.equal(empty.rules.length,0);assert.equal(empty.records.length,0);assert.equal(seedExamples(empty,'2026-11-01'),false);
+console.log('Example seed/removal, preservation and backup persistence verified');

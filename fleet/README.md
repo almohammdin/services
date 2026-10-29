@@ -35,3 +35,9 @@ Browser QA: creation, persistence, rule due state, recording completion, empty s
 
 ## Next backend phase
 Use vehicle-scoped memberships enforced by the database/server, verified invitations and audit log. Separate ownership, assignment and permissions. Store images in private object storage with short-lived access URLs. Import existing local backups with explicit review. Do not use local role selectors as authorization.
+
+## v1.1 — Languages and removable examples
+- Arabic, English and French UI; a header selector persists the language per browser. Arabic uses RTL; English/French use LTR, localized dates and numbers. Vehicle names, notes and imported source data are never passed through automatic UI translation. Stable Arabic enum values remain unchanged in saved data for compatibility; option labels are localized.
+- Three clearly marked fictional Saudi-market examples: Camry 2026, Hilux 2020 petrol and Corolla 2015. Mileage, ownership and costs are illustrative. General inspection items and the 10,000 km visit pattern reference Toyota KSA's general maintenance page and Jameel program; they are not verified VIN/model-year-specific schedules. No new engine specifications, personal VINs or real invoice data are included.
+- The Settings action removes original sample data once. Edited entities and user-created dependent records are preserved; vehicles with those records are retained and detached from the demo. The `examplesDeleted` flag is backed up and restored; sample data never reappears automatically in that workspace after deletion. Clearing the entire browser storage creates a new workspace. Explicitly restoring an older backup restores that backup's sample state.
+- Tests: `node fleet/i18n.test.mjs`, `node fleet/demo.test.mjs`, and existing `node fleet/domain.test.mjs`.
