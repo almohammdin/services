@@ -1,10 +1,11 @@
-import {translations} from './translations.mjs?v=1.2';
+import {translations} from './translations.mjs?v=1.3';
 export const supportedLanguages=['ar','en','fr'];
 let language='ar';
 try{const selected=globalThis.localStorage?.getItem('hatta-fleet-language');if(supportedLanguages.includes(selected))language=selected;}catch{}
-export const locale=()=>({ar:'ar-SA',en:'en-GB',fr:'fr-FR'}[language]);
+export const locale=()=>({ar:'ar-SA-u-nu-latn',en:'en-GB',fr:'fr-FR'}[language]);
 export const currentLanguage=()=>language;
-export function t(key){return language==='ar'?String(key??''):(translations[key]?.[language==='en'?0:1]??String(key??''));}
+const arabicLabels={'سيارة ركوب':'سيارة خصوصي','نقل خفيف':'شاحنة صغيرة','للأفراد والمنشآت، سيارات الركوب والنقل والشاحنات.':'للأفراد والمنشآت، السيارات الخصوصي والنقل والشاحنات.'};
+export function t(key){const text=language==='ar'?(arabicLabels[key]??String(key??'')):(translations[key]?.[language==='en'?0:1]??String(key??''));return text.replace(/[٠-٩۰-۹]/g,c=>String(c.charCodeAt(0)-(c<='٩'?0x660:0x6f0)));}
 // Only authored static text is translated. Never run this on user-entered content.
 const segment=/[\u0600-\u06ff][\u0600-\u06ff\s\dA-Za-z،؛:?!.…()\/+%—–←→·-]*/gu;
 export function ts(value){return String(value).replace(segment,part=>{const key=part.trimEnd();return t(key)+part.slice(key.length);});}

@@ -295,13 +295,14 @@ export const translations = {
     "Tous les types"
   ],
   "سيارة ركوب": [
-    "Passenger car",
+    "Private car",
     "Voiture particulière"
   ],
   "نقل خفيف": [
-    "Light commercial vehicle",
-    "Utilitaire léger"
+    "Small truck",
+    "Petit camion"
   ],
+  "شاحنة كبيرة": ["Heavy truck", "Poids lourd"],
   "شاحنة": [
     "Truck",
     "Camion"

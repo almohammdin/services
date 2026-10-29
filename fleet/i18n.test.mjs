@@ -13,3 +13,11 @@ const {validateRules}=await import('./domain.mjs');
 assert.equal(validateRules([{name:'User text عربي',action:'استبدال',km:10000}])[0].action,'استبدال');
 assert.throws(()=>validateRules([{name:'x',km:0,months:0}]),/Item 1: Enter a valid interval/);
 console.log('Stored enum compatibility and localized validation verified');
+
+assert.equal(ar.t('سيارة ركوب'),'سيارة خصوصي');
+assert.equal(ar.t('نقل خفيف'),'شاحنة صغيرة');
+assert.equal(ar.t('٣ خطوات'),'3 خطوات');
+assert.equal(new Intl.NumberFormat(ar.locale()).format(129400),'129,400');
+assert.ok(!/[٠-٩۰-۹]/.test(new Date('2026-10-29T12:00:00').toLocaleDateString(ar.locale(),{calendar:'gregory'})));
+assert.equal(en.t('شاحنة كبيرة'),'Heavy truck');
+console.log('Western digits, Arabic dates and Saudi vehicle labels verified');
