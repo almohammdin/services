@@ -11,3 +11,7 @@ assert.equal(s.vehicles.length,3);assert.equal(s.records.length,1);assert.equal(
 const restored=JSON.parse(JSON.stringify(s));assert.equal(seedExamples(restored,'2026-11-01'),false);
 const empty=blank();seedExamples(empty,'2026-10-29');removeExamples(empty);assert.equal(empty.vehicles.length,0);assert.equal(empty.rules.length,0);assert.equal(empty.records.length,0);assert.equal(seedExamples(empty,'2026-11-01'),false);
 console.log('Example seed/removal, preservation and backup persistence verified');
+const fresh=blank();seedExamples(fresh,'2026-10-29');assert.deepEqual(fresh.vehicles.map(v=>v.plate),['أ ب د 1234','ح ر س 5678','م ن هـ 9012']);
+const {updateExamplePlates}=await import('./demo.mjs');fresh.vehicles[0].plate='DEMO 1';fresh.vehicles[1].plate='custom 9000';assert.equal(updateExamplePlates(fresh),true);assert.equal(fresh.vehicles[0].plate,'أ ب د 1234');assert.equal(fresh.vehicles[1].plate,'custom 9000');
+const {hydrateDemoPhotos}=await import('./photo-assets.mjs');let loads=0;fresh.vehicles[1].photo='data:image/jpeg;base64,OWN';await hydrateDemoPhotos(fresh,async path=>{loads++;return 'data:image/jpeg;base64,SAMPLE';});assert.equal(loads,2);assert.equal(fresh.vehicles[1].photo,'data:image/jpeg;base64,OWN');await hydrateDemoPhotos(fresh,async()=>{throw Error('must not reload');});removeExamples(fresh);assert.equal(await hydrateDemoPhotos(fresh,async()=>{throw Error('must not recreate');}),false);
+console.log('Plate migration and image preservation verified');

@@ -7,7 +7,7 @@ export function seedExamples(state,day){
  const ago=n=>{const d=new Date(day+'T12:00:00');d.setDate(d.getDate()-n);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
  const id=n=>'de000000-0000-4000-8000-'+String(n).padStart(12,'0');
  const list=[{name:'Toyota Camry 2026',year:2026,type:'سيارة ركوب',km:8500,lastKm:0,days:90,color:'#d1d8df',kind:'sedan'}, {name:'Toyota Hilux 2020',year:2020,type:'نقل خفيف',km:129400,lastKm:120000,days:110,color:'#b9ad94',kind:'pickup'}, {name:'Toyota Corolla 2015',year:2015,type:'سيارة ركوب',km:211200,lastKm:200000,days:180,color:'#b3b9c3',kind:'sedan'}];
- list.forEach((c,index)=>{const vehicleId=id(index+1);state.vehicles.push({id:vehicleId,name:c.name,type:c.type,year:c.year,km:c.km,plate:'DEMO '+(index+1),market:'Saudi Arabia',model:'',engine:'Petrol',vin:'',startDate:'',readingDate:day,photo:'',demo:true,demoColor:c.color,demoKind:c.kind});
+ list.forEach((c,index)=>{const vehicleId=id(index+1);state.vehicles.push({id:vehicleId,name:c.name,type:c.type,year:c.year,km:c.km,plate:['أ ب د 1234','ح ر س 5678','م ن هـ 9012'][index],market:'Saudi Arabia',model:'',engine:'Petrol',vin:'',startDate:'',readingDate:day,photo:'',demo:true,demoColor:c.color,demoKind:c.kind});
  const tasks=[['الصيانة الدورية العامة','فحص',10000],['فحص الفرامل والإطارات','فحص',10000],['فحص مرشح الهواء','فحص',10000]];
  tasks.forEach(([name,action,km],j)=>{const ruleId=id(100+index*10+j);state.rules.push({id:ruleId,vehicleId,name,action,condition:'عادي',km,months:0,baseKm:c.lastKm,baseDate:ago(c.days),source:'Toyota KSA — general service example',sourceUrl:demoReference,page:'',demo:true});if(c.lastKm>0){state.records.push({id:id(200+index*10+j),vehicleId,ruleId,name,date:ago(c.days),km:c.lastKm,cost:j===0?(index===1?650:420):0,workshop:'مركز خدمة تجريبي',notes:'بيانات وتكاليف توضيحية؛ ليست فاتورة فعلية أو توصية خاصة بهذا الطراز.',photos:[],demo:true});}});
  });
@@ -23,3 +23,5 @@ export function removeExamples(state){
  for(const r of state.records)if(removedRuleIds.has(r.ruleId))r.ruleId='';
  state.settings.examplesDeleted=true;state.settings.examplesSeeded=true;
 }
+
+export function updateExamplePlates(state){let changed=false;const plates=['أ ب د 1234','ح ر س 5678','م ن هـ 9012'];for(let i=0;i<3;i++){const id='de000000-0000-4000-8000-'+String(i+1).padStart(12,'0');const v=state.vehicles.find(v=>v.id===id&&v.demo);if(v&&v.plate==='DEMO '+(i+1)){v.plate=plates[i];changed=true;}}return changed;}

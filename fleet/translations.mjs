@@ -1,4 +1,7 @@
 export const translations = {
+  "صورة مرجعية؛ قد تختلف الفئة والسوق وسنة الموديل.": ["Reference photo; trim, market and model year may differ.", "Photo de référence ; finition, marché et année peuvent différer."],
+  "لوحة افتراضية للمثال": ["Fictional sample plate", "Plaque fictive d’exemple"],
+  "مثال: أ ب د 1234": ["e.g. أ ب د 1234", "Ex. : أ ب د 1234"],
   "غير محدد": [
     "Not specified",
     "Non précisé"

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {translations} from './translations.mjs';
-for(const [key,values] of Object.entries(translations)){assert.equal(values.length,2,key);for(const value of values){assert.equal(typeof value,'string',key);assert.ok(value.length,key);assert.ok(!/[\u0600-\u06ff]/u.test(value),key);}}
+for(const [key,values] of Object.entries(translations)){assert.equal(values.length,2,key);for(const value of values){assert.equal(typeof value,'string',key);assert.ok(value.length,key);if(key!=='مثال: أ ب د 1234')assert.ok(!/[\u0600-\u06ff]/u.test(value),key);}}
 globalThis.localStorage={getItem:()=> 'fr'};
 const fr=await import('./i18n.mjs?test=fr');assert.equal(fr.currentLanguage(),'fr');assert.equal(fr.locale(),'fr-FR');assert.equal(fr.t('حفظ'),'Enregistrer');assert.equal(fr.ts('＋ إضافة مركبة'),'＋ Ajouter un véhicule');assert.equal(fr.t('Custom user text'),'Custom user text');
 globalThis.localStorage={getItem:()=> 'en'};

@@ -1,4 +1,4 @@
-import {t,ts} from './i18n.mjs?v=1.1';
+import {t,ts} from './i18n.mjs?v=1.2';
 export const today=()=>new Date().toLocaleDateString('en-CA');
 export function addMonths(date,months){const d=new Date(date+'T12:00:00');const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+Number(months));const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last));return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 export function due(rule,vehicle,records,now=today(),leadDays=30,leadKm=1000){

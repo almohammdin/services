@@ -1,4 +1,4 @@
-import {translations} from './translations.mjs';
+import {translations} from './translations.mjs?v=1.2';
 export const supportedLanguages=['ar','en','fr'];
 let language='ar';
 try{const selected=globalThis.localStorage?.getItem('hatta-fleet-language');if(supportedLanguages.includes(selected))language=selected;}catch{}
