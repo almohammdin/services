@@ -5,7 +5,7 @@
 <div id="workspace" hidden>
 <section class="survey-card no-print">
 <label for="clientSelect">العميل</label><select id="clientSelect"><option value="">اختر العميل</option></select>
-<div class="survey-actions"><a class="btn" href="/services/consultation/" target="_blank" rel="noopener">فتح الاستبيان العام</a><button class="btn" id="copyLink" type="button">نسخ رابط الاستبيان</button><a class="btn" id="clientLink" href="../clients/">ملف العميل</a><button class="btn" id="logout" type="button">تسجيل الخروج</button></div>
+<div class="survey-actions"><a class="btn" href="/services/consultation/" target="_blank" rel="noopener">فتح الاستبيان العام</a><a class="btn" href="/services/consultation-alharbi/" target="_blank" rel="noopener">استبيان عبدالله الحربي</a><button class="btn" id="copyLink" type="button">نسخ رابط الاستبيان</button><a class="btn" id="clientLink" href="../clients/">ملف العميل</a><button class="btn" id="logout" type="button">تسجيل الخروج</button></div>
 <p class="helper">يرسل العميل نسخة الاستكمال بصيغة JSON، ثم تحفظها هنا ضمن ملفه.</p>
 </section>
 <section id="clientWorkspace" hidden>
@@ -19,4 +19,4 @@
 <details class="survey-card no-print" id="importBox"><summary>استيراد إجابات العميل</summary><p class="helper">اختر ملف نسخة الاستكمال أو الصق محتواه. راجع الإجابات قبل حفظها.</p><label for="answerFile">ملف الإجابات</label><input type="file" id="answerFile" accept=".json,application/json"><label for="sourceFile">اسم الملف</label><input id="sourceFile" value="hatta-consulting-draft.json" dir="ltr" maxlength="180"><label for="sourceJson">محتوى ملف الإجابات JSON</label><textarea id="sourceJson" dir="ltr" spellcheck="false" rows="8" maxlength="200000"></textarea><button class="btn" id="previewSurvey" type="button">معاينة الإجابات</button><p id="importMessage" role="status"></p></details>
 <div id="answers"></div>
 </section></div></main>
-<script src="../shell.js?v=20261024e"></script><script type="module" src="./survey.js?v=20261024e"></script></body></html>
+<script src="../shell.js?v=20261024e"></script><script type="module" src="./survey.js?v=20261031-alharbi"></script></body></html>

@@ -1,6 +1,6 @@
-import {auth,authReady,onAuthStateChanged,loadWorkspace,saveClientSurvey} from '../data.js?v=20261024e';
+import {auth,authReady,onAuthStateChanged,loadWorkspace,saveClientSurvey} from '../data.js?v=20261031-alharbi';
 import {signOut} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
-import {GROUPS,parseSurvey} from './model.js?v=20261024e';
+import {surveyGroups,parseSurvey} from './model.js?v=20261031-alharbi';
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let account=null,clients=[],current=null,sourceJson='',revision=0,dirty=false,epoch=0,busy=false;
 const publicUrl=new URL('/services/consultation/',location.origin).href;
@@ -8,7 +8,7 @@ const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth
 function clearPrivate(){account=null;clients=[];current=null;sourceJson='';revision=0;dirty=false;$('workspace').hidden=true;$('clientWorkspace').hidden=true;$('answers').replaceChildren();$('clientSelect').replaceChildren(new Option('اختر العميل',''));$('sourceJson').value='';$('sourceFile').value='hatta-consulting-draft.json';$('clientName').textContent='';$('contactName').textContent='';$('recordMeta').textContent='';$('saveMessage').textContent='';$('importMessage').textContent='';}
 function renderAnswers(){
  if(!sourceJson){$('answers').innerHTML='<p class="empty-survey">بانتظار إضافة إجابات هذا العميل.</p>';$('recordMeta').textContent='';}
- else{const {source,answerCount}=parseSurvey(sourceJson);$('recordMeta').textContent=answerCount+' إجابة · '+$('sourceFile').value+(revision?' · النسخة '+revision:'');$('answers').innerHTML=GROUPS.map(g=>'<section class="survey-card answer-group"><h2>'+esc(g.title)+'</h2><dl>'+g.fields.filter(([id])=>Object.hasOwn(source.answers,id)).map(([id,label])=>'<div class="answer"><dt>'+esc(label)+'</dt><dd>'+esc(source.answers[id]||'لم تتم الإجابة')+'</dd></div>').join('')+'</dl></section>').join('');}
+ else{const {source,answerCount}=parseSurvey(sourceJson);$('recordMeta').textContent=answerCount+' إجابة · '+$('sourceFile').value+(revision?' · النسخة '+revision:'');$('answers').innerHTML=surveyGroups(source.schema).map(g=>'<section class="survey-card answer-group"><h2>'+esc(g.title)+'</h2><dl>'+g.fields.filter(([id])=>Object.hasOwn(source.answers,id)).map(([id,label])=>'<div class="answer"><dt>'+esc(label)+'</dt><dd>'+esc(source.answers[id]||'لم تتم الإجابة')+'</dd></div>').join('')+'</dl></section>').join('');}
  $('saveSurvey').disabled=!sourceJson||busy;$('downloadSurvey').disabled=!sourceJson;$('printSurvey').disabled=!sourceJson;
  $('recordStatus').textContent=dirty?'تعديلات تنتظر الحفظ':sourceJson?($('reviewStatus').value==='reviewed'?'تمت مراجعتها':'وصلت الإجابات'):'بانتظار الإجابات';
 }
