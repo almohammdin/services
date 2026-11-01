@@ -54,3 +54,22 @@
  #quotePaper:not(.hidden){min-height:278mm!important}
  #quotePaper .footer{margin-top:auto!important}
 }
+
+/* Stable screen/print geometry: same 188 mm text width. */
+#quotePaper:not(.hidden){width:210mm;max-width:none!important;min-height:296mm;padding:9mm 11mm;box-sizing:border-box}
+#quotePaper .footer{margin-top:auto!important;padding-top:2mm}
+.paper .social-one{display:flex;align-items:center;gap:3mm;background:none;border:0;padding:0}
+.paper .social-links{display:flex;gap:1mm}
+.paper .social-links a{width:6mm;height:7mm;color:#061f56}
+.paper .social-links svg{width:3.6mm;height:3.6mm;fill:currentColor;stroke:none}
+.paper .social-handle{font-size:8px}
+.paper .footer-person{display:flex;gap:3mm;align-items:center}
+.paper .footer-naif{object-fit:contain}
+@media screen and (max-width:850px){.stage{overflow-x:auto;padding-bottom:12px}.stage .paper{max-width:none!important}#quotePaper{padding:9mm 11mm!important}.stage .paper .client-band{grid-template-columns:1fr 1fr!important}.stage .paper .quote-title h2{font-size:21px!important}}
+@media print{
+ #quotePaper:not(.hidden){display:block!important;width:188mm!important;min-height:0!important;padding:0!important}
+ #quotePaper .footer{margin-top:4mm!important}
+ #quotePaper.fit-one-page:not(.hidden){display:flex!important;min-height:278mm!important}
+ #quotePaper.fit-one-page .footer{margin-top:auto!important}
+ .paper .social-links a{width:5mm;height:5mm}
+}

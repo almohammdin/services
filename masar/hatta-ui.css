@@ -1,4 +1,4 @@
-@import url('./hatta-fonts.css?v=20261024');
+@import url('./hatta-fonts.css?v=20261101d');
 :root{--navy:#061f56;--ink:#18263d;--gold:#b47a2d;--muted:#667085;--line:#e1ded7;--paper:#fbfaf7;--shadow:0 8px 28px #061f5607;--brand:#061f56;--brand2:#17376c;--gold2:#d2a05a}
 html{scroll-padding-top:90px}body{background:var(--paper);color:var(--ink);font-family:'Thmanyah Sans',Tahoma,sans-serif;font-feature-settings:'salt' 0;font-synthesis:none;line-height:1.8}input,select,textarea,button,.btn,.tab{font-family:'Thmanyah Sans',Tahoma,sans-serif;font-feature-settings:'salt' 0;font-weight:500}h1{font-family:'Thmanyah Serif Display',serif;font-weight:900;font-feature-settings:'salt' 1;line-height:1.3}h2{font-family:'Thmanyah Serif Display',serif;font-weight:700;line-height:1.4}h3,.section-title,.action b,summary,.qbox-title{font-family:'Thmanyah Sans',sans-serif;font-feature-settings:'salt' 1;font-weight:700}p,td,th,label,small{font-feature-settings:'salt' 0}.en,[lang=en],input[type=email],input[type=tel],.ltr,.money-amount,.metric strong{font-family:'El Messiri','Thmanyah Sans',sans-serif;font-variant-numeric:tabular-nums}
 [hidden]{display:none!important}.masar-header{position:sticky;top:0;z-index:15;background:#fbfaf7f5;border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}.masar-header-inner{max-width:1440px;margin:auto;padding:12px 24px;display:flex;align-items:center;gap:24px}.masar-brand{display:flex;align-items:center;gap:14px;flex-shrink:0;text-decoration:none}.masar-brand img{width:85px;height:40px;object-fit:contain}.masar-brand strong{border-inline-start:1px solid var(--line);padding-inline-start:14px;font-family:'Thmanyah Serif Display';font-size:26px;color:var(--navy)}.masar-nav{display:flex;gap:6px;flex-wrap:wrap;margin-inline-start:auto}.masar-nav a{padding:7px 14px;font-size:13px;border-radius:9px;color:var(--muted);text-decoration:none}.masar-nav a:hover,.masar-nav a[aria-current=page]{background:#eee9df;color:var(--navy)}.shell{max-width:1280px;padding:28px 24px}.hero,.top,.panel-head{background:var(--navy);box-shadow:none;border-radius:20px;color:#fff}.hero{padding:28px}.top{padding:24px}.hero .brand-logo,.top>div>img,.panel-head>img{display:none!important}.hero h1.sr-only{position:static;width:auto;height:auto;clip:auto;overflow:visible;font-size:36px}.hero .brand p{font-size:14px}.actions{grid-template-columns:repeat(4,minmax(0,1fr))!important}.action{border-radius:14px;min-height:138px;box-shadow:none;padding:20px;transition:background .15s}.action.main{background:#e6d2ae}.action:hover{transform:none;background:#f5eee2}.action b{font-size:20px}.action .arrow{font-size:18px}.card,.panel{border-radius:16px;box-shadow:none;border-color:var(--line)}.grid{gap:16px}.metric strong{font-size:30px;line-height:1.6}.metric{border-top:3px solid #d2a05a}.metric small{font-size:13px}.table th{background:#f2efe8;color:var(--navy)}.table td,.table th{padding:14px 12px}.btn,.login,.logout{border-radius:10px;min-height:42px}.btn.gold,.login{background:#e6d2ae;color:#061f56}.btn.dark{background:var(--navy)}input,select,textarea{border-radius:9px;border-color:#d2d4d9;font-size:14px;min-height:42px}textarea{line-height:1.8}input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid #b47a2d;outline-offset:3px}.auth{background:var(--paper)}.auth-card{border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:20px;box-shadow:var(--shadow);color:var(--ink)}.auth-logo,.auth-card>img{display:block!important;width:min(230px,100%);height:auto;margin:0 auto 20px;border-radius:8px}.auth-card:before{content:none}.auth-card h1.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.auth-card h1{font-size:32px}.client{padding:20px;border-color:var(--line);background:#fff}.client b{font-size:18px}.client small{font-size:13px}.client-contact a{background:#f8f6f0}.client-actions{margin-top:8px}.notice{border-radius:10px}.empty{padding:28px;background:#fbfaf7;border-radius:12px}.masar-footer{max-width:1232px;margin:36px auto 18px;padding:24px;border-top:1px solid var(--line);display:flex;align-items:center;gap:20px;justify-content:space-between;color:var(--muted);font-size:12px}.masar-footer img{width:85px;height:40px;object-fit:contain}.masar-footer .signature{width:65px;filter:brightness(0) saturate(100%)}.masar-footer a{color:var(--navy)}.masar-footer small{display:block}.app{padding:24px;max-width:1680px;margin:auto;grid-template-columns:minmax(330px,390px) minmax(0,1fr);align-items:start}.panel-head{border-radius:0}.panel-body{max-height:calc(100dvh - 210px)}.stage{min-width:0}.toolbar{background:var(--paper);padding:8px 0}.tabs{flex-wrap:wrap}.print-hint{font-size:12px;color:var(--muted);margin:6px 0 14px}
@@ -21,3 +21,44 @@ h1{font-weight:900}h2{font-weight:700}
 h3,.section-title,.action b,summary,.qbox-title{font-family:'Thmanyah Sans',sans-serif;font-feature-settings:'salt' 1;font-weight:700}
 .en,[lang=en],.ltr,.money-amount,.metric strong{font-family:'El Messiri','Thmanyah Sans',sans-serif;font-variant-numeric:tabular-nums}
 .masar-header-inner{padding-block:8px}.masar-footer{margin-top:22px;padding:16px 24px}
+
+/* Masar 4: compact tools, shared brand and accessible actions. */
+body{min-height:100svh;display:flex;flex-direction:column;background:#fbfaf7;color:#17233c}
+body>.shell,body>.app{width:100%;flex:1}
+.masar-header{backdrop-filter:none;background:#fbfaf7}
+.masar-header-inner{padding:8px 24px}
+.hero,.top{border-radius:16px}
+.hero>nav.actions .action{min-height:96px;padding:16px}
+.action b{font-size:18px}.action span{font-size:13px}
+.btn,.login,.logout,.masar-nav a{min-height:44px}
+.btn.gold,.login{background:#061f56;color:#fff}
+.hero .actions .btn.gold{background:#e6d2ae;color:#061f56}
+.masar-footer{box-sizing:border-box;width:calc(100% - 48px);max-width:1232px;margin:20px auto 0;padding:12px 0;gap:16px;flex-wrap:wrap;min-height:80px}
+.masar-footer .footer-company img{width:150px;height:auto;max-height:60px}
+.masar-footer .footer-caption{font-size:12px;margin-inline-end:auto}
+.footer-credit{display:flex;align-items:center;gap:6px;font-size:11px}
+.masar-footer .signature{width:80px;height:38px;object-fit:contain;filter:brightness(0) saturate(100%) invert(12%) sepia(46%) saturate(2519%) hue-rotate(204deg) brightness(89%) contrast(108%)}
+.footer-social{display:flex;align-items:center;gap:8px}
+.social-links{display:flex;align-items:center;gap:2px;direction:ltr}
+.social-links a{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:8px;color:#061f56}
+.social-links svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.social-handle{font-family:'El Messiri',sans-serif;font-size:11px;white-space:nowrap}
+@media(hover:hover){.social-links a:hover{background:#eee9df}}
+.save-state{font-size:12px;line-height:1.6;border-radius:8px;padding:7px 10px;background:#eef6f2;color:#087a55}
+.save-state[data-state="pending"],.save-state[data-state="saving"]{background:#fff6e8;color:#8a5b20}
+.save-state[data-state="error"]{background:#fff0ee;color:#b42318}
+.editor-status{position:sticky;top:0;z-index:3;background:#fff;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:14px}
+.print-hint[data-overflow="true"]{color:#8a5b20;background:#fff6e8;padding:8px 12px;border-radius:8px}
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.filter-bar input{flex:1;min-width:180px}.filter-bar select{max-width:220px}
+.version-history td{background:#faf9f6}.version-history[hidden]{display:none}
+.status-badge{display:inline-block;padding:3px 9px;border-radius:7px;background:#edf1f7;font-size:12px}
+.status-badge.accepted{background:#edf7f1;color:#087a55}
+.finance-details{margin-top:16px}.finance-details>summary{cursor:pointer;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.client-offers>summary{cursor:pointer;padding:10px 0;color:var(--navy)}
+.client-search{width:min(420px,100%);margin-bottom:16px}
+@media(max-width:700px){.masar-footer{width:calc(100% - 32px);gap:8px 16px}.masar-footer .footer-caption{display:none}.footer-social{margin-inline-start:auto}.masar-footer .footer-company img{width:150px}.shell,.app{padding:12px}.hero>nav.actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero>nav.actions .action{min-height:95px}.panel-body{max-height:none}.editor-status{position:static}.filter-bar select{max-width:100%;width:100%}input,select,textarea{font-size:16px!important}}
+@media(max-width:390px){.footer-social{width:100%;justify-content:center}.masar-footer{justify-content:space-between}.action b{font-size:16px}}
+@media print{body{display:block}.editor-status,.filter-bar{display:none!important}}
+
+.hero>div>img[alt="مسار"]{display:none!important}

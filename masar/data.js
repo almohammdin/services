@@ -1,3 +1,4 @@
+import {renameClientQuotes} from './quote-model.js?v=20261101d';
 import {mergeClientSurvey} from './consultation/model.js?v=20261031-alharbi';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js';
 import {getAuth,setPersistence,browserLocalPersistence,GoogleAuthProvider,signInWithPopup,onAuthStateChanged as watchAuth,signOut} from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js';
@@ -68,16 +69,18 @@ function workspaceData(data){
  const deleted=new Set(data.pricingTool_v1?.deletedQuoteIds||[]);
  const quotes=(data.pricingTool_v1?.quotes||[]).filter(q=>!deleted.has(quoteKey(q)));
  const stored=Array.isArray(data.pricingClients_v1?.clients)?data.pricingClients_v1.clients:[];
- const clients=distinctClients([...quotes.map(q=>({name:q.client})),...stored]).map(c=>({...c,id:c.id||crypto.randomUUID()}));
- return {quotes,clients,currentQuoteId:data.pricingTool_v1?.currentQuoteId||null};
+ const clients=distinctClients([...quotes.filter(q=>!q.clientId||!stored.some(c=>c.id===q.clientId)).map(q=>({name:q.client})),...stored]).map(c=>({...c,id:c.id||crypto.randomUUID()}));
+ return {quotes,clients,deletedQuoteIds:[...deleted],currentQuoteId:data.pricingTool_v1?.currentQuoteId||null};
 }
 export async function loadWorkspace(user){
  requireOwner(user);
+ const ref=doc(db,'users',user.uid),snap=await getDoc(ref),data=snap.data()||{};
+ const result=workspaceData(data),stored=data.pricingClients_v1?.clients||[];
+ if(result.clients.length===stored.length&&!stored.some(c=>!c.id))return result;
  return runTransaction(db,async tx=>{
-  const ref=doc(db,'users',user.uid),snap=await tx.get(ref),data=snap.data()||{};
-  const result=workspaceData(data),stored=data.pricingClients_v1?.clients||[];
-  if(result.clients.length!==stored.length||stored.some(c=>!c.id))tx.set(ref,{pricingClients_v1:{clients:result.clients,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
-  return result;
+  const latest=await tx.get(ref),current=latest.data()||{},migrated=workspaceData(current);
+  tx.set(ref,{pricingClients_v1:{clients:migrated.clients,updatedAtIso:new Date().toISOString()},updatedAt:serverTimestamp()},{merge:true});
+  return migrated;
  });
 }
 export async function saveClient(user,client){
@@ -105,14 +108,14 @@ export async function updateClient(user,originalName,changes){
     const deleted=new Set(box.deletedQuoteIds||[]);
     const quotes=(Array.isArray(box.quotes)?box.quotes:[]).filter(q=>!deleted.has(quoteKey(q)));
     const stored=Array.isArray(data.pricingClients_v1?.clients)?data.pricingClients_v1.clients:[];
-    const clients=distinctClients([...quotes.map(q=>({name:q.client})),...stored]);
+    const clients=distinctClients([...quotes.filter(q=>!q.clientId||!stored.some(c=>c.id===q.clientId)).map(q=>({name:q.client})),...stored]);
     if(newKey!==oldKey&&clients.some(c=>clientKey(c.name)===newKey))throw new Error('يوجد عميل بهذا الاسم بالفعل');
     const existing=clients.find(c=>clientKey(c.name)===oldKey);
     if(!existing)throw new Error('لم يعد العميل موجودًا. حدّث الصفحة وحاول مجددًا');
     const nextClients=distinctClients([...clients.filter(c=>clientKey(c.name)!==oldKey),{
-      ...existing,name,person:String(changes.person||'').trim(),notes:String(changes.notes||'').trim(),email:String(changes.email||'').trim(),mobile:String(changes.mobile||'').trim(),whatsapp:String(changes.whatsapp||'').trim()
+      ...existing,id:existing.id||crypto.randomUUID(),name,person:String(changes.person||'').trim(),notes:String(changes.notes||'').trim(),email:String(changes.email||'').trim(),mobile:String(changes.mobile||'').trim(),whatsapp:String(changes.whatsapp||'').trim()
     }]);
-    const nextQuotes=quotes.map(q=>clientKey(q.client)===oldKey?{...q,client:name}:q);
+    const nextQuotes=renameClientQuotes(quotes,existing.id||crypto.randomUUID(),originalName,name);
     tx.set(ref,{
       pricingClients_v1:{clients:nextClients,updatedAtIso:new Date().toISOString()},
       pricingTool_v1:{...box,quotes:nextQuotes,updatedAtIso:new Date().toISOString()},
