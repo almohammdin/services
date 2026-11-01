@@ -446,7 +446,25 @@ body.presentation-mode{--toolbar-height:0px}
  .method-outcome{margin-top:35px;padding:18px 12px}
 }
 
-.cover-brands{position:relative}.reyadioun-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;text-decoration:none;color:var(--paper)}.reyadioun-brand img{display:block;width:142px;height:75px;object-fit:contain;background:#fff;border-radius:5px}.reyadioun-brand span{font:400 16px/1.4 Sans,Tahoma,sans-serif;white-space:nowrap}</style>
+.cover-brands{position:relative}.reyadioun-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;text-decoration:none;color:var(--paper)}.reyadioun-brand img{display:block;width:142px;height:75px;object-fit:contain;background:#fff;border-radius:5px}.reyadioun-brand span{font:400 16px/1.4 Sans,Tahoma,sans-serif;white-space:nowrap}/* Unified bottom controls: reserve the full remaining viewport for slides. */
+:root{--toolbar-height:0px;--navigation-height:44px}
+.nav{justify-content:space-between;gap:10px}
+.nav .home{font-size:12px;gap:8px;flex-shrink:0}
+.nav .home .hatta{width:48px;height:25px}
+.nav .top-tools{gap:5px;flex-shrink:0}
+.nav .top-tools button{min-width:0;height:30px;padding:3px 9px;font-size:11px}
+.nav-middle{justify-content:center;flex:1;min-width:0}
+.presentation-mode .nav .fullscreen-exit{display:none}
+@media(max-width:1100px){.nav .home span{display:none}.nav .dots{display:none}}
+@media(max-width:760px) and (orientation:portrait){
+ :root{--toolbar-height:0px;--navigation-height:78px}
+ .nav{height:78px;flex-basis:78px;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:30px 32px;gap:4px 8px;padding:5px 8px}
+ .nav .home{grid-column:1;grid-row:1}.nav .top-tools{grid-column:2/4;grid-row:1;justify-content:flex-end}
+ .nav #prevButton{grid-column:1;grid-row:2}.nav-middle{grid-column:2;grid-row:2}.nav #nextButton{grid-column:3;grid-row:2}
+ .nav .home .hatta{width:44px;height:23px}
+ .nav .top-tools button{height:28px;font-size:11px}
+}
+</style>
 <style id="presentation-ambient-balance">
 /* Keep the motion readable while softening its presence behind slide content. */
 .slide.hatta-ambient-host > canvas.hatta-ambient{opacity:.55}
@@ -479,10 +497,7 @@ body.presentation-mode{--toolbar-height:0px}
 <symbol id="i-knight" viewBox="0 0 100 120"><path d="M25 101h52l-5-16c12-21 15-48-5-64L54 9l-2 16-14 2-21 30 12 9 20-13c-1 15-20 21-20 32zM21 111h60M53 38h2" fill="currentColor" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/></symbol>
 <symbol id="i-check" viewBox="0 0 32 32"><path d="m6 16 7 7L27 8"/></symbol>
 </defs></svg>
-<header class="topbar">
-<a href="../" class="home" aria-label="أدوات حتى"><svg class="hatta" viewBox="135 150 865 280"><use href="#hattaBrand"/></svg><span>هندسة الشراكات التجارية</span></a>
-<div class="top-tools"><button id="tocToggle" aria-expanded="false" aria-controls="tocDialog">الفهرس</button><button id="printButton">طباعة</button><button id="fullButton">ملء الشاشة</button></div>
-</header>
+
 <main class="viewport" id="viewport" aria-label="عرض هندسة الشراكات التجارية"><div class="stage" id="stage">
 
 <section class="slide cover" data-title="هندسة الشراكات التجارية" data-steps="1" aria-labelledby="title0"><svg class="bookend-pattern" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#b47a2d" stroke-width="1.3" opacity=".16"><path d="M-80 510H140Q180 510 180 550V730Q180 770 220 770H520"/><path d="M-80 555H95Q135 555 135 595V775Q135 815 175 815H565"/><path d="M-80 600H50Q90 600 90 640V820Q90 860 130 860H610"/><path d="M1120-70V80Q1120 120 1160 120H1430Q1470 120 1470 160V360"/><path d="M1165-70V35Q1165 75 1205 75H1475Q1515 75 1515 115V405"/><path d="M1210-70V-10Q1210 30 1250 30H1520Q1560 30 1560 70V450"/></g><g fill="#b47a2d" opacity=".27"><circle cx="180" cy="550" r="5"/><circle cx="520" cy="770" r="5"/><circle cx="1120" cy="80" r="5"/><circle cx="1470" cy="360" r="5"/></g><g fill="none" stroke="#061f56" opacity=".035" stroke-width="1"><path d="M20 0V900M65 0V900M110 0V900M1540 0V900M1585 0V900"/><path d="M0 45H1600M0 90H1600M0 810H1600M0 855H1600"/></g></svg>
@@ -684,7 +699,7 @@ body.presentation-mode{--toolbar-height:0px}
 </section>
 
 </div></main>
-<nav class="nav" aria-label="التنقل في العرض"><button id="prevButton" aria-label="الخطوة السابقة">→ السابق</button><div class="nav-middle"><span id="slideCounter" class="num" aria-live="polite">1 / 10</span><div class="dots" id="slideDots"></div><span id="stepCounter">البداية</span></div><button id="nextButton" aria-label="الخطوة التالية">التالي ←</button><button id="fullscreenExit" class="fullscreen-exit" aria-label="إنهاء ملء الشاشة" title="إنهاء ملء الشاشة"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/></svg></button></nav>
+<nav class="nav" aria-label="التنقل في العرض"><a href="../" class="home" aria-label="أدوات حتى"><svg class="hatta" viewBox="135 150 865 280"><use href="#hattaBrand"/></svg><span>هندسة الشراكات التجارية</span></a><button id="prevButton" aria-label="الخطوة السابقة">→ السابق</button><div class="nav-middle"><span id="slideCounter" class="num" aria-live="polite">1 / 10</span><div class="dots" id="slideDots"></div><span id="stepCounter">البداية</span></div><button id="nextButton" aria-label="الخطوة التالية">التالي ←</button><div class="top-tools"><button id="tocToggle" aria-expanded="false" aria-controls="tocDialog">الفهرس</button><button id="printButton">طباعة</button><button id="fullButton">ملء الشاشة</button></div><button id="fullscreenExit" class="fullscreen-exit" aria-label="إنهاء ملء الشاشة" title="إنهاء ملء الشاشة"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/></svg></button></nav>
 <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
 <dialog id="tocDialog" class="drawer"><div class="dialog-head"><h2>فهرس العرض</h2><button data-close aria-label="إغلاق">×</button></div><div id="tocList"></div><details class="sources"><summary>المراجع وملاحظات الأمثلة</summary><p>حالة الحوافز مقتبسة من البند المرفق للمحاضر. بقية الأرقام أمثلة تدريبية، وتصميم حقوق الأسهم وشركة المشروع مستلهم من ملف المساهمة المبسطة.</p><a href="https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/655fdb42-8c96-422b-b8c4-b04f0095c94c/1" target="_blank" rel="noopener">نظام المعاملات المدنية: المواد 535 و538 و557</a><a href="https://www.boe.gov.sa/" target="_blank" rel="noopener">إحصاءات بوابة هيئة الخبراء</a><a href="https://mc.gov.sa/ar/mediacenter/News/Pages/29-01-23-01.aspx" target="_blank" rel="noopener">المساهمة المبسطة ومرونة تنظيمها</a><a href="https://www.uqn.gov.sa/details?p=19697" target="_blank" rel="noopener">نظام الشركات</a><a href="https://www.uqn.gov.sa/details?p=21325" target="_blank" rel="noopener">اللائحة التنفيذية لنظام الشركات</a><a href="https://rega.gov.sa/rega-services/platforms/real-estate-contributions/" target="_blank" rel="noopener">المساهمات العقارية ومتطلبات الترخيص</a><a href="https://almohammdin.github.io/mudaraba-to-sjsc/v2/" target="_blank" rel="noopener">شركة المشروع ومصمم حقوق الأسهم</a><a href="https://almohammdin.github.io/hatta-brand-guide/" target="_blank" rel="noopener">دليل هوية حتى</a></details><small class="version">الإصدار 2.7 · 25/10/2026</small></dialog>
 
