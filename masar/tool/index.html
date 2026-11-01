@@ -160,7 +160,7 @@ update=function(save=true,field=document.activeElement?.id||''){
 function scheduleSave(){
  if(!user||loading)return;
  dirty=fingerprint(capture())!==lastSaved;
- if(!dirty)return;
+ if(!dirty){clearTimeout(saveTimer);setSaveState('saved');return;}
  setSaveState('pending');clearTimeout(saveTimer);
  saveTimer=setTimeout(()=>saveCloud(false),1200);
 }
@@ -182,7 +182,7 @@ async function persistQuote(registerClient=false){
  if(registerClient)clearTimeout(saveTimer);
   let current=capture();
   const submitted=fingerprint(current),submittedRow={...current},baseline=loadedRow;
-  if(submitted===lastSaved){if(registerClient)await ensureClient(current.client);return true;}
+  if(submitted===lastSaved){dirty=false;setSaveState('saved');if(registerClient)await ensureClient(current.client);return true;}
   setSaveState('saving');
   if(!Number.isFinite(current.amount)||current.amount<0){setSaveState('error','أدخل قيمة عرض صحيحة');return false;}
   if(current.partnerCost!=null&&(current.partnerCost<0||current.partnerCost>current.amount)||current.collectedAmount!=null&&(current.collectedAmount<0||current.collectedAmount>current.amount)||current.partnerPaid!=null&&(current.partnerPaid<0||current.partnerPaid>(current.partnerCost??0))){setSaveState('error','راجع مبالغ الشركاء والتحصيل؛ توجد قيمة تتجاوز المبلغ المتاح.');return false}
@@ -258,9 +258,11 @@ window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.return
 window.addEventListener('online',()=>{if(dirty&&!loading)saveCloud(false)});
 document.fonts.ready.then(checkPageFit);
 $('newVersionBtn').onclick=async()=>{
+ const button=$('newVersionBtn');button.disabled=true;try{
  if(!user){notice('سجّل الدخول أولًا');return}
  if(dirty&&!(await saveCloud(true))){notice('احفظ النسخة الحالية أولًا');return}
  forkVersion();if(await saveCloud(true))notice('حُفظت النسخة '+fmt.format(version)+' بجانب النسخة السابقة.');
+ }finally{button.disabled=false}
 };
 $('newBtn').onclick=async()=>{
  if(dirty&&!(await saveCloud(true)))return;
