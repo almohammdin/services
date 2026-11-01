@@ -44,3 +44,13 @@
  #quotePaper .qsection{margin-top:3mm!important}
  #quotePaper .footer{margin-top:4mm!important}
 }
+
+/* Keep the quote footer at the bottom without clipping longer content. */
+#quotePaper:not(.hidden){display:flex!important;flex-direction:column;min-height:297mm}
+#quotePaper>*{flex-shrink:0}
+#quotePaper .footer{margin-top:auto!important}
+#quotePaper .approval{margin-bottom:4mm}
+@media print{
+ #quotePaper:not(.hidden){min-height:278mm!important}
+ #quotePaper .footer{margin-top:auto!important}
+}
