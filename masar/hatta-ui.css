@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
 @import url('./hatta-fonts.css?v=20261024');
 :root{--navy:#061f56;--ink:#18263d;--gold:#b47a2d;--muted:#667085;--line:#e1ded7;--paper:#fbfaf7;--shadow:0 8px 28px #061f5607;--brand:#061f56;--brand2:#17376c;--gold2:#d2a05a}
 html{scroll-padding-top:90px}body{background:var(--paper);color:var(--ink);font-family:'Thmanyah Sans',Tahoma,sans-serif;font-feature-settings:'salt' 0;font-synthesis:none;line-height:1.8}input,select,textarea,button,.btn,.tab{font-family:'Thmanyah Sans',Tahoma,sans-serif;font-feature-settings:'salt' 0;font-weight:500}h1{font-family:'Thmanyah Serif Display',serif;font-weight:900;font-feature-settings:'salt' 1;line-height:1.3}h2{font-family:'Thmanyah Serif Display',serif;font-weight:700;line-height:1.4}h3,.section-title,.action b,summary,.qbox-title{font-family:'Thmanyah Sans',sans-serif;font-feature-settings:'salt' 1;font-weight:700}p,td,th,label,small{font-feature-settings:'salt' 0}.en,[lang=en],input[type=email],input[type=tel],.ltr,.money-amount,.metric strong{font-family:'El Messiri','Thmanyah Sans',sans-serif;font-variant-numeric:tabular-nums}
@@ -12,3 +13,9 @@ html{scroll-padding-top:90px}body{background:var(--paper);color:var(--ink);font-
 @media(max-width:1100px){.hero>nav.actions{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:700px){.hero>nav.actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.masar-brand img.masar-wordmark{width:120px}.client-filter{align-items:flex-start;flex-wrap:wrap}}
 @media(max-width:560px){.hero>nav.actions{grid-template-columns:1fr!important}}
+
+/* Unified Hatta Arabic typography across Masar screens and controls. */
+body,input,select,textarea,button,.btn,.tab,h1,h2,h3,.section-title,.action b,summary,.qbox-title,.masar-brand strong,.paper,.en,[lang=en],.ltr,.money-amount,.metric strong{font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;font-feature-settings:normal}
+h1,h2,h3,summary,.section-title{font-weight:700}
+.masar-header-inner{padding-block:8px}
+.masar-footer{margin-top:22px;padding:16px 24px}
