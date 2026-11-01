@@ -14,18 +14,18 @@
 @media print{@page{@bottom-center{direction:ltr;unicode-bidi:isolate}@top-right{content:'حتى لحلول الأعمال · مسار';font-family:'Thmanyah Sans';font-size:8pt;color:#667085}}}
 
 /* Compact A4 quote; reports retain their flowing layout. */
-#quotePaper{padding:9mm 11mm;min-height:0;font-family:'IBM Plex Sans Arabic',Tahoma,sans-serif}
+#quotePaper{padding:9mm 11mm;min-height:0;font-family:'Thmanyah Sans',Tahoma,sans-serif}
 #quotePaper .brand-top{margin:0 0 3mm}
 #quotePaper .brand-logo{max-height:15mm;max-width:48mm}
 #quotePaper .quote-head{padding:0 0 3mm;gap:5mm}
-#quotePaper .quote-title h2{font-family:inherit;font-size:21px;line-height:1.4}
+#quotePaper .quote-title h2{font-family:'Thmanyah Serif Display',serif;font-feature-settings:'salt' 1;font-size:21px;line-height:1.4}
 #quotePaper .quote-title p,#quotePaper .meta-line{font-size:10px;line-height:1.5}
 #quotePaper .client-band{margin-top:3mm;gap:3mm}
 #quotePaper .qbox{padding:2.5mm}
 #quotePaper .qbox-main{font-size:12px;line-height:1.6}
 #quotePaper .qbox-title,#quotePaper .qbox-sub{font-size:10px}
 #quotePaper .qsection{margin-top:3mm!important}
-#quotePaper .qsection h3{font-family:inherit;font-size:12px;margin-bottom:1mm!important}
+#quotePaper .qsection h3{font-family:'Thmanyah Sans',sans-serif;font-feature-settings:'salt' 1;font-size:12px;margin-bottom:1mm!important}
 #quotePaper .scope,#quotePaper .terms{font-size:11px;line-height:1.65;padding:2.5mm}
 #quotePaper .deliverables{font-size:11px;line-height:1.65}
 #quotePaper .deliverables li{margin-bottom:.6mm}
@@ -37,7 +37,7 @@
 #quotePaper .sign-field{min-height:9mm;font-size:9px}
 #quotePaper .footer{margin-top:4mm!important;padding-top:2mm;font-size:9px;gap:3mm}
 #quotePaper .footer-naif{height:8mm;width:20mm}
-#quotePaper .meta strong,#quotePaper .money-amount{font-family:inherit;font-variant-numeric:tabular-nums}
+#quotePaper .meta strong,#quotePaper .money-amount{font-family:'El Messiri','Thmanyah Sans',sans-serif;font-variant-numeric:tabular-nums}
 @media print{
  @page{size:A4 portrait;margin:9mm 11mm;@top-right{content:none}@bottom-center{content:none}}
  #quotePaper{padding:0!important;width:188mm!important}
