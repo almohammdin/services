@@ -33,6 +33,7 @@
   <header class="top">
     <div class="title-wrap"><span class="eyebrow">تقدير الربح وترتيب السداد</span><h1>حاسبة البيع الآجل</h1></div>
   </header>
+  <a id="engineeringLink" href="engineering/" style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;margin-bottom:20px;background:#0D3656;color:white;text-decoration:none;border-radius:14px"><span><b>بعد الاتفاق: هندسة عملية البيع</b><small style="display:block;color:#d0dde6">الأطراف · التملك والقبض · الوكالة · المراجع الشرعية</small></span><span aria-hidden="true">←</span></a>
   <div class="workspace">
     <section class="panel" aria-labelledby="calc-title">
       <div class="panel-head"><h2 id="calc-title">بيانات العملية</h2><p>حدد تكلفة السلعة وهامش الربح السنوي ورتب الدفعات.</p></div>
@@ -333,6 +334,11 @@ $('#shareImage').onclick = async () => {
 document.querySelectorAll('input:not(#product):not(#startMonth)').forEach(input => { input.lang = 'en'; input.dir = 'ltr'; input.addEventListener('input', () => { input.value = numeric(input.value); }); });
 rebuild();
 
+</script>
+<script>
+document.getElementById('engineeringLink').addEventListener('click', function(){
+ try { sessionStorage.setItem('deferred-sale-engineering-import', JSON.stringify({product:document.getElementById('product').value,cash:number(document.getElementById('cash').value),deferred:number(document.getElementById('deferred').value),resale:number(document.getElementById('resale').value)})); } catch {}
+});
 </script>
 </body>
 </html>
