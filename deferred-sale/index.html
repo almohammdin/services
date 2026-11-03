@@ -25,7 +25,7 @@
 .mode{grid-template-columns:1fr 1fr}.mode button{line-height:1.6;padding:10px 8px}.mode button[data-mode=periodic]{grid-column:1/-1}.mode button[data-mode=custom]{grid-column:1/-1}.pay-labels{display:grid;grid-template-columns:34px 1fr 1.25fr 34px;gap:7px;text-align:center;font-size:.68rem;color:var(--muted);margin-bottom:7px}.pay-row input{direction:ltr}.pay-row input[readonly]{background:#f0ece6;color:var(--navy);border-color:transparent}.pay-row .remove:disabled{visibility:hidden}.pay-row:last-child{padding:7px 0;border-top:1px solid #d7c9b8}.schedule-top{align-items:flex-start;flex-wrap:wrap}.sum{display:flex;align-items:center;gap:5px}.validation{font-size:.8rem;color:var(--red);background:#fcedea;border-radius:12px;padding:12px;line-height:1.7}.calculate:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}.last-payment td{background:#fff3df;color:#70491b;font-weight:800}.last-payment td:first-child{border-radius:0 9px 9px 0}.last-payment td:last-child{border-radius:9px 0 0 9px}.result-schedule small{display:block;color:var(--muted);font-size:.72rem;margin-top:10px}.footnote{max-width:680px;margin:18px auto 0;line-height:1.8}.metric .money-value{display:inline-flex;color:inherit;font-size:inherit}.metric .money-value bdi{font-weight:800}.result-table th:last-child,.result-table td:last-child{text-align:left}.result-table td{font-size:.83rem}.share-dialog{border:1px solid var(--line);border-radius:22px;padding:0;background:var(--paper);color:var(--ink);width:min(600px,calc(100% - 24px));max-height:92dvh;box-shadow:var(--shadow);overflow:auto}.share-dialog::backdrop{background:rgba(7,31,51,.72)}.dialog-top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:var(--paper);z-index:2;border-bottom:1px solid var(--line)}.dialog-top h2{margin:0;font-size:1.1rem;color:var(--navy)}.dialog-close{border:0;background:var(--soft);color:var(--navy);border-radius:50%;width:36px;height:36px;font:24px Arial;cursor:pointer}.share-preview{padding:16px;background:#ece8e1;min-height:100px}.share-preview img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 4px 20px #071f3314}.share-nav{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:12px;font-size:.85rem}.share-nav button{font:inherit;border:1px solid #cbbca8;background:white;border-radius:8px;padding:5px 12px;color:var(--navy);cursor:pointer}.share-nav button:disabled{opacity:.4;cursor:default}.share-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px 20px 10px;position:sticky;bottom:0;background:var(--paper)}.share-buttons button{width:100%;font-size:.88rem}.share-status{font-size:.8rem;color:var(--muted);padding:0 20px 16px;margin:0;line-height:1.8}.share-status.error{color:var(--red)}button:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}body:has(dialog[open]){overflow:hidden}@media(max-width:560px){.pay-labels{grid-template-columns:28px 1fr 1.15fr 30px}.mode{grid-template-columns:1fr 1fr}.share-dialog{max-height:94dvh}.share-preview{padding:10px}.dialog-top{padding:12px 15px}.share-buttons{padding:12px 14px}.share-buttons .calculate,.share-buttons .reset{height:45px}.metrics .metric strong{font-size:1.12rem}}
 
 .payment-date{grid-column:2/4;color:var(--navy);font-size:.76rem;padding:0 4px 5px}.payment-date:empty{display:none}
-</style></head>
+</style><link rel="stylesheet" href="profit-share.css?v=1"></head>
 <body>
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><symbol id="sar-mark" viewBox="0 0 1124 1256"><path d="M700 1113c-20 44-33 93-38 143l425-90c20-45 33-93 38-144l-425 91Z"/><path d="M1086 896c20-45 33-93 38-144l-331 70V688l292-62c20-45 33-94 38-144l-330 70V66c-51 28-96 66-132 111v403l-132 28V0c-51 28-96 66-132 111v526L101 700c-20 44-33 93-38 143l334-71v170l-358 76c-20 45-33 93-38 144l375-80c31-6 57-24 74-49l69-102c7-10 11-23 11-37V744l132-28v270l424-90Z"/></symbol></svg>
 <div id="mobileTotal" aria-live="polite"></div><main class="shell">
@@ -41,16 +41,17 @@
         <div class="fields">
 
           <div class="field"><label for="cash">تكلفة شراء السلعة</label><div class="input-wrap"><input class="money-input" id="cash" type="text" value="100,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
-          <div class="field"><label for="deferred">سعر البيع الآجل</label><div class="input-wrap"><input class="money-input" id="deferred" readonly type="text" value="154,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
+          <div class="field"><label for="deferred">سعر البيع الآجل</label><div class="input-wrap"><input class="money-input" id="deferred" readonly type="text" value="160,000" inputmode="numeric"><span class="suffix"><svg class="sar-icon"><use href="#sar-mark"></use></svg></span></div></div>
           <div class="field"><label for="duration">مدة السداد</label><div class="duration-control"><div class="input-wrap"><input id="duration" type="text" min="0.1" max="30" step="any" value="3" inputmode="decimal" style="padding-left:14px"></div><select id="durationUnit" aria-label="وحدة مدة السداد"><option value="years" selected>سنوات</option><option value="months">أشهر</option></select></div><div class="quick" id="quickDuration"><button type="button" data-value="12" data-unit="months">12 شهر</button><button type="button" data-value="18" data-unit="months">18 شهر</button><button type="button" data-value="24" data-unit="months">24 شهر</button><button type="button" data-value="3" data-unit="years" class="active">3 سنوات</button></div></div>
-          <div class="field"><label for="target">هامش الربح السنوي</label><div class="input-wrap"><input id="target" type="text" min="0" max="500" step="0.1" value="18" inputmode="decimal"><span class="suffix">%</span></div></div>
+          <div class="field"><label for="target">هامش الربح السنوي</label><div class="input-wrap"><input id="target" type="text" min="0" max="500" step="0.1" value="20" inputmode="decimal"><span class="suffix">%</span></div></div>
           <div class="field full"><small class="calculation-help">نسبة سنوية بسيطة على تكلفة السلعة الأصلية لحساب ثمن البيع قبل الاتفاق.</small></div><div class="field full"><label for="startMonth">شهر بداية الحساب</label><div class="input-wrap"><input id="startMonth" type="month" lang="en" dir="ltr" style="padding-left:14px" aria-describedby="startMonthHelp"></div><small id="startMonthHelp" class="calculation-help">تلقائيا حسب تاريخ جهازك: حتى يوم 15 يعتمد الشهر الحالي، وبعده الشهر التالي. تستحق الدفعات في آخر يوم من شهر الاستحقاق. يمكنك تعديل شهر البداية.</small></div><div class="field full"><label>طريقة السداد</label><div class="mode" id="mode"><button type="button" data-mode="periodic" class="active" aria-pressed="true">دفعات دورية ودفعة أخيرة أكبر</button><button type="button" data-mode="equal" aria-pressed="false">دفعات متساوية</button><button type="button" data-mode="bullet" aria-pressed="false">دفعة في النهاية</button><button type="button" data-mode="custom" aria-pressed="false">دفعات مخصصة</button></div></div>
           <div class="field full" id="periodField"><label for="period">تكرار الدفعات</label><select id="period"><option value="12">سنوي</option><option value="6">كل 6 أشهر</option><option value="3">كل 3 أشهر</option><option value="1">شهري</option></select><small class="calculation-help">تضاف تكلفة السلعة إلى الدفعة الأخيرة، مع مبلغ الفترة الأخيرة.</small></div>
           <div class="field" id="countField" hidden><label for="count">عدد الدفعات</label><div class="input-wrap"><input id="count" type="text" min="1" max="120" step="1" value="3" inputmode="numeric"><span class="suffix">دفعة</span></div></div>
         </div>
 <details class="extra"><summary>تفاصيل السلعة وإعادة البيع</summary>          <div class="field full"><label for="product">اسم المنتج</label><div class="input-wrap"><input id="product" type="text" maxlength="160" placeholder="مثال: سيارة تويوتا كامري 2026" autocomplete="off" style="direction:rtl;text-align:right;padding-left:14px"></div></div><div class="field"><label for="resale">قيمة إعادة البيع نقدا</label><div class="input-wrap"><input id="resale" class="money-input" type="text" inputmode="numeric" placeholder="أدخل القيمة المتوقعة"></div><small>تقدير مستقل عن تكلفة شراء السلعة.</small></div></details>
         <div class="schedule" id="schedule"><div class="schedule-top"><b>جدول الدفعات</b><span class="sum" id="scheduleSum"></span></div><div class="pay-labels"><span>الدفعة</span><span id="termLabel">بعد (سنة)</span><span>المبلغ بالريال</span><span></span></div><div class="pay-list" id="payList"></div><button class="add" id="editPayments" type="button">تعديل الدفعات</button><button class="add" id="addPayment" type="button" hidden>+ إضافة دفعة</button><button class="add" id="balancePayment" type="button" hidden>ضبط الدفعة الأخيرة لإكمال الثمن</button></div><p class="validation" id="validation" role="status" hidden></p>
-        <div class="actions"><button class="calculate" type="button" id="share">مشاركة الملخص كصورة</button><button class="reset" type="button" id="reset">إعادة</button></div>
+        <section class="profit-partners"><h3>توزيع ربح الصفقة</h3><p>حصة الشركة من الربح، والباقي للمستثمر. أصل المال مستقل.</p><div class="fields"><div class="field"><label for="investorName">المستثمر</label><input id="investorName" type="text" maxlength="60" value="حميد"></div><div class="field"><label for="companyName">الشركة</label><input id="companyName" type="text" maxlength="60" value="مواشينا الفاخرة"></div></div><label for="companyShare">حصة الشركة من الربح <output id="companyShareLabel">50%</output></label><input id="companyShare" type="range" min="0" max="50" step="1" value="50"><div class="share-presets"><button type="button" data-share="0">0%</button><button type="button" data-share="1">1%</button><button type="button" data-share="25">25%</button><button type="button" data-share="50">50%</button></div><div id="profitSplit" aria-live="polite"></div></section>
+<div class="actions"><button class="calculate" type="button" id="share">مشاركة الملخص كصورة</button><button class="reset" type="button" id="reset">إعادة</button></div>
       </form>
     </section>
     <section class="panel results" aria-live="polite" id="results"></section>
@@ -64,6 +65,7 @@
   <p id="shareStatus" class="share-status" role="status">جار تجهيز الصورة...</p>
 </dialog>
 
+<script src="profit-share.js?v=1"></script>
 <script>
 'use strict';
 const $ = s => document.querySelector(s);
@@ -193,7 +195,8 @@ function calculate() {
   $('#validation').hidden = !error; $('#validation').textContent = error; $('#share').disabled = Boolean(error);
   $('#scheduleSum').innerHTML = base.error ? '' : 'الإجمالي ' + money(Number.isFinite(sum) ? sum / 100 : 0) + ' / ' + money(base.total / 100);
   $('#scheduleSum').classList.toggle('bad', Boolean(error));
-  currentDeal = error ? null : { ...base, payments: pays, startMonth: startMonth.value, product: product.value.trim(), duration: durationText(base.months), resale: number($('#resale').value) || 0 };
+  renderProfitSplit(base, error);
+  currentDeal = error ? null : { split: profitSplitValues(base), ...base, payments: pays, startMonth: startMonth.value, product: product.value.trim(), duration: durationText(base.months), resale: number($('#resale').value) || 0 };
   $('#mobileTotal').innerHTML = 'إجمالي البيع الآجل <strong>' + (error ? '—' : money(base.total / 100)) + '</strong>';
   if (base.error) { $('#results').innerHTML = '<div class="empty"><b>ملخص عرض البيع الآجل</b>أكمل بيانات العملية لعرض الحساب.</div>'; return; }
   const validRows = pays.filter(p => Number.isFinite(p.month) && Number.isFinite(p.cents)), resale = number($('#resale').value);
@@ -226,7 +229,7 @@ function changeDuration() {
 duration.addEventListener('input', changeDuration); durationUnit.addEventListener('change', changeDuration);
 $('#quickDuration').addEventListener('click', event => { const button = event.target.closest('button'); if (!button) return; duration.value = button.dataset.value; durationUnit.value = button.dataset.unit; changeDuration(); });
 $('#calculator').addEventListener('submit', event => { event.preventDefault(); calculate(); });
-$('#reset').onclick = () => { automaticStartMonth = true; startMonth.value = defaultStartMonth(); cash.value = '100,000'; target.value = '18'; duration.value = '3'; durationUnit.value = 'years'; duration.max = '30'; count.value = '3'; period.value = '12'; product.value = ''; $('#resale').value = ''; mode = 'periodic'; previousMonths = 36; previousUnit = 'years'; rebuild(); };
+$('#reset').onclick = () => { document.getElementById('companyShare').value = '50'; document.getElementById('companyName').value = 'مواشينا الفاخرة'; document.getElementById('investorName').value = 'حميد'; automaticStartMonth = true; startMonth.value = defaultStartMonth(); cash.value = '100,000'; target.value = '20'; duration.value = '3'; durationUnit.value = 'years'; duration.max = '30'; count.value = '3'; period.value = '12'; product.value = ''; $('#resale').value = ''; mode = 'periodic'; previousMonths = 36; previousUnit = 'years'; rebuild(); };
 
 // Render with the page's local fonts, without screenshot services or external image libraries.
 async function makeSummaryPages(deal) {
@@ -235,7 +238,7 @@ async function makeSummaryPages(deal) {
   const pages = [], perPage = 12, pageCount = Math.ceil(deal.payments.length / perPage);
   for (let pageIndex = 0; pageIndex < pageCount; pageIndex++) {
     const rows = deal.payments.slice(pageIndex * perPage, (pageIndex + 1) * perPage), canvas = document.createElement('canvas');
-    canvas.width = 1080; canvas.height = 1016 + rows.length * 88;
+    canvas.width = 1080; canvas.height = 1276 + rows.length * 88;
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas unavailable');
     const navy = '#0D3656', gold = '#C9853C', ink = '#18232D', muted = '#65727D';
@@ -289,7 +292,15 @@ async function makeSummaryPages(deal) {
     const foot = 822 + rows.length * 88;
     ctx.strokeStyle = '#E3DED6'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(88, foot); ctx.lineTo(992, foot); ctx.stroke();
     text('جميع الدفعات أجزاء من ثمن البيع المتفق عليه.', 992, foot + 49, 27, muted);
-    text('عرض مبدئي للمناقشة', 992, foot + 95, 26, gold, 700);
+    text('توزيع ربح الصفقة قبل المصروفات', 992, foot + 103, 30, navy, 700);
+    text(deal.split.company + ' · ' + deal.split.rate + '%', 992, foot + 150, 26, muted, 400, 'right', 620);
+    canvasMoney(deal.split.companyCents / 100, 100, foot + 150, 32, navy, 'left', 250);
+    text(deal.split.investor + ' · ' + (100 - deal.split.rate) + '%', 992, foot + 198, 26, muted, 400, 'right', 620);
+    canvasMoney(deal.split.investorCents / 100, 100, foot + 198, 32, navy, 'left', 250);
+    text('أصل مال المستثمر منفصل عن حصص الربح', 992, foot + 246, 26, muted);
+    canvasMoney(deal.principal / 100, 100, foot + 246, 32, navy, 'left', 250);
+    text('توزيع تقديري يخضع للتحصيل والتسوية الفعلية.', 992, foot + 292, 25, muted);
+    text('عرض مبدئي للمناقشة', 992, foot + 335, 26, gold, 700);
     const blob = await new Promise((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('PNG export failed')), 'image/png'));
     pages.push(new File([blob], 'deferred-sale-summary' + (pageCount > 1 ? '-' + (pageIndex + 1) : '') + '.png', { type: 'image/png' }));
   }
@@ -331,7 +342,7 @@ $('#shareImage').onclick = async () => {
     else { saveCurrentImage(); shareStatus('المشاركة المباشرة غير متاحة في هذا المتصفح. تم طلب حفظ الصورة لتشاركها.'); }
   } catch (error) { if (error.name !== 'AbortError') shareStatus('تعذرت المشاركة المباشرة. استخدم زر حفظ الصورة.', true); }
 };
-document.querySelectorAll('input:not(#product):not(#startMonth)').forEach(input => { input.lang = 'en'; input.dir = 'ltr'; input.addEventListener('input', () => { input.value = numeric(input.value); }); });
+document.querySelectorAll('input:not(#product):not(#startMonth):not(#companyName):not(#investorName)').forEach(input => { input.lang = 'en'; input.dir = 'ltr'; input.addEventListener('input', () => { input.value = numeric(input.value); }); });
 rebuild();
 
 </script>
