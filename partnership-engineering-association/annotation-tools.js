@@ -39,7 +39,7 @@
       </div>
       <label class="annotation-size">سماكة القلم والتظليل <input id="annotationWidth" type="range" min="1" max="40" value="3" aria-label="سماكة أداة التأشير"><output id="annotationWidthValue">3</output></label><p class="annotation-help" role="status">التأشير محفوظ أثناء الجلسة فقط.</p>
     </div>`;
-  document.querySelector('.nav').append(dock);
+  document.querySelector('.nav .top-tools').append(dock);
   const laser = document.createElement('div');
   laser.className = 'annotation-pointer';
   laser.hidden = true;
