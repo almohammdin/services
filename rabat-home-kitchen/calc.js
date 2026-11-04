@@ -85,6 +85,7 @@ function updateNavigation() {
   const match = location.hash.slice(1).match(/^(ar|fr)-(.*)$/);
   const lang = match?.[1] || 'ar';
   const topic = match?.[2] || 'page';
+  if (location.hash === '#ar-page') history.replaceState(null, '', location.pathname + location.search);
   if (topics[topic]) {
     location.replace('#' + lang + '-' + topics[topic]);
     return;
