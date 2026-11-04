@@ -1,10 +1,11 @@
-(() => {
-  const form = document.querySelector('form');
-  const list = document.getElementById('ingredients');
-  const result = document.getElementById('result');
-  const t = (ar, fr) => document.documentElement.lang === 'ar' ? ar : fr;
-  const fmt = new Intl.NumberFormat(t('ar-MA', 'fr-MA'), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const val = id => document.getElementById(id).valueAsNumber;
+document.querySelectorAll('.edition').forEach(edition => {
+  const get = key => document.getElementById(edition.lang + '-' + key);
+  const form = edition.querySelector('form');
+  const list = get('ingredients');
+  const result = get('result');
+  const t = (ar, fr) => edition.lang === 'ar' ? ar : fr;
+  const fmt = new Intl.NumberFormat(t('ar-MA', 'fr-MA'), { numberingSystem: 'latn', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const val = id => get(id).valueAsNumber;
   const ceil = x => Math.ceil((x - 1e-10) * 100) / 100;
   function ingredient(name = '', price = 0, bought = 1, used = 1) {
     const row = document.createElement('div');
@@ -73,7 +74,29 @@
   ingredient(t('أرز (غرام)','Riz (g)'),18,1000,250);
   ingredient(t('دجاج (غرام)','Poulet (g)'),65,1000,1000);
   ingredient(t('خضر وتوابل (حصة الوصفة)','Légumes et épices (lot)'),15,1,1);
-  document.getElementById('add').onclick = () => {const row = ingredient(); row.querySelector('input').focus();calculate();};
+  get('add').onclick = () => {const row = ingredient(); row.querySelector('input').focus();calculate();};
   form.addEventListener('input', calculate);
   calculate();
-})();
+});
+
+// Preserve old bookmarks and keep the selected topic when changing language.
+const topics = {home:'contacts',apps:'contacts',images:'contacts',advice:'plan',terms:'legal',sources:'legal'};
+function updateNavigation() {
+  const match = location.hash.slice(1).match(/^(ar|fr)-(.*)$/);
+  const lang = match?.[1] || 'ar';
+  const topic = match?.[2] || 'page';
+  if (topics[topic]) {
+    location.replace('#' + lang + '-' + topics[topic]);
+    return;
+  }
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('header nav a').forEach(link => {
+    link.href = '#' + link.lang + '-' + topic;
+    if (link.lang === lang) link.setAttribute('aria-current','true');
+    else link.removeAttribute('aria-current');
+  });
+  document.querySelector('.brand').href = '#' + lang + '-page';
+}
+window.addEventListener('hashchange', updateNavigation);
+updateNavigation();
