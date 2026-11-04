@@ -1,25 +1,33 @@
 'use strict';
 const $=id=>document.getElementById(id), KEY='hatta-sale-engineering-v1';
-const roles={A:'مالك السلعة الأصلي',B:'الممول / البائع بالأجل',C:'المشتري بالأجل',D:'المشتري النقدي المستقل',E:'الوكيل المستقل'};
-const defaults=()=>({names:{A:'مالك السيارة',B:'الممول',C:'طالب السيولة',D:'المشتري النهائي',E:'وكيل مستقل'},product:'سيارة محددة برقم الهيكل',cash:100000,deferred:154000,resale:98000,purpose:'cash',buyAgent:'B',sellAgent:'B',resaleAgent:'C',finalBuyer:'D',arranged:'unknown',authority:'unknown',checks:[false,false,false,false,false,false]});
+const roles={A:'مالك السلعة',B:'الممول',C:'المشتري بالأجل',D:'المشتري النهائي',E:'الوكيل المستقل'};
+const defaults=()=>({labelVersion:2,names:{A:'',B:'',C:'',D:'',E:''},product:'',cash:100000,deferred:154000,resale:98000,purpose:'cash',buyAgent:'B',sellAgent:'B',resaleAgent:'C',finalBuyer:'D',arranged:'unknown',authority:'unknown',checks:[false,false,false,false,false,false]});
 let s=defaults(),step=0;
-try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved&&saved.names){s={...s,...saved,names:{...s.names,...saved.names}};if(!Array.isArray(s.checks)||s.checks.length!==6)s.checks=defaults().checks;}}catch{}
+try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved&&saved.names){s={...s,...saved,names:{...s.names,...saved.names}};if(saved.labelVersion!==2){
+  const oldLabels={A:'مالك السيارة',B:'الممول',C:'طالب السيولة',D:'المشتري النهائي',E:'وكيل مستقل'};
+  for(const id of Object.keys(oldLabels))if(s.names[id]===oldLabels[id])s.names[id]='';
+  if(s.product==='سيارة محددة برقم الهيكل')s.product='';
+  s.labelVersion=2;
+}if(!Array.isArray(s.checks)||s.checks.length!==6)s.checks=defaults().checks;}}catch{}
 try{const transfer=JSON.parse(sessionStorage.getItem('deferred-sale-engineering-import'));if(transfer){for(const key of ['product','cash','deferred','resale'])if(Object.prototype.hasOwnProperty.call(transfer,key))s[key]=transfer[key];s.checks=defaults().checks;sessionStorage.removeItem('deferred-sale-engineering-import');}}catch{}
 const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const n=id=>s.names[id]||roles[id], money=v=>Number.isFinite(+v)&&+v>0?'<span class="amount-value"><bdi>'+new Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(+v)+'</bdi><svg class="sar-icon" role="img" aria-label="ريال سعودي"><use href="#sar-mark"></use></svg></span>':'مبلغ غير محدد';
+const enteredName=id=>String(s.names[id]||'').trim();
+const assetName=()=>String(s.product||'').trim()||'السلعة';
+const n=id=>enteredName(id)?enteredName(id)+' ('+roles[id]+')':roles[id];
+const money=v=>Number.isFinite(+v)&&+v>0?'<span class="amount-value"><bdi>'+new Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(+v)+'</bdi><svg class="sar-icon" role="img" aria-label="ريال سعودي"><use href="#sar-mark"></use></svg></span>':'مبلغ غير محدد';
 const hasResale=()=>s.purpose==='cash', hasAgents=()=>s.buyAgent!=='B'||s.sellAgent!=='B'||(hasResale()&&s.resaleAgent!=='C');
-const gates=[['تحديد السلعة ومالكها','وصف واضح ورقم هيكل للسيارة، والتحقق من ملك البائع الأصلي.'],['شراء الممول وتملكه وقبضه','عقد شراء وفاتورة باسم الممول وإثبات حيازته وتحمله تبعة الملك قبل البيع التالي.'],['إبرام البيع الآجل بعد ذلك','ثمن إجمالي ثابت وآجال معلومة وعقد مستقل بعد تحقق ملك الممول وقبضه.'],['قبض المشتري بالأجل','إثبات تسلمه وحيازته وتمكينه من التصرف، قبل أي إعادة بيع.'],['إعادة البيع بقرار مستقل','عقد نقدي مع المشتري النهائي بعد القبض، دون ترتيب الممول للتصريف.'],['قبض ثمن إعادة البيع','الثمن لحساب المشتري بالأجل، مع توثيق التحويل وأجر الوكيل إن وجد.']];
+const gates=[['تحديد السلعة ومالكها','حدد السلعة بما يميزها وتحقق من ملك البائع لها.'],['شراء الممول وتملكه وقبضه','عقد شراء وفاتورة باسم الممول وإثبات حيازته وتحمله تبعة الملك قبل البيع التالي.'],['إبرام البيع الآجل بعد ذلك','ثمن إجمالي ثابت وآجال معلومة وعقد مستقل بعد تحقق ملك الممول وقبضه.'],['قبض المشتري بالأجل','إثبات تسلمه وحيازته وتمكينه من التصرف، قبل أي إعادة بيع.'],['إعادة البيع بقرار مستقل','عقد نقدي مع المشتري النهائي بعد القبض، دون ترتيب الممول للتصريف.'],['قبض ثمن إعادة البيع','الثمن لحساب المشتري بالأجل، مع توثيق التحويل وأجر الوكيل إن وجد.']];
 function init(){
- $('names').innerHTML=Object.keys(roles).map(id=>`<label>${id} · ${roles[id]}<input data-name="${id}" maxlength="45" value="${esc(n(id))}"></label>`).join('');
+ $('names').innerHTML=Object.keys(roles).map(id=>`<label>${roles[id]}<input data-name="${id}" maxlength="45" placeholder="الاسم (اختياري)" value="${esc(s.names[id])}"></label>`).join('');
  for(const id of ['product','cash','deferred','resale','purpose','arranged','authority'])$(id).value=s[id];
  refreshOptions();
  $('checks').innerHTML=gates.map((g,i)=>`<label class="check" data-gate="${i}"><input type="checkbox" data-check="${i}" ${s.checks[i]?'checked':''}><span>${i+1}. ${g[0]}<small>${g[1]}</small></span></label>`).join('');
  render();
 }
-function refreshOptions(){for(const [id,keys,principal] of [['buyAgent',['B','C','E','A','D'],'B'],['sellAgent',['B','E','A','C','D'],'B'],['resaleAgent',['C','E','B','A','D'],'C'],['finalBuyer',['D','A','B','E'],'']]){$(id).innerHTML=keys.map(k=>`<option value="${k}">${k} · ${esc(n(k))}${k===principal?' (بنفسه)':''}</option>`).join('');if(!keys.includes(s[id]))s[id]=keys[0];$(id).value=s[id];}}
+function refreshOptions(){for(const [id,keys,principal] of [['buyAgent',['B','C','E','A','D'],'B'],['sellAgent',['B','E','A','C','D'],'B'],['resaleAgent',['C','E','B','A','D'],'C'],['finalBuyer',['D','A','B','E'],'']]){$(id).innerHTML=keys.map(k=>`<option value="${k}">${esc(n(k))}${k===principal?' (بنفسه)':''}</option>`).join('');if(!keys.includes(s[id]))s[id]=keys[0];$(id).value=s[id];}}
 function evaluate(){const out=[];const add=(level,title,text,ref)=>out.push({level,title,text,ref});
- if(!s.product.trim()||['cash','deferred',...(hasResale()?['resale']:[])].some(k=>!Number.isFinite(+s[k])||+s[k]<=0))add('danger','أكمل بيانات السلعة والثمن','يلزم تحديد السلعة ومبالغ صحيحة موجبة قبل مراجعة العملية.',2);
- const activeIds=['A','B','C',...(hasResale()?['D']:[])];const names=activeIds.map(k=>n(k).trim().replace(/\s+/g,' '));if(new Set(names).size!==names.length)add('warn','أسماء متطابقة لأدوار مختلفة','تحقق من هوية الأطراف. إذا كان الشخص نفسه يشغل دورين فاختره من قائمة الدور أو الوكالة لإظهار أثر الجمع.',5);
+ if(['cash','deferred',...(hasResale()?['resale']:[])].some(k=>!Number.isFinite(+s[k])||+s[k]<=0))add('danger','راجع المبالغ','أدخل مبلغا أكبر من صفر لكل عملية بيع.',2);
+ const activeIds=['A','B','C',...(hasResale()?['D']:[])];const names=activeIds.map(k=>enteredName(k).replace(/\s+/g,' ')).filter(Boolean);if(new Set(names).size!==names.length)add('warn','أسماء متطابقة لأدوار مختلفة','تحقق من هوية الأطراف. إذا كان الشخص نفسه يشغل دورين فاختره من قائمة الدور أو الوكالة لإظهار أثر الجمع.',5);
  if(hasResale()){
  if(s.finalBuyer==='B')add(+s.resale<+s.deferred?'danger':'warn',+s.resale<+s.deferred?'صورة عينة: رجوع السلعة للممول بأقل':'رجوع السلعة للممول يحتاج مراجعة',+s.resale<+s.deferred?'المشتري بالأجل يعيد السلعة إلى بائعه بثمن نقدي أقل من دينه. غيّر المشتري النهائي إلى طرف مستقل.':'العودة بالمثل أو بأكثر تختلف عن العينة المذكورة، ويحتاج واقع الاتفاق والتواطؤ إلى مراجعة خاصة.',3);
  if(s.arranged==='yes')add('danger','ترتيب الممول لإعادة البيع','هذه من صورة التورق المنظم الممنوع وفق قرار المجمع المعتمد هنا، ولو نفذ البيع وكيل آخر. استقلال اسم الوكيل وحده لا يكفي.',1);
@@ -55,7 +63,7 @@ function draw(){
  const agent=(key,owner)=>`<label class="card-agent">من ينفذ عن ${esc(n(owner))}؟<select data-config="${key}" aria-label="منفذ ${key==='buyAgent'?'الشراء النقدي':key==='sellAgent'?'البيع الآجل':'إعادة البيع'}">${$(key).innerHTML}</select></label>`;
  const data=[{title:'الممول يشتري السلعة',seller:'A',buyer:'B',price:s.cash,kind:'نقدا',key:'buyAgent',owner:'B',gate:'قبل الخطوة التالية: يتملك الممول السلعة ويقبضها.'},{title:'الممول يبيع بالأجل',seller:'B',buyer:'C',price:s.deferred,kind:'دين بأجل معلوم',key:'sellAgent',owner:'B',gate:'قبل إعادة البيع: يتملك المشتري السلعة ويقبضها.'},...(hasResale()?[{title:'المشتري يبيع ويحصل على النقد',seller:'C',buyer:s.finalBuyer,price:s.resale,kind:'نقدا',key:'resaleAgent',owner:'C',gate:'يختار المشتري إعادة البيع باستقلال عن ترتيب الممول.'}]:[])];
  saleViewer.show(data);
- $('map').innerHTML=data.map((d,i)=>`<article class="sale-card"><header class="card-title"><span>${i+1}</span><h3>${d.title}</h3></header><div class="party-flow"><div><small>البائع</small><strong>${esc(n(d.seller))}</strong></div><div class="one-arrow"><small>السلعة</small><span aria-hidden="true">←</span></div><div><small>المشتري</small><strong>${esc(n(d.buyer))}</strong></div></div><div class="price-strip"><span>${d.kind}</span><strong>${money(d.price)}</strong><small>${esc(n(d.buyer))} يدفع إلى ${esc(n(d.seller))}${i===1?' حسب مواعيد السداد':''}</small></div>${agent(d.key,d.owner)}${s[d.key]!==d.owner?`<p class="agent-note">${esc(n(d.owner))} يوكل ${esc(n(s[d.key]))}${d.key==='buyAgent'?' في الشراء والقبض':' في البيع'}.</p>`:'<p class="agent-note">ينفذ بنفسه.</p>'}${i===2?`<label class="card-agent">من المشتري النهائي؟<select data-config="finalBuyer" aria-label="المشتري النهائي في الرسم">${$('finalBuyer').innerHTML}</select></label>`:''}<p class="gate-note">${!hasResale()&&i===1?'يقبض المشتري السلعة للانتفاع بها.':d.gate}</p></article>`).join('');
+ $('map').innerHTML=data.map((d,i)=>`<article class="sale-card"><header class="card-title"><span>${i+1}</span><h3>${d.title}</h3></header><div class="party-flow"><div><small>البائع</small><strong>${esc(n(d.seller))}</strong></div><div class="one-arrow"><small>${esc(assetName())}</small><span aria-hidden="true">←</span></div><div><small>المشتري</small><strong>${esc(n(d.buyer))}</strong></div></div><div class="price-strip"><span>${d.kind}</span><strong>${money(d.price)}</strong><small>${esc(n(d.buyer))} يدفع إلى ${esc(n(d.seller))}${i===1?' حسب مواعيد السداد':''}</small></div>${agent(d.key,d.owner)}${s[d.key]!==d.owner?`<p class="agent-note">${esc(n(d.owner))} يوكل ${esc(n(s[d.key]))}${d.key==='buyAgent'?' في الشراء والقبض':' في البيع'}.</p>`:'<p class="agent-note">ينفذ بنفسه.</p>'}${i===2?`<label class="card-agent">من المشتري النهائي؟<select data-config="finalBuyer" aria-label="المشتري النهائي في الرسم">${$('finalBuyer').innerHTML}</select></label>`:''}<p class="gate-note">${!hasResale()&&i===1?'يقبض المشتري السلعة للانتفاع بها.':d.gate}</p></article>`).join('');
  document.querySelectorAll('[data-config]').forEach(el=>el.value=s[el.dataset.config]);
  $('stepDetail').textContent=hasResale()?'الترتيب: شراء وقبض، ثم بيع آجل وقبض، ثم إعادة بيع مستقلة.':'الترتيب: شراء الممول وقبضه، ثم البيع الآجل وقبض المشتري.';
  $('agencyList').innerHTML='';
@@ -86,9 +94,9 @@ const saleViewer = (() => {
     const to = agency ? agent : cash ? d.seller : d.buyer;
     // Keep seller on the right and buyer on the left across the goods and price views.
     const right = agency ? from : d.seller, left = agency ? to : d.buyer;
-    const label = agency ? 'تفويض' : debt ? 'دين مؤجل' : cash ? 'دفع نقدي' : 'انتقال السلعة';
+    const label = agency ? 'تفويض' : debt ? 'دين مؤجل' : cash ? 'دفع نقدي' : esc(assetName());
     const name = id => esc(n(id));
-    const asset = esc(s.product.trim() || 'السلعة');
+    const asset = esc(assetName());
     const summary = agency ? (single ? name(from)+' ينفذ هذه الخطوة بنفسه.' : name(from)+' يوكل '+name(to)+(d.key==='buyAgent'?' في الشراء والقبض لحسابه.':' في البيع لحسابه.'))
       : cash ? (debt ? 'يثبت في ذمة '+name(from)+' مبلغ '+money(d.price)+' لصالح '+name(to)+'. السداد في مواعيد الأقساط.' : 'يدفع '+name(from)+' إلى '+name(to)+' مبلغ '+money(d.price)+'.')
       : 'يبيع '+name(from)+' '+asset+' إلى '+name(to)+'.';
