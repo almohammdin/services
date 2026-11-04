@@ -54,6 +54,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(s));$('saved').textC
 function draw(){
  const agent=(key,owner)=>`<label class="card-agent">من ينفذ عن ${esc(n(owner))}؟<select data-config="${key}" aria-label="منفذ ${key==='buyAgent'?'الشراء النقدي':key==='sellAgent'?'البيع الآجل':'إعادة البيع'}">${$(key).innerHTML}</select></label>`;
  const data=[{title:'الممول يشتري السلعة',seller:'A',buyer:'B',price:s.cash,kind:'نقدا',key:'buyAgent',owner:'B',gate:'قبل الخطوة التالية: يتملك الممول السلعة ويقبضها.'},{title:'الممول يبيع بالأجل',seller:'B',buyer:'C',price:s.deferred,kind:'دين بأجل معلوم',key:'sellAgent',owner:'B',gate:'قبل إعادة البيع: يتملك المشتري السلعة ويقبضها.'},...(hasResale()?[{title:'المشتري يبيع ويحصل على النقد',seller:'C',buyer:s.finalBuyer,price:s.resale,kind:'نقدا',key:'resaleAgent',owner:'C',gate:'يختار المشتري إعادة البيع باستقلال عن ترتيب الممول.'}]:[])];
+ saleViewer.show(data);
  $('map').innerHTML=data.map((d,i)=>`<article class="sale-card"><header class="card-title"><span>${i+1}</span><h3>${d.title}</h3></header><div class="party-flow"><div><small>البائع</small><strong>${esc(n(d.seller))}</strong></div><div class="one-arrow"><small>السلعة</small><span aria-hidden="true">←</span></div><div><small>المشتري</small><strong>${esc(n(d.buyer))}</strong></div></div><div class="price-strip"><span>${d.kind}</span><strong>${money(d.price)}</strong><small>${esc(n(d.buyer))} يدفع إلى ${esc(n(d.seller))}${i===1?' حسب مواعيد السداد':''}</small></div>${agent(d.key,d.owner)}${s[d.key]!==d.owner?`<p class="agent-note">${esc(n(d.owner))} يوكل ${esc(n(s[d.key]))}${d.key==='buyAgent'?' في الشراء والقبض':' في البيع'}.</p>`:'<p class="agent-note">ينفذ بنفسه.</p>'}${i===2?`<label class="card-agent">من المشتري النهائي؟<select data-config="finalBuyer" aria-label="المشتري النهائي في الرسم">${$('finalBuyer').innerHTML}</select></label>`:''}<p class="gate-note">${!hasResale()&&i===1?'يقبض المشتري السلعة للانتفاع بها.':d.gate}</p></article>`).join('');
  document.querySelectorAll('[data-config]').forEach(el=>el.value=s[el.dataset.config]);
  $('stepDetail').textContent=hasResale()?'الترتيب: شراء وقبض، ثم بيع آجل وقبض، ثم إعادة بيع مستقلة.':'الترتيب: شراء الممول وقبضه، ثم البيع الآجل وقبض المشتري.';
@@ -61,7 +62,69 @@ function draw(){
 }
 document.addEventListener('input',e=>{const el=e.target;if(el.dataset.name){s.names[el.dataset.name]=el.value;invalidate();refreshOptions();render();}else if(['product','cash','deferred','resale'].includes(el.id)){s[el.id]=el.value;invalidate();render();}});
 document.addEventListener('change',e=>{const el=e.target;if(el.tagName==='SELECT'){const key=el.dataset.config||el.id;s[key]=el.value;if($(key))$(key).value=el.value;s.checks=defaults().checks;document.querySelectorAll('[data-check]').forEach(c=>c.checked=false);render();}if(el.dataset.check!==undefined){const i=+el.dataset.check;if(el.checked&&s.checks.slice(0,i).some(v=>!v)){el.checked=false;$('next').textContent='أكمل إثبات البوابات السابقة أولا، حسب ترتيب التملك والقبض والعقود.';return;}s.checks[i]=el.checked;if(!el.checked)for(let j=i+1;j<6;j++){s.checks[j]=false;document.querySelector(`[data-check="${j}"]`).checked=false;}render();}});
-document.addEventListener('click',e=>{const t=e.target.closest('button');if(t?.dataset.step!==undefined){step=+t.dataset.step;render();}if(t?.dataset.preset){s.buyAgent='B';s.sellAgent='B';s.resaleAgent=t.dataset.preset==='agent'?'E':t.dataset.preset==='organized'?'B':'C';s.finalBuyer=t.dataset.preset==='inah'?'B':'D';s.purpose='cash';s.arranged=t.dataset.preset==='organized'?'yes':'no';s.authority='unknown';s.checks=defaults().checks;step=0;init();}const node=e.target.closest('[data-node]');if(node){const input=document.querySelector(`[data-name="${node.dataset.node}"]`);input.focus();input.scrollIntoView({block:'center',behavior:'smooth'});}});
+document.addEventListener('click',e=>{const t=e.target.closest('button');if(t?.dataset.step!==undefined){step=+t.dataset.step;render();}if(t?.dataset.preset){saleViewer.reset();s.buyAgent='B';s.sellAgent='B';s.resaleAgent=t.dataset.preset==='agent'?'E':t.dataset.preset==='organized'?'B':'C';s.finalBuyer=t.dataset.preset==='inah'?'B':'D';s.purpose='cash';s.arranged=t.dataset.preset==='organized'?'yes':'no';s.authority='unknown';s.checks=defaults().checks;step=0;init();}const node=e.target.closest('[data-node]');if(node){const input=document.querySelector(`[data-name="${node.dataset.node}"]`);input.focus();input.scrollIntoView({block:'center',behavior:'smooth'});}});
 $('map').addEventListener('unused-keydown',e=>{if(e.key==='Enter'||e.key===' '){const node=e.target.closest('[data-node]');if(node){e.preventDefault();node.dispatchEvent(new MouseEvent('click',{bubbles:true}));}}});
-$('print').onclick=()=>window.print();$('reset').onclick=()=>{if(confirm('مسح بيانات المخطط المحفوظة على هذا المتصفح؟')){s=defaults();step=0;init();}};
+$('print').onclick=()=>window.print();$('reset').onclick=()=>{if(confirm('مسح بيانات المخطط المحفوظة على هذا المتصفح؟')){s=defaults();step=0;saleViewer.reset();init();}};
+/* A single sale, viewed through ownership, payment or agency. */
+const saleViewer = (() => {
+  let stage = 0;
+  let layer = 'goods';
+  let selected = '';
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let moving = !reducedMotion.matches;
+  reducedMotion.addEventListener('change', event => { moving = !event.matches; draw(); });
+  const layers = {goods:'السلعة', cash:'الثمن', agency:'الوكالة'};
+  const titles = ['شراء نقدي', 'بيع بالأجل', 'إعادة البيع'];
+  const person = '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="16" cy="10" r="5"/><path d="M5 28c0-14 22-14 22 0"/></svg>';
+  const button = (key,value,title,active) => '<button type="button" data-view-'+key+'="'+value+'" aria-pressed="'+active+'">'+title+'</button>';
+  function show(stages) {
+    stage = Math.min(stage, stages.length - 1);
+    const d = stages[stage], agent = s[d.key], delegated = agent !== d.owner;
+    const agency = layer === 'agency', cash = layer === 'cash', debt = cash && stage === 1;
+    const single = agency && !delegated;
+    const from = agency ? d.owner : cash ? d.buyer : d.seller;
+    const to = agency ? agent : cash ? d.seller : d.buyer;
+    // Keep seller on the right and buyer on the left across the goods and price views.
+    const right = agency ? from : d.seller, left = agency ? to : d.buyer;
+    const label = agency ? 'تفويض' : debt ? 'دين مؤجل' : cash ? 'دفع نقدي' : 'انتقال السلعة';
+    const name = id => esc(n(id));
+    const asset = esc(s.product.trim() || 'السلعة');
+    const summary = agency ? (single ? name(from)+' ينفذ هذه الخطوة بنفسه.' : name(from)+' يوكل '+name(to)+(d.key==='buyAgent'?' في الشراء والقبض لحسابه.':' في البيع لحسابه.'))
+      : cash ? (debt ? 'يثبت في ذمة '+name(from)+' مبلغ '+money(d.price)+' لصالح '+name(to)+'. السداد في مواعيد الأقساط.' : 'يدفع '+name(from)+' إلى '+name(to)+' مبلغ '+money(d.price)+'.')
+      : 'يبيع '+name(from)+' '+asset+' إلى '+name(to)+'.';
+    function node(id,role) {
+      return '<button type="button" class="scene-party" data-view-party="'+id+'" aria-pressed="'+(selected===id)+'">'+person+'<small>'+role+'</small><b>'+name(id)+'</b></button>';
+    }
+    const reverse = cash;
+    const path = reverse ? 'M 8 18 H 112' : 'M 112 18 H 8';
+    const arrow = reverse ? 'M103 10l9 8-9 8' : 'M17 10l-9 8 9 8';
+    const motion = moving && !debt && !single;
+    const connector = '<div class="scene-line"><span>'+label+'</span><svg viewBox="0 0 120 36" aria-hidden="true"><path d="'+path+'" fill="none" stroke="currentColor" stroke-width="2" '+(debt||agency?'stroke-dasharray="5 4"':'')+'/><path d="'+arrow+'" fill="none" stroke="currentColor" stroke-width="3"/>'+(motion?'<circle r="5" fill="currentColor"><animateMotion dur="2.3s" repeatCount="indefinite" path="'+path+'"/></circle>':'')+'</svg></div>';
+    const roleRight = agency ? (single?'المنفذ':'الموكل') : 'البائع';
+    const roleLeft = agency ? 'الوكيل' : 'المشتري';
+    const visibleSelection = selected===right || (!single && selected===left);
+    const note = visibleSelection ? '<p class="role-note">'+name(selected)+' · '+(selected===right?roleRight:roleLeft)+' في هذه الخطوة.</p>' : '';
+    $('saleScene').innerHTML =
+      '<nav class="scene-stages" aria-label="مراحل البيع">'+stages.map((_,i)=>button('stage',i,(i+1)+' · '+titles[i],stage===i)).join('')+'</nav>'+
+      '<div class="scene-tools"><div class="scene-tabs" aria-label="ماذا تريد أن تتبع؟">'+Object.entries(layers).map(([k,v])=>button('layer',k,v,layer===k)).join('')+'</div>'+
+      (!single&&!debt?button('motion','switch',moving?'إيقاف الحركة':'تشغيل الحركة',moving):'')+'</div>'+
+      '<div class="scene-board layer-'+layer+'"><div class="scene-nodes '+(single?'solo':'')+'">'+node(right,roleRight)+(single?'':connector+node(left,roleLeft))+'</div>'+
+      '<p class="scene-summary">'+summary+'</p>'+note+'</div>'+
+      '<div class="scene-owner"><span>المالك بعد البيع</span><strong>'+name(d.buyer)+'</strong></div>';
+  }
+  $('saleScene').addEventListener('click',event=>{
+    const target=event.target.closest('button');
+    if(!target)return;
+    const data=target.dataset;
+    if(data.viewStage!==undefined){stage=Number(data.viewStage);selected='';}
+    if(data.viewLayer){layer=data.viewLayer;selected='';}
+    if(data.viewParty)selected=selected===data.viewParty?'':data.viewParty;
+    if(data.viewMotion)moving=!moving;
+    const attr=target.getAttributeNames().find(k=>k.startsWith('data-view-'));
+    draw();
+    if(attr)$('saleScene').querySelector('['+attr+'="'+target.getAttribute(attr)+'"]')?.focus({preventScroll:true});
+  });
+  return {show,reset(){stage=0;layer='goods';selected='';}};
+})();
+
 init();
