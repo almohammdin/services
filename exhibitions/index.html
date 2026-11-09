@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#061f56">
+<title>حتى للمعارض والمؤتمرات</title>
+<meta name="description" content="اكتشف المعارض والمؤتمرات، قيّم الزيارة أو المشاركة كعارض، وجهز خطتك قبل الفعالية.">
+<meta property="og:title" content="حتى للمعارض والمؤتمرات">
+<meta property="og:description" content="من اختيار الفعالية إلى متابعة نتائجها.">
+<meta property="og:url" content="https://almohammdin.github.io/services/exhibitions/">
+<meta property="og:image" content="https://almohammdin.github.io/services/exhibitions/social.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://almohammdin.github.io/services/exhibitions/social.png">
+<link rel="icon" href="logo.svg">
+<link rel="stylesheet" href="../assets/hatta/services.css">
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">انتقل للمحتوى</a>
+<header class="site-header"><div class="shell header-inner"><a href="../" aria-label="حتى لحلول الأعمال"><img src="../assets/hatta/logo.webp" alt="حتى لحلول الأعمال" width="104"></a><nav aria-label="أقسام المنصة"><a href="#calendar">التقويم</a><a href="#assessment">التقييم</a><a href="#knowledge">مركز المعرفة</a><a href="#toolkit">الأدوات</a></nav></div></header>
+<main id="main">
+<div class="shell">
+<section class="intro">
+<div><div class="eyebrow">إحدى أدوات حتى</div><h1>حتى للمعارض<br>والمؤتمرات</h1><p>اختر الفعالية التي تخدم هدفك، وجهز خطتك قبل الحضور، وتابع النتائج بعد العودة.</p><a class="action primary" href="#calendar">استكشف التقويم ←</a></div>
+<div class="hero-art"><img src="logo.svg" width="154" height="154" alt=""><div>اختيار الفعالية <span>←</span> التخطيط <span>←</span> المتابعة</div></div>
+</section>
+<div class="tiles roles">
+<article><span class="eyebrow">مسار الزائر</span><h2>خطّط لزيارتك</h2><p>قيّم الفعالية حسب هدفك، واختر الجهات والجلسات التي تستحق وقتك.</p><button class="action primary" data-start="visitor">ابدأ تقييم الزيارة ←</button></article>
+<article><span class="eyebrow">مسار العارض</span><h2>قيّم مشاركتك كعارض</h2><p>ادرس الجمهور والتكلفة، وقارن خيارات المشاركة قبل حجز الجناح.</p><button class="action secondary" data-start="exhibitor">ابدأ تقييم المشاركة ←</button></article>
+</div>
+<section id="calendar"><div class="eyebrow">01 / اكتشاف</div><h2>تقويم الفعاليات والمناسبات</h2><p>اختيارات من السعودية والعالم. تحقق من موعد النسخة وشروط الدخول لدى المنظم.</p>
+<div class="filters"><label>البحث<input id="query" type="search" placeholder="الاسم أو القطاع أو المدينة"></label><label>النوع<select id="kind"><option value="">جميع الأنواع</option><option>معرض</option><option>مؤتمر</option><option>منتدى</option><option>ورشة عمل</option><option>مهرجان</option><option>مناسبة</option></select></label><label>الدولة<select id="country"><option value="">جميع الدول</option></select></label><label>الشهر<select id="month"><option value="">جميع الأشهر</option></select></label></div>
+<p id="calendar-count" role="status"></p><div class="tiles three" id="events"></div></section>
+<section id="assessment"><div class="eyebrow">02 / القرار والخطة</div><h2>مصفوفة الزيارة والمشاركة</h2><p>أجب عن 5 أسئلة حسب هدفك. تظهر ملاءمة الفعالية وتغطية الأدلة بشكل منفصل. تحفظ المسودة على هذا الجهاز.</p>
+<div class="panel">
+<form id="wizard">
+<div class="filters"><label>صفة المشاركة<select id="role"><option value="visitor">زائر</option><option value="exhibitor">عارض</option></select></label><label>اسم الفعالية<input id="event-name" required maxlength="120" placeholder="مثال: معرض متخصص"></label><label>نطاق التقييم<input id="scope" maxlength="100" placeholder="الفعالية كاملة أو جزء من البرنامج"></label><label>هدف المشاركة<select id="goal"></select></label><label>رابط الفعالية <small>اختياري</small><input id="event-url" type="url" placeholder="https://"></label></div>
+<div class="progress"><span id="step-label"></span><progress id="progress" max="5" value="0"></progress></div>
+<div id="question"></div>
+<div class="controls"><button class="action secondary" type="button" id="back">السابق</button><button class="action primary" type="submit" id="next">التالي</button><button class="action secondary" type="button" id="example">جرّب مثال سيول</button></div>
+</form>
+<div id="result" hidden aria-live="polite"></div>
+<div id="compare" hidden></div>
+</div></section>
+<section id="knowledge"><div class="eyebrow">03 / مركز المعرفة</div><h2>دليل المعارض والمؤتمرات</h2><p>يستند المشروع إلى خبرة نايف المحمدي الممتدة لأكثر من 20 سنة وزياراته للمعارض في أكثر من 30 دولة.</p>
+<div class="tiles three">
+<article><h3>قبل الفعالية</h3><p>حدد نتيجة تريد الوصول إليها. للزائر، جهز قائمة الجهات والأسئلة ومواعيد اللقاء. للعارض، اطلب بيانات الجمهور وعرض تكلفة كامل وحدد أهداف الجناح.</p></article>
+<article><h3>أثناء الفعالية</h3><p>سجل نتيجة كل لقاء والخطوة التالية. للزائر، قارن الخيارات على معايير واحدة. للعارض، فرّق بين مرور الزائر وحدوث لقاء وفرصة مؤهلة.</p></article>
+<article><h3>بعد الفعالية</h3><p>حدد مسؤولًا وموعدًا لكل متابعة. قارن النتائج بالأهداف بعد 7 أيام ثم بعد دورة البيع المناسبة.</p></article>
+</div>
+<div class="reading">
+<details open><summary>معجم الفعاليات</summary><dl>
+<dt>فعالية · Event</dt><dd>مصطلح جامع في المنصة لنشاط منظّم له موعد أو مدة.</dd>
+<dt>مؤتمر · Conference</dt><dd>لقاء منظّم حول موضوع محدد، يشمل جلسات أو عروضًا أو أوراق عمل. يصف دليل الهيئة المؤتمر في سياقه العلمي بأوراق معتمدة وتوصيات.</dd>
+<dt>منتدى · Forum</dt><dd>لقاء لتبادل وجهات النظر عبر جلسات حوارية وقد تصاحبه ورش.</dd>
+<dt>معرض · Exhibition</dt><dd>فعالية تعرض فيها الجهات منتجات أو خدمات أو أعمالًا أمام جمهور محدد. المعرض التجاري يخاطب المهنيين، والاستهلاكي يخاطب الجمهور.</dd>
+<dt>ندوة · Symposium</dt><dd>لقاء مختصين لمناقشة مسألة محددة، وقد يقع ضمن برنامج أوسع.</dd>
+<dt>ورشة عمل · Workshop</dt><dd>لقاء يشارك فيه الحضور في مناقشة مسألة أو حل مشكلة أو تطوير منتج.</dd>
+<dt>مهرجان · Festival</dt><dd>احتفاء عام يدور حول موضوع معين، مثل القهوة أو السينما.</dd>
+<dt>مناسبة · Observance</dt><dd>تاريخ مخصص لإحياء موضوع أو التوعية به. قد ترتبط به فعاليات في عدة مدن.</dd>
+</dl><p class="links"><a href="https://www.scega.gov.sa/ar/Documents/General%20MICE%20Terms.pdf">دليل الهيئة العامة للمعارض والمؤتمرات</a> · <a href="https://www.unesco.org/en/articles/festival-statistics-key-concepts-and-current-practices">معهد اليونسكو للإحصاء</a> · <a href="https://www.un.org/en/observances/list-days-weeks">الأمم المتحدة</a></p></details>
+<details><summary>فعالية تجمع مؤتمرًا ومعرضًا وورشًا</summary><p>مثال تدريبي: يضم مؤتمر مستقبل القهوة معرض معدات ومنتدى استثمار وورش تحميص. يسجل التقويم الفعالية مرة واحدة مع مكوّناتها. يفتح بحث «معرض» بطاقة المؤتمر مع توضيح الجزء المطابق. ويختار المستخدم تقييم المؤتمر كاملًا أو معرض المعدات أو ورشة محددة. لكل جزء موعد وشروط دخول عند توفرها.</p><p>اليوم الدولي للقهوة مناسبة سنوية في 1 أكتوبر. إذا أعلنت جهة عن مهرجان أو ورشة احتفاء به، تدخل الفعالية بنوعها وترتبط بالمناسبة.</p><a href="https://ico.org/international-coffee-day/">المنظمة الدولية للقهوة</a></details>
+<details><summary>حالات تطبيقية ومراجع</summary><ul><li><strong>سيول، زائر يبحث عن معدات.</strong> حدد 5 موردين واطلب عرضين قابلين للمقارنة، وسجل الضمان وتوافر قطع الغيار. المثال متاح في المصفوفة.</li><li><strong>شركة تبحث عن موزع.</strong> قارن جناحًا مستقلًا وجناحًا مشتركًا وزيارة تجارية. اسأل عن المشترين قبل إدخال التكاليف.</li><li><strong>مؤتمر تقني.</strong> اختر 3 جلسات ولقاءين. سجل فكرة واحدة يمكن اختبارها خلال أسبوعين.</li></ul><p class="links"><a href="https://toolbox.auma.de/en/">أداة AUMA لقياس منافع المشاركة</a> · <a href="https://pubsonline.informs.org/doi/10.1287/mksc.14.1.22">دراسة الجذب والتواصل والتحويل</a> · <a href="https://www.sciencedirect.com/science/article/pii/S0019850117301153">دراسة تجربة زائر المعرض</a></p></details>
+<details><summary>أين تبحث عن الفعاليات؟</summary><ul class="links"><li>داخل السعودية: <a href="https://www.scega.gov.sa/">تقويم الهيئة العامة للمعارض والمؤتمرات</a></li><li>المعارض الدولية: <a href="https://www.auma.de/en/find-your-fair/">AUMA</a> و<a href="https://www.ufi.org/search-approved-events/">UFI</a> و<a href="https://www.eventseye.com/">EventsEye</a></li><li>المؤتمرات: <a href="https://events.ieee.org/search-ieee-conferences/">IEEE</a> للهندسة والتقنية، و<a href="https://www.iccaworld.org/benefits/icca-member-benefits/database/association-meetings-database/">ICCA</a> لاجتماعات الجمعيات ضمن خدمات الأعضاء</li><li>المناسبات: <a href="https://www.un.org/en/observances/list-days-weeks">تقويم الأمم المتحدة</a></li></ul></details>
+</div></section>
+<section id="toolkit"><div class="eyebrow">04 / أدوات العمل</div><h2>أدوات للزائر والعارض</h2><p>دليل منتقى حسب المهمة، يشمل مشاريع مفتوحة وأدوات تشغيل جاهزة.</p>
+<div class="tiles three tools">
+<article><h3>الأجندة والتخطيط</h3><p>نظم زيارات الأجنحة والجلسات في تقويمك. يدعم ical.js قراءة ملفات المواعيد، ويمكن الرجوع إلى pretalx لبرامج المؤتمرات التي تستخدمه.</p><a href="https://github.com/kewisch/ical.js">ical.js ↗</a> · <a href="https://github.com/pretalx/pretalx">pretalx ↗</a></article>
+<article><h3>تسجيل اللقاءات</h3><p>ZXing يقرأ رموز QR عبر المتصفح، وTesseract.js يستخرج النص من الصور. راجع أسماء الأشخاص والشركات بعد الاستخراج.</p><a href="https://github.com/zxing-js/browser">ZXing ↗</a> · <a href="https://github.com/naptha/tesseract.js">Tesseract.js ↗</a></article>
+<article><h3>متابعة الفرص</h3><p>حوّل نتائج اللقاءات إلى مهام في مسراح، أو استكشف selXP لتسجيل الفرص البيعية ومتابعتها ميدانيًا.</p><a href="https://almohammdin.github.io/Mesraah/">مسراح ↗</a> · <a href="https://selxp.com/">selXP ↗</a></article>
+</div></section>
+</div></main>
+<footer class="shell site-footer"><a href="../#tools">أدوات حتى ←</a><span>حتى لحلول الأعمال · نايف المحمدي</span></footer>
+</body></html>
