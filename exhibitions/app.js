@@ -248,3 +248,9 @@ byId('example').addEventListener('click',() => {
 renderCalendar();
 loadRole(role);
 renderComparison();
+
+document.querySelectorAll('[data-demo]').forEach(button => button.addEventListener('click',() => {
+  loadRole(button.dataset.demo);
+  byId('example').click();
+  byId('result').scrollIntoView({behavior:'smooth'});
+}));
