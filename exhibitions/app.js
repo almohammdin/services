@@ -141,7 +141,7 @@ function showResult() {
   const name = draft.name.trim();
   currentSummary = {name,role,goal:draft.goal,scope:draft.scope,metrics,recommendation:recommendationText,priorities};
   const result = byId('result');
-  result.innerHTML = '<div class="eyebrow">ملخص القرار</div><h3 tabindex="-1" id="result-title">' + escapeHtml(name) + '</h3><p>' + escapeHtml(draft.goal) + ' · ' + escapeHtml(draft.scope || 'الفعالية كاملة') + '</p><p><strong>' + recommendationText + '</strong></p>' +
+  result.innerHTML = '<div class="report-brand"><img src="logo.svg" alt="" width="46" height="46"><span>حتى للمعارض والمؤتمرات<small>تقرير تقييم المشاركة</small></span></div><div class="eyebrow">ملخص القرار</div><h3 tabindex="-1" id="result-title">' + escapeHtml(name) + '</h3><p>' + escapeHtml(draft.goal) + ' · ' + escapeHtml(draft.scope || 'الفعالية كاملة') + '</p><p><strong>' + recommendationText + '</strong></p>' +
     '<p>ملاءمة الإجابات المتاحة <strong>' + (metrics.score === null ? 'بانتظار بيانات' : metrics.score + ' من 100') + '</strong> · تغطية الأدلة <strong>%' + metrics.evidence + '</strong></p>' +
     (metrics.score === null ? '' : '<div class="heat" aria-hidden="true"><i style="right:' + metrics.score + '%"></i></div>') +
     (metrics.rated < 100 ? '<p>النطاق المحتمل بعد استكمال البيانات: ' + metrics.low + ' إلى ' + metrics.high + ' من 100.</p>' : '') +
@@ -152,12 +152,13 @@ function showResult() {
     '<h3>ما الذي تراجعه أولًا؟</h3><ul>' + priorities.map(item => '<li>' + item + '</li>').join('') + '</ul><h3>خطة العمل</h3><ol>' + track.plans.map(item => '<li>' + item + '</li>').join('') + '</ol>' +
     '<label class="field">ملاحظات وخطوات خاصة بفعاليتك<textarea id="plan">' + escapeHtml(draft.plan) + '</textarea></label>' +
     (role === 'exhibitor' ? '<h3>نقطة التعادل التقديرية</h3><div class="filters">' + financeFields.map(([id,label]) => '<label>' + label + (id === 'rate' ? ' (%)' : ' (⃁)') + '<input id="' + id + '" type="number" min="0" step="any" ' + (id === 'rate' ? 'max="100"' : '') + ' value="' + escapeHtml(draft.finance[id]) + '"></label>').join('') + '</div><p id="finance-output" role="status"></p>' : '') +
-    '<div class="controls"><button class="action primary" id="share">مشاركة الملخص</button><button class="action secondary" id="print">طباعة أو حفظ PDF</button><button class="action secondary" id="save-comparison">أضف للمقارنة</button></div><p id="share-status" role="status"></p>';
+    '<p class="report-note">أداة استرشادية بأوزان مقترحة تعتمد على إجاباتك. تغطية الأدلة حسب تصنيف المستخدم.</p><div class="controls"><button class="action primary" id="image-export">تجهيز صورة النتيجة</button><button class="action secondary" id="share">مشاركة الملخص</button><button class="action secondary" id="print">طباعة أو حفظ PDF</button><button class="action secondary" id="save-comparison">أضف للمقارنة</button></div><p id="share-status" role="status"></p>';
   result.hidden = false;
   byId('result-title').focus();
   byId('plan').addEventListener('input',event => { draft.plan = event.target.value; persist(); });
   byId('share').addEventListener('click',shareSummary);
-  byId('print').addEventListener('click',() => window.print());
+  byId('print').addEventListener('click',printReport);
+  byId('image-export').addEventListener('click',prepareImage);
   byId('save-comparison').addEventListener('click',saveComparison);
   if (role === 'exhibitor') {
     financeFields.forEach(([id]) => byId(id).addEventListener('input',event => {draft.finance[id] = event.target.value; persist(); renderFinance();}));
@@ -254,3 +255,117 @@ document.querySelectorAll('[data-demo]').forEach(button => button.addEventListen
   byId('example').click();
   byId('result').scrollIntoView({behavior:'smooth'});
 }));
+
+function reportLines() {
+  const summary = currentSummary;
+  const lines = [
+    ['حتى للمعارض والمؤتمرات', 'brand'],
+    ['تقرير تقييم المشاركة', 'title'],
+    [summary.name, 'title'],
+    [(role === 'visitor' ? 'زائر' : 'عارض') + ' · ' + summary.goal, 'body'],
+    [summary.scope || 'الفعالية كاملة', 'body'],
+    [summary.recommendation, 'title'],
+    ['الملاءمة ' + (summary.metrics.score ?? 'قيد التحقق') + ' / 100 · تغطية الأدلة %' + summary.metrics.evidence,'body'],
+    ['النطاق المحتمل ' + summary.metrics.low + ' إلى ' + summary.metrics.high, 'body'],
+    ['تفاصيل التقييم','title']
+  ];
+  tracks[role].questions.forEach(([label,weight],index) => {
+    const answer = draft.answers[index];
+    lines.push([label + ' · وزن ' + weight + ' · ' + (answer.value === 6 ? 'قيد التحقق' : answer.value + ' من 5'),'body']);
+  });
+  lines.push(['أولويات المراجعة','title'], ...summary.priorities.map(text => [text,'body']));
+  lines.push(['خطة العمل','title'],...tracks[role].plans.map(text => [text,'body']));
+  if (draft.plan.trim()) lines.push(['ملاحظاتك','title'],[draft.plan,'body']);
+  if (role === 'exhibitor') {
+    lines.push(['التكلفة ونقطة التعادل','title']);
+    financeFields.forEach(([key,label]) => lines.push([label + ' · ' + (draft.finance[key] || 'قيد الإدخال'),'body']));
+    lines.push([byId('finance-output').textContent,'body']);
+  }
+  lines.push(['منهجية استرشادية بأوزان مقترحة تعتمد على إجاباتك. تغطية الأدلة حسب تصنيف المستخدم.','small'],
+    ['تاريخ التقرير ' + new Date().toLocaleDateString('en-GB'),'small'],
+    ['almohammdin.github.io/services/exhibitions/','small']);
+  return lines;
+}
+function printReport() {
+  const previous = byId('print-report');
+  if (previous) previous.remove();
+  const report = document.createElement('article');
+  report.id = 'print-report';
+  report.innerHTML = '<img src="logo.svg" width="70" height="70" alt="شعار المنصة">' +
+    reportLines().map(([text,kind]) => '<p class="report-' + kind + '">' + escapeHtml(text) + '</p>').join('');
+  document.body.append(report);
+  window.print();
+}
+async function prepareImage() {
+  const button = byId('image-export');
+  button.disabled = true;
+  button.textContent = 'جار تجهيز الصورة';
+  try {
+    await document.fonts.load('700 36px "Thmanyah Sans"');
+    await document.fonts.load('400 28px "Thmanyah Sans"');
+    await document.fonts.ready;
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 200;
+    let ctx = canvas.getContext('2d');
+    const rows = [];
+    let height = 160;
+    for (const [text,kind] of reportLines()) {
+      const size = kind === 'brand' ? 42 : kind === 'title' ? 36 : kind === 'small' ? 23 : 28;
+      const font = (kind === 'title' || kind === 'brand' ? '700 ' : '400 ') + size + 'px "Thmanyah Sans"';
+      ctx.font = font;
+      let line = '';
+      for (const word of String(text).split(/\s+/)) {
+        if (ctx.measureText(line + ' ' + word).width > 900 && line) {
+          rows.push({line,font,size,kind,y:height});height += size * 1.7;line = '';
+        }
+        line += (line ? ' ' : '') + word;
+      }
+      rows.push({line,font,size,kind,y:height});
+      height += size * 1.7 + 20;
+    }
+    canvas.height = Math.ceil(height + 70);
+    ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fbfaf7';ctx.fillRect(0,0,1080,canvas.height);
+    ctx.fillStyle = '#061f56';ctx.fillRect(0,0,1080,100);
+    ctx.fillStyle = '#b47a2d';ctx.fillRect(0,100,1080,5);
+    ctx.strokeStyle = '#d2a05a';ctx.lineWidth = 2;ctx.strokeRect(30,125,1020,canvas.height-155);
+    ctx.direction = 'rtl';ctx.textAlign = 'right';ctx.textBaseline = 'top';
+    for (const row of rows) {
+      ctx.font = row.font;ctx.fillStyle = row.kind === 'small' ? '#657084' : '#061f56';
+      ctx.fillText(row.line,990,row.y);
+    }
+    const logo = new Image();
+    logo.src = new URL('logo.svg',location.href).href;
+    await logo.decode();
+    ctx.drawImage(logo,945,15,70,70);
+    ctx.fillStyle = '#e6d2ae';ctx.font = '700 28px "Thmanyah Sans"';
+    ctx.fillText('حتى · من المشاركة إلى النتيجة',920,32);
+    const blob = await new Promise(resolve => canvas.toBlob(resolve,'image/png'));
+    if (!blob) throw new Error('Image generation failed');
+    const file = new File([blob],'hatta-participation.png',{type:'image/png'});
+    const old = byId('image-actions');
+    if (old) { URL.revokeObjectURL(old.dataset.url); old.remove(); }
+    const url = URL.createObjectURL(blob);
+    const actions = document.createElement('div');
+    actions.id = 'image-actions';actions.className = 'controls';actions.dataset.url = url;
+    const download = document.createElement('a');
+    download.href = url;download.download = file.name;download.className = 'action secondary';
+    download.textContent = 'تنزيل الصورة';actions.append(download);
+    if (navigator.canShare?.({files:[file]})) {
+      const share = document.createElement('button');
+      share.className = 'action primary';share.textContent = 'مشاركة الصورة';
+      share.onclick = async () => {
+        try {await navigator.share({files:[file],title:'نتيجة تقييم المشاركة'});}
+        catch(error) {if(error.name !== 'AbortError') byId('share-status').textContent = 'استخدم تنزيل الصورة لحفظها ومشاركتها.';}
+      };
+      actions.append(share);
+    }
+    byId('share-status').before(actions);
+    byId('share-status').textContent = 'الصورة جاهزة بهوية المنصة.';
+  } catch(error) {
+    byId('share-status').textContent = 'تعذر تجهيز الصورة. أعد المحاولة بعد اكتمال تحميل الخط.';
+  } finally {
+    button.disabled = false;button.textContent = 'تجهيز صورة النتيجة';
+  }
+}
