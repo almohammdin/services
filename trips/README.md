@@ -36,3 +36,9 @@
 - أُضيف تصنيف «توصيات الطعام» مع Tripadvisor عالميًا، Restaurant Guru وFoodieMap في تركيا، Dianping في الصين، وTabelog في اليابان.
 - المصادر: https://www.tripadvisor.com/TravelersChoice-Restaurants و https://www.restaurantguru.com.tr/en و https://apps.apple.com/tr/app/turkey-food-guide-foodiemap/id6744828426 و https://events.dianping.com/m/index.htm و https://tabelog.com/en/
 - هذه أدوات اكتشاف وروابط أصلية، وليست خدمة توصية تلقائية من بيانات مراجعات حية داخل المنصة. توافر التطبيق والدولة وشروط الحجز يخضع لمصدر الخدمة.
+
+### وصول بحري لزيارة ترسانة إسطنبول
+- الفيديو: https://www.tiktok.com/@this.is.ilyas/video/7705470619403537685
+- مصدر التشغيل الرسمي: https://www.tersaneistanbul.com.tr/karakoy-tersane-istanbul-deniz-ulasimi
+- التذكرة 99.99 TL لاتجاه واحد، مدة تقريبية 20 دقيقة؛ من TDİ Karaköy Pier إلى Tersane Istanbul Pier كل ساعة 10:00–22:00، العودة 10:30–22:30. أوقات التشغيل حسب الإعلان الرسمي وقد تتغير بتغير الطقس.
+- وسيلة الوصول تظهر خيارًا عند زيارة Starbucks Tersane Istanbul، دون إدخال محطة النقل كموقع زيارة مستقل أو إجبار الخطة على استخدامه. أُضيفت كذلك أداة مستقلة في دليل المواصلات مع نصوص تصوير سناب وتيك توك وإنستغرام ولينكدإن وX.
