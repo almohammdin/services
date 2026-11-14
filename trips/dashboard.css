@@ -1,0 +1,43 @@
+
+/* Dashboard: live destination weather and SAR exchange rates */
+.insights{max-width:1300px;margin:0 auto 18px;padding:0 16px}
+.insights-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:5px 0 12px}
+.insights-title h2{font-size:18px;margin:0}
+.insights-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}
+.info-card{border:1px solid var(--line);background:#fff;border-radius:17px;padding:17px;box-shadow:0 10px 30px #1b2b390b;min-width:0}
+.info-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.info-head h3{margin:0;font-size:16px}
+.info-subtle{color:var(--muted);font-size:11px;line-height:1.8}
+.info-status{font-size:11px;color:#5b7384}
+.info-refresh{font-size:11px;padding:6px 10px;background:#f8f7f3}
+.weather-current{display:flex;align-items:center;gap:11px;margin:13px 0 10px}
+.weather-symbol{font-size:38px;line-height:1.2}
+.weather-main-temp{font-size:34px;font-weight:700;line-height:1.25;font-variant-numeric:tabular-nums}
+.weather-current small{font-size:11px;color:#6b7887}
+.weather-facts{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 15px}
+.weather-facts span{background:#f5f6f3;border:1px solid #edf0ed;padding:7px 9px;border-radius:9px;font-size:11px}
+.weather-periods{display:flex;gap:6px;border-top:1px solid var(--line);padding-top:12px}
+.weather-periods button{font-size:12px;padding:7px 13px}
+.weather-periods button.selected{background:var(--navy);color:white}
+.weather-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:11px}
+.weather-day{background:#f9f8f5;border:1px solid #ecece6;padding:9px 7px;border-radius:11px;text-align:center}
+.weather-day .icon{font-size:23px;line-height:1.8}
+.weather-day b{display:block;font-size:12px}
+.weather-day small{display:block;color:#687789;font-size:10px}
+.weather-hours{display:flex;overflow-x:auto;gap:7px;margin-top:11px;padding-bottom:6px}
+.weather-hour{background:#f9f8f5;border:1px solid #ecece6;border-radius:11px;padding:8px 9px;min-width:77px;text-align:center}
+.weather-hour b{font-size:12px}.weather-hour small{display:block;font-size:10px;color:#768392}
+.fx-main{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin:18px 0 9px}
+.fx-main b{font-size:30px;line-height:1.3;font-variant-numeric:tabular-nums}
+.fx-main span{font-size:13px;color:#526475}
+.fx-reverse{font-size:12px;margin-bottom:12px;color:#435b6b}
+.fx-tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.fx-field label{font-size:11px;color:#667589;display:block;margin-bottom:5px}
+.fx-field select,.fx-field input{width:100%;border:1px solid #dce1e2;border-radius:9px;padding:10px;background:#fff;color:var(--navy);outline-color:var(--gold);font:inherit}
+.fx-output{background:#f6f3ea;border:1px solid #e7d9bf;border-radius:12px;padding:12px;color:#4c3a20}
+.fx-output b{display:block;font-size:21px;font-variant-numeric:tabular-nums}
+.info-error{font-size:12px;color:#a44a37;padding:14px 5px}
+.info-citation{font-size:10px;color:#8a949c;line-height:1.8;margin-top:11px}
+.info-citation a{color:#527d8b}
+@media(max-width:900px){.insights-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:690px){.insights{padding:0 9px}.insights-grid{grid-template-columns:1fr;gap:10px}.info-card{padding:13px}.weather-main-temp{font-size:29px}.insights-title h2{font-size:16px}.fx-main b{font-size:27px}}
