@@ -1,0 +1,20 @@
+{
+  "name": "رحلاتي | خطط رحلتك",
+  "short_name": "رحلاتي",
+  "description": "رتب رحلاتك في أي مدينة ودولة، واحفظ الأماكن والأنشطة على الخريطة.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f6f2",
+  "theme_color": "#132238",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
