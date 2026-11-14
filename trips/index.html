@@ -19,7 +19,7 @@
 <form id="customToolForm" class="tool-form" hidden><div class="field"><label>اسم الأداة</label><input id="toolName" maxlength="90" required placeholder="مثال: تطبيق حجز دراجات"></div>
 <div class="field"><label>لماذا تفيدك؟</label><textarea id="toolDescription" maxlength="300" required placeholder="متى تستخدمها أثناء الرحلة؟"></textarea></div>
 <div class="field"><label>رابط الموقع أو التطبيق</label><input id="toolUrl" type="url" required placeholder="https://..."></div>
-<div class="field"><label>نوع الأداة</label><select id="toolCategory"><option value="transport">مواصلات</option><option value="booking">حجوزات</option><option value="payments">دفع ومال</option><option value="translate">ترجمة وتواصل</option><option value="maps">خرائط</option><option value="currency">عملات</option><option value="connect">اتصال وإنترنت</option><option value="other">أخرى</option></select></div>
+<div class="field"><label>نوع الأداة</label><select id="toolCategory"><option value="transport">مواصلات</option><option value="booking">حجوزات</option><option value="food">توصيات الطعام</option><option value="payments">دفع ومال</option><option value="translate">ترجمة وتواصل</option><option value="maps">خرائط</option><option value="currency">عملات</option><option value="connect">اتصال وإنترنت</option><option value="other">أخرى</option></select></div>
 <div class="row"><button type="submit" class="primary">حفظ الأداة</button><button type="button" id="cancelTool">إلغاء</button></div></form>
 <div class="notice">الأدوات تعرض روابط مواقعها أو صفحات التطبيقات. توفر الخدمة وطرق الدفع والحجوزات يختلف حسب البلد والمدينة. المواعيد والأسعار تُراجع من المصدر عند الاستخدام.</div>
 </div>
@@ -71,18 +71,19 @@ function content(){var sel=el("cp"),prev=sel.value;sel.innerHTML=s.places.map(fu
 function near(){if(!s.user)return;s.places.forEach(function(p){var d=dist(s.user,p)*1000;if(d>900||Date.now()-(s.notified[p.id]||0)<1800000)return;s.notified[p.id]=Date.now();var scheduled=s.plan.some(function(day){return day.includes(p.id)});var msg="أنت على بُعد "+Math.round(d)+" متر من "+p.name+". "+(scheduled?"هذا الموقع ضمن جدولك.":"إضافته تحتاج حوالي "+(p.duration||60)+" دقيقة وقد تؤخر ما بعده.");toast(msg);if("Notification" in window&&Notification.permission==="granted"){try{new Notification("موقع قريب",{body:msg})}catch(e){}}})}
 function location(){if(!navigator.geolocation){toast("متصفحك لا يدعم تحديد الموقع");return}if(s.watch!==null){navigator.geolocation.clearWatch(s.watch);s.watch=null;el("where").textContent="الموقع متوقف";el("locate").textContent="◎ موقعي وتنبيهات القرب";return}s.watch=navigator.geolocation.watchPosition(function(x){s.user={lat:x.coords.latitude,lng:x.coords.longitude};el("where").textContent="متابعة الموقع مفعّلة";el("locate").textContent="■ أوقف متابعة الموقع";if(s.map&&!s.first){s.map.setView([s.user.lat,s.user.lng],13);s.first=true}render();near()},function(x){toast(x.code===1?"صلاحية الموقع مرفوضة. فعّلها من إعدادات المتصفح.":"تعذر جلب الموقع");s.watch=null},{enableHighAccuracy:true,maximumAge:10000,timeout:20000});if("Notification" in window&&Notification.permission==="default"){try{Notification.requestPermission()}catch(e){}}toast("تنبيهات القرب تعمل أثناء استخدام المنصة، وتتوقف عند تعليقها في الخلفية.")}
 
-var toolKinds={all:"الكل",transport:"🚕 مواصلات",booking:"🍽️ حجوزات",payments:"💳 دفع",translate:"🗣️ ترجمة",maps:"🗺️ خرائط",currency:"💱 عملات",connect:"📶 اتصال",other:"🧰 أخرى",saved:"✓ أدواتي"};
+var toolKinds={all:"الكل",transport:"🚕 مواصلات",booking:"🍽️ حجوزات",food:"🍴 توصيات طعام",payments:"💳 دفع",translate:"🗣️ ترجمة",maps:"🗺️ خرائط",currency:"💱 عملات",connect:"📶 اتصال",other:"🧰 أخرى",saved:"✓ أدواتي"};
 var toolCatalog=window.TRAVEL_TOOLS_CATALOG||[];
 var toolsFilter="all";
 function normalizePlace(x){return String(x||"").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[إأآ]/g,"ا").replace(/ı/g,"i").replace(/ş/g,"s").replace(/ğ/g,"g").replace(/ü/g,"u").replace(/ö/g,"o")}
 function isTurkey(){return /تركيا|turkey|turkiye|türkiye/.test(normalizePlace(s.trip.country))}
 function isChina(){return /الصين|صين|china|chinese|中国/.test(normalizePlace(s.trip.country))}
+function isJapan(){return /اليابان|يابان|japan|日本/.test(normalizePlace(s.trip.country))}
 function isIstanbulTool(){return /اسطنبول|إسطنبول|istanbul|i̇stanbul/.test(normalizePlace(s.trip.city))}
-function localTools(){return toolCatalog.filter(function(t){return t.scope==="global"||(t.scope==="turkey"&&isTurkey())||(t.scope==="istanbul"&&isIstanbulTool())||(t.scope==="china"&&isChina())})}
+function localTools(){return toolCatalog.filter(function(t){return t.scope==="global"||(t.scope==="turkey"&&isTurkey())||(t.scope==="istanbul"&&isIstanbulTool())||(t.scope==="china"&&isChina())||(t.scope==="japan"&&isJapan())})}
 function myTools(){if(!Array.isArray(s.trip.customTools))s.trip.customTools=[];return s.trip.customTools}
 function savedToolIds(){if(!Array.isArray(s.trip.savedToolIds))s.trip.savedToolIds=[];return s.trip.savedToolIds}
 function safeToolUrl(raw){try{var u=new URL(String(raw));return ["http:","https:"].includes(u.protocol)?u.href:"#"}catch(e){return "#"}}
-function toolLocation(t){return t.scope==="global"?"عالمية":t.scope==="turkey"?"تركيا":t.scope==="istanbul"?"إسطنبول":t.scope==="china"?"الصين":"أضفتها أنت"}
+function toolLocation(t){return t.scope==="global"?"عالمية":t.scope==="turkey"?"تركيا":t.scope==="istanbul"?"إسطنبول":t.scope==="china"?"الصين":t.scope==="japan"?"اليابان":"أضفتها أنت"}
 function renderTools(){
 var box=el("toolsList");if(!box)return;
 var all=localTools().concat(myTools()),fav=savedToolIds();
