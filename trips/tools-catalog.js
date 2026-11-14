@@ -10,5 +10,11 @@ window.TRAVEL_TOOLS_CATALOG = [
 {id:"istanbulkart",name:"İstanbulkart Mobil",kind:"payments",scope:"istanbul",desc:"تعبئة بطاقة المواصلات وإدارة الرصيد والمدفوعات المتاحة في إسطنبول، بحسب شروط الحساب والتطبيق.",url:"https://www.istanbulkart.istanbul/mobil/"},
 {id:"wechat",name:"WeChat / Weixin",kind:"translate",scope:"china",desc:"تواصل ومحادثات وخدمات محلية في الصين. الدفع عبر Weixin Pay يتطلب تهيئة حساب وبطاقة مقبولة.",url:"https://www.wechat.com/"},
 {id:"alipay",name:"Alipay",kind:"payments",scope:"china",desc:"دفع عبر QR وخدمات مثل المواصلات؛ ربط البطاقات الأجنبية يخضع لدعم البنك والتحقق.",url:"https://render.alipay.com/p/s/download"},
-{id:"didi",name:"DiDi China",kind:"transport",scope:"china",desc:"طلب سيارات داخل الصين مع واجهة باللغة الإنجليزية وإمكانات الدفع ببطاقات دولية حسب الأهلية.",url:"https://www.didiglobal.com/"}
+{id:"didi",name:"DiDi China",kind:"transport",scope:"china",desc:"طلب سيارات داخل الصين مع واجهة باللغة الإنجليزية وإمكانات الدفع ببطاقات دولية حسب الأهلية.",url:"https://www.didiglobal.com/"},
+{id:"tripadvisor-food",name:"Tripadvisor Restaurants",kind:"food",scope:"global",desc:"توصيات مطاعم من تقييمات المسافرين، مع قوائم للمطاعم المميزة وتجارب الطعام حسب المدينة. راجع تاريخ التقييمات قبل الاختيار.",url:"https://www.tripadvisor.com/Restaurants"},
+{id:"restaurant-guru-turkey",name:"Restaurant Guru Türkiye",kind:"food",scope:"turkey",desc:"استكشف المطاعم حسب المدينة والحي ونوع المطبخ، مع صور وقوائم طعام وتقييمات ومعلومات زيارة.",url:"https://www.restaurantguru.com.tr/en"},
+{id:"foodie-map-turkey",name:"FoodieMap Türkiye",kind:"food",scope:"turkey",desc:"دليل استكشاف الطعام التركي مع مراجعات فيديو ومواقع للأكلات المحلية والمطاعم. تطبيق جديد نسبيًا؛ قارن توصياته بمصادر أخرى.",url:"https://apps.apple.com/tr/app/turkey-food-guide-foodiemap/id6744828426"},
+{id:"dianping-food",name:"大众点评 Dianping",kind:"food",scope:"china",desc:"دليل مطاعم محلي في الصين يوفر تقييمات وصورًا وأطباقًا مقترحة ومطاعم قريبة. قد تحتاج ترجمة الواجهة الصينية.",url:"https://www.dianping.com/"},
+{id:"tabelog-japan",name:"Tabelog Japan",kind:"food",scope:"japan",desc:"دليل مطاعم في اليابان لتصفية المطاعم حسب المنطقة والمطبخ والسعر، مع صور وتقييمات وحجوزات متاحة.",url:"https://tabelog.com/en/"}
+
 ];
