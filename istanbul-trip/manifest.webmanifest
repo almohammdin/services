@@ -1,0 +1,20 @@
+{
+  "name": "إسطنبول على مهل | مخطط الرحلة",
+  "short_name": "رحلة إسطنبول",
+  "description": "خريطة الرحلة والأماكن والأنشطة والمحتوى",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f6f2",
+  "theme_color": "#132238",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
