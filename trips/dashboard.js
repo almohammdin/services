@@ -60,8 +60,6 @@ if(!toSar||!Number.isFinite(toSar)||toSar<=0){$("fxRate").textContent="السع�
 var reverse=1/toSar;
 $("fxRate").textContent="1 "+c+" = ⃁ "+fmt(reverse,reverse>=1?4:6);
 $("fxReverse").textContent="⃁ 1 = "+fmt(toSar,toSar>=1?4:6)+" "+c;
-$("fxFromLabel").textContent=dir==="toSar"?c:"SAR";
-$("fxToLabel").textContent=dir==="toSar"?"SAR":c;
 var result=dir==="toSar"?amount/toSar:amount*toSar;
 $("fxOutput").textContent=Number.isFinite(result)?(dir==="toSar"?"⃁ "+fmt(result,2):fmt(result,2)+" "+c):"";
 var note=state.sourceDate?"آخر تحديث للمصدر: "+state.sourceDate:"";
