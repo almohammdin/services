@@ -31,3 +31,8 @@
 - OpenTable: https://www.opentable.com/
 - XE: https://www.xe.com/currencyconverter/
 - Google Translate: https://translate.google.com/
+
+### تحديث توصيات الطعام
+- أُضيف تصنيف «توصيات الطعام» مع Tripadvisor عالميًا، Restaurant Guru وFoodieMap في تركيا، Dianping في الصين، وTabelog في اليابان.
+- المصادر: https://www.tripadvisor.com/TravelersChoice-Restaurants و https://www.restaurantguru.com.tr/en و https://apps.apple.com/tr/app/turkey-food-guide-foodiemap/id6744828426 و https://events.dianping.com/m/index.htm و https://tabelog.com/en/
+- هذه أدوات اكتشاف وروابط أصلية، وليست خدمة توصية تلقائية من بيانات مراجعات حية داخل المنصة. توافر التطبيق والدولة وشروط الحجز يخضع لمصدر الخدمة.
