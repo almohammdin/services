@@ -21,3 +21,11 @@
 .assessment-preview strong{font-size:26px;line-height:1.35;font-weight:700;font-variant-numeric:tabular-nums}
 .assessment-preview span{font-size:14px;font-weight:700}
 .assessment-preview small{font-size:12px;color:#566d65}
+
+/* فصل ملكية المنصة عن إعداد المحتوى */
+.footer-identity{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+.footer-owner,.footer-prepared{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0}
+.footer-owner>svg{width:88px;height:38px;mix-blend-mode:multiply;display:block}
+.footer-owner>span,.footer-prepared>span{font-size:10px;line-height:1.5;font-weight:500;color:#687a73}
+.footer-prepared img[alt="نايف المحمدي"]{display:block!important;width:105px!important;height:40px!important;max-width:105px!important;object-fit:contain!important;filter:brightness(0) saturate(100%) invert(12%) sepia(58%) saturate(2436%) hue-rotate(206deg) brightness(85%) contrast(107%)!important;mix-blend-mode:normal!important}
+@media(max-width:620px){.footer-identity{gap:20px}.footer-owner>svg{width:75px;height:32px}.footer-prepared img[alt="نايف المحمدي"]{width:90px!important;height:36px!important;max-width:90px!important}}
