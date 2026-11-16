@@ -24,3 +24,7 @@
 .install-button{right:auto!important;left:18px;bottom:18px}
 @media(max-width:850px){.install-button{right:auto!important;left:16px;bottom:78px}}
 @media(max-width:620px){.install-button{display:flex;right:auto!important;left:12px;bottom:76px;max-width:calc(100vw - 24px)}.footer-identity img{width:112px;height:56px}}
+
+/* توقيع نايف المحمدي بلون كحلي ظاهر فوق خلفية الفوتر الفاتحة */
+.footer-identity img[alt="نايف المحمدي"]{display:block!important;visibility:visible!important;opacity:1!important;filter:brightness(0) saturate(100%) invert(13%) sepia(33%) saturate(1100%) hue-rotate(160deg) brightness(85%) contrast(105%)!important;mix-blend-mode:normal!important;width:160px;height:70px;object-fit:contain;flex-shrink:0}
+@media(max-width:620px){.footer-identity img[alt="نايف المحمدي"]{width:130px;height:60px}}
