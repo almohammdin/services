@@ -10,3 +10,8 @@
 /* توقيع نايف المحمدي بلون كحلي ظاهر فوق خلفية الفوتر الفاتحة */
 .footer-identity img[alt="نايف المحمدي"]{display:block!important;visibility:visible!important;opacity:1!important;filter:brightness(0) saturate(100%) invert(13%) sepia(33%) saturate(1100%) hue-rotate(160deg) brightness(85%) contrast(105%)!important;mix-blend-mode:normal!important;width:160px;height:70px;object-fit:contain;flex-shrink:0}
 @media(max-width:620px){.footer-identity img[alt="نايف المحمدي"]{width:130px;height:60px}}
+
+/* تذييل متزن: توقيع نايف بالحجم المستخدم في بقية المنصات */
+.footer-identity{gap:16px;flex-wrap:nowrap;align-items:center}
+.footer-identity img[alt="نايف المحمدي"]{width:104px!important;height:44px!important;max-width:104px!important;object-fit:contain!important;filter:brightness(0) saturate(100%) invert(12%) sepia(58%) saturate(2436%) hue-rotate(206deg) brightness(85%) contrast(107%)!important;mix-blend-mode:normal!important;flex-shrink:0}
+@media(max-width:620px){.footer-identity{gap:12px}.footer-identity img[alt="نايف المحمدي"]{width:90px!important;height:40px!important;max-width:90px!important}}
