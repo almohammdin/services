@@ -1,0 +1,6 @@
+import {createContext,useContext} from 'react';
+import type {State,Participation,Page} from './model';
+export interface ModalState {type:'event'|'contact'|'task'|'appointment'|'assessment'|'backup'|'settings'|'tips';data?:any;}
+export interface AppContextValue {state:State;event?:Participation;update:(fn:(s:State)=>State)=>void;notify:(s:string)=>void;open:(m:ModalState)=>void;navigate:(p:Page)=>void;}
+export const AppContext=createContext<AppContextValue>(null!);
+export const useApp=()=>useContext(AppContext);
