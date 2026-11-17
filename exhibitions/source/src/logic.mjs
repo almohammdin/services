@@ -8,7 +8,11 @@ export const questionSets={
  product:[['ملاءمة عينة التجربة',30,'هل الحضور يمثل الفئة المستهدفة لمنتجك؟','حدد من تريد اختبار المنتج معه.'],['تصميم التجربة',25,'هل عندك أسئلة ومعايير موحدة للتقييم؟','جهز تجربة قصيرة وأسئلة قابلة للمقارنة.'],['جاهزية المنتج',20,'هل المنتج جاهز للتجربة والتوضيح؟','اختبر العينة والمواد وطريقة العرض.'],['الموارد والتكلفة',15,'هل فريقك قادر على تسجيل التجارب؟','حدد عدد التجارب والوقت المطلوب.'],['استخدام النتائج',10,'هل ستتحول الملاحظات إلى تحسينات؟','حدد موعد لمراجعة النتائج وترتيب التحسينات.']]
 };
 export function score(answers,questions){let points=0,coverage=0,documented=0,announced=0;questions.forEach((q,i)=>{const a=answers[i];if(a?.value===null||a?.value===undefined)return;coverage+=q[1];points+=q[1]*Math.max(0,Math.min(5,a.value))/5;if(a.evidence==='source'&&/^https?:\/\//.test(a.source||''))documented+=q[1];else if(a.evidence==='organizer')announced+=q[1];});return{fit:coverage?Math.round(points/coverage*100):null,coverage,documented,announced,low:Math.round(points),high:Math.round(points+100-coverage)};}
-export function decision(s){if(!s.coverage)return 'ابدأ بتقييم ملاءمة المشاركة';if(s.coverage<100)return 'استكمل المعلومات المؤثرة في القرار';if(s.documented+s.announced<60)return 'تحقق من المصادر قبل اعتماد المشاركة';return s.fit>=75?'مشاركة مناسبة مع خطة محددة':s.fit>=55?'ركز على الأجزاء الأقرب لهدفك':'قارن بفرصة مشاركة أخرى';}
+export function decision(s){
+ if(!s.coverage)return 'ابدأ التقييم';
+ const message=s.fit>=75?'المشاركة مناسبة لهدفك بحسب إجاباتك':s.fit>=55?'ركز على الأجزاء الأقرب لهدفك':'قارن بفرصة مشاركة أخرى';
+ return s.coverage<100?'تقييم أولي: '+message:message;
+}
 export function breakEven(cost,margin,rate){if(!(cost>0&&margin>0))return {deals:null,leads:null};const deals=Math.ceil(cost/margin);return {deals,leads:rate>0&&rate<=100?Math.ceil(deals*100/rate):null};}
 export function validateBackup(data){
  if(data?.version!==3||!['events','contacts','tasks','appointments'].every(k=>Array.isArray(data[k])))throw Error('صيغة النسخة تحتاج ملف صادر من هذه المنصة.');

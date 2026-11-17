@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {initialTasks,suggestedPhase,answerCount,sourceSummary} from '../src/journey.mjs';
+import {score,decision,questionSets} from '../src/logic.mjs';
+test('each goal starts with three preparatory tasks and distinct IDs',()=>{for(const goal of Object.keys(questionSets)){let i=0;const rows=initialTasks('event',goal,()=>`task-${++i}`);assert.equal(rows.length,7);assert.equal(rows.filter(t=>t.phase==='before').length,3);assert.equal(new Set(rows.map(t=>t.id)).size,7);assert.ok(rows.every(t=>t.eventId==='event'&&!t.done));}});
+test('date-based stage defaults remain manually overridable by the interface',()=>{assert.equal(suggestedPhase({},'2026-11-17'),'before');assert.equal(suggestedPhase({start:'2026-11-17',end:'2026-11-18'},'2026-11-17'),'during');assert.equal(suggestedPhase({start:'2026-11-10',end:'2026-11-15'},'2026-11-17'),'after');});
+test('zero is an answered question and missing is distinct',()=>{assert.equal(answerCount([{value:0},{value:5},{value:null},{value:undefined}]),2);});
+test('low and high self-assessments produce different recommendations',()=>{const make=value=>Array.from({length:5},()=>({value,evidence:'estimate',source:''}));const high=score(make(5),questionSets.suppliers),low=score(make(0),questionSets.suppliers);assert.equal(high.fit,100);assert.equal(low.fit,0);assert.notEqual(decision(high),decision(low));assert.match(decision(high),/مناسبة/);assert.match(decision(low),/قارن/);assert.equal(sourceSummary(make(5)),'مبني على تقديرك الشخصي');});
+test('incomplete results are visibly provisional and source claims are attributed',()=>{const a=[{value:5,evidence:'source',source:'https://example.com'},...Array.from({length:4},()=>({value:null,evidence:'estimate',source:''}))];assert.match(decision(score(a,questionSets.suppliers)),/تقييم أولي/);assert.match(sourceSummary(a),/روابط أرفقتها: 1/);});
