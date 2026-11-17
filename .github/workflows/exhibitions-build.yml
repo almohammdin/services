@@ -25,7 +25,7 @@ jobs:
       - name: Install locked dependencies
         working-directory: exhibitions/source
         run: npm ci --no-audit --no-fund
-      - name: Apply reviewed source patch when present
+      - name: Apply reviewed source changes when present
         run: |
           if [ -f exhibitions/source/scripts/apply-ux-upgrade.py ]; then
             python3 exhibitions/source/scripts/apply-ux-upgrade.py
@@ -34,24 +34,39 @@ jobs:
         working-directory: exhibitions/source
         run: |
           npm test
+          npm run test:workflow
           npm run build
-      - name: Prepare built site
+      - name: Install isolated browser test runner
+        run: |
+          npm install --prefix /tmp/exhibitions-e2e playwright@1.56.1 --no-audit --no-fund
+          if command -v google-chrome >/dev/null; then
+            echo "CHROME_PATH=$(command -v google-chrome)" >> "$GITHUB_ENV"
+          else
+            node /tmp/exhibitions-e2e/node_modules/playwright/cli.js install --with-deps chromium
+          fi
+      - name: Browser acceptance and PWA update tests
+        working-directory: exhibitions/source
+        env:
+          EXHIBITIONS_PLAYWRIGHT_MODULE: /tmp/exhibitions-e2e/node_modules/playwright
+        run: node tests/browser.cjs
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exhibitions-browser-qa
+          path: exhibitions/source/qa/
+          retention-days: 3
+          if-no-files-found: ignore
+      - name: Prepare tested release
         run: |
           cp -a exhibitions/source/release/. exhibitions/
-          git add exhibitions/source/src exhibitions/source/index.html exhibitions/source/vite.config.js exhibitions/source/tests exhibitions/index.html exhibitions/assets exhibitions/sw.js exhibitions/manifest.webmanifest exhibitions/workbox-*.js
+          git add -A exhibitions/source/src exhibitions/source/index.html exhibitions/source/vite.config.js exhibitions/source/tests exhibitions/source/scripts exhibitions/index.html exhibitions/assets exhibitions/sw.js exhibitions/manifest.webmanifest exhibitions/workbox-*.js
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m '[build-exhibitions] Compile tested exhibition sources'
+            git commit -m '[build-exhibitions] Publish tested v3.1 sources and assets'
             git push origin HEAD:${{ github.ref_name }}
           fi
-      - name: Package test workspace
-        run: tar -czf /tmp/exhibitions-workspace.tgz -C exhibitions/source .
-      - uses: actions/upload-artifact@v4
-        with:
-          name: exhibitions-workspace
-          path: /tmp/exhibitions-workspace.tgz
-          retention-days: 3
       - uses: actions/upload-artifact@v4
         with:
           name: exhibitions-release
