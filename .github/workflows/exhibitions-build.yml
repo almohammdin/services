@@ -1,0 +1,59 @@
+name: Exhibitions build and test
+on:
+  push:
+    branches: [exhibitions-simplify-v3-1]
+    paths: ['exhibitions/source/**', '.github/workflows/exhibitions-build.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: exhibitions-build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: exhibitions/source/package-lock.json
+      - name: Install locked dependencies
+        working-directory: exhibitions/source
+        run: npm ci --no-audit --no-fund
+      - name: Apply reviewed source patch when present
+        run: |
+          if [ -f exhibitions/source/scripts/apply-ux-upgrade.py ]; then
+            python3 exhibitions/source/scripts/apply-ux-upgrade.py
+          fi
+      - name: Test and compile
+        working-directory: exhibitions/source
+        run: |
+          npm test
+          npm run build
+      - name: Prepare built site
+        run: |
+          cp -a exhibitions/source/release/. exhibitions/
+          git add exhibitions/source/src exhibitions/source/index.html exhibitions/source/vite.config.js exhibitions/source/tests exhibitions/index.html exhibitions/assets exhibitions/sw.js exhibitions/manifest.webmanifest exhibitions/workbox-*.js
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m '[build-exhibitions] Compile tested exhibition sources'
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+      - name: Package test workspace
+        run: tar -czf /tmp/exhibitions-workspace.tgz -C exhibitions/source .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exhibitions-workspace
+          path: /tmp/exhibitions-workspace.tgz
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exhibitions-release
+          path: exhibitions/source/release/
+          retention-days: 3
