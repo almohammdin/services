@@ -190,7 +190,7 @@ html+='<g id="shelf" class="shelf" role="button" tabindex="0" aria-label="فتح
 for(let j=0;j<6;j++)html+='<rect x="'+(-27+j*9)+'" y="'+(-19+j%3*2)+'" width="7" height="'+(27-j%3*2)+'" rx="1" fill="'+['#d5b779','#809e91','#eadfc4'][j%3]+'"/>';
 html+='<rect x="-49" y="15" width="98" height="46" rx="6" fill="#fff7df" stroke="#bb9b61"/>'+label(['دليل المكتب:','القوانين والسياسات','والإجراءات'],28,'#514124',11)+'</g>';
 points.forEach(([x,y],i)=>{
- const chief=i===0,side=i===7&&!wide,lines=chief?['نايف: مصدر الأوامر','والقوانين']:wrap[i],w=chief?134:side?86:112;
+ const chief=i===0,side=i===7&&!wide,lines=chief?['نايف المحمدي']:wrap[i],w=chief?134:side?86:112;
  html+='<g class="station" id="s'+i+'" transform="translate('+x+' '+y+')">';
  if(chief)html+='<ellipse cy="2" rx="62" ry="37" fill="#cfb27b"/><ellipse cy="2" rx="58" ry="33" fill="#ead9af"/>';
  html+='<g transform="scale('+(chief?1.07:side?.74:wide?.86:.79)+')">'+(i===7?board():person(i)+props[i])+'</g><rect x="'+(-w/2)+'" y="'+(chief?30:23)+'" width="'+w+'" height="'+(lines.length*14+4)+'" rx="6" fill="'+(chief?'#193b43':'#fffbee')+'"/>'+label(lines,chief?43:36,chief?'#ffedc2':'#193b43',chief?13:12)+'</g>';
