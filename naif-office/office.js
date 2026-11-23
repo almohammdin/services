@@ -91,6 +91,34 @@ function home(rs){return `<section class="hero"><div><h1>مكتب نايف</h1><
 function list(rs){return pageHead('ملفات العمل','ابحث في تكليفات المكتب وتابع تقدمها.',action('new',icon('plus')+' تكليف جديد','btn'))+`<div class="list-tools"><input aria-label="بحث في الملفات" id="search" type="search" placeholder="ابحث بعنوان الملف أو التكليف"><select aria-label="تصفية بحسب الحالة" id="filter">${options([['','كل الحالات'],...statusList.map(v=>[v,v])],'')}</select></div><div id="results">${rs.map(row).join('')||empty('ملفات المكتب','تظهر تكليفاتك هنا بعد إنشاء أول ملف.')}</div>`}
 function filter(){const q=$('#search').value.trim(),s=$('#filter').value;$('#results').innerHTML=records().filter(r=>(!s||s===r.status)&&(r.title+' '+r.brief).includes(q)).map(row).join('')||empty('ما فيه ملفات مطابقة','جرّب عنوان آخر أو غيّر الحالة.')}
 function log(rs){const ds=rs.filter(r=>r.choice);return pageHead('سجل القرارات','القرارات التي اعتمدتها وأسبابها ومواعيد مراجعتها.')+(ds.map(r=>`<div class="panel group"><a href="#file/${esc(r.id)}"><small class="meta">${esc(r.title)}</small><h2>${esc(r.choice)}</h2></a><p>${esc(r.reason)}</p><div class="split"><small>${r.review?'مراجعة '+date(atDay(r.review),{year:'numeric'}):''}</small><a class="text-btn" href="#file/${esc(r.id)}">فتح القرار ${icon('arrow')}</a></div></div>`).join('')||empty('سجلك جاهز لأول قرار','اعتمد توصيتك داخل ملف مجلس المستشارين لتظهر هنا.','log'))}
+const rosterRequest='أعطني أسماء وكلاء Grok Bot الستة في فريقي كما تظهر عندك. لكل وكيل أدرج اسمه ثم علامة | ثم معرّفه الحقيقي أو رابط محادثته من Share. اكتب كل وكيل في سطر مستقل. اترك أي معرف تجهله فارغا.';
+function rosterSetup(){
+ const primary='https://cursor.com/grok-bot/link/v1/prompt?text='+encodeURIComponent(rosterRequest);
+ modal('إضافة قائمة قروك',`<form id="roster-form"><p class="hand-note">إذا عندك وكيل رئيسي في قروك، افتحه بالطلب الجاهز وراجع الأسماء التي يرجع بها. أو اجمع الروابط من قائمة Share لكل وكيل.</p><div class="actions"><a class="btn secondary" href="${primary}" target="_blank" rel="noopener noreferrer">فتح الطلب في قروك</a></div><label class="field group">اسم الوكيل | المعرّف أو الرابط<textarea rows="6" name="rows" required placeholder="كل وكيل في سطر"></textarea></label><p id="roster-error" role="alert"></p><div class="actions"><button class="btn">حفظ القائمة</button></div></form>`)
+}
+function mergeRoster(textValue){
+ const rows=textValue.split(/\r?\n/).map(line=>line.trim()).filter(Boolean);
+ if(!rows.length||rows.length>6)throw Error('أدخل من 1 إلى 6 أسطر.');
+ const slots=team().filter(isGrok);
+ const seen=new Set(),names=new Set(), updates={};
+ for(const line of rows){
+  const [name,raw,...extra]=line.split('|').map(part=>part.trim());
+  const id=grokLinks.botId(raw);
+  if(extra.length||!name||!id)throw Error('كل سطر يحتاج اسم الوكيل ثم | ثم معرّفه أو رابطه.');
+  if(seen.has(id)||names.has(name))throw Error('تكرر اسم أو معرّف في القائمة.');
+  seen.add(id);names.add(name);
+  const byId=slots.find(a=>grokLinks.botId(a.url)===id), byName=slots.find(a=>a.name===name);
+  if(byName&&((byId&&byId!==byName)||(grokLinks.botId(byName.url)&&grokLinks.botId(byName.url)!==id)))throw Error('يوجد اسم محفوظ بمعرّف مختلف. راجعه في بطاقة الوكيل.');
+  const slot=byId||byName||slots.find(a=>!a.name&&!grokLinks.botId(a.url));
+  if(!slot)throw Error('المقاعد الستة مستخدمة. عدّل البطاقة المطلوبة.');
+  slot.name=name;slot.url=raw;
+  updates[slot.id]={name,role:slot.role,url:raw};
+ }
+ const entries=Object.entries(updates);
+ const saved=entries.map(([id])=>[prefix+'agent.'+id,localStorage.getItem(prefix+'agent.'+id)]);
+ try{for(const [id,data] of entries)localStorage.setItem(prefix+'agent.'+id,JSON.stringify(data))}
+ catch(error){for(const [key,old] of saved){if(old===null)localStorage.removeItem(key);else localStorage.setItem(key,old)}throw error}
+}
 function agents(){
  const all=team(), slots=all.filter(isGrok), next=slots.find(a=>!a.name);
  function card(a){
@@ -102,7 +130,7 @@ function agents(){
  '<section class="agents">'+all.filter(a=>!isGrok(a)).map(card).join('')+'</section>'+
  `<div class="section-head"><h2>وكلاء قروك</h2><small class="agent-meta">${slots.filter(a=>a.name&&agentUrl(a)).length} من 6 بروابط محفوظة</small></div>
  <div class="agents">${slots.filter(a=>a.name||agentUrl(a)).map(card).join('')}</div>
- ${next?`<div class="panel agent-empty"><p>من داخل Grok Bot اضغط اسم الوكيل ثم Share وبعدها Copy link. احفظ اسمه ورابطه هنا في متصفحك.</p><div class="actions">${action('agent',icon('plus')+' إضافة وكيل من قروك','btn',`data-id="${next.id}"`)}</div></div>`:''}`
+ ${next?`<div class="panel agent-empty"><p>من داخل Grok Bot اضغط اسم الوكيل ثم Share وبعدها Copy link. احفظ اسمه ورابطه هنا في متصفحك.</p><div class="actions">${action('agent',icon('plus')+' إضافة وكيل من قروك','btn',`data-id="${next.id}"`)}${action('roster','إضافة قائمة الوكلاء')}</div></div>`:''}`
 }
 function editAgent(id){
  const a=team().find(t=>t.id===id), grok=isGrok(a);
@@ -177,6 +205,7 @@ document.addEventListener('click',async e=>{
  case 'guide-prev':return moveGuide(-1);
  case 'guide-skip':return endGuide(false);
  case 'guide-start':return endGuide(true);
+ case 'roster':return rosterSetup();
  case 'agent':return editAgent(b.dataset.id);
  case 'dictate':return dictate();
  case 'brief':return output('تكليف جاهز للنسخ',brief(draft(),b.dataset.lens),team().find(a=>a.id===draft().owner));
@@ -187,9 +216,10 @@ document.addEventListener('click',async e=>{
  }catch{notice('تعذر تنفيذ الطلب. حاول مرة أخرى.')}
 });
 document.addEventListener('submit',e=>{
- const form=e.target;if(!['new-form','agent-form','details'].includes(form.id))return;e.preventDefault();
+ const form=e.target;if(!['new-form','agent-form','roster-form','details'].includes(form.id))return;e.preventDefault();
  const values=Object.fromEntries(Array.from(new FormData(form),([k,v])=>[k,String(v).trim()]));
  try{
+ if(form.id==='roster-form'){try{mergeRoster(values.rows);close();render();flash('تم حفظ قائمة الوكلاء')}catch(error){$('#roster-error').textContent=error.message}return}
  if(form.id==='agent-form'){
  if(!values['اسم العضو'])return notice('أدخل اسم الوكيل');
  const grok=isGrok({id:form.dataset.id});
