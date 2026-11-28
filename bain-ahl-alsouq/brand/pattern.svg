@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="48" viewBox="0 0 96 48" fill="none">
+  <title>بين أهل السوق — نمط أروقة السوق</title>
+  <!-- Repeating souq / awning motif derived from the amber scallops in «السوق». -->
+  <path fill="#014D4C" d="M0 8h96v1.2H0z"/>
+  <path fill="#DA9307" d="M4 9.2A14 16 0 0 0 32 9.2Z"/>
+  <path fill="#DA9307" d="M36 9.2A14 16 0 0 0 64 9.2Z"/>
+  <path fill="#DA9307" d="M68 9.2A14 16 0 0 0 96 9.2Z"/>
+  <g fill="none" stroke="#014D4C" stroke-width="1.15" stroke-linecap="round">
+    <path d="M-12 32.5A12 13 0 0 0 12 32.5"/>
+    <path d="M20 32.5A12 13 0 0 0 44 32.5"/>
+    <path d="M52 32.5A12 13 0 0 0 76 32.5"/>
+    <path d="M84 32.5A12 13 0 0 0 108 32.5"/>
+  </g>
+</svg>
