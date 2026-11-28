@@ -190,9 +190,6 @@ a.hatta-button{display:inline-flex;align-items:center;justify-content:center;tex
 .compare-pair .path{min-height:100%}
 .compare-pair .sub{margin-top:8px;padding-top:8px;border-top:1px solid #e0e3e9}
 .compare-pair .sub strong{display:block;margin:0 0 4px}
-.lids{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center}
-.lids .step strong{font-size:28px}
-.lids-note{margin:12px 0 0;text-align:center;color:var(--hatta-navy);font-weight:500;font-size:16px;line-height:1.7}
 .eq-result-note{margin:10px 0 0;text-align:center;color:var(--series-teal);font-weight:500;font-size:16px;line-height:1.7;font-feature-settings:"salt" 1,"liga" 1}
 .hyp{margin:16px 0 0;padding:16px 24px;background:var(--hatta-paper);border-inline-start:4px solid var(--hatta-gold)}
 .hyp p{margin:4px 0 0}
@@ -200,7 +197,7 @@ a.hatta-button{display:inline-flex;align-items:center;justify-content:center;tex
 .steps-eq .op{display:grid;place-items:center;color:var(--hatta-gold-text);font-weight:700;font-size:20px;font-family:"Thmanyah Sans",Tahoma,sans-serif}
 @media(max-width:650px){
 .law-repeat{display:none}
-.compare-pair,.lids{grid-template-columns:1fr}
+.compare-pair{grid-template-columns:1fr}
 .steps-eq{grid-template-columns:1fr}
 .steps-eq .op{padding:0;height:12px}
 }
@@ -215,7 +212,7 @@ a.hatta-button{display:inline-flex;align-items:center;justify-content:center;tex
 .dl .hatta-button{min-height:44px;padding:8px 16px;font-size:14px}
 .toolbar a.hatta-button{font-size:14px;padding:8px 16px}
 /* section 09: card titles and highlights use Sans alternates (salt 1) */
-.path strong,.flow-item strong,.step strong.t,.lids-note{font-feature-settings:"salt" 1,"liga" 1}
+.path strong,.flow-item strong,.step strong.t{font-feature-settings:"salt" 1,"liga" 1}
 .path strong,.flow-item strong{font-weight:700}
 .sr-note{position:absolute;left:-9999px}
 @media print{
@@ -454,7 +451,7 @@ body{background:#fff!important;}
 .story-card h2,.story-card .q,.intro-card h2,.checklist h2{font-feature-settings:"salt" 0,"liga" 1}
 h2,h3{font-feature-settings:"salt" 0,"liga" 1}
 @media print{.card-kicker{break-after:avoid}}
-@media print{.intro-card,.checklist,#card-lids,#card-app,#labor{break-inside:avoid}}
+@media print{.intro-card,.checklist,#card-app,#labor{break-inside:avoid}}
 
 </style>
 </head>
@@ -466,7 +463,6 @@ h2,h3{font-feature-settings:"salt" 0,"liga" 1}
 <symbol id="i-law" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M7 20v-8h2.2v8M11 20v-8h2v8M14.8 20v-8H17v8"/><path d="M5.2 12h13.6"/><path d="M4.6 12 12 6.6 19.4 12"/><path fill="#DA9307" stroke="none" d="M6.4 12 12 7.6 17.6 12H6.4z"/></symbol>
 <symbol id="i-demand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M5.2 14.6 10 9.8l3 3 5.2-6.2"/><circle cx="18.6" cy="6.2" r="1.55" fill="#DA9307" stroke="none"/></symbol>
 <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M3.8 8.2 12 12.2l8.2-4"/><path d="M12 12.2V21"/><path d="M3.8 8.2v7.6L12 21l8.2-5.2V8.2L12 3 3.8 8.2Z"/><path fill="#DA9307" stroke="none" d="M7.6 6.35 12 8.5l4.4-2.15L12 4.05 7.6 6.35z"/></symbol>
-<symbol id="i-cup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5h8l-1 11H9L8 5Z"/><path d="M9 5c0-1.4 1.3-2.5 3-2.5S15 3.6 15 5"/><path d="M16 8h1.8a2.7 2.7 0 0 1 0 5.4H15.5"/><path d="M8 19h8"/><path fill="#DA9307" stroke="none" d="M8.85 9.2h6.3l-.45 5.3H9.3z"/></symbol>
 <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path fill="#DA9307" stroke="none" d="M9.2 5.1h5.6v1.3H9.2z"/><circle cx="12" cy="18.1" r="0.7" fill="#DA9307" stroke="none"/></symbol>
 <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V20.5H7Z"/><path d="M14 3.5V8h4.5"/><path d="M10 12h5M10 16h5"/><path fill="#DA9307" stroke="none" d="M7.4 3.5H13.2v1.7H7.4z"/></symbol>
 <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h11M4 18h7"/><path d="M16.2 15.3l1.6 1.7 3.2-3.3" stroke="#DA9307" stroke-width="2"/></symbol>
@@ -539,28 +535,6 @@ h2,h3{font-feature-settings:"salt" 0,"liga" 1}
 </div>
 </article>
 
-<article class="hatta-card story-card" id="card-lids" data-src="1">
-<div class="card-kicker"><svg class="icon" width="24" height="24" aria-hidden="true"><use href="#i-cup"/></svg></div>
-<h2>كيف أعرف إن كنت أستخدم أغطية أقل مع الحامل؟</h2>
-<p>لاحظ سعد أن كرتون الأغطية ينفد أسرع من كرتون الأكواب، فركّب حامل أغطية بجانب صندوق المحاسبة وشارك الصورة في المجموعة.</p>
-<p>لك أن تجرّب في محلك وتقيس بنفسك، وأن تشارك زملاءك طريقة القياس، ثم تقرر كيف تستفيد من الوفر.</p>
-<div class="recommendation"><span class="overline">خطوتك</span><p>قارن عدد الأغطية لكل 100 كوب في أسبوعين تتشابه فيهما ظروف البيع، أحدهما بالحامل والآخر بدونه.</p></div>
-<figure class="diagram">
-<p class="cap">مثال لكل 100 كوب</p>
-<div class="lids">
-<div class="step"><strong class="hatta-numeral">112</strong><span>بلا حامل</span></div>
-<div class="step"><strong class="hatta-numeral">103</strong><span>مع الحامل</span></div>
-</div>
-<p class="lids-note">9 أغطية أقل</p>
-</figure>
-<div class="dl no-print"><button class="hatta-button share-card" type="button" data-file="exports/lids.png" data-name="كيف أعرف إن كنت أستخدم أغطية أقل مع الحامل.png" data-title="كيف أعرف إن كنت أستخدم أغطية أقل مع الحامل؟" data-text="بين أهل السوق · العدد 1"><svg class="icon" width="24" height="24" aria-hidden="true"><use href="#i-share"/></svg>مشاركة</button></div>
-<div class="law">
-<p class="law-ref"><span class="ref-label">عن حرية التسعير:</span> <span class="ref" dir="rtl">نظام المنافسة، المادة&nbsp;4</span></p>
-<details class="law-text"><summary>اقرأ نص المادة</summary>
-<p><b>نظام المنافسة، المادة 4:</b> «تكون أسعار السلع والخدمات وفقاً لقواعد السوق ومبادئ المنافسة الحرة، عدا أسعار السلع والخدمات التي تحدد بناءً على قرار من مجلس الوزراء، أو بموجب نظام.»</p>
-</details>
-</div>
-</article>
 
 <article class="hatta-card story-card" id="card-app" data-src="2">
 <div class="card-kicker"><svg class="icon" width="24" height="24" aria-hidden="true"><use href="#i-phone"/></svg></div>
@@ -584,7 +558,7 @@ h2,h3{font-feature-settings:"salt" 0,"liga" 1}
 <h2>قرارات تخص محلك</h2>
 <ol>
 <li><span>احسب تكلفة الصنف من أرقام محلك، ثم حدّد سعر بيعه بنفسك.</span></li>
-<li><span>شارك زملاءك طريقة الحساب وأفكار تقليل الهدر، واحتفظ لمحلّك بتفاصيل سعر البيع الذي تنوي تطبيقه.</span></li>
+<li><span>شارك زملاءك طريقة الحساب، واحتفظ لمحلّك بتفاصيل سعر البيع الذي تنوي تطبيقه.</span></li>
 <li><span>قارن عدد الطلبات وما يبقى لك من كل طلب، ثم اختر التطبيق المناسب لمطعمك وتوكّل على الله.</span></li>
 </ol>
 </section>

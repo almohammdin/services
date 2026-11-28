@@ -190,9 +190,6 @@ a.hatta-button{display:inline-flex;align-items:center;justify-content:center;tex
 .compare-pair .path{min-height:100%}
 .compare-pair .sub{margin-top:8px;padding-top:8px;border-top:1px solid #e0e3e9}
 .compare-pair .sub strong{display:block;margin:0 0 4px}
-.lids{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center}
-.lids .step strong{font-size:28px}
-.lids-note{margin:12px 0 0;text-align:center;color:var(--hatta-navy);font-weight:500;font-size:16px;line-height:1.7}
 .eq-result-note{margin:10px 0 0;text-align:center;color:var(--series-teal);font-weight:500;font-size:16px;line-height:1.7;font-feature-settings:"salt" 1,"liga" 1}
 .hyp{margin:16px 0 0;padding:16px 24px;background:var(--hatta-paper);border-inline-start:4px solid var(--hatta-gold)}
 .hyp p{margin:4px 0 0}
@@ -200,7 +197,7 @@ a.hatta-button{display:inline-flex;align-items:center;justify-content:center;tex
 .steps-eq .op{display:grid;place-items:center;color:var(--hatta-gold-text);font-weight:700;font-size:20px;font-family:"Thmanyah Sans",Tahoma,sans-serif}
 @media(max-width:650px){
 .law-repeat{display:none}
-.compare-pair,.lids{grid-template-columns:1fr}
+.compare-pair{grid-template-columns:1fr}
 .steps-eq{grid-template-columns:1fr}
 .steps-eq .op{padding:0;height:12px}
 }
@@ -215,7 +212,7 @@ a.hatta-button{display:inline-flex;align-items:center;justify-content:center;tex
 .dl .hatta-button{min-height:44px;padding:8px 16px;font-size:14px}
 .toolbar a.hatta-button{font-size:14px;padding:8px 16px}
 /* section 09: card titles and highlights use Sans alternates (salt 1) */
-.path strong,.flow-item strong,.step strong.t,.lids-note{font-feature-settings:"salt" 1,"liga" 1}
+.path strong,.flow-item strong,.step strong.t{font-feature-settings:"salt" 1,"liga" 1}
 .path strong,.flow-item strong{font-weight:700}
 .sr-note{position:absolute;left:-9999px}
 @media print{
@@ -454,7 +451,7 @@ body{background:#fff!important;}
 .story-card h2,.story-card .q,.intro-card h2,.checklist h2{font-feature-settings:"salt" 0,"liga" 1}
 h2,h3{font-feature-settings:"salt" 0,"liga" 1}
 @media print{.card-kicker{break-after:avoid}}
-@media print{.intro-card,.checklist,#card-lids,#card-app,#labor{break-inside:avoid}}
+@media print{.intro-card,.checklist,#card-app,#labor{break-inside:avoid}}
 
 </style>
 </head>
