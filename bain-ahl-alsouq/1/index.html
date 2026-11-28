@@ -428,6 +428,12 @@ h1.series-masthead{margin-bottom:8px}
 .sig,.footer-brand{grid-column:1/-1}
 }
 
+/* Official SAMA Saudi riyal symbol (inline SVG; fonts lack U+20C1).
+   Position: always to the left of the numeral, with a gap (SAMA usage rules). */
+.sar{display:inline-flex;align-items:baseline;gap:0.16em;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.sar-riyal{display:inline-block;width:0.9em;height:calc(0.9em * 1256.39 / 1124.14);flex:none;fill:currentColor;color:inherit;overflow:visible;vertical-align:-0.12em}
+.sar-riyal use{fill:currentColor}
+
 </style>
 </head>
 <body>
@@ -442,7 +448,7 @@ h1.series-masthead{margin-bottom:8px}
 <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path fill="#DA9307" stroke="none" d="M9.2 5.1h5.6v1.3H9.2z"/><circle cx="12" cy="18.1" r="0.7" fill="#DA9307" stroke="none"/></symbol>
 <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V20.5H7Z"/><path d="M14 3.5V8h4.5"/><path d="M10 12h5M10 16h5"/><path fill="#DA9307" stroke="none" d="M7.4 3.5H13.2v1.7H7.4z"/></symbol>
 <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h11M4 18h7"/><path d="M16.2 15.3l1.6 1.7 3.2-3.3" stroke="#DA9307" stroke-width="2"/></symbol>
-</svg>
+<symbol id="i-riyal" viewBox="0 0 1124.14 1256.39"><path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"/><path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"/></symbol></svg>
 <main class="sheet">
 <header class="page-head">
 <div class="report-head">
@@ -473,13 +479,13 @@ h1.series-masthead{margin-bottom:8px}
 <span class="overline">السؤال</span>
 <p class="q">هل أخفّض السعر أم أغيّر العرض؟</p>
 <p>ابدأ من أرقام محلك: كم طلب إفطار بعت هذا الشهر، وكم بعت في الشهر الماضي؟ وأي الأصناف انخفض أكثر، وكم يكلف كل صنف. قد تجد أن الانخفاض في صنف واحد، أو أن عرض فطور لشخصين يجلب طلبات أكثر من خصم على الكل. لك أن تخفّض السعر، أو تغيّر العرض، أو تبقيه.</p>
-<p>ويختلف الأمر حين يقترح أحدهم في المجموعة سعرًا يلتزم به الجميع، مثل أن يكون أقل سعر للصحن 12 ريالًا. فهذا اقتراح لحد أدنى. وإذا اتفقت المحلات عليه، صار بينها اتفاق على تثبيت حد أدنى.</p>
+<p>ويختلف الأمر حين يقترح أحدهم في المجموعة سعرًا يلتزم به الجميع، مثل أن يكون أقل سعر للصحن <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">12</span></span>. فهذا اقتراح لحد أدنى. وإذا اتفقت المحلات عليه، صار بينها اتفاق على تثبيت حد أدنى.</p>
 <div class="recommendation"><span class="overline">خطوة عملية</span><p>اكتب لكل صنف تكلفته وسعر بيعه وكمية ما بيع منه هذا الشهر والشهر السابق، وحدد الأصناف التي تربحك فعلًا، ثم قرر ما الذي تعدّله.</p></div>
 <figure class="diagram">
 <p class="cap">أين ينتهي قرار المطعم وأين يبدأ الحديث عن سعر مشترك</p>
 <div class="compare-pair">
 <div class="path"><strong>قرار داخل المطعم</strong><span>يخفض عبدالله سعر الصحن، أو يغيّر عرضه، أو يبقيه، وفق أرقام محله. المادة 6 من اللائحة.</span></div>
-<div class="path"><strong>حديث بين مطاعم متنافسة</strong><span class="sub"><strong>يقترح أحدهم سعرًا مشتركًا</strong>أقل سعر للصحن 12 ريالًا. المادة 5 البند 1.</span><span class="sub"><strong>توافق المحلات عليه</strong>اتفاق على تثبيت حد أدنى. المادة 8 الفقرة 2 (أ) من اللائحة.</span></div>
+<div class="path"><strong>حديث بين مطاعم متنافسة</strong><span class="sub"><strong>يقترح أحدهم سعرًا مشتركًا</strong>أقل سعر للصحن <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">12</span></span>. المادة 5 البند 1.</span><span class="sub"><strong>توافق المحلات عليه</strong>اتفاق على تثبيت حد أدنى. المادة 8 الفقرة 2 (أ) من اللائحة.</span></div>
 </div>
 </figure>
 <div class="dl no-print"><button class="hatta-button share-card" type="button" data-file="exports/demand.png" data-name="انخفاض الطلب والمنافسة على السعر.png" data-title="انخفاض الطلب والمنافسة على السعر" data-text="بين أهل السوق · العدد 1"><svg class="icon" width="24" height="24" aria-hidden="true"><use href="#i-share"/></svg>مشاركة</button></div>
@@ -497,11 +503,11 @@ h1.series-masthead{margin-bottom:8px}
 <div class="card-kicker"><svg class="icon" width="24" height="24" aria-hidden="true"><use href="#i-box"/></svg><span class="overline">المورد</span></div>
 <h2>عرض المورد وحساب تكلفة الكوب</h2>
 <span class="overline">المثال</span>
-<p>نشر أبو فهد، وهو مورد تعرفه مجموعة من أصحاب المقاهي، عرضًا: كرتون من 500 كوب مع غطائه بسعر 180 ريالًا. سأل سعد، صاحب مقهى صغير: كيف أعرف أن سعر القهوة يناسب هذه التكلفة؟ فشرحت نورة، التي تدير مقهى منذ سنوات، طريقة الحساب خطوة بعد خطوة.</p>
+<p>نشر أبو فهد، وهو مورد تعرفه مجموعة من أصحاب المقاهي، عرضًا: كرتون من 500 كوب مع غطائه بسعر <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">180</span></span>. سأل سعد، صاحب مقهى صغير: كيف أعرف أن سعر القهوة يناسب هذه التكلفة؟ فشرحت نورة، التي تدير مقهى منذ سنوات، طريقة الحساب خطوة بعد خطوة.</p>
 <span class="overline">السؤال</span>
 <p class="q">كيف أحسب تكلفة الكوب بعد التوصيل؟ وما الفرق بين مشاركة طريقة الحساب ومشاركة أسعار البيع المقبلة؟</p>
 <p>يستطيع أبو فهد عرض سعر الأكواب على عملائه، وتستطيع نورة شرح طريقة حساب تكلفة الكوب. أما إذا تبادلت المقاهي تفاصيل الأسعار التي تنوي تطبيقها، فقد يساعدها ذلك على تنسيق أسعارها. وتتناول المادة 5 اقتراح الأسعار أو تحديدها ضمن الممارسات التي يكون هدفها أو أثرها الإخلال بالمنافسة.</p>
-<div class="recommendation"><span class="overline">خطوة عملية</span><p>الكرتون سعره 180 ريالًا وفيه 500 كوب بغطائها. سعر الكوب 36 هللة. وإذا كان توصيل الكرتون 15 ريالًا، فنصيب الكوب 3 هللات، وتبلغ تكلفة الكوب بعد التوصيل 39 هللة.</p></div>
+<div class="recommendation"><span class="overline">خطوة عملية</span><p>الكرتون سعره <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">180</span></span> وفيه 500 كوب بغطائها. سعر الكوب 36 هللة. وإذا كان توصيل الكرتون <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">15</span></span>، فنصيب الكوب 3 هللات، وتبلغ تكلفة الكوب بعد التوصيل 39 هللة.</p></div>
 <figure class="diagram">
 <p class="cap">حساب تكلفة الكوب</p>
 <div class="steps-eq">
@@ -564,16 +570,16 @@ h1.series-masthead{margin-bottom:8px}
 <span class="overline">السؤال</span>
 <p class="q">ما الذي أحسبه لأعرف ما يتبقى لي من الطلب بعد التوصيل والرسوم؟</p>
 <p>فكّك طلبًا واحدًا: سعر الطلب، ناقص عمولة التطبيق، ناقص رسوم الدفع والتوصيل التي عليك، ناقص أي خصم تتحمله، ناقص التغليف وتكلفة الطعام. وأجرِ الحساب نفسه على البديل. لريم أن تختار تطبيق التوصيل الذي يناسب مطعمها.</p>
-<div class="recommendation"><span class="overline">خطوة عملية</span><p>لمدة شهر، سجّل لكل قناة عدد الطلبات ومتوسط الطلب والعمولة والرسوم، واستخرج المتبقي من الطلب. مثال: طلب قيمته 60 ريالًا، عمولته <span class="hatta-numeral">%20</span> تساوي 12 ريالًا. بعد رسوم دفع 2 ريال وتغليف 3 ريالات، يبقى 43 ريالًا. اطرح بعد ذلك تكلفة الطعام وأي توصيل أو خصم تتحمله.</p></div>
+<div class="recommendation"><span class="overline">خطوة عملية</span><p>لمدة شهر، سجّل لكل قناة عدد الطلبات ومتوسط الطلب والعمولة والرسوم، واستخرج المتبقي من الطلب. مثال: طلب قيمته <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">60</span></span>، عمولته <span class="hatta-numeral">%20</span> تساوي <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">12</span></span>. بعد رسوم دفع <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">2</span></span> وتغليف <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">3</span></span>، يبقى <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">43</span></span>. اطرح بعد ذلك تكلفة الطعام وأي توصيل أو خصم تتحمله.</p></div>
 <figure class="diagram">
-<p class="cap">تفكيك طلب قيمته 60 ريالًا</p>
+<p class="cap">تفكيك طلب قيمته <span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">60</span></span></p>
 <svg viewBox="0 0 760 86" width="100%" height="86" role="img" aria-label="من أصل 60 ريالًا: عمولة 12 ريالًا، رسوم دفع 2 ريال، تغليف 3 ريالات، و43 ريالًا متبقية قبل تكلفة الطعام والتوصيل وأي خصم يتحمله المطعم">
 <rect x="0" y="22" width="545" height="36" fill="#061F56"/><rect x="545" y="22" width="38" height="36" fill="#8A5B20"/><rect x="583" y="22" width="25" height="36" fill="#E6D2AE"/><rect x="608" y="22" width="152" height="36" fill="#B47A2D"/>
 </svg>
 <div class="paths">
-<div class="path"><strong class="hatta-numeral">12</strong><span>ريالًا عمولة التطبيق، <span class="hatta-numeral">%20</span></span></div>
-<div class="path"><strong class="hatta-numeral">2 + 3</strong><span>ريالان رسوم دفع، و3 ريالات تغليفًا</span></div>
-<div class="path"><strong>43 ريالًا</strong><span>متبقية قبل تكلفة الطعام والتوصيل وأي خصم يتحمله المطعم</span></div>
+<div class="path"><strong><span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">12</span></span></strong><span>عمولة التطبيق، <span class="hatta-numeral">%20</span></span></div>
+<div class="path"><strong class="hatta-numeral">2 + 3</strong><span><span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">2</span></span> رسوم دفع، و<span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">3</span></span> تغليفًا</span></div>
+<div class="path"><strong><span class="sar" dir="ltr"><svg class="sar-riyal" role="img" aria-label="ريال" focusable="false"><use href="#i-riyal"/></svg><span class="hatta-numeral">43</span></span></strong><span>متبقية قبل تكلفة الطعام والتوصيل وأي خصم يتحمله المطعم</span></div>
 </div>
 </figure>
 <div class="hyp">

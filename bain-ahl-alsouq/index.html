@@ -428,6 +428,12 @@ h1.series-masthead{margin-bottom:8px}
 .sig,.footer-brand{grid-column:1/-1}
 }
 
+/* Official SAMA Saudi riyal symbol (inline SVG; fonts lack U+20C1).
+   Position: always to the left of the numeral, with a gap (SAMA usage rules). */
+.sar{display:inline-flex;align-items:baseline;gap:0.16em;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.sar-riyal{display:inline-block;width:0.9em;height:calc(0.9em * 1256.39 / 1124.14);flex:none;fill:currentColor;color:inherit;overflow:visible;vertical-align:-0.12em}
+.sar-riyal use{fill:currentColor}
+
 </style>
 </head>
 <body>
