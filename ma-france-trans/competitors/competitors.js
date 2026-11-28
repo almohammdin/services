@@ -11,9 +11,10 @@ const UI={
   sort:"Trier :",sorts:{capital:"Capital",fleet:"Flotte",revenue:"Chiffre d'affaires",staff:"Employés"},
   chips:{ftl:"Camion complet",grp:"Groupage",bcn:"Barcelone",ken:"Kénitra",del:"Décotée 2024"},
   fig:{capital:"Capital (MAD)",fleet:"Flotte",staff:"Employés",rev:"CA (MAD)"},
-  legend:"* auto-déclaré · bordure pointillée = non vérifié · « — » = non publié",
+  rankBy:"Rang par",unranked:"hors classement",
+  legend:"#n = rang selon le tri · * auto-déclaré · bordure pointillée = non vérifié · « — » = non publié",
   me:"Nous",more:"Détails et sources ›",close:"Fermer",
-  hOthers:"Autres acteurs",hListed:"Résultats financiers publiés",hDropped:"Écartées de la liste",hSources:"Toutes les sources",
+  hOthers:"Autres acteurs (hors classement)",hListed:"Résultats financiers publiés",hDropped:"Écartées de la liste",hSources:"Toutes les sources",
   src:"Sources",logoSrc:"Source du logo",noLogo:"Logo officiel introuvable : initiales",
   badges:{reg:"Registre / annuaire légal",dir:"Annuaire (fourchette)",self:"Auto-déclaré",fil:"Rapport / dépôt officiel",unv:"Non vérifié"},
   fields:{city:"Ville",founded:"Création",legal:"Forme juridique",capital:"Capital",ids:"RC / ICE",fleet:"Flotte",employees:"Employés",volume:"Volumes par an",revenue:"Chiffre d'affaires",lanes:"Lignes",loads:"Camion complet / groupage",services:"Services",certs:"Certifications",parent:"Groupe",listed:"Cotée en Bourse ?",web:"Site web",note:"Note"},
@@ -25,9 +26,10 @@ const UI={
   sort:"ترتيب:",sorts:{capital:"رأس المال",fleet:"الأسطول",revenue:"رقم المعاملات",staff:"المستخدمون"},
   chips:{ftl:"شاحنة كاملة",grp:"تجميع",bcn:"برشلونة",ken:"القنيطرة",del:"خرجت من البورصة 2024"},
   fig:{capital:"رأس المال (درهم)",fleet:"الأسطول",staff:"المستخدمون",rev:"رقم المعاملات (درهم)"},
-  legend:"* تصريح ذاتي · إطار منقّط = غير متحقق منه · «—» = غير منشور",
+  rankBy:"الترتيب حسب",unranked:"خارج الترتيب",
+  legend:"#n = الترتيب حسب الفرز · * تصريح ذاتي · إطار منقّط = غير متحقق منه · «—» = غير منشور",
   me:"نحن",more:"التفاصيل والمصادر ›",close:"إغلاق",
-  hOthers:"لاعبون آخرون",hListed:"النتائج المالية المنشورة",hDropped:"شركات مستبعدة من القائمة",hSources:"كل المصادر",
+  hOthers:"لاعبون آخرون (خارج الترتيب)",hListed:"النتائج المالية المنشورة",hDropped:"شركات مستبعدة من القائمة",hSources:"كل المصادر",
   src:"المصادر",logoSrc:"مصدر الشعار",noLogo:"لم نجد شعاراً رسمياً: الأحرف الأولى",
   badges:{reg:"السجل / دليل قانوني",dir:"دليل (فئة)",self:"تصريح ذاتي",fil:"تقرير / إيداع رسمي",unv:"غير متحقق منه"},
   fields:{city:"المدينة",founded:"التأسيس",legal:"الشكل القانوني",capital:"رأس المال",ids:"RC / ICE",fleet:"الأسطول",employees:"المستخدمون",volume:"الحجم السنوي",revenue:"رقم المعاملات",lanes:"الخطوط",loads:"شاحنة كاملة / تجميع",services:"الخدمات",certs:"الشهادات",parent:"المجموعة",listed:"مدرجة في البورصة؟",web:"الموقع",note:"ملاحظة"},
@@ -55,19 +57,22 @@ function chipsOf(id){const k=CARD[id]||{},t=T();
  const icon={ftl:'🚛',grp:'📦',bcn:'📍',ken:'📍',del:'⛔'};
  return (k.chips||[]).map(x=>{const u=x.endsWith('?'),key=u?x.slice(0,-1):x;return `<span class="chip ${key} ${u?'unv':''}">${icon[key]} ${esc(t.chips[key])}</span>`}).join('')}
 
+const firstNum=a=>{const m=a&&String(a[0]).match(/\d+/);return m?parseInt(m[0],10):null};
 function sortVal(c){const k=CARD[c.id]||{};
  if(sortKey==='capital')return c.capital.num;
  if(sortKey==='revenue')return c.revenue.num;
- if(sortKey==='fleet')return k.fleet?parseFloat(k.fleet[0].replace(/[^\d.]/g,'')):null;
- if(sortKey==='staff')return k.staff?parseFloat(k.staff[0].replace(/[^\d.]/g,'')):null}
+ if(sortKey==='fleet')return firstNum(k.fleet);
+ if(sortKey==='staff')return firstNum(k.staff)}
+/* rank among all 11 for the current sort (ties share a rank; no value = no rank) */
+function ranks(){const r={},arr=COMPANIES.map(c=>[c,sortVal(c)]).filter(x=>x[1]!=null&&!isNaN(x[1])).sort((a,b)=>b[1]-a[1]);
+ arr.forEach((x,i)=>{r[x[0].id]=i>0&&arr[i-1][1]===x[1]?r[arr[i-1][0].id]:i+1});return r}
 function visible(){
- let list=COMPANIES.filter(c=>c.me||Object.keys(flt).every(k=>!flt[k]||(CARD[c.id].chips||[]).includes(k)));
- const me=list.filter(c=>c.me),o=list.filter(c=>!c.me);
- o.sort((a,b)=>{const x=sortVal(a),y=sortVal(b),nx=x==null||isNaN(x),ny=y==null||isNaN(y);if(nx&&ny)return 0;if(nx)return 1;if(ny)return -1;return y-x});
- return me.concat(o)}
+ const list=COMPANIES.filter(c=>c.me||Object.keys(flt).every(k=>!flt[k]||(CARD[c.id].chips||[]).includes(k)));
+ return list.sort((a,b)=>{const x=sortVal(a),y=sortVal(b),nx=x==null||isNaN(x),ny=y==null||isNaN(y);if(nx&&ny)return 0;if(nx)return 1;if(ny)return -1;return y-x})}
 
-function card(c){const city=pick(c.city);
+function card(c,R){const city=pick(c.city),rk=R[c.id];
  return `<article class="co${c.me?' me':''}" tabindex="0" role="button" data-id="${c.id}" aria-label="${esc(c.name)}">
+ <span class="rank${rk?'':' none'}" title="${esc(T().rankBy)} ${esc(T().sorts[sortKey])}">${rk?'#'+rk:'#—'}</span>
  <div class="top">${logo(c.id,c.name,'big')}<div class="who"><h3>${esc(c.name)}${c.me?`<span class="me-tag">${esc(T().me)}</span>`:''}</h3><div class="city">📍 ${rich(city.split(/ \(/)[0])}</div></div></div>
  <div class="figs">${figs(c)}</div><div class="chips">${chipsOf(c.id)}</div><div class="more">${T().more}</div></article>`}
 function miniCard(d){
@@ -77,7 +82,7 @@ function miniCard(d){
 function kpis(){const t=T();
  const withCap=COMPANIES.filter(c=>c.capital.num!=null).sort((a,b)=>b.capital.num-a.capital.num);
  const rank=withCap.findIndex(c=>c.me)+1;
- let best=null;COMPANIES.forEach(c=>{const k=CARD[c.id];if(k&&k.fleet){const n=parseFloat(k.fleet[0].replace(/[^\d.]/g,''));if(!best||n>best.n)best={n,c}}});
+ let best=null;COMPANIES.forEach(c=>{const k=CARD[c.id];if(k&&k.fleet){const n=firstNum(k.fleet);if(!best||n>best.n)best={n,c}}});
  const listed=0;
  $('#kpis').innerHTML=
   `<div class="kpi me"><b>${rank} / ${COMPANIES.length}</b><span>${t.kRank}</span><span>${rich(t.kRankS)}</span></div>
@@ -108,7 +113,7 @@ function openModal(html){lastFocus=document.activeElement;$('#mBody').innerHTML=
 function closeModal(){$('#modal').hidden=true;document.body.classList.remove('modal-open');if(lastFocus&&lastFocus.focus)lastFocus.focus()}
 
 function renderGrid(){
- $('#grid').innerHTML=visible().map(card).join('');
+ const R=ranks();$('#grid').innerHTML=visible().map(c=>card(c,R)).join('');
  $('#sortSeg').innerHTML=`<span class="small">${T().sort}</span>`+Object.keys(T().sorts).map(k=>`<button type="button" data-sort="${k}" class="${sortKey===k?'on':''}" aria-pressed="${sortKey===k}">${T().sorts[k]}</button>`).join('');
  const icon={ftl:'🚛',grp:'📦',bcn:'📍'};
  $('#filters').innerHTML=['ftl','grp','bcn'].map(k=>`<button type="button" data-flt="${k}" class="${flt[k]?'on':''}" aria-pressed="${flt[k]}">${icon[k]} ${T().chips[k]}</button>`).join('')}
