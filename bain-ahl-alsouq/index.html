@@ -445,6 +445,17 @@ body{background:#fff!important;}
 .print-frame{display:none!important;height:0;margin:0;background:none;}
 }
 
+/* v10: card titles without stretched letters on «يخفض»; each reference isolated RTL */
+.nosalt{font-feature-settings:"salt" 0,"liga" 0}
+.law .law-ref{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline}
+.law-ref .ref{display:inline-block;unicode-bidi:isolate;direction:rtl;text-align:right}
+.law-ref .ref:not(:last-child)::after{content:" ·"}
+.law-ref .ref-label{font-weight:500;color:var(--hatta-navy)}
+.story-card h2,.story-card .q,.intro-card h2,.checklist h2{font-feature-settings:"salt" 0,"liga" 1}
+h2,h3{font-feature-settings:"salt" 0,"liga" 1}
+@media print{.card-kicker{break-after:avoid}}
+@media print{.intro-card,.checklist,#card-lids,#card-app,#labor{break-inside:avoid}}
+
 </style>
 </head>
 <body>
