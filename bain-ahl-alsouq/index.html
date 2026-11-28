@@ -465,7 +465,7 @@ body{background:#fff}
 .page-head{
   position:relative;display:grid;margin:0 0 4px;
   grid-template-columns:minmax(0,1fr) auto;
-  grid-template-areas:"series hatta" "band band" "no no" "date date";
+  grid-template-areas:"series hatta" "band band" "badge badge";
   align-items:center;column-gap:16px;
   padding-top:max(10px,env(safe-area-inset-top,0px));
 }
@@ -475,8 +475,7 @@ body{background:#fff}
 .page-head .series-wordmark{width:auto;height:40px;max-width:100%}
 .report-head .hatta-wordmark{grid-area:hatta;width:92px;height:33px;justify-self:end;display:block}
 .page-head::after{content:"";grid-area:band;height:14px;margin:8px calc(-1 * var(--sr)) 0 calc(-1 * var(--sl));background:var(--series-pattern) 0 -4px/61px 31px repeat-x;opacity:.4;pointer-events:none}
-.series-header .issue-no{grid-area:no;grid-column:1/-1;margin:12px 0 0;font:700 18px/1.5 "Thmanyah Sans",Tahoma,sans-serif;font-feature-settings:"salt" 0,"liga" 0;color:var(--series-amber-text)}
-.series-header .issue-date{grid-area:date;grid-column:1/-1;margin:0;font-size:16px;line-height:1.6;max-width:none;color:var(--series-amber-text)}
+.series-header .issue-badge{grid-area:badge;grid-column:1/-1;margin:12px 0 0;width:100%}
 .series-header + h1,.sheet > h1{margin:12px 0 14px;font-size:clamp(28px,8vw,32px);line-height:1.4}
 .sheet .lede,.intro.lede-text{font-size:20px}
 /* --- footer: compact centred stack (v12b). Header rules above stay as approved. --- */
@@ -509,6 +508,58 @@ body{background:#fff}
 .report-head .hatta-wordmark{width:80px;height:29px}
 }
 
+/* v14 · issue number + date badge (series header only; home card and footer untouched) */
+.series-header .issue-badge{
+  display:flex;flex-wrap:nowrap;align-items:center;
+  width:fit-content;max-width:100%;
+  margin:4px 0 0;
+  padding:8px 14px;
+  border-radius:12px;
+  background:rgba(218,147,7,.09);
+  border:1px solid rgba(218,147,7,.22);
+  box-sizing:border-box;
+}
+.series-header .issue-badge .issue-no{
+  margin:0;padding:0;padding-inline-end:12px;border:0;border-inline-end:1px solid rgba(140,95,5,.28);
+  font:700 18px/1.3 "Thmanyah Sans",Tahoma,sans-serif;
+  font-feature-settings:"salt" 0,"liga" 0;
+  color:#8C5F05;
+  flex:none;
+  white-space:nowrap;
+}
+.series-header .issue-badge .issue-date{
+  margin:0;padding:0;padding-inline-start:12px;
+  font:500 14px/1.45 "Thmanyah Sans",Tahoma,sans-serif;
+  font-feature-settings:"salt" 0,"liga" 0;
+  color:#8C5F05;
+  max-width:none;
+  white-space:nowrap;
+}
+@media(max-width:650px){
+  .series-header .issue-badge{padding:7px 12px}
+  .series-header .issue-badge .issue-no{font-size:16px}
+  .issue-date .date-second{display:inline}
+}
+/* Below ~430px, العدد 1 + the 14px date cannot share one row. Stack them;
+   the date itself stays on one line. At 360px, tighten padding so the date fits. */
+@media(max-width:429px){
+  .series-header .issue-badge{flex-direction:column;align-items:flex-start;gap:4px;padding:8px 12px;width:100%}
+  .series-header .issue-badge .issue-no{border-inline-end:0;padding-inline-end:0}
+  .series-header .issue-badge .issue-date{padding-inline-start:0}
+}
+@media(max-width:360px){
+  .series-header .issue-badge{padding:8px}
+}
+@media print{
+  .series-header .issue-badge{
+    margin-top:6px;padding:5px 12px;flex-direction:row;align-items:center;gap:0;
+    background:rgba(218,147,7,.09);
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .series-header .issue-badge .issue-no{font-size:12pt;border-inline-end:1px solid rgba(140,95,5,.28);padding-inline-end:10px}
+  .series-header .issue-badge .issue-date{font-size:10pt;white-space:nowrap;padding-inline-start:10px}
+}
+
 </style>
 </head>
 <body>
@@ -528,7 +579,7 @@ body{background:#fff}
 
 <article class="hatta-card issue-card">
 <p class="issue-no"><svg class="icon icon-gold" width="24" height="24" aria-hidden="true"><use href="#i-doc"/></svg> العدد 1</p>
-<p class="issue-date">السبت 18 جمادى الآخرة 1448هـ، <span class="date-second">الموافق 28 نوفمبر 2026م</span></p>
+<p class="issue-date">السبت 18 جمادى الآخرة 1448هـ · 28 نوفمبر 2026م</p>
 <h2>ملاك المطاعـــم والمقاهي ونظام المنافســـة</h2>
 <p>قرارات التسعير والتعامل مع المنافسين في المطاعم والمقاهي: ما يبقى قرارًا لكل محل، وما يختلف حين يدور الحديث عن سعر مشترك.</p>
 <a class="hatta-button" href="1/">اقرأ العدد</a>
