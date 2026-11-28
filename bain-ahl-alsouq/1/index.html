@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>العدد 1 | ملاك المطاعم والمقاهي ونظام المنافسة | بين أهل السوق</title>
 <meta name="description" content="توعية أصحاب المطاعم والمقاهي بنظام المنافسة: حرية التسعير، وما يحظر الاتفاق عليه بين المتنافسين، وخطوة عملية يمكن تنفيذها في المحل.">
 <meta property="og:type" content="website">
@@ -452,6 +452,62 @@ body{background:#fff!important;}
 h2,h3{font-feature-settings:"salt" 0,"liga" 1}
 @media print{.card-kicker{break-after:avoid}}
 @media print{.intro-card,.checklist,#card-app,#labor{break-inside:avoid}}
+
+/* ===== v12 · mobile header + footer (≤650px). Desktop and print untouched. ===== */
+@media(max-width:650px){
+body{background:#fff}
+.sheet{
+  --sl:max(16px,env(safe-area-inset-left,0px));--sr:max(16px,env(safe-area-inset-right,0px));
+  width:100%;margin:0;box-shadow:none;
+  padding:0 var(--sr) 0 var(--sl);
+}
+/* --- header: one compact bar (series logo + Hatta mark), scallop strip, issue line --- */
+.page-head{
+  position:relative;display:grid;margin:0 0 4px;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"series hatta" "band band" "no no" "date date";
+  align-items:center;column-gap:16px;
+  padding-top:max(10px,env(safe-area-inset-top,0px));
+}
+.report-head,.series-header{display:contents}
+.series-header::before,.report-head::before{display:none}
+.page-head .series-masthead{grid-area:series;margin:0;justify-self:start;line-height:0;min-height:44px;display:flex;align-items:center}
+.page-head .series-wordmark{width:auto;height:40px;max-width:100%}
+.report-head .hatta-wordmark{grid-area:hatta;width:92px;height:33px;justify-self:end;display:block}
+.page-head::after{content:"";grid-area:band;height:14px;margin:8px calc(-1 * var(--sr)) 0 calc(-1 * var(--sl));background:var(--series-pattern) 0 -4px/61px 31px repeat-x;opacity:.4;pointer-events:none}
+.series-header .issue-no{grid-area:no;grid-column:1/-1;margin:12px 0 0;font:700 18px/1.5 "Thmanyah Sans",Tahoma,sans-serif;font-feature-settings:"salt" 0,"liga" 0;color:var(--series-amber-text)}
+.series-header .issue-date{grid-area:date;grid-column:1/-1;margin:0;font-size:16px;line-height:1.6;max-width:none;color:var(--series-amber-text)}
+.series-header + h1,.sheet > h1{margin:12px 0 14px;font-size:clamp(28px,8vw,32px);line-height:1.4}
+.sheet .lede,.intro.lede-text{font-size:20px}
+/* --- footer: compact centred stack (v12b). Header rules above stay as approved. --- */
+.sheet-footer{
+  margin:24px calc(-1 * var(--sr)) 0 calc(-1 * var(--sl));border-radius:0;
+  padding:28px max(16px,var(--sr)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,var(--sl));
+}
+.sheet-footer::after{height:18px;opacity:.3}
+.footer-grid{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;padding:0;text-align:center;width:100%}
+.footer-series{display:contents}
+.footer-logo{order:1;width:auto;height:28px;max-width:100%;margin:0}
+.sig{order:2;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 10px;margin:0;font-size:14px;color:var(--series-teal);max-width:100%}
+.sig>span:first-child{font-size:14px;line-height:1.3}
+.sig .naif-wordmark{width:69px;height:32px}
+.footer-username{display:inline-flex;align-items:center;min-height:32px;padding:0 6px;font-size:14px;font-weight:500}
+.footer-socials{order:3;display:flex;justify-content:center;flex-wrap:nowrap;gap:8px;margin:0;width:100%}
+.footer-socials a{width:44px;height:44px}
+.footer-socials svg{width:20px;height:20px}
+.footer-rule{display:none}
+.footer-brand{order:4;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 12px;margin:0;padding-top:12px;border-top:1px solid #dce2eb;width:100%}
+.footer-hatta-logo{display:flex;align-items:center;justify-content:center;min-height:32px;margin:0}
+.footer-hatta-mark{width:auto;height:24px;margin:0}
+.footer-brand > span{display:inline;margin:0;font-size:14px;line-height:1.4;text-align:center;color:var(--hatta-navy);white-space:nowrap}
+.footer-links{margin:0;justify-content:center;gap:0}
+.footer-link{display:inline-flex;align-items:center;min-height:32px;padding:0 8px;font-size:14px}
+.source,.sources ol{font-size:14px}
+}
+@media(max-width:360px){
+.page-head .series-wordmark{height:36px}
+.report-head .hatta-wordmark{width:80px;height:29px}
+}
 
 </style>
 </head>
