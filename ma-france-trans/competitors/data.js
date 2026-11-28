@@ -67,7 +67,7 @@ const SRC={
  n22:{l:"Site Group Inter Five — camion complet",u:"https://groupinterfive.com/transport-camion-complet/"},
  n23:{l:"Site Otmatrans — services (température dirigée, groupage et charge complète, 15 pays)",u:"https://otmatrans.com/nos-valeurs/nos-services/"},
  n24:{l:"Site MFAH Globalog — flotte et réseau",u:"https://mfahglobalog.com/"},
- n25:{l:"Étude 2024 sur SDFM (DOI) — non lisible depuis notre machine, cité par ChatGPT",u:"https://doi.org/10.13140/RG.2.2.28789.28642"},
+ n25:{l:"Étude 2024 sur SDFM (DOI) — non lisible depuis notre machine, relevé dans une revue externe",u:"https://doi.org/10.13140/RG.2.2.28789.28642"},
  n26:{l:"Site Janou Transport — transport routier (non lisible depuis notre machine)",u:"https://www.janoutransports.com/transport-routier.html"},
  n27:{l:"Site Elza Trans — services (camions complets uniquement)",u:"https://www.elzatrans.com/en/services/"},
  n28:{l:"Bourse de Casablanca — instruction du 23/04/2024 (radiation TIMAR) — non lisible depuis notre machine",u:"https://media.casablanca-bourse.com/sites/default/files/es-auto-upload/fr/Instructions_20240423.pdf"},
@@ -91,7 +91,7 @@ const LOGOS={
  timar:{f:"logos/timar.png",bg:"dark",u:"https://www.ammc.ma/sites/default/files/Timar_RFA_2023.pdf",how:"Extrait de la couverture du rapport annuel 2023 déposé à l'AMMC (page 1, mot-symbole blanc) : le site timar.ma est inaccessible depuis notre machine"},
  sdfm:{f:"logos/sdfm.png",bg:"dark",u:"https://sdfmlogistics.com/assets/img/logos/logo-sdfm.png",how:"Logo du site officiel (PNG, blanc sur fond sombre)"},
  g5:{f:"logos/g5.svg",u:"https://groupinterfive.com/wp-content/uploads/2025/01/Asset-1.svg",how:"Logo du site officiel (SVG)"},
- janou:null,
+ janou:{f:"logos/janou.png",bg:"dark",u:"https://web.archive.org/web/20241126121633im_/https://janoutransports.com/Assets/SVG/JanouTrans-logo.png",how:"Logo du site officiel janoutransports.com (en-tête), copie archivée web.archive.org du 26/11/2024 (PNG blanc, fond sombre) : le site est inaccessible aujourd'hui"},
  tcl:{f:"logos/tcl.png",bg:"dark",u:"https://tcltransport.com/wp-content/uploads/2021/03/cropped-logo-5.png",how:"Logo d'en-tête du site officiel (PNG 191×70, petit mais seul fichier publié)"},
  mfah:{f:"logos/mfah.svg",bg:"dark",u:"https://mfahglobalog.com/img/logo.svg",how:"Logo du site officiel (SVG)"},
  rtl:{f:"logos/rtl.png",u:"https://rtlmaroc.com/images/logo.png",how:"Logo du site officiel (PNG)"},
@@ -114,13 +114,13 @@ const COMPANIES=[
  legal:f("SARL à associé unique","شركة ذات مسؤولية محدودة بشريك وحيد","reg",["s2"]),
  capital:f("2 100 000 MAD","2 100 000 درهم","reg",["s1","s2"],2100000),
  ids:f("RC 41789 (Kénitra) · ICE 000093575000034","RC 41789 (القنيطرة) · ICE 000093575000034","reg",["s1","n1","n2"]),
- fleet:f("— (à demander à Hassan)","— (نسأل حسن)",NA,[]),
- employees:f("— (à demander à Hassan)","— (نسأل حسن)",NA,[]),
- volume:f("— (à demander à Hassan)","— (نسأل حسن)",NA,[]),
- lanes:f("— (à demander à Hassan)","— (نسأل حسن)",NA,[]),
+ fleet:f("—","—",NA,[]),
+ employees:f("—","—",NA,[]),
+ volume:f("—","—",NA,[]),
+ lanes:f("—","—",NA,[]),
  services:f("Objet social (registre) : transport national et international de marchandises, import-export, commission, courtage","الغرض الاجتماعي (السجل): نقل وطني ودولي للبضائع، استيراد وتصدير، عمولة وسمسرة","reg",["s2"]),
- certs:f("— (à demander à Hassan)","— (نسأل حسن)",NA,[]),
- loads:f("— (à demander à Hassan)","— (نسأل حسن)",NA,[]),
+ certs:f("—","—",NA,[]),
+ loads:f("—","—",NA,[]),
  revenue:f("— (Charika liste des bilans 2018, 2024, 2025 : contenu payant, non lu)","— (Charika يذكر ميزانيات 2018 و2024 و2025: محتوى مدفوع لم نقرأه)",NA,[]),
  parent:f("—","—",NA,[]),
  listed:f("Non (SARL)","لا (SARL)","reg",["s2"]),
@@ -177,7 +177,7 @@ const COMPANIES=[
  certs:f("ISO 9001 (2017) · ISO 14001 (2018) · OEA classe B (2018)","ISO 9001 (2017) · ISO 14001 (2018) · OEA فئة B (2018)","self",["s8"]),
  revenue:f("123 779 192 MAD (2024, comptes sociaux déposés) · résultat d'exploitation 779 075 MAD","123 779 192 درهم (2024، حسابات الشركة المودعة) · نتيجة الاستغلال 779 075 درهم","reg",["n3"],123779192),
  loads:f("— (corridor Maroc–Europe confirmé ; FTL / groupage non précisés)","— (خط المغرب–أوروبا مؤكد؛ لم يُحدَّد شاحنة كاملة/تجميع)",NA,["s8"]),
- note:f("Étude universitaire 2024 (DOI/ResearchGate, non lisible depuis notre machine ; cité par ChatGPT) : 386 unités dont 188 tracteurs routiers, 36 tracteurs portuaires et 145 semi-remorques ; plus de 300 employés sur trois filiales. À confirmer : nous gardons les 348 véhicules du site (auto-déclaré, non daté).","دراسة جامعية 2024 (DOI/ResearchGate، لا نستطيع قراءتها من جهازنا؛ نقلها ChatGPT): 386 وحدة منها 188 رأساً جرّاراً طرقياً و36 جرّاراً للميناء و145 نصف مقطورة؛ وأكثر من 300 مستخدم في ثلاث شركات تابعة. يحتاج تأكيداً: نُبقي رقم الموقع (348 مركبة، تصريح ذاتي، بلا تاريخ).","unv",["n25"]),
+ note:f("Étude universitaire 2024 (DOI/ResearchGate, non lisible depuis notre machine ; relevé dans une revue externe) : 386 unités dont 188 tracteurs routiers, 36 tracteurs portuaires et 145 semi-remorques ; plus de 300 employés sur trois filiales. Nous gardons les 348 véhicules du site (auto-déclaré, non daté).","دراسة جامعية 2024 (DOI/ResearchGate، لا نستطيع قراءتها من جهازنا؛ وردت في مراجعة خارجية): 386 وحدة منها 188 رأساً جرّاراً طرقياً و36 جرّاراً للميناء و145 نصف مقطورة؛ وأكثر من 300 مستخدم في ثلاث شركات تابعة. نُبقي رقم الموقع (348 مركبة، تصريح ذاتي، بلا تاريخ).","unv",["n25"]),
  parent:f("—","—",NA,[]),
  listed:f("Non (SARL)","لا (SARL)","reg",["s6"]),
  web:g("sdfmlogistics.com","self",["s8"])
@@ -276,7 +276,7 @@ const COMPANIES=[
  city:f("Agadir","أكادير","reg",["s29","s30"]),
  founded:f("29 janvier 2014","29 يناير 2014","reg",["s29"],2014),
  legal:f("SARL","SARL","reg",["s29"]),
- capital:f("100 000 MAD (Kerix et Telecontact) · Optimus affiche 500 000 (conflit : deux annuaires contre un, à confirmer par le RC)","100 000 درهم (Kerix وTelecontact) · Optimus يعرض 500 000 (تعارض: دليلان مقابل دليل واحد، يلزم تأكيد من السجل)","dir",["n5","s30","s29"],100000),
+ capital:f("100 000 MAD (Kerix et Telecontact) · Optimus affiche 500 000 (conflit : deux annuaires contre un)","100 000 درهم (Kerix وTelecontact) · Optimus يعرض 500 000 (تعارض: دليلان مقابل دليل واحد)","dir",["n5","s30","s29"],100000),
  ids:f("ICE 000033747000049 · RC 26715 (Agadir)","ICE 000033747000049 · RC 26715 (أكادير)","reg",["s29","s30"]),
  fleet:f("—","—",NA,[]),
  employees:f("Moins de 10","أقل من 10","dir",["s29","n5"]),
@@ -326,6 +326,34 @@ const OTHERS=[
  {id:"gfl",n:"GFL (Global Freight & Logistics)",fr:"Groupage routier : 2 à 3 départs hebdomadaires depuis les hubs de partenaires à Paris, Lyon, Strasbourg, Milan, Bruxelles, Barcelone et Madrid ; semi-remorque complète aussi. Fréquence par ville : — non trouvée.",ar:"تجميع بري: 2 إلى 3 رحلات أسبوعياً من محطات شركاء في باريس وليون وستراسبورغ وميلانو وبروكسل وبرشلونة ومدريد؛ وشاحنة كاملة أيضاً. التواتر لكل مدينة: — لم نجده.",t:"self",s:["g7"]}
 ];
 
+
+/* Card view: key figures shown on each card. [value, star] ; star = self-declared. null = "—". Conflicting or stale values stay "—" here and are explained in the details. chips: ftl, grp, bcn, ken, del ; "?" suffix = unverified. */
+const CARD={
+ mft:{fleet:null,staff:null,chips:[]},
+ sjl:{fleet:["450",1],staff:["800",1],chips:["ftl","grp"]},
+ timar:{fleet:null,staff:["297"],chips:["ftl","grp","bcn","del"]},
+ sdfm:{fleet:["348",1],staff:["250–499"],chips:[]},
+ g5:{fleet:null,staff:["130",1],chips:["ftl"]},
+ janou:{fleet:["45+"],staff:null,chips:["ftl?","grp?"]},
+ tcl:{fleet:null,staff:null,chips:["ftl","grp","bcn"]},
+ mfah:{fleet:["44",1],staff:null,chips:["ftl","grp?"]},
+ rtl:{fleet:null,staff:["20–49"],chips:["ftl","grp","bcn"]},
+ elza:{fleet:null,staff:["< 10"],chips:["ftl"]},
+ otma:{fleet:null,staff:null,chips:["ftl","grp"]},
+ gw:{fleet:["≈ 40",1],staff:null,chips:["ken","ftl"]},
+ tu:{fleet:null,staff:null,chips:["grp","bcn"]},
+ maz:{fleet:null,staff:null,chips:["ftl","grp"]},
+ mg:{fleet:null,staff:null,chips:["grp","bcn"]},
+ gfl:{fleet:null,staff:null,chips:["ftl","grp","bcn"]}
+};
+const SHORT={
+ gw:{fr:"≈ 40 tracteurs · dépôts à Kénitra et Casablanca",ar:"≈ 40 رأساً جرّاراً · مستودعان في القنيطرة والدار البيضاء"},
+ tu:{fr:"Groupage Barcelone → Casablanca (jeudi), Lyon → Casablanca (vendredi)",ar:"تجميع برشلونة → الدار البيضاء (الخميس)، ليون → الدار البيضاء (الجمعة)"},
+ maz:{fr:"Camion complet + groupage Espagne / France → Maroc",ar:"شاحنة كاملة + تجميع إسبانيا / فرنسا → المغرب"},
+ mg:{fr:"Groupage Barcelone → Casablanca / Tanger, jusqu'à 2 départs par semaine",ar:"تجميع برشلونة → الدار البيضاء / طنجة، حتى رحلتين أسبوعياً"},
+ gfl:{fr:"Groupage 2–3 départs par semaine (Paris, Lyon, Barcelone…)",ar:"تجميع 2–3 رحلات أسبوعياً (باريس، ليون، برشلونة…)"}
+};
+
 /* Listed companies (filings only) */
 const LISTED=[
  {name:"CTM (Compagnie de Transports au Maroc)",
@@ -360,15 +388,3 @@ const LISTED=[
   s:["n10","s17","n13","n11","n12","n29"]}
 ];
 
-const NEEDS=[
- {fr:"Nombre de camions / tracteurs et de remorques (en propre, et partenaires), avec les types (bâchée, frigo, mega…)",ar:"عدد الشاحنات / الرؤوس الجرّارة والمقطورات (ملك الشركة والشركاء) مع الأنواع (بالتغطية، مبرّد، ميغا…)"},
- {fr:"Nombre de chauffeurs et d'employés (bureau, exploitation)",ar:"عدد السائقين والموظفين (مكتب، استغلال)"},
- {fr:"Nombre de voyages par an : Europe → Maroc et Maroc → Europe ; part des retours chargés",ar:"عدد الرحلات في السنة: أوروبا → المغرب والمغرب → أوروبا؛ ونسبة رحلات العودة المحمّلة"},
- {fr:"Lignes et villes réellement desservies (France, Espagne/Barcelone, autres) ; fréquence",ar:"الخطوط والمدن التي تخدمها فعلاً (فرنسا، إسبانيا/برشلونة، أخرى)؛ وتواتر الرحلات"},
- {fr:"Services : camion complet, groupage, frigorifique, ADR, dédouanement",ar:"الخدمات: شاحنة كاملة، تجميع، مبرّد، ADR، تخليص جمركي"},
- {fr:"Certificats et licences : ISO, OEA, licence de transport international, carnets TIR, assurance CMR, adhésion à une association (ex. AMTRI)",ar:"الشهادات والتراخيص: ISO، OEA، رخصة النقل الدولي، دفاتر TIR، تأمين CMR، عضوية جمعية (مثل AMTRI)"},
- {fr:"Documents d'identité de l'entreprise : certificat RC (Kénitra) et fiche légale détaillée OMPIC ; confirmer l'ICE 000093575000034, l'historique Tanger → Kénitra (inscription de Tanger « radiée ») et le capital à jour",ar:"وثائق هوية الشركة: شهادة RC (القنيطرة) والبطاقة القانونية المفصلة من OMPIC؛ تأكيد ICE 000093575000034 وتاريخ الانتقال طنجة → القنيطرة (قيد طنجة «مشطوب») ورأس المال المحيّن"},
- {fr:"Coordonnées officielles à publier : e-mail, téléphone, adresse exacte (le nom de la résidence diffère entre annuaires)",ar:"بيانات الاتصال الرسمية للنشر: بريد إلكتروني، هاتف، عنوان دقيق (اسم الإقامة يختلف بين الأدلة)"},
- {fr:"Logo original, photos des camions, noms et logos des anciens clients",ar:"الشعار الأصلي، صور الشاحنات، أسماء وشعارات الزبناء السابقين"},
- {fr:"Une preuve de ligne réelle (ex. un CMR ou une facture avec chargement/livraison) : Barcelone, France ? Existe-t-il un bureau ou une société à Barcelone / en France aujourd'hui ?",ar:"دليل على خط فعلي (مثل وثيقة CMR أو فاتورة فيها مكان التحميل والتسليم): برشلونة، فرنسا؟ وهل يوجد مكتب أو شركة في برشلونة / فرنسا اليوم؟"}
-];
